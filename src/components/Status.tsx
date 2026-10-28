@@ -5,18 +5,22 @@ import './Status.css';
 
 export interface StatusChipProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   selected?: boolean;
-  /** xs 24px pill, sm 36px, md 48px, lg 56px. */
+  /** xs 24px pill, sm 36px, md 48px, lg 56px (Figma "Status Container" Small pill, Small, Default, Big). */
   size?: 'xs' | 'sm' | 'md' | 'lg';
+  /** Trailing icon. Figma draws the 20px Down chevron in every state. */
   icon?: IconName;
   children: ReactNode;
 }
 
-/** Toggleable status filter. Selected chips fill Mantis green. */
-export function StatusChip({ selected = false, size = 'xs', icon, className, children, type = 'button', ...rest }: StatusChipProps) {
+/**
+ * Figma "Status Container": Default (Cultured border, Jet Medium 12), Focused (Eerie Black border), Selected
+ * (Mantis fill, white text), Selected hover (80%), Selected focused and Disabled (Cultured fill, Silver Chalince text).
+ */
+export function StatusChip({ selected = false, size = 'xs', icon = 'down', className, children, type = 'button', ...rest }: StatusChipProps) {
   return (
     <button type={type} aria-pressed={selected} className={cx('syn-status-chip', `syn-status-chip--${size}`, className)} {...rest}>
       <span>{children}</span>
-      {icon && <Icon name={icon} size={size === 'xs' ? 16 : 20} />}
+      {icon && <Icon name={icon} size={20} />}
     </button>
   );
 }

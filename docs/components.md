@@ -37,7 +37,9 @@ Figma: *Dropdown* and *Select list*. A select-only combobox (WAI-ARIA pattern): 
 Enter/Space choose, Escape closes. Options hover in Misty Rose. Props: `label`, `options`
 (`{ value, label, disabled? }`), `value`/`defaultValue`, `onChange`, `placeholder`, `size` (`xs`–`lg`),
 `hideLabel` (default `true`: only the value shows, as in Figma; `false` puts the label inside), `iconStart`,
-`hint`, `error`, `disabled`. The list opens 2px under the field.
+`hint`, `error`, `disabled`, `onClear` (Figma's 24px round clear X left of the chevron, shown on hover,
+focus and open while a value is selected). The list opens 2px under the field. The chevron sits in a
+24px circle: white at rest, Cultured on hover, Eerie Black with a white glyph when focused or open.
 
 ## Checkbox, Radio, RadioGroup
 
@@ -75,23 +77,29 @@ ABC Favorit Expanded Medium 12/15. `name`, `selected`, `error`, `onCreate`, `onS
 
 Figma: *Tooltip black*, *Tooltip grey label*. Opens on hover and focus, closes on Escape, wired with
 `aria-describedby`. `placement` top/bottom/left/right, `tone` `dark` (Jet) or `light` (Cultured with a
-border).
+border). As in Figma: 2px corners, 8px padding, Regular 14 and a 16x8 pointer.
 
 ## Notification
 
-Figma: *Notification - High Contrast - Inline* and *- Toast*. White card, 3px status bar on the left,
-float shadow. `tone` info/success/warning/error, `variant` `inline` or `toast` (title, message,
-`timestamp`), `onClose`. Error and warning use `role="alert"`, the rest `role="status"`.
+Figma: *Notification - High Contrast - Inline* and *- Toast*. Card with a status bar on the left (4px),
+12px corners and the float shadow. `tone` info/success/warning/error (icons: Info circle, Check in
+circle, Warning, the red pause circle), `title`, the message as children, `onClose` (24px round close
+with a 12px X). `variant="inline"`: 360 wide, 18px icon, Medium 14 title over a Regular 12 subtitle, Snow.
+`variant="toast"`: 288 wide, SemiBold 14 title, Regular 12 message and a Regular 14 `timestamp` on the
+left, close on top and a 32px status icon at the bottom on the right; info is white, warning Snow, error and
+success Cultured. Error and warning use `role="alert"`, the rest `role="status"`.
 
 ## StatusChip and StatusBadge
 
 Figma: *Status Container*. `StatusChip` is a toggle (`aria-pressed`) that fills Mantis when selected;
-`size` `xs` 24 (pill), `sm` 36, `md` 48, `lg` 56. `StatusBadge` is read-only with a coloured dot; `tone`
+`size` `xs` 24 (pill), `sm` 36, `md` 48, `lg` 56. It ends in a 20px down chevron (`icon`); disabled is
+Cultured with muted text. `StatusBadge` is read-only with a coloured dot; `tone`
 progress/success/warning/error/info/neutral.
 
 ## Accordion
 
-Figma: *Accordion*, *Accordion with icons*. 40px headers with a round chevron, Silver Chalice dividers,
+Figma: *Accordion*, *Accordion with icons*. Square 40px headers with a round chevron (Eerie Black with a
+white glyph when open), Silver Chalice dividers,
 optional `meta` value box. `multiple`, `defaultOpen`. Headers are buttons inside `h3` with
 `aria-expanded`/`aria-controls`.
 
@@ -175,7 +183,9 @@ The 12-column grid: 24px gutter by default (`gap` takes 8–32), `GridItem` `spa
 ## Slider
 
 Figma: *Slider 1*, *Slider button*, *Slider button with text*. Native range input: 2px Silver Chalice
-track, Candy Apple fill, 32px Snow thumb, pill value bubble. `min`, `max`, `step`, `format`.
+track, Candy Apple fill, a 32px white thumb with Figma's double arrow (darkens on hover), the label
+above and Light 12 Silver Chalice labels under the track (the minimum on the left, the value on the
+right). `min`, `max`, `step`, `format`.
 
 ## Icon
 

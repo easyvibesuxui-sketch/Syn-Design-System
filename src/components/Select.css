@@ -20,8 +20,40 @@
   color: var(--syn-text-primary);
   transition: background-color var(--syn-duration-fast), transform var(--syn-duration-base);
 }
+/* Figma "chevron in dropdown": white circle at rest, Cultured on hover, Eerie Black with a white glyph when focused or open. */
 .syn-select__trigger:hover .syn-select__chevron { background: var(--syn-surface-muted); }
+.syn-select__trigger:focus-visible .syn-select__chevron,
+.syn-select.is-open .syn-select__chevron { background: var(--syn-color-black-eerie-black); color: var(--syn-color-white-white); }
 .syn-select.is-open .syn-select__chevron { transform: rotate(180deg); }
+
+/* Figma "Close Button": 24px Ghost circle with a 12px X, 12px left of the chevron; shown on hover, focus and open. */
+.syn-select__clear-slot { flex: none; width: 24px; height: 24px; margin-right: var(--syn-space-6); }
+.syn-select__clear {
+  position: absolute;
+  top: 50%;
+  right: calc(12px + 24px + var(--syn-space-12));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--syn-radius-full);
+  background: var(--syn-color-unnamed-colors-ghost);
+  color: var(--syn-text-primary);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(-50%);
+  transition: opacity var(--syn-duration-fast);
+}
+.syn-select__anchor:hover .syn-select__clear,
+.syn-select.is-open .syn-select__clear,
+.syn-select__anchor:focus-within .syn-select__clear { opacity: 1; }
+.syn-select__clear:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
+.syn-field--xs .syn-select__clear-slot, .syn-field--xs .syn-select__clear { width: 16px; height: 16px; }
+.syn-field--xs .syn-select__clear { right: calc(16px + var(--syn-space-12)); }
 .syn-select.is-disabled .syn-select__trigger { cursor: not-allowed; }
 .syn-select.is-disabled .syn-select__value { color: var(--syn-text-disabled); }
 .syn-select.is-disabled .syn-select__chevron { background: var(--syn-action-disabled); color: var(--syn-surface-muted); }

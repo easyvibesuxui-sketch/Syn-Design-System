@@ -1,6 +1,7 @@
 .syn-status-chip {
   display: inline-flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--syn-space-16);
   height: var(--syn-size-control-sm);
   padding: var(--syn-space-8) var(--syn-space-8) var(--syn-space-8) var(--syn-space-12);
@@ -15,12 +16,11 @@
 .syn-status-chip--xs { height: var(--syn-size-control-xs); padding: var(--syn-space-2) var(--syn-space-8) var(--syn-space-2) var(--syn-space-12); border-radius: var(--syn-radius-full); }
 .syn-status-chip--md { height: var(--syn-size-control-md); font: var(--syn-type-text-body-s-2); }
 .syn-status-chip--lg { height: var(--syn-size-control-lg); font: var(--syn-type-text-body-m-2); }
-.syn-status-chip:hover:not(:disabled) { border-color: var(--syn-border-muted); }
 .syn-status-chip:focus-visible { outline: none; border-color: var(--syn-border-strong); }
 .syn-status-chip[aria-pressed='true'] { border-color: var(--syn-status-success); background: var(--syn-status-success); color: var(--syn-color-white-white); }
 .syn-status-chip[aria-pressed='true']:hover:not(:disabled) { opacity: 0.8; }
 .syn-status-chip[aria-pressed='true']:focus-visible { border-color: var(--syn-border-strong); }
-.syn-status-chip:disabled { color: var(--syn-text-disabled); cursor: not-allowed; }
+.syn-status-chip:disabled { border-color: var(--syn-surface-muted); background: var(--syn-surface-muted); color: var(--syn-text-muted); cursor: not-allowed; }
 .syn-status-chip[aria-pressed='true']:disabled { border-color: var(--syn-action-disabled); background: var(--syn-action-disabled); }
 
 .syn-status-badge {

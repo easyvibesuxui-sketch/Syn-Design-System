@@ -205,7 +205,7 @@ export function App() {
 
         <Section id="select" title="Select" lead="The list opens 2px under the field. By default only the value shows (as in Figma); hideLabel={false} puts the label inside, like the text field.">
           <div className="pg-grid">
-            <Select label="Machine" iconStart="settings" value={machine} onChange={setMachine} placeholder="Choose"
+            <Select label="Machine" iconStart="settings" value={machine} onChange={setMachine} onClear={() => setMachine(undefined)} placeholder="Choose"
               options={[{ value: 'excavator', label: 'Excavator' }, { value: 'loader', label: 'Wheel loader' }, { value: 'crane', label: 'Crane' }, { value: 'truck', label: 'Dump truck', disabled: true }]} />
             <Select label="Size" size="md" defaultValue="m" options={[{ value: 's', label: 'Small' }, { value: 'm', label: 'Medium' }, { value: 'l', label: 'Large' }]} />
             <Select label="Location of damage" hideLabel={false} defaultValue="p2" options={[{ value: 'p1', label: 'Pipe Damage 1' }, { value: 'p2', label: 'Pipe Damage 2' }]} />
@@ -304,7 +304,7 @@ export function App() {
             {['open', 'in progress', 'done'].map((s) => (
               <StatusChip key={s} selected={chips.includes(s)} onClick={() => setChips((c) => (c.includes(s) ? c.filter((x) => x !== s) : [...c, s]))}>{s}</StatusChip>
             ))}
-            <StatusChip size="sm" icon="check">Approved</StatusChip>
+            <StatusChip size="sm">Pending</StatusChip>
             <StatusChip disabled>Closed</StatusChip>
           </Row>
           <Row label="badge">
@@ -319,10 +319,10 @@ export function App() {
 
         <Section id="notifications" title="Notifications">
           <div className="pg-stack">
-            <Notification tone="info" onClose={() => {}}>Your export is being prepared.</Notification>
-            <Notification tone="success" onClose={() => {}}>Equipment saved.</Notification>
-            <Notification tone="warning" onClose={() => {}}>Service is due in 3 days.</Notification>
-            <Notification tone="error" onClose={() => {}}>Connection lost.</Notification>
+            <Notification tone="info" title="Export started" onClose={() => {}}>Your export is being prepared.</Notification>
+            <Notification tone="success" title="Saved" onClose={() => {}}>Equipment saved.</Notification>
+            <Notification tone="warning" title="Service due" onClose={() => {}}>Service is due in 3 days.</Notification>
+            <Notification tone="error" title="Connection lost" onClose={() => {}}>Check your network and try again.</Notification>
           </div>
           <Row>
             <Notification variant="toast" tone="info" title="Informational notification" timestamp="Time stamp 12:04:31" onClose={() => {}}>

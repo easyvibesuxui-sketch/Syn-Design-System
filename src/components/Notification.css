@@ -1,10 +1,13 @@
+/* Figma "Notification - High Contrast": status bar on the left (3px in Figma, 4px on the even scale),
+   12px corners, the float shadow; hover turns the card Smoke. */
 .syn-notification {
   --tone: var(--syn-status-info);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--syn-space-6);
-  width: 100%;
-  max-width: 360px;
+  box-sizing: border-box;
+  width: 360px;
+  max-width: 100%;
   padding: var(--syn-space-8) var(--syn-space-16) var(--syn-space-8) var(--syn-space-8);
   border-left: 4px solid var(--tone);
   border-radius: var(--syn-radius-widget);
@@ -18,14 +21,28 @@
 .syn-notification--warning { --tone: var(--syn-status-warning); }
 .syn-notification--error { --tone: var(--syn-status-error); }
 
-.syn-notification__icon { flex: none; color: var(--tone); }
-.syn-notification__body { display: flex; flex: 1; flex-direction: column; gap: var(--syn-space-6); min-width: 0; }
-.syn-notification__title { margin: 0; font: var(--syn-type-titles-title-8); }
+.syn-notification__icon { flex: none; align-self: flex-start; margin-top: var(--syn-space-2); color: var(--tone); }
+.syn-notification__body { display: flex; flex: 1; flex-direction: column; gap: var(--syn-space-12); min-width: 0; }
+.syn-notification__text { display: flex; flex-direction: column; gap: var(--syn-space-6); }
+.syn-notification__title { margin: 0; font: var(--syn-type-text-body-s); }
 .syn-notification__message { font: var(--syn-type-text-body-xs-2); }
 .syn-notification__message > p { margin: 0; }
-.syn-notification__time { margin: 0; color: var(--syn-text-secondary); font: var(--syn-type-text-body-xs-2); }
+.syn-notification__side { display: flex; flex: none; flex-direction: column; align-items: flex-end; justify-content: space-between; align-self: stretch; }
 
-.syn-notification--inline { align-items: center; }
-.syn-notification--toast { width: 320px; max-width: 100%; padding: var(--syn-space-10) var(--syn-space-8) var(--syn-space-10) var(--syn-space-16); gap: var(--syn-space-12); }
-.syn-notification--toast .syn-notification__icon { order: -1; }
-.syn-notification--toast .syn-notification__body { gap: var(--syn-space-6); }
+/* Toast: 288 wide, padding 10/8/10/16. Info is white, warning Snow, error and success Cultured, as in Figma. */
+.syn-notification--toast {
+  align-items: stretch;
+  gap: var(--syn-space-16);
+  width: 288px;
+  padding: var(--syn-space-10) var(--syn-space-8) var(--syn-space-10) var(--syn-space-16);
+  background: var(--syn-surface-default);
+}
+.syn-notification--toast.syn-notification--warning { background: var(--syn-surface-raised); }
+.syn-notification--toast.syn-notification--error,
+.syn-notification--toast.syn-notification--success { background: var(--syn-surface-muted); }
+.syn-notification--toast:hover { background: var(--syn-surface-subtle); }
+.syn-notification--toast .syn-notification__title { font: var(--syn-type-titles-title-8); }
+.syn-notification--toast .syn-notification__body { justify-content: space-between; }
+.syn-notification--toast .syn-notification__icon { align-self: auto; margin: 0; }
+.syn-notification__time { margin: 0; font: var(--syn-type-text-body-s-2); }
+.syn-notification--toast .syn-notification__side { gap: var(--syn-space-16); }

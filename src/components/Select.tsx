@@ -31,12 +31,15 @@ export interface SelectProps {
   hint?: string;
   error?: string | string[];
   disabled?: boolean;
+  /** Shows Figma's round clear (X) button left of the chevron while a value is selected; called when it is pressed. */
+  onClear?: () => void;
+  clearLabel?: string;
   id?: string;
   className?: string;
 }
 
 /** Single-select dropdown. Follows the WAI-ARIA select-only combobox pattern. */
-export function Select({ label, options, value, defaultValue, onChange, placeholder, size = 'lg', hideLabel = true, iconStart, hint, error, disabled, id, className }: SelectProps) {
+export function Select({ label, options, value, defaultValue, onChange, placeholder, size = 'lg', hideLabel = true, iconStart, hint, error, disabled, onClear, clearLabel = 'Clear', id, className }: SelectProps) {
   const autoId = useId();
   const baseId = id ?? `syn-select-${autoId}`;
   const listId = `${baseId}-list`;
@@ -49,6 +52,7 @@ export function Select({ label, options, value, defaultValue, onChange, placehol
   const invalid = error !== undefined && error.length > 0;
   const selectedOption = options.find((o) => o.value === selected);
   const labelInside = !hideLabel && size !== 'xs';
+  const clearable = Boolean(onClear) && Boolean(selectedOption) && !disabled;
 
   useEffect(() => {
     if (!open) return;
@@ -78,6 +82,13 @@ export function Select({ label, options, value, defaultValue, onChange, placehol
     setActive(current >= 0 ? current : enabled[0] ?? -1);
   };
 
+  const clear = () => {
+    if (value === undefined) setInner(undefined);
+    onClear?.();
+    setOpen(false);
+    root.current?.querySelector<HTMLButtonElement>('[role="combobox"]')?.focus();
+  };
+
   const onKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
     if (!open) {
       if (['ArrowDown', 'ArrowUp', 'Enter', ' '].includes(e.key)) {
@@ -95,7 +106,7 @@ export function Select({ label, options, value, defaultValue, onChange, placehol
   };
 
   return (
-    <div ref={root} className={cx('syn-field', 'syn-select', `syn-field--${size}`, labelInside ? 'syn-select--label' : 'syn-field--no-label', selectedOption && 'has-value', invalid && 'is-invalid', disabled && 'is-disabled', open && 'is-open', className)}>
+    <div ref={root} className={cx('syn-field', 'syn-select', `syn-field--${size}`, labelInside ? 'syn-select--label' : 'syn-field--no-label', selectedOption && 'has-value', clearable && 'is-clearable', invalid && 'is-invalid', disabled && 'is-disabled', open && 'is-open', className)}>
       {!labelInside && <span id={`${baseId}-label`} className="syn-visually-hidden">{label}</span>}
       {/* The list is placed from this wrapper, so it opens 2px under the field whatever sits below it. */}
       <div className="syn-select__anchor">
@@ -122,10 +133,17 @@ export function Select({ label, options, value, defaultValue, onChange, placehol
               {selectedOption?.label ?? placeholder ?? label}
             </span>
           </span>
+          {/* Keeps room for the clear button, which sits over this slot as a sibling (a button cannot hold a button). */}
+          {clearable && <span className="syn-select__clear-slot" aria-hidden />}
           <span className="syn-select__chevron" aria-hidden>
             <Icon name="chevron-down" size={16} />
           </span>
         </button>
+        {clearable && (
+          <button type="button" className="syn-select__clear" aria-label={clearLabel} onClick={clear}>
+            <Icon name="close" size={12} />
+          </button>
+        )}
         {open && (
           <ul id={listId} role="listbox" aria-labelledby={`${baseId}-label`} className="syn-select__list">
             {options.map((option, index) => (
