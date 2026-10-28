@@ -1,5 +1,5 @@
 .syn-tooltip { position: relative; display: inline-flex; }
-/* Figma "Tooltip black": Jet, 2px corners, 8px padding, Regular 14, a 16x8 pointer. */
+/* Figma "Tooltip black": Jet, 8px padding, Regular 14, a 16x8 pointer; 8px corners (the element radius) instead of Figma's 2. */
 .syn-tooltip__bubble {
   --gap: 10px;
   position: absolute;
@@ -7,7 +7,7 @@
   width: max-content;
   max-width: 240px;
   padding: var(--syn-space-8);
-  border-radius: var(--syn-radius-xs);
+  border-radius: var(--syn-radius-element);
   font: var(--syn-type-text-body-s-2);
   opacity: 0;
   visibility: hidden;

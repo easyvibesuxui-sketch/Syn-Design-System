@@ -1,4 +1,4 @@
-/* Figma "Accordion": square 40px rows with a bottom rule; open shows the chevron in an Eerie Black circle. */
+/* Figma "Accordion": 40px rows with a bottom rule and 8px corners (the element radius); open shows the chevron in an Eerie Black circle. */
 .syn-accordion { width: 100%; background: var(--syn-surface-default); }
 .syn-accordion__item { border-bottom: 1px solid var(--syn-border-muted); }
 .syn-accordion__heading { margin: 0; font: inherit; }
@@ -10,6 +10,7 @@
   min-height: 40px;
   padding: var(--syn-space-8) var(--syn-space-16);
   border: 0;
+  border-radius: var(--syn-radius-element);
   background: var(--syn-surface-default);
   color: var(--syn-text-primary);
   font: var(--syn-type-text-body-s);

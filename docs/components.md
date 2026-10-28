@@ -77,7 +77,7 @@ ABC Favorit Expanded Medium 12/15. `name`, `selected`, `error`, `onCreate`, `onS
 
 Figma: *Tooltip black*, *Tooltip grey label*. Opens on hover and focus, closes on Escape, wired with
 `aria-describedby`. `placement` top/bottom/left/right, `tone` `dark` (Jet) or `light` (Cultured with a
-border). As in Figma: 2px corners, 8px padding, Regular 14 and a 16x8 pointer.
+border). As in Figma: 8px padding, Regular 14 and a 16x8 pointer; corners use the 8px element radius (Figma draws 2px).
 
 ## Notification
 
@@ -98,7 +98,7 @@ progress/success/warning/error/info/neutral.
 
 ## Accordion
 
-Figma: *Accordion*, *Accordion with icons*. Square 40px headers with a round chevron (Eerie Black with a
+Figma: *Accordion*, *Accordion with icons*. 40px headers with 8px corners and a round chevron (Eerie Black with a
 white glyph when open), Silver Chalice dividers,
 optional `meta` value box. `multiple`, `defaultOpen`. Headers are buttons inside `h3` with
 `aria-expanded`/`aria-controls`.
