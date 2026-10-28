@@ -1,0 +1,18 @@
+.syn-icon-button {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--syn-radius-full);
+  background: var(--syn-action-ghost);
+  color: var(--syn-text-secondary);
+  cursor: pointer;
+  transition: background-color var(--syn-duration-fast);
+}
+.syn-icon-button--sm { width: var(--syn-size-control-xs); height: var(--syn-size-control-xs); }
+.syn-icon-button--md { width: 30px; height: 30px; }
+.syn-icon-button:hover:not(:disabled) { background: var(--syn-action-ghost-hover); }
+.syn-icon-button:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
+.syn-icon-button:disabled { color: var(--syn-text-disabled); cursor: not-allowed; }

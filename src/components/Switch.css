@@ -1,0 +1,47 @@
+.syn-switch { display: inline-flex; flex-direction: column; gap: var(--syn-space-2); --track-w: 36px; --track-h: 20px; --thumb: 24px; }
+.syn-switch--sm { --track-w: 25px; --track-h: 16px; --thumb: 20px; }
+.syn-switch--lg { --track-w: 50px; --track-h: 30px; --thumb: 32px; }
+
+.syn-switch__row { display: inline-flex; align-items: center; gap: var(--syn-space-7); color: var(--syn-text-primary); font: var(--syn-type-body-s-regular); cursor: pointer; }
+.syn-switch__state { font: var(--syn-type-body-xs-regular); }
+
+.syn-switch__control { position: relative; display: inline-block; flex: none; width: calc(var(--track-w) + var(--thumb) / 2); height: var(--thumb); }
+.syn-switch__input { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: inherit; }
+
+.syn-switch__track {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: var(--track-w);
+  height: var(--track-h);
+  border: 1.5px solid var(--syn-action-disabled);
+  border-radius: var(--syn-radius-full);
+  background: var(--syn-action-disabled);
+  transform: translateY(-50%);
+  transition: background-color var(--syn-duration-base), border-color var(--syn-duration-base);
+}
+.syn-switch__thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--thumb);
+  height: var(--thumb);
+  border: 1.5px solid var(--syn-action-disabled);
+  border-radius: var(--syn-radius-full);
+  background: var(--syn-color-white);
+  box-shadow: var(--syn-shadow-knob);
+  transition: transform var(--syn-duration-base), border-color var(--syn-duration-base);
+}
+
+.syn-switch__input:checked ~ .syn-switch__track { background: var(--syn-action-toggle); border-color: var(--syn-action-toggle); }
+.syn-switch__input:checked ~ .syn-switch__thumb {
+  border-color: var(--syn-action-toggle);
+  transform: translateX(calc(var(--track-w) + var(--thumb) / 2 - var(--thumb)));
+}
+.syn-switch__input:active ~ .syn-switch__thumb { width: calc(var(--thumb) + 2px); }
+.syn-switch__input:focus-visible ~ .syn-switch__track { outline: 1px solid var(--syn-border-strong); outline-offset: 5px; }
+
+.syn-switch.is-invalid .syn-switch__track { border-color: var(--syn-border-error); }
+.syn-switch.is-disabled .syn-switch__row { color: var(--syn-text-disabled); cursor: not-allowed; }
+.syn-switch.is-disabled .syn-switch__input:checked ~ .syn-switch__track { background: var(--syn-action-disabled); border-color: var(--syn-action-disabled); }
+.syn-switch.is-disabled .syn-switch__input:checked ~ .syn-switch__thumb { border-color: var(--syn-action-disabled); }

@@ -1,0 +1,70 @@
+# Syn Design System
+
+Design tokens, icons and React components extracted from the Figma file
+[Design system library (Copy)](https://www.figma.com/design/uNTCaDLpRs00HJFMOWXxP6/Design-system-library--Copy-).
+
+The Figma library stays the visual source. This repo turns it into something code can consume:
+
+| Layer | Where | What |
+| --- | --- | --- |
+| Tokens | `tokens/syn.tokens.json` | Source of truth in [DTCG](https://design-tokens.github.io/community-group/format/) format: primitives, semantic aliases, dark theme |
+| CSS variables | `src/styles/tokens.css` | Generated `--syn-*` custom properties and `.syn-text-*` type classes |
+| JS tokens | `src/tokens.ts` | Generated, resolved values for charts, canvas and tests |
+| Icons | `icons/syn-icons.json` → `src/icons/icon-data.ts` | 52 icons exported from the Figma Icons page, `currentColor` fills |
+| Components | `src/components` | 15 accessible React components styled only with semantic tokens |
+| Playground | `playground/` | Living style guide: every foundation, component and state, light and dark |
+
+## Getting started
+
+```bash
+npm install
+npm run dev        # playground at http://localhost:5173
+npm run build      # dist/syn.js, dist/syn.css, dist/*.d.ts
+npm run typecheck
+```
+
+Using it in an app:
+
+```tsx
+import { Button, TextField } from '@syn/design-system';
+import '@syn/design-system/styles.css';
+
+export function SignIn() {
+  return (
+    <form className="syn-root">
+      <TextField label="Email" iconStart="mail" />
+      <Button fullWidth iconEnd="arrow-right">Continue</Button>
+    </form>
+  );
+}
+```
+
+Wrap the app (or any subtree) in `.syn-root` for base type and colour. Set `data-theme="dark"` on any
+ancestor to switch themes.
+
+Fonts: Montserrat is open source; load it yourself (Google Fonts or `@fontsource/montserrat`).
+ABC Favorit Expanded, the title face, is commercial: self-host it under that family name and titles pick it
+up automatically, otherwise they fall back to Montserrat.
+
+## Editing tokens
+
+1. Change `tokens/syn.tokens.json`.
+2. Run `npm run tokens` (or `npm run build`) to regenerate `src/styles/tokens.css` and `src/tokens.ts`.
+
+Naming: primitives keep their Figma colour names (`--syn-color-candy-apple`); semantic tokens describe a
+role (`--syn-text-muted`, `--syn-surface-highlight`, `--syn-action-accent`). Components read only semantic
+tokens, so a theme is a set of semantic overrides. See [docs/foundations.md](docs/foundations.md).
+
+## Components
+
+`Button` · `IconButton` · `TextField` · `Select` · `Checkbox` · `Radio` / `RadioGroup` · `Switch` · `Tabs` ·
+`Tooltip` · `Notification` · `StatusChip` · `StatusBadge` · `Accordion` · `Dialog` · `Slider` · `Icon`
+
+Props, Figma mappings and accessibility notes are in [docs/components.md](docs/components.md).
+
+## What is not covered yet
+
+The Figma file also has date and time pickers, calendar, upload, data sheet, drawer navigation, rating and
+voting, file-format badges, map and default-image pages. They are not in this first version; the tokens
+already cover what they need. Known gaps and the decisions taken while extracting are listed in
+[docs/extraction-notes.md](docs/extraction-notes.md).

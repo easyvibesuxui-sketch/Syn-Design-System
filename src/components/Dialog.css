@@ -1,0 +1,47 @@
+.syn-dialog {
+  width: calc(100% - 32px);
+  max-height: calc(100% - 32px);
+  padding: 0;
+  border: 0;
+  border-radius: var(--syn-radius-md);
+  background: transparent;
+  color: var(--syn-text-primary);
+  overflow: visible;
+}
+.syn-dialog--sm { max-width: 400px; }
+.syn-dialog--md { max-width: 480px; }
+.syn-dialog--lg { max-width: 600px; }
+.syn-dialog::backdrop { background: var(--syn-surface-overlay); }
+
+/* Snow panel with a 4px Cultured ring, as drawn in the Figma popups. */
+.syn-dialog__panel {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--syn-radius-md);
+  background: var(--syn-surface-raised);
+  box-shadow: 0 0 0 4px var(--syn-border-default);
+  overflow: hidden;
+}
+.syn-dialog__header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: var(--syn-space-6) 56px;
+  border-bottom: 1px solid var(--syn-border-default);
+}
+.syn-dialog__title { margin: 0; font: var(--syn-type-title-5); text-align: center; }
+.syn-dialog__close { position: absolute; top: 50%; right: var(--syn-space-6); transform: translateY(-50%); background: transparent; }
+.syn-dialog__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--syn-space-7);
+  padding: var(--syn-space-8) var(--syn-space-8) var(--syn-space-7);
+  font: var(--syn-type-body-xs);
+  text-align: center;
+  overflow-y: auto;
+}
+.syn-dialog__actions { display: flex; justify-content: center; gap: var(--syn-space-6); padding: var(--syn-space-7) var(--syn-space-8) var(--syn-space-8); }
+.syn-dialog__actions > .syn-button { flex: 1; max-width: 320px; }

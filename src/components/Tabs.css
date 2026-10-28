@@ -1,0 +1,42 @@
+.syn-tabs__list { display: inline-flex; max-width: 100%; overflow-x: auto; background: var(--syn-surface-default); }
+.syn-tabs__tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--syn-space-4);
+  height: var(--syn-size-control-md);
+  padding: 0 var(--syn-space-8);
+  border: 0;
+  border-radius: var(--syn-radius-xs) var(--syn-radius-xs) 0 0;
+  background: var(--syn-surface-default);
+  color: var(--syn-text-muted);
+  font: var(--syn-type-body-m);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--syn-duration-fast), color var(--syn-duration-fast);
+}
+.syn-tabs--md .syn-tabs__tab { height: 40px; padding: 0 var(--syn-space-7); font: var(--syn-type-body-s); }
+/* 16px Silver Chalice divider between unselected neighbours. */
+.syn-tabs__tab + .syn-tabs__tab::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 1px;
+  height: 16px;
+  background: var(--syn-border-muted);
+  transform: translateY(-50%);
+}
+.syn-tabs__tab[aria-selected='true']::before,
+.syn-tabs__tab[aria-selected='true'] + .syn-tabs__tab::before { display: none; }
+
+.syn-tabs__tab:hover:not(:disabled) { background: var(--syn-surface-subtle); color: var(--syn-text-primary); }
+.syn-tabs__tab[aria-selected='true'] { background: var(--syn-surface-inverse); color: var(--syn-text-inverse); }
+.syn-tabs__tab[aria-selected='true']:hover { opacity: var(--syn-opacity-hover); background: var(--syn-surface-inverse); color: var(--syn-text-inverse); }
+.syn-tabs__tab:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: -4px; }
+.syn-tabs__tab[aria-selected='true']:focus-visible { outline-color: var(--syn-text-inverse); }
+.syn-tabs__tab:disabled { color: var(--syn-text-disabled); cursor: not-allowed; }
+
+.syn-tabs__panel { padding: var(--syn-space-7) 0; }
+.syn-tabs__panel:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }

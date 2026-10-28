@@ -1,0 +1,52 @@
+.syn-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--syn-space-7);
+  height: var(--syn-size-control-sm);
+  padding: var(--syn-space-4) var(--syn-space-4) var(--syn-space-4) var(--syn-space-6);
+  border: 1px solid var(--syn-border-default);
+  border-radius: var(--syn-radius-md);
+  background: var(--syn-surface-default);
+  color: var(--syn-text-secondary);
+  font: var(--syn-type-body-xs);
+  cursor: pointer;
+  transition: background-color var(--syn-duration-fast), border-color var(--syn-duration-fast);
+}
+.syn-status-chip--xs { height: var(--syn-size-control-xs); padding: var(--syn-space-1) var(--syn-space-4) var(--syn-space-1) var(--syn-space-6); border-radius: var(--syn-radius-full); }
+.syn-status-chip--md { height: var(--syn-size-control-md); font: var(--syn-type-body-s-regular); }
+.syn-status-chip--lg { height: var(--syn-size-control-lg); font: var(--syn-type-body-m-regular); }
+.syn-status-chip:hover:not(:disabled) { border-color: var(--syn-border-muted); }
+.syn-status-chip:focus-visible { outline: none; border-color: var(--syn-border-strong); }
+.syn-status-chip[aria-pressed='true'] { border-color: var(--syn-status-success); background: var(--syn-status-success); color: var(--syn-color-white); }
+.syn-status-chip[aria-pressed='true']:hover:not(:disabled) { opacity: 0.8; }
+.syn-status-chip[aria-pressed='true']:focus-visible { border-color: var(--syn-border-strong); }
+.syn-status-chip:disabled { color: var(--syn-text-disabled); cursor: not-allowed; }
+.syn-status-chip[aria-pressed='true']:disabled { border-color: var(--syn-action-disabled); background: var(--syn-action-disabled); }
+
+.syn-status-badge {
+  --tone: var(--syn-status-progress);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--syn-space-3);
+  height: var(--syn-size-control-sm);
+  padding: var(--syn-space-2) var(--syn-space-4);
+  border: 1px solid var(--syn-border-default);
+  border-radius: var(--syn-radius-xs);
+  background: var(--syn-surface-default);
+  color: var(--syn-text-primary);
+  font: var(--syn-type-body-xs);
+}
+.syn-status-badge--success { --tone: var(--syn-status-success); }
+.syn-status-badge--warning { --tone: var(--syn-status-warning); }
+.syn-status-badge--error { --tone: var(--syn-status-error); }
+.syn-status-badge--info { --tone: var(--syn-status-info); }
+.syn-status-badge--neutral { --tone: var(--syn-action-disabled); }
+.syn-status-badge__dot {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--syn-surface-default);
+  border-radius: var(--syn-radius-full);
+  background: var(--tone);
+  box-shadow: 0 0 0 1px var(--syn-border-default);
+}

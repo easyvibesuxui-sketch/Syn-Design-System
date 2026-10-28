@@ -1,0 +1,41 @@
+/* Montserrat is open (OFL); the playground self-hosts it via @fontsource/montserrat.
+   ABC Favorit Expanded is commercial: self-host it under that family name and
+   --syn-font-family-title picks it up; otherwise titles fall back to Montserrat. */
+.syn-root,
+.syn-root *,
+.syn-root *::before,
+.syn-root *::after {
+  box-sizing: border-box;
+}
+
+.syn-root {
+  font: var(--syn-type-body-s-regular);
+  color: var(--syn-text-primary);
+  background: var(--syn-surface-default);
+  -webkit-font-smoothing: antialiased;
+}
+
+.syn-visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Figma draws focus as a 1px Eerie Black ring 3px outside the control. */
+.syn-focus-ring:focus-visible {
+  outline: 1px solid var(--syn-border-strong);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .syn-root * {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "name": "@syn/design-system",
+  "version": "0.1.0",
+  "description": "Syn design system: tokens, icons and React components extracted from the Design system library Figma file.",
+  "type": "module",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "./dist/syn.js",
+  "module": "./dist/syn.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/syn.js"
+    },
+    "./styles.css": "./dist/syn.css",
+    "./tokens.css": "./src/styles/tokens.css",
+    "./tokens.json": "./tokens/syn.tokens.json"
+  },
+  "files": [
+    "dist",
+    "tokens",
+    "src/styles/tokens.css"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "tokens": "node scripts/build-tokens.mjs",
+    "icons": "node scripts/build-icons.mjs",
+    "generate": "npm run tokens && npm run icons",
+    "dev": "vite",
+    "build": "npm run generate && tsc -p tsconfig.build.json && vite build",
+    "build:docs": "npm run generate && vite build --mode docs",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@fontsource/montserrat": "^5.1.0",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "4.3.4",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "typescript": "5.6.3",
+    "vite": "5.4.11"
+  }
+}
