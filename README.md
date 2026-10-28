@@ -59,7 +59,11 @@ tokens, so a theme is a set of semantic overrides. See [docs/foundations.md](doc
 
 `Button` · `IconButton` · `TextField` · `Select` · `Checkbox` · `Radio` / `RadioGroup` · `Switch` · `Tabs` · `NewTab` ·
 `Tooltip` · `Notification` · `StatusChip` · `StatusBadge` · `Accordion` · `Dialog` · `Drawer` / `DrawerRow` ·
-`Section` / `Card` / `Property` · `Tag` · `Grid` / `GridItem` · `Slider` · `Icon`
+`Section` / `Card` / `Property` · `Tag` · `Grid` / `GridItem` · `Table` / `Value` · `Segmented` · `TextArea` ·
+`Checklist` / `ChecklistItem` · `Comment` / `CommentReply` / `CommentEditor` · `Avatar` · `Thumbnail` · `FileItem` ·
+`EmptyState` · `ProgressBar` · `Slider` · `Icon`
+
+The full record drawer from the design reference is assembled in `playground/RecordDrawer.tsx`.
 
 Sizes are even numbers (2–24, then multiples of 8); elements have 8px corners and widgets 12px; element heights
 are 24 / 36 / 48 / 56 (`xs` · `sm` · `md` · `lg`); layouts use the 12-column grid.

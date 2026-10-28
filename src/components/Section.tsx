@@ -13,6 +13,8 @@ export interface SectionProps {
   onOpenChange?: (open: boolean) => void;
   /** Header content before the chevron, e.g. a more button. */
   actions?: ReactNode;
+  /** md = 36px header, Smoke body (top-level sections); lg = 56px header, white body (nested, e.g. "Protocol"). */
+  size?: 'md' | 'lg';
   children?: ReactNode;
   className?: string;
 }
@@ -21,7 +23,9 @@ export interface SectionProps {
  * Large widget from the record reference ("Details", "Custom fields", "Checklist"): a 36px white
  * header over a Smoke body, both with a Cultured border and 12px outer corners.
  */
-export function Section({ title, collapsible = false, defaultOpen = true, open, onOpenChange, actions, children, className }: SectionProps) {
+export function Section({
+  title, collapsible = false, defaultOpen = true, open, onOpenChange, actions, size = 'md', children, className,
+}: SectionProps) {
   const baseId = `syn-section-${useId()}`;
   const [inner, setInner] = useState(defaultOpen);
   const isOpen = !collapsible || (open ?? inner);
@@ -31,7 +35,7 @@ export function Section({ title, collapsible = false, defaultOpen = true, open, 
   };
 
   return (
-    <section className={cx('syn-section', isOpen && 'is-open', className)} aria-labelledby={`${baseId}-title`}>
+    <section className={cx('syn-section', `syn-section--${size}`, isOpen && 'is-open', className)} aria-labelledby={`${baseId}-title`}>
       <header className="syn-section__header">
         <h3 id={`${baseId}-title`} className="syn-section__title">{title}</h3>
         {actions && <div className="syn-section__actions">{actions}</div>}

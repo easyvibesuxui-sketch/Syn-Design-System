@@ -1,0 +1,51 @@
+/* Comment: 24px avatar column, 16px gap, content column; a 1px Silver Chalice line joins replies. */
+.syn-comment { display: grid; grid-template-columns: 24px minmax(0, 1fr); column-gap: var(--syn-space-16); }
+.syn-comment__head { display: flex; grid-column: 1 / -1; align-items: center; gap: var(--syn-space-12); min-width: 0; }
+.syn-comment__head .syn-avatar { margin-right: var(--syn-space-4); }
+.syn-comment__author { color: var(--syn-text-primary); font: var(--syn-type-title-5); }
+.syn-comment__date { color: var(--syn-text-primary); font: var(--syn-type-body-xs-regular); }
+.syn-comment__time { margin-left: calc(var(--syn-space-4) * -1); color: var(--syn-text-muted); font: var(--syn-type-body-xs-regular); }
+.syn-comment__actions { display: flex; gap: var(--syn-space-8); margin-left: auto; }
+
+.syn-comment__body { position: relative; grid-column: 2; display: flex; flex-direction: column; gap: var(--syn-space-8); margin-top: var(--syn-space-12); }
+.syn-comment__bubble {
+  min-height: 32px;
+  padding: var(--syn-space-8) var(--syn-space-12);
+  border: 1px solid var(--syn-border-default);
+  border-radius: var(--syn-radius-element);
+  background: var(--syn-surface-default);
+  color: var(--syn-text-primary);
+  font: var(--syn-type-body-xs-regular);
+  overflow-wrap: anywhere;
+}
+.syn-comment__bubble.is-active { border-color: var(--syn-border-strong); }
+.syn-comment__footer { display: flex; flex-wrap: wrap; align-items: center; gap: var(--syn-space-8); }
+
+/* Thread line: from 4px under the avatar down the body, then one branch per reply to its avatar. */
+.syn-comment.has-replies .syn-comment__body::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  bottom: 0;
+  left: -28px;
+  border-left: 1px solid var(--syn-border-muted);
+}
+.syn-comment__replies { grid-column: 1 / -1; margin: 0 0 0 12px; padding: 0; list-style: none; }
+.syn-comment-reply { position: relative; display: flex; align-items: flex-start; gap: var(--syn-space-16); padding: var(--syn-space-16) 0 0 60px; }
+.syn-comment-reply::before { content: ''; position: absolute; top: 0; bottom: 0; left: 0; border-left: 1px solid var(--syn-border-muted); }
+.syn-comment-reply:last-child::before { bottom: auto; height: 28px; }
+.syn-comment-reply::after { content: ''; position: absolute; top: 28px; left: 0; width: 52px; border-top: 1px solid var(--syn-border-muted); }
+.syn-comment-reply__content { flex: 1; min-width: 0; min-height: 24px; padding-top: var(--syn-space-4); color: var(--syn-text-primary); font: var(--syn-type-body-xs-regular); overflow: hidden; text-overflow: ellipsis; }
+.syn-comment-reply__end { flex: none; }
+
+/* Editor: Discard on the left, the 96 x 36 Amber Save on the right, 12px under the text area. */
+.syn-comment-editor { display: flex; flex-direction: column; gap: var(--syn-space-12); width: 100%; }
+.syn-comment-editor__actions { display: flex; align-items: center; justify-content: space-between; gap: var(--syn-space-16); }
+.syn-comment-editor__save { min-width: 96px; }
+.syn-comment-reply .syn-comment-editor { padding-top: 0; }
+.syn-comment-reply:has(.syn-comment-editor) .syn-comment-reply__content { padding-top: 0; overflow: visible; }
+
+@media (max-width: 640px) {
+  .syn-comment-reply { padding-left: 32px; gap: var(--syn-space-8); }
+  .syn-comment-reply::after { width: 24px; }
+}

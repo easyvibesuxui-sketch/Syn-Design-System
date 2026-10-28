@@ -92,3 +92,6 @@
 }
 .syn-switch--24 .syn-switch__spinner { width: 16px; height: 16px; }
 @keyframes syn-switch-spin { to { transform: rotate(360deg); } }
+
+/* Off / on words beside the toggle (record drawer custom fields): ABC Favorit Expanded Medium 12. */
+.syn-switch__state { color: var(--syn-text-primary); font: var(--syn-type-title-5); }

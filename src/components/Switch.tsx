@@ -7,17 +7,20 @@ export interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>,
   /** Accessible name. Shown to the right of the toggle unless hideLabel is set. */
   label: ReactNode;
   hideLabel?: boolean;
-  /** Height in px: 20 = Figma "Small toggle" (34 x 20), 24 = "Default size toggle" (48 x 24). */
+  /** Height in px: 20 = Figma "Small toggle" (32 x 20), 24 = "Default size toggle" (48 x 24). */
   size?: 20 | 24;
   /** Figma "Loading": a spinner inside the thumb. The switch is not interactive meanwhile. */
   loading?: boolean;
   error?: string;
   /** tooltip = Figma "Error off" bubble, inline = Figma "Error on" red text. */
   errorStyle?: ChoiceErrorStyle;
+  /** Words on either side of the toggle, e.g. "No" and "Yes" in the record drawer's custom fields. */
+  offLabel?: ReactNode;
+  onLabel?: ReactNode;
 }
 
 export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
-  { label, hideLabel = true, size = 24, loading, error, errorStyle = 'inline', id, className, disabled, ...rest },
+  { label, hideLabel = true, size = 24, loading, error, errorStyle = 'inline', offLabel, onLabel, id, className, disabled, ...rest },
   ref,
 ) {
   const autoId = useId();
@@ -27,6 +30,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
       className={cx('syn-switch', `syn-switch--${size}`, error && 'is-invalid', disabled && 'is-disabled', loading && 'is-loading', className)}
     >
       <label className="syn-switch__row" htmlFor={inputId}>
+        {offLabel && <span className="syn-switch__state" aria-hidden>{offLabel}</span>}
         <span className="syn-switch__control">
           <input
             ref={ref}
@@ -45,6 +49,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
             {loading && <span className="syn-switch__spinner" />}
           </span>
         </span>
+        {onLabel && <span className="syn-switch__state" aria-hidden>{onLabel}</span>}
         <span className={cx('syn-switch__label', hideLabel && 'syn-visually-hidden')}>{label}</span>
       </label>
       <ChoiceMessage id={`${inputId}-message`} error={error} variant={errorStyle} />

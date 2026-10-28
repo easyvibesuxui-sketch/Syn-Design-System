@@ -16,7 +16,7 @@ Figma: *Buttons → Buttons large* (`State × Size × Stile`).
 | `fullWidth` | boolean | Figma "Stretched" |
 
 `IconButton` (Figma *Close button*): round ghost button, `size` `xs` 24 (default) · `sm` 36 · `md` 48 · `lg` 56,
-requires `label`.
+requires `label`. `variant="outline"` is the white square with a Cultured border used for row "more" buttons.
 
 ## TextField
 
@@ -110,7 +110,8 @@ up to `width` (default 1280px) wide. Snow panel with a 48px top-left corner; 64p
 (status, record id) and `headerActions` before the close button; a scrolling body; an 88px white `footer` with
 a soft top shadow (a text "Discard" and a primary "Update"). Sections in the body sit 24px apart on the 32px
 margin. `DrawerRow` is a full-width row with a Cultured hairline: `label` with an `icon`, the content, and
-`end` pinned right. Under 640px rows stack.
+`end` pinned right. Under 640px rows stack. The complete record screen from the reference is in
+`playground/RecordDrawer.tsx`, built only from Syn components.
 
 ## Section, Card and Property
 
@@ -122,8 +123,49 @@ box with 8px corners.
 
 ## Tag
 
-24px pill for tags and collaborators: `variant` `solid` (fill from `color`, Eerie Black by default),
-`outline` or `dashed` (the "Add" button, with `onClick`). `icon` adds a 12px icon; `onRemove` adds the X.
+24px tag for tags, collaborators, dates and people: `variant` `solid` (fill from `color`, Eerie Black by default),
+`outline`, `soft` (Cultured border; dates, assignees; `muted` greys it) or `dashed` (the "Add" button, with `onClick`).
+`shape` `pill` or `rounded` (8px). `icon` adds a 12px icon; `onRemove` adds the remove button (`removeIcon` `close` or
+`x-in-circle`).
+
+## Avatar, Thumbnail, FileItem, EmptyState, ProgressBar
+
+- `Avatar`: 24 or 32px Misty Rose circle with the person glyph, or a photo (`src`).
+- `Thumbnail`: square photo (24–56px, default 36) with 4px corners; a zoom button when `onClick` is set. `alt` is required.
+- `FileItem`: format badge (`icon`, default `file-formats-pdf`), name in ABC Favorit Expanded Medium 12 and a muted
+  `meta` line; `preview` turns it into the 224px attachment card with the photo on top and a trash button (`onRemove`).
+- `EmptyState`: muted 32px icon over a Medium 14 message ("Nothing assigned"), optional `action`.
+- `ProgressBar`: "1/3" `label`, the percentage and a 4px Dodger Blue bar; `role="progressbar"` with `title` as its name.
+
+## Table and Value
+
+The "Resources" table: `columns` (`key`, `header`, `render`, `align`, `width`), `rows`, `rowKey`, `rowActions`
+(a narrow last column) and `footer` (right-aligned, e.g. the total cost); `caption` names it for screen readers.
+White 12px box, 24px muted header, 32px rows split by 2px Cultured lines; it scrolls sideways under 560px.
+`Value` prints a number with a muted unit (`<Value unit="Meter">12</Value>`), `muted` greys the number too.
+
+## Segmented
+
+Pill switcher between views ("Comments" / "Activity"): 24px pills at least 128px wide, the current one Eerie Black.
+`role="tablist"`; Left/Right move. `options`, `value`, `onChange`, `label`.
+
+## TextArea
+
+Multi-line input, 48px minimum, 8px corners. `variant` `default` (1px Cultured) or `strong` (2px Silver Chalice, the
+comment editor); both turn 2px Eerie Black on focus. The label is screen-reader only unless `hideLabel={false}`.
+
+## Checklist and ChecklistItem
+
+A checklist row on Smoke with 8px corners: 20px checkbox and Regular 14 text, `assignee` bottom left, `due` bottom
+right, `actions` top right, `extra` under it (people tags). `editing` swaps the text for a `TextArea` and frames the
+row with a 1px Eerie Black border.
+
+## Comment, CommentReply and CommentEditor
+
+`Comment`: 24px avatar, `author` (ABC Favorit Expanded Medium 12), `date`, muted `time`, header `actions`; the text
+in a white 8px bubble (`active` gives it an Eerie Black border), `footer` (attachment tags, a pill "Reply" button),
+`editor` in place of the bubble, and `replies`. Replies (`CommentReply`, with `end` for "12 Replies") hang off a 1px
+Silver Chalice thread line. `CommentEditor`: a strong `TextArea` with a text "Discard" and a 96 x 36 Amber "Save".
 
 ## Grid and GridItem
 

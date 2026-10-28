@@ -26,3 +26,9 @@ export { Section, Card, Property, type SectionProps, type CardProps, type Proper
 export { Tag, type TagProps } from './components/Tag';
 export { Grid, GridItem, type GridProps, type GridItemProps } from './components/Grid';
 export type { ControlSize } from './utils';
+export { Avatar, Thumbnail, FileItem, EmptyState, ProgressBar, type AvatarProps, type ThumbnailProps, type FileItemProps, type EmptyStateProps, type ProgressBarProps } from './components/Media';
+export { Table, Value, type TableProps, type TableColumn, type ValueProps } from './components/Table';
+export { Segmented, type SegmentedProps, type SegmentedOption } from './components/Segmented';
+export { TextArea, type TextAreaProps } from './components/TextArea';
+export { Checklist, ChecklistItem, type ChecklistProps, type ChecklistItemProps } from './components/Checklist';
+export { Comment, CommentReply, CommentEditor, type CommentProps, type CommentReplyProps, type CommentEditorProps } from './components/Comment';

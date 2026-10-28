@@ -23,6 +23,7 @@
 .syn-button--md { height: var(--syn-size-control-md); font: var(--syn-type-button-m); }
 .syn-button--sm { height: var(--syn-size-control-sm); font: var(--syn-type-button-s); padding-inline: var(--syn-space-24); }
 .syn-button--xs { height: var(--syn-size-control-xs); gap: var(--syn-space-4); padding-block: 0; padding-inline: var(--syn-space-12); font: var(--syn-type-button-s); }
+.syn-button--pill { border-radius: var(--syn-radius-full); }
 .syn-button--full { width: 100%; gap: var(--syn-space-16); }
 
 /* Filled styles fade to 74% on hover, as in every Figma "Hover" variant. */

@@ -1,9 +1,9 @@
 import { useState, type ReactNode } from 'react';
 import {
-  Accordion, Button, Card, Checkbox, Dialog, Drawer, DrawerRow, Grid, GridItem, Icon, IconButton, NewTab, Notification,
-  Property, Radio, RadioGroup, Section as SynSection, Select, Slider, StatusBadge, StatusChip, Switch, Tabs, Tag, TextField,
-  Tooltip, iconData, iconNames, tokens,
+  Accordion, Button, Checkbox, Dialog, Grid, GridItem, Icon, IconButton, NewTab, Notification, Radio, RadioGroup, Select,
+  Slider, StatusBadge, StatusChip, Switch, Tabs, TextField, Tooltip, iconData, iconNames, tokens,
 } from '../src';
+import { RecordDrawer } from './RecordDrawer';
 
 const sections = [
   ['colors', 'Colour'], ['typography', 'Typography'], ['spacing', 'Spacing & shape'], ['grid', 'Grid'], ['icons', 'Icons'],
@@ -45,10 +45,6 @@ export function App() {
   const [slider, setSlider] = useState(40);
   const [machine, setMachine] = useState<string>();
   const [drawer, setDrawer] = useState(false);
-  const [tags, setTags] = useState([
-    ['Caterpillar 6090', '#459af7'], ['Komatsu PC8000', '#591ea1'], ['Hitachi EX8000', '#f74583'],
-    ['P&H 4100XPC', '#41a619'], ['Liebherr R9800', '#d46c2b'],
-  ]);
 
   return (
     <div className="syn-root pg">
@@ -365,82 +361,9 @@ export function App() {
             actions={<Button size="md" onClick={() => setDialog(false)}>Refresh page</Button>} />
         </Section>
 
-        <Section id="drawer" title="Drawer" lead="The record drawer from the reference: Snow panel from the right with a 48px top-left corner, a 64px header, property rows with Cultured hairlines, 12px sections laid out on the 12-column grid, and an 88px footer.">
+        <Section id="drawer" title="Drawer" lead="The full record drawer from the reference, built only from Syn components: header with status and actions; title, properties, collaborators and tags rows; Details with the equipment empty state and the Protocol (damage cards, photos, attachments); Custom fields; Checklist with progress; Resources with the cost table; Comments and Activity with threaded replies; and the Discard / Update footer.">
           <Button onClick={() => setDrawer(true)}>Open drawer</Button>
-          <Drawer
-            open={drawer}
-            onClose={() => setDrawer(false)}
-            label="Hydraulic pipe problem"
-            headerStart={<>
-              <Tag color="var(--syn-color-mantis)" icon="dublecheck">Completed</Tag>
-              <span className="pg-id"><Icon name="settings" size={12} />DR-12457</span>
-            </>}
-            headerActions={<>
-              <IconButton icon="share" label="Share" size="sm" />
-              <IconButton icon="dotshorizontal" label="More" size="sm" />
-            </>}
-            footer={<>
-              <Button variant="text" onClick={() => setDrawer(false)}>Discard</Button>
-              <Button size="md" onClick={() => setDrawer(false)}>Update</Button>
-            </>}
-          >
-            <DrawerRow>
-              <div className="pg-drawer-head">
-                <div>
-                  <h2 className="pg-drawer-title">Hydraulic pipe problem</h2>
-                  <p className="pg-drawer-lead">A thorough damage investigation is essential for accurate claims processing. It generally outlines the characteristics of the item.</p>
-                </div>
-                <Select label="Status" size="xs" defaultValue="done" options={[{ value: 'open', label: 'Open' }, { value: 'done', label: 'Finished' }]} />
-              </div>
-            </DrawerRow>
-            <DrawerRow end={<Property label="Assignee" icon="person"><Tag color="var(--syn-color-dodger-blue)">Max Mustermann</Tag></Property>}>
-              <Grid gap={24}>
-                <GridItem span={3} spanSm={6}><Property label="Condition" icon="maintenance"><Tag variant="outline" icon="cant-work">Can’t work</Tag></Property></GridItem>
-                <GridItem span={3} spanSm={6}><Property label="Priority" icon="up"><Tag color="var(--syn-color-candy-apple)" icon="critical">Blocker</Tag></Property></GridItem>
-                <GridItem span={3} spanSm={6}><Property label="Insurance case" icon="insurance"><strong>Yes</strong></Property></GridItem>
-                <GridItem span={3} spanSm={6}><Property label="Due date" icon="calendar"><Tag variant="outline">01.02.2026 14:48</Tag></Property></GridItem>
-              </Grid>
-            </DrawerRow>
-            <DrawerRow label="Collaborators" icon="person" end={<IconButton icon="adduser" label="Add collaborator" size="xs" />}>
-              {['M.M', 'N.N', 'O.O', 'P.P', 'Q.Q'].map((n) => <Tag key={n} onRemove={() => {}} removeLabel={`Remove ${n}`}>{n}</Tag>)}
-            </DrawerRow>
-            <DrawerRow label="Tags" icon="tag" end={<Tag variant="dashed" onClick={() => {}}>Add</Tag>}>
-              {tags.map(([name, color]) => (
-                <Tag key={name} color={color} onRemove={() => setTags(tags.filter(([n]) => n !== name))}>{name}</Tag>
-              ))}
-            </DrawerRow>
-
-            <SynSection title="Details" collapsible>
-              <Card title="Main Loss">
-                <Grid gap={20}>
-                  <GridItem span={4}><Property variant="tile" label="What is Damaged">Back Side</Property></GridItem>
-                  <GridItem span={4}><Property variant="tile" label="Secondary Affected Area">Front Side</Property></GridItem>
-                  <GridItem span={4}><Property variant="tile" label="Affected Area">Front Side</Property></GridItem>
-                </Grid>
-              </Card>
-              <Card title="Secondary Loss">
-                <Grid gap={20}>
-                  <GridItem span={4}><Property variant="tile" label="What is Damaged">Back Side</Property></GridItem>
-                  <GridItem span={4}><Property variant="tile" label="Secondary Affected Area">Front Side</Property></GridItem>
-                </Grid>
-              </Card>
-            </SynSection>
-
-            <SynSection title="Custom fields" collapsible>
-              <Grid>
-                <GridItem span={4}><Property label="Chassis damaged"><Switch size={20} label="Chassis damaged" defaultChecked /></Property></GridItem>
-                <GridItem span={4}><Property label="Location of damage"><Select label="Location of damage" size="sm" defaultValue="p2" options={[{ value: 'p1', label: 'Pipe Damage 1' }, { value: 'p2', label: 'Pipe Damage 2' }]} /></Property></GridItem>
-                <GridItem span={4}><Property label="Further information"><TextField label="Further information" hideLabel size="sm" placeholder="First name" /></Property></GridItem>
-              </Grid>
-            </SynSection>
-
-            <SynSection title="Checklist" collapsible actions={<IconButton icon="dotshorizontal" label="Checklist actions" size="xs" />}>
-              <Card title="Roofing material assessment">
-                <Checkbox shape="square" label="Evaluate the condition of the roofing materials" defaultChecked />
-                <Checkbox shape="square" label="Decide on repairs or replacement" />
-              </Card>
-            </SynSection>
-          </Drawer>
+          <RecordDrawer open={drawer} onClose={() => setDrawer(false)} />
         </Section>
       </main>
     </div>

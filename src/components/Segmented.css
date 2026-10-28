@@ -1,0 +1,18 @@
+/* "Comments / Activity": 24px pills, 128px wide; the current one Eerie Black with white text. */
+.syn-segmented { display: inline-flex; gap: var(--syn-space-4); }
+.syn-segmented__option {
+  min-width: 128px;
+  height: var(--syn-size-control-xs);
+  margin: 0;
+  padding: 0 var(--syn-space-16);
+  border: 0;
+  border-radius: var(--syn-radius-full);
+  background: var(--syn-surface-default);
+  color: var(--syn-text-primary);
+  font: var(--syn-type-body-xs-regular);
+  cursor: pointer;
+  transition: background-color var(--syn-duration-fast), color var(--syn-duration-fast);
+}
+.syn-segmented__option:hover { background: var(--syn-surface-muted); }
+.syn-segmented__option[aria-selected='true'] { background: var(--syn-surface-inverse); color: var(--syn-color-white); }
+.syn-segmented__option:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }

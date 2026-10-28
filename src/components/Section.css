@@ -44,6 +44,12 @@
 }
 .syn-section__body[hidden] { display: none; }
 
+/* Nested section ("Protocol"): 56px header with a Medium 14 title and a round chevron, white body. */
+.syn-section--lg .syn-section__header { min-height: var(--syn-size-control-lg); padding: 0 var(--syn-space-12); }
+.syn-section--lg .syn-section__title { font: var(--syn-type-title-4); }
+.syn-section--lg .syn-section__toggle { width: var(--syn-size-control-xs); height: var(--syn-size-control-xs); background: var(--syn-color-ghost); }
+.syn-section--lg .syn-section__body { gap: var(--syn-space-16); border-width: 1px; background: var(--syn-surface-default); }
+
 /* Inner white card: 12px corners, 1px 3px 6px shadow at 8%. */
 .syn-card {
   display: flex;
