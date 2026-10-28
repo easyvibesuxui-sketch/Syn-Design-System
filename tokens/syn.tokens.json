@@ -1,5 +1,5 @@
 {
-  "$description": "Syn design tokens. Primitives are extracted from the Figma library \u201cDesign system library (Copy)\u201d (file uNTCaDLpRs00HJFMOWXxP6): the Colors, Type Primitives and Typography tokens collections, plus measurements read off the component sets. Semantic tokens are the Syn layer on top. Edit this file, then run `npm run tokens`.",
+  "$description": "Syn design tokens. Primitives are extracted from the Figma library “Design system library (Copy)” (file uNTCaDLpRs00HJFMOWXxP6): the Colors, Type Primitives and Typography tokens collections, plus measurements read off the component sets. Semantic tokens are the Syn layer on top. Edit this file, then run `npm run tokens`.",
   "primitive": {
     "color": {
       "$type": "color",
@@ -145,76 +145,102 @@
     },
     "space": {
       "$type": "dimension",
+      "$description": "Even steps only: 2, 4, 6, 8, 10, 12, 16, 20, 24, then multiples of 8. Token names are the pixel value.",
       "0": {
         "$value": "0px"
       },
-      "1": {
+      "2": {
         "$value": "2px"
       },
-      "2": {
+      "4": {
         "$value": "4px"
       },
-      "3": {
+      "6": {
         "$value": "6px"
       },
-      "4": {
+      "8": {
         "$value": "8px"
       },
-      "5": {
+      "10": {
         "$value": "10px"
       },
-      "6": {
+      "12": {
         "$value": "12px"
       },
-      "7": {
+      "16": {
         "$value": "16px"
       },
-      "8": {
+      "20": {
+        "$value": "20px"
+      },
+      "24": {
         "$value": "24px"
       },
-      "9": {
+      "32": {
         "$value": "32px"
       },
-      "10": {
+      "40": {
+        "$value": "40px"
+      },
+      "48": {
         "$value": "48px"
+      },
+      "56": {
+        "$value": "56px"
+      },
+      "64": {
+        "$value": "64px"
+      },
+      "72": {
+        "$value": "72px"
+      },
+      "80": {
+        "$value": "80px"
+      },
+      "96": {
+        "$value": "96px"
       }
     },
     "radius": {
       "$type": "dimension",
       "xs": {
         "$value": "2px",
-        "$description": "Checkboxes, tabs, list rows, accordion"
+        "$description": "Square checkbox, tooltips, list rows"
       },
       "md": {
         "$value": "8px",
-        "$description": "Buttons, inputs, dropdowns, dialogs"
+        "$description": "Elements: buttons, inputs, dropdowns, chips"
       },
       "lg": {
         "$value": "12px",
-        "$description": "Notifications and toasts"
+        "$description": "Large widgets and pages: cards, sections, dialogs, notifications"
+      },
+      "xl": {
+        "$value": "48px",
+        "$description": "Drawer top-left corner"
       },
       "full": {
         "$value": "999px",
-        "$description": "Status chips, switches, round icon buttons"
+        "$description": "Round checkbox, radios, switches, pills, round icon buttons"
       }
     },
     "size": {
       "$type": "dimension",
+      "control-xs": {
+        "$value": "24px",
+        "$description": "Smallest element height"
+      },
       "control-sm": {
         "$value": "36px",
-        "$description": "Figma: Button size/Height Small"
+        "$description": "Small element height"
       },
       "control-md": {
         "$value": "48px",
-        "$description": "Figma: Button size/Height default"
+        "$description": "Medium element height"
       },
       "control-lg": {
         "$value": "56px",
-        "$description": "Figma: Button size/High Large"
-      },
-      "control-xs": {
-        "$value": "24px",
-        "$description": "Figma: Button size/mini button height"
+        "$description": "Large element height"
       },
       "icon-sm": {
         "$value": "16px"
@@ -224,6 +250,23 @@
       },
       "icon-lg": {
         "$value": "24px"
+      }
+    },
+    "grid": {
+      "$description": "12-column layout grid",
+      "columns": {
+        "$type": "number",
+        "$value": 12
+      },
+      "gutter": {
+        "$type": "dimension",
+        "$value": "24px",
+        "$description": "Gap between columns"
+      },
+      "margin": {
+        "$type": "dimension",
+        "$value": "32px",
+        "$description": "Page and drawer side margin"
       }
     },
     "shadow": {
@@ -382,6 +425,36 @@
         "progress": {
           "$value": "{primitive.color.amber}"
         }
+      }
+    },
+    "radius": {
+      "$type": "dimension",
+      "element": {
+        "$value": "{primitive.radius.md}",
+        "$description": "Every element: buttons, inputs, dropdowns, chips"
+      },
+      "widget": {
+        "$value": "{primitive.radius.lg}",
+        "$description": "Large widgets: cards, sections, dialogs"
+      },
+      "page": {
+        "$value": "{primitive.radius.lg}",
+        "$description": "Pages"
+      },
+      "drawer": {
+        "$value": "{primitive.radius.xl}",
+        "$description": "Drawer top-left corner"
+      }
+    },
+    "gap": {
+      "$type": "dimension",
+      "dropdown": {
+        "$value": "{primitive.space.2}",
+        "$description": "Between a field and its open list"
+      },
+      "message": {
+        "$value": "{primitive.space.2}",
+        "$description": "Between an element and the hint or error under it"
       }
     },
     "typography": {

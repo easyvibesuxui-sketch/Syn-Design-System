@@ -4,11 +4,14 @@ import { cx } from '../utils';
 import './Choice.css';
 
 export type ChoiceSize = 20 | 24;
+export type CheckboxShape = 'square' | 'round';
 
 export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'> {
   label: ReactNode;
   /** Box size in px: Figma "Checkbox 20 px" and "Checkbox 24 px". */
   size?: ChoiceSize;
+  /** square = 2px corners (Figma checkbox), round = a circle with the check centred. */
+  shape?: CheckboxShape;
   error?: string;
   /** tooltip = Figma "error 1", inline = Figma "Error 2". */
   errorStyle?: ChoiceErrorStyle;
@@ -21,15 +24,17 @@ const CHECK = {
 } as const;
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
-  { label, size = 20, error, errorStyle = 'inline', id, className, disabled, ...rest },
+  { label, size = 20, shape = 'square', error, errorStyle = 'inline', id, className, disabled, ...rest },
   ref,
 ) {
   const autoId = useId();
   const inputId = id ?? `syn-checkbox-${autoId}`;
   const check = CHECK[size];
+  // The round box has no Figma check position, so the mark is centred in the circle.
+  const at = shape === 'round' ? { left: (size - check.w) / 2, top: (size - check.h) / 2 } : { left: check.x, top: check.y };
 
   return (
-    <div className={cx('syn-choice', `syn-choice--${size}`, error && 'is-invalid', disabled && 'is-disabled', className)}>
+    <div className={cx('syn-choice', `syn-choice--${size}`, `syn-choice--${shape}`, error && 'is-invalid', disabled && 'is-disabled', className)}>
       <label className="syn-choice__row" htmlFor={inputId}>
         <input
           ref={ref}
@@ -47,7 +52,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
             width={check.w}
             height={check.h}
             viewBox={`0 0 ${check.w} ${check.h}`}
-            style={{ left: check.x, top: check.y }}
+            style={at}
             fill="none"
           >
             <path d={check.d} stroke="currentColor" strokeWidth="2" />

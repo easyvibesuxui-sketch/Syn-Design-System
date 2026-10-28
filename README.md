@@ -58,7 +58,11 @@ tokens, so a theme is a set of semantic overrides. See [docs/foundations.md](doc
 ## Components
 
 `Button` · `IconButton` · `TextField` · `Select` · `Checkbox` · `Radio` / `RadioGroup` · `Switch` · `Tabs` · `NewTab` ·
-`Tooltip` · `Notification` · `StatusChip` · `StatusBadge` · `Accordion` · `Dialog` · `Slider` · `Icon`
+`Tooltip` · `Notification` · `StatusChip` · `StatusBadge` · `Accordion` · `Dialog` · `Drawer` / `DrawerRow` ·
+`Section` / `Card` / `Property` · `Tag` · `Grid` / `GridItem` · `Slider` · `Icon`
+
+Sizes are even numbers (2–24, then multiples of 8); elements have 8px corners and widgets 12px; element heights
+are 24 / 36 / 48 / 56 (`xs` · `sm` · `md` · `lg`); layouts use the 12-column grid.
 
 Props, Figma mappings and accessibility notes are in [docs/components.md](docs/components.md).
 

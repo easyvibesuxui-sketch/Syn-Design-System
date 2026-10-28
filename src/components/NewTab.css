@@ -1,12 +1,12 @@
-/* Figma "New Tab": 220 x 48, padding 10/0/10/8, a 16px Silver Chalice separator on the right edge. */
+/* Figma "New Tab": 224 x 48, padding 10/0/10/8, a 16px Silver Chalice separator on the right edge. */
 .syn-new-tab {
   position: relative;
   display: inline-flex;
   flex: none;
   align-items: center;
-  gap: var(--syn-space-7);
+  gap: var(--syn-space-16);
   box-sizing: border-box;
-  width: 220px;
+  width: 224px;
   height: 48px;
   padding: 10px 8px;
   background: var(--syn-color-white);
@@ -31,15 +31,15 @@
 .syn-new-tab button:focus-visible { outline: 1px solid var(--syn-color-eerie-black); outline-offset: 2px; }
 
 /* Default: plus-circle icon, 6px gap, "Add new" in ABC Favorit Expanded Medium 12/15. */
-.syn-new-tab__add { display: inline-flex; align-items: center; gap: var(--syn-space-3); color: var(--syn-color-silver-chalice); }
+.syn-new-tab__add { display: inline-flex; align-items: center; gap: var(--syn-space-6); color: var(--syn-color-silver-chalice); }
 
 .syn-new-tab__name { flex: 1; min-width: 0; overflow: hidden; color: var(--syn-color-eerie-black); text-align: left; text-overflow: ellipsis; white-space: nowrap; }
 
-/* Tap: a 15px field with a Silver Chalice underline. */
+/* Tap: a 16px field with a Silver Chalice underline. */
 .syn-new-tab__input {
   flex: 1;
   min-width: 0;
-  height: 15px;
+  height: 16px;
   padding: 0;
   border: 0;
   border-bottom: 1px solid var(--syn-color-silver-chalice);
@@ -70,7 +70,7 @@
   left: 8px;
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: var(--syn-space-4);
   margin: 0;
   color: var(--syn-text-error);
   font: var(--syn-type-caption-2);

@@ -19,10 +19,10 @@ export interface DialogProps {
   className?: string;
 }
 
-/** The 28px close glyph from the Figma popups: two Silver Chalice strokes. */
+/** The close glyph from the Figma popups (two Silver Chalice strokes), drawn at 24px. */
 function CloseGlyph() {
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden focusable="false">
+    <svg width="24" height="24" viewBox="0 0 28 28" fill="none" aria-hidden focusable="false">
       <path d="M6.11 23L5 21.88L21.88 5L23 6.11L6.11 23Z" fill="currentColor" />
       <path d="M21.88 23.03L5 6.15L6.11 5.03L23 21.91L21.88 23.03Z" fill="currentColor" />
     </svg>
@@ -30,7 +30,7 @@ function CloseGlyph() {
 }
 
 /**
- * Modal dialog from the Figma popups ("Session Time out"): 507px Smoke panel, radius 12, a 64px header
+ * Modal dialog from the Figma popups ("Session Time out"): 512px Smoke panel, radius 12, a 64px header
  * with the title centred, a 32px-padded body and a footer for the action. Built on the native <dialog>
  * element, which handles focus trapping and Escape.
  */

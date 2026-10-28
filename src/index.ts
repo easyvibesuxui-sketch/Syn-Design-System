@@ -9,7 +9,7 @@ export { Button, type ButtonProps, type ButtonVariant, type ButtonSize } from '.
 export { IconButton, type IconButtonProps } from './components/IconButton';
 export { TextField, type TextFieldProps, type FieldSize } from './components/TextField';
 export { Select, type SelectProps, type SelectOption } from './components/Select';
-export { Checkbox, type CheckboxProps, type ChoiceSize } from './components/Checkbox';
+export { Checkbox, type CheckboxProps, type ChoiceSize, type CheckboxShape } from './components/Checkbox';
 export { FieldMessages, ChoiceMessage, ErrorIcon, type FieldMessagesProps, type ChoiceMessageProps, type ChoiceErrorStyle } from './components/FieldMessages';
 export { Radio, RadioGroup, type RadioProps, type RadioGroupProps } from './components/Radio';
 export { Switch, type SwitchProps } from './components/Switch';
@@ -21,3 +21,8 @@ export { StatusChip, StatusBadge, type StatusChipProps, type StatusBadgeProps, t
 export { Accordion, type AccordionProps, type AccordionItem } from './components/Accordion';
 export { Dialog, type DialogProps } from './components/Dialog';
 export { Slider, type SliderProps } from './components/Slider';
+export { Drawer, DrawerRow, type DrawerProps, type DrawerRowProps } from './components/Drawer';
+export { Section, Card, Property, type SectionProps, type CardProps, type PropertyProps } from './components/Section';
+export { Tag, type TagProps } from './components/Tag';
+export { Grid, GridItem, type GridProps, type GridItemProps } from './components/Grid';
+export type { ControlSize } from './utils';

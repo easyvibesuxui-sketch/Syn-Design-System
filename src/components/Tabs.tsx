@@ -37,7 +37,7 @@ export interface TabsProps {
   items: TabItem[];
   value: string;
   onChange: (id: string) => void;
-  /** lg = Figma "BIG" (48px, Medium 16); md = "Default size" (36px, or 40px with icons; Medium 14). */
+  /** lg = Figma "BIG" (48px, Medium 16); md = "Default size" (36px, Medium 14). */
   size?: 'md' | 'lg';
   /** Accessible name for the tab list. */
   label: string;

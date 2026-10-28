@@ -25,14 +25,22 @@
   --field-rest: var(--syn-type-body-s-regular);
   --field-label: var(--syn-type-caption-2);
   --field-value: var(--syn-type-body-xs-regular);
-  --field-stack-gap: 1px;
+  --field-stack-gap: 2px;
 }
-/* "input large": label Regular 14 always shown, 1px gap, value Regular 16; padding 0/12/0/8, gap 6. */
+/* 24px "smallest" field: always without a label. */
+.syn-field--xs {
+  --field-h: 24px;
+  --field-gap: 4px;
+  --field-rest: var(--syn-type-body-xs-regular);
+  --field-value: var(--syn-type-body-xs-regular);
+}
+.syn-field--xs .syn-field__box { padding-right: 0; }
+/* "input large": label Regular 14 always shown, 2px gap, value Regular 16; padding 0/12/0/8, gap 6. */
 .syn-field--fixed-label {
   --field-gap: 6px;
   --field-label: 400 14px/17px var(--syn-font-family-body);
   --field-value: 400 16px/20px var(--syn-font-family-body);
-  --field-stack-gap: 1px;
+  --field-stack-gap: 2px;
 }
 /* "Error input large": padding-left 16; placeholder Regular 18; label 14 over value 16. */
 .syn-field--lg.is-invalid {
@@ -40,7 +48,7 @@
   --field-rest: var(--syn-type-body-l-regular);
   --field-label: 400 14px/17px var(--syn-font-family-body);
   --field-value: 400 16px/20px var(--syn-font-family-body);
-  --field-stack-gap: 1px;
+  --field-stack-gap: 2px;
 }
 
 .syn-field__box {
@@ -51,7 +59,7 @@
   box-sizing: border-box;
   height: var(--field-h);
   padding: 0 12px 0 var(--field-pad-left);
-  border-radius: var(--syn-radius-md);
+  border-radius: var(--syn-radius-element);
   background: var(--syn-color-white);
   /* Borders are drawn as shadows: 1px inside at rest and on hover, 2px outside when focused. */
   box-shadow: inset 0 0 0 1px var(--syn-color-cultured);
@@ -84,6 +92,9 @@
 }
 .syn-field__input::placeholder { color: var(--syn-color-silver-chalice); opacity: 1; }
 
+/* Without a label: placeholder, then the value, at the resting size. */
+.syn-field--no-label .syn-field__input { font: var(--field-rest); }
+
 /* Floating label: while empty and not focused, only the placeholder shows, at the larger size. */
 .syn-field--floating:not(.has-value) .syn-field__box:not(:focus-within) .syn-field__label { display: none; }
 .syn-field--floating:not(.has-value) .syn-field__box:not(:focus-within) .syn-field__input { font: var(--field-rest); }
@@ -92,8 +103,8 @@
 .syn-field__affix { flex: none; color: var(--syn-color-silver-chalice); font: var(--field-value); }
 
 /* Hint: Regular 10 Eerie Black, 2px under the field. */
-.syn-field__footer { display: flex; justify-content: space-between; gap: var(--syn-space-4); }
-.syn-field__count { margin-top: var(--syn-space-1); margin-left: auto; color: var(--syn-color-silver-chalice); font: var(--syn-type-caption-2); }
+.syn-field__footer { display: flex; justify-content: space-between; gap: var(--syn-space-8); }
+.syn-field__count { margin-top: var(--syn-space-2); margin-left: auto; color: var(--syn-color-silver-chalice); font: var(--syn-type-caption-2); }
 
 /* Error: Snow fill, 1px Vermilion border inside, 2px when focused. */
 .syn-field.is-invalid .syn-field__box,

@@ -4,14 +4,14 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: var(--syn-space-4);
+  gap: var(--syn-space-8);
   color: var(--syn-text-primary);
   font: var(--syn-type-label-m);
   cursor: pointer;
 }
 .syn-choice__input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: inherit; }
 
-/* 1.5px border drawn inside the box, radius 2. */
+/* 1.5px border drawn inside the box; square boxes have 2px corners, round ones are circles. */
 .syn-choice__box {
   position: relative;
   flex: none;
@@ -25,7 +25,9 @@
   transition: background-color var(--syn-duration-fast), border-color var(--syn-duration-fast);
 }
 .syn-choice--24 .syn-choice__box { width: 24px; height: 24px; }
-.syn-choice__box--radio { border-radius: var(--syn-radius-full); }
+.syn-choice__box--radio,
+.syn-choice--round .syn-choice__box { border-radius: var(--syn-radius-full); }
+.syn-choice--round .syn-choice__mark { transform: scale(0.8); }
 
 /* The check is positioned from the outer edge of the box, as in Figma. */
 .syn-choice__mark { position: absolute; display: none; margin: -1.5px 0 0 -1.5px; }
@@ -54,7 +56,7 @@
 .syn-choice__input:checked + .syn-choice__box--radio::after { transform: translate(-50%, -50%) scale(1); }
 .syn-choice__row:hover .syn-choice__box--radio::after { background: var(--syn-color-jet); }
 
-.syn-choice__input:focus-visible + .syn-choice__box { outline: 1px solid var(--syn-color-eerie-black); outline-offset: 3px; }
+.syn-choice__input:focus-visible + .syn-choice__box { outline: 1px solid var(--syn-color-eerie-black); outline-offset: 2px; }
 
 /* Error: Eerie Black border with a Vermilion ring at 54% just inside it, and a red asterisk on the label. */
 .syn-choice.is-invalid .syn-choice__box { border-color: var(--syn-color-eerie-black); box-shadow: inset 0 0 0 1px rgba(236, 8, 8, 0.54); }
@@ -67,6 +69,6 @@
 .syn-choice.is-disabled .syn-choice__box--radio::after { background: var(--syn-color-gray-x); }
 
 .syn-radio-group { display: flex; flex-direction: column; align-items: flex-start; margin: 0; padding: 0; border: 0; min-width: 0; }
-.syn-radio-group__legend { margin-bottom: var(--syn-space-4); padding: 0; color: var(--syn-text-primary); font: var(--syn-type-title-8); }
-.syn-radio-group__options { display: flex; flex-direction: column; gap: var(--syn-space-6); }
-.syn-radio-group--inline .syn-radio-group__options { flex-direction: row; flex-wrap: wrap; gap: var(--syn-space-8); }
+.syn-radio-group__legend { margin-bottom: var(--syn-space-8); padding: 0; color: var(--syn-text-primary); font: var(--syn-type-title-8); }
+.syn-radio-group__options { display: flex; flex-direction: column; gap: var(--syn-space-12); }
+.syn-radio-group--inline .syn-radio-group__options { flex-direction: row; flex-wrap: wrap; gap: var(--syn-space-24); }

@@ -1,33 +1,33 @@
-/* Figma "Small toggle" (size 20) and "Default size toggle" (size 24). The track and thumb are
-   absolutely placed at the x positions Figma uses for the on and off states. */
+/* Figma "Small toggle" (size 20, 32 x 20) and "Default size toggle" (size 24, 48 x 24). The track and
+   thumb are absolutely placed at the Figma x positions, rounded to the even-number grid. */
 .syn-switch {
   --track-w: 36px;
   --track-h: 20px;
   --track-off-x: 10px;
-  --thumb-w: 24.5px;
+  --thumb-w: 24px;
   --thumb-h: 24px;
   --thumb-on-x: 24px;
-  --thumb-off-x: -1px;
-  --thumb-pressed-w: 28.6px;
+  --thumb-off-x: 0px;
+  --thumb-pressed-w: 28px;
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
 }
 .syn-switch--20 {
-  --track-w: 24.7px;
+  --track-w: 24px;
   --track-h: 16px;
-  --track-off-x: 9.3px;
+  --track-off-x: 8px;
   --thumb-w: 20px;
   --thumb-h: 20px;
-  --thumb-on-x: 14.4px;
+  --thumb-on-x: 12px;
   --thumb-off-x: 0px;
-  --thumb-pressed-w: 22px;
+  --thumb-pressed-w: 24px;
 }
 
-.syn-switch__row { display: inline-flex; align-items: center; gap: var(--syn-space-4); color: var(--syn-text-primary); font: var(--syn-type-label-m); cursor: pointer; }
+.syn-switch__row { display: inline-flex; align-items: center; gap: var(--syn-space-8); color: var(--syn-text-primary); font: var(--syn-type-label-m); cursor: pointer; }
 
 .syn-switch__control { position: relative; flex: none; width: 48px; height: 24px; }
-.syn-switch--20 .syn-switch__control { width: 34px; height: 20px; }
+.syn-switch--20 .syn-switch__control { width: 32px; height: 20px; }
 .syn-switch__input { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: inherit; }
 
 /* Off: Silver Chalice fill with a Gray X border, shifted right under the thumb. */
@@ -70,7 +70,7 @@
   left: calc(var(--thumb-on-x) + var(--thumb-w) - var(--thumb-pressed-w));
 }
 
-.syn-switch__input:focus-visible ~ .syn-switch__thumb { outline: 1px solid var(--syn-color-eerie-black); outline-offset: 3px; }
+.syn-switch__input:focus-visible ~ .syn-switch__thumb { outline: 1px solid var(--syn-color-eerie-black); outline-offset: 2px; }
 
 /* Disabled: Gray X track and thumb border. */
 .syn-switch.is-disabled .syn-switch__row { cursor: not-allowed; color: var(--syn-color-gray-x); }

@@ -1,15 +1,15 @@
 import { forwardRef, type ButtonHTMLAttributes } from 'react';
 import { Icon, type IconName } from './Icon';
-import { cx } from '../utils';
+import { cx, type ControlSize } from '../utils';
 import './Button.css';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'accent' | 'brand' | 'text';
-export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ButtonSize = ControlSize;
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** primary = Eerie Black fill, secondary = outline, accent = Amber fill, brand = Candy Apple fill, text = no chrome. */
   variant?: ButtonVariant;
-  /** sm 36px, md 48px, lg 56px. */
+  /** xs 24px, sm 36px, md 48px, lg 56px. */
   size?: ButtonSize;
   iconStart?: IconName;
   iconEnd?: IconName;
@@ -17,7 +17,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   fullWidth?: boolean;
 }
 
-const iconSize: Record<ButtonSize, number> = { sm: 16, md: 20, lg: 20 };
+const iconSize: Record<ButtonSize, number> = { xs: 16, sm: 16, md: 20, lg: 20 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   { variant = 'primary', size = 'lg', iconStart, iconEnd, loading = false, fullWidth = false, disabled, className, children, type = 'button', ...rest },

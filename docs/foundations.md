@@ -76,13 +76,22 @@ Every Figma text style is a token and a utility class, e.g. `font: var(--syn-typ
 
 ## Space, size, shape
 
-- **Space** `--syn-space-0…10`: 0, 2, 4, 6, 8, 10, 12, 16, 24, 32, 48 px. These are the paddings and gaps
-  that recur in the Figma auto-layout frames.
-- **Control heights** `--syn-size-control-xs/sm/md/lg`: 24, 36, 48, 56 px, from the `Button size/*`
-  variables. Buttons, fields, selects and status chips share them.
-- **Radius** `xs` 2 px (checkbox, tab, list row), `md` 8 px (button, field, dialog), `lg` 12 px
-  (notifications), `full` (chips, switches, round buttons).
+- **Sizing rule**: every size is an even number: 2, 4, 6, 8, 10, 12, 16, 20 or 24, and above 24 a
+  multiple of 8 (32, 40, 48, 56, 64…). Strokes (1px hairlines, the 1.5px Figma control borders) and the type
+  scale's line heights are the only exceptions.
+- **Space** `--syn-space-{px}`: the token name is its value: `--syn-space-2` is 2px, `--syn-space-24` is
+  24px. Steps: 0, 2, 4, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48, 56, 64, 72, 80, 96.
+- **Element heights** `--syn-size-control-xs/sm/md/lg`: smallest 24, small 36, medium 48, large 56 px.
+  Buttons, icon buttons, text fields, selects and status chips take `size` `xs` · `sm` · `md` · `lg`.
+- **Grid**: 12 columns (`--syn-grid-columns`), 24px gutter (`--syn-grid-gutter`), 32px page and drawer
+  margin (`--syn-grid-margin`). Use `Grid` and `GridItem`.
+- **Radius**: `--syn-radius-element` 8px on every element (button, field, dropdown, chip, tooltip, tab);
+  `--syn-radius-widget` and `--syn-radius-page` 12px on large widgets and pages (sections, cards, dialogs,
+  notifications); `--syn-radius-drawer` 48px on the drawer's top-left corner. Primitives: `xs` 2 (square
+  checkbox), `md` 8, `lg` 12, `xl` 48, `full` (round checkbox, radio, switch, pills).
+- **Gaps**: `--syn-gap-dropdown` 2px between a field and its open list; `--syn-gap-message` 2px between an
+  element and the hint or error under it.
 - **Shadow** `float` = `4px 4px 40px rgba(21,21,21,.14)` (toasts, menus); `knob` =
   `3px 3px 6px rgba(65,24,24,.10)` (switch).
 - **Opacity** `hover` = 0.74: every filled control fades to 74% on hover.
-- **Focus**: a 1px Eerie Black ring 3px outside the control (buttons, choices) or a 2px border (fields).
+- **Focus**: a 1px Eerie Black ring 2px outside the control (buttons, choices) or a 2px border (fields).

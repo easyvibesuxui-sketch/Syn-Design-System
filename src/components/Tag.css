@@ -1,0 +1,47 @@
+/* 24px pills: padding 0 12 (0 8 0 12 with a remove button), text Medium 12, 8px gap. */
+.syn-tag {
+  --tag-bg: var(--syn-color-eerie-black);
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--syn-space-8);
+  height: var(--syn-size-control-xs);
+  margin: 0;
+  padding: 0 var(--syn-space-12);
+  border: 1px solid transparent;
+  border-radius: var(--syn-radius-full);
+  font: var(--syn-type-body-xs);
+  white-space: nowrap;
+}
+.syn-tag--solid { border-color: var(--tag-bg); background: var(--tag-bg); color: var(--syn-color-white); }
+.syn-tag--outline { border-color: var(--syn-border-muted); background: var(--syn-surface-default); color: var(--syn-text-primary); }
+.syn-tag--dashed {
+  min-width: 96px;
+  justify-content: center;
+  padding: 0 var(--syn-space-16);
+  border: 1px dashed var(--syn-border-muted);
+  background: var(--syn-surface-default);
+  color: var(--syn-text-muted);
+  font: var(--syn-type-body-xs-regular);
+  cursor: pointer;
+}
+.syn-tag--dashed:hover { border-color: var(--syn-border-strong); color: var(--syn-text-primary); }
+.syn-tag:has(.syn-tag__remove) { padding-right: var(--syn-space-8); }
+
+.syn-tag__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--syn-radius-full);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.8;
+}
+.syn-tag__remove:hover { opacity: 1; }
+.syn-tag button:focus-visible, .syn-tag--dashed:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }

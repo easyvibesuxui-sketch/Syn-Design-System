@@ -1,5 +1,5 @@
 /* Figma "Tab" (327:541): Default, Hover, Active, Active hover, Disabled x BIG / Default size, with 0-2 icons. */
-.syn-tabs { display: flex; flex-direction: column; gap: var(--syn-space-7); min-width: 0; }
+.syn-tabs { display: flex; flex-direction: column; gap: var(--syn-space-16); min-width: 0; }
 .syn-tabs__bar { display: flex; align-items: stretch; max-width: 100%; overflow-x: auto; }
 .syn-tabs__list { display: flex; flex: none; }
 
@@ -9,13 +9,13 @@
   flex: none;
   align-items: center;
   justify-content: center;
-  gap: var(--syn-space-2);
+  gap: var(--syn-space-4);
   height: 48px;
   margin: 0;
-  /* Figma: tab padding 10/1/10/8 around a text frame padded 10/8/10/8. */
-  padding: 0 1px 0 16px;
+  /* Figma: tab padding 10/0/10/8 around a text frame padded 10/8/10/8. */
+  padding: 0 0 0 16px;
   border: 0;
-  border-radius: 2px 0 0 2px;
+  border-radius: var(--syn-radius-element);
   background: var(--syn-color-white);
   color: var(--syn-color-silver-chalice);
   font: 500 16px/20px var(--syn-font-family-body);
@@ -24,11 +24,11 @@
   transition: background-color var(--syn-duration-fast), color var(--syn-duration-fast);
 }
 .syn-tabs__text { padding-right: 8px; }
-.syn-tabs__tab.has-icon { gap: var(--syn-space-4); }
+.syn-tabs__tab.has-icon { gap: var(--syn-space-8); }
 .syn-tabs__tab.has-icon .syn-tabs__text { padding-right: 0; }
-.syn-tabs__tab.has-icon { padding-right: 9px; }
+.syn-tabs__tab.has-icon { padding-right: 8px; }
 .syn-tabs--md .syn-tabs__tab { height: 36px; font: 500 14px/18px var(--syn-font-family-body); }
-.syn-tabs--md .syn-tabs__tab.has-icon { height: 40px; gap: var(--syn-space-2); }
+.syn-tabs--md .syn-tabs__tab.has-icon { gap: var(--syn-space-4); }
 
 /* 16px vertical separator at the right edge. */
 .syn-tabs__tab::after {

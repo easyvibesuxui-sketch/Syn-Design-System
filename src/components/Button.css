@@ -2,11 +2,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--syn-space-4);
+  gap: var(--syn-space-8);
   min-width: 0;
-  padding: var(--syn-space-5) var(--syn-space-9);
+  padding: var(--syn-space-10) var(--syn-space-32);
   border: 1px solid transparent;
-  border-radius: var(--syn-radius-md);
+  border-radius: var(--syn-radius-element);
   font: var(--syn-type-button-l);
   cursor: pointer;
   text-decoration: none;
@@ -15,14 +15,15 @@
 }
 .syn-button:focus-visible {
   outline: 1px solid var(--syn-border-strong);
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 .syn-button:disabled { cursor: not-allowed; }
 
 .syn-button--lg { height: var(--syn-size-control-lg); font: var(--syn-type-button-l); }
 .syn-button--md { height: var(--syn-size-control-md); font: var(--syn-type-button-m); }
-.syn-button--sm { height: var(--syn-size-control-sm); font: var(--syn-type-button-s); padding-inline: var(--syn-space-8); }
-.syn-button--full { width: 100%; gap: var(--syn-space-7); }
+.syn-button--sm { height: var(--syn-size-control-sm); font: var(--syn-type-button-s); padding-inline: var(--syn-space-24); }
+.syn-button--xs { height: var(--syn-size-control-xs); gap: var(--syn-space-4); padding-block: 0; padding-inline: var(--syn-space-12); font: var(--syn-type-button-s); }
+.syn-button--full { width: 100%; gap: var(--syn-space-16); }
 
 /* Filled styles fade to 74% on hover, as in every Figma "Hover" variant. */
 .syn-button--primary { background: var(--syn-action-primary); color: var(--syn-action-primary-text); }
@@ -45,13 +46,13 @@
 
 .syn-button--text {
   height: auto;
-  padding: var(--syn-space-5) 0;
+  padding: var(--syn-space-10) 0;
   background: transparent;
   color: var(--syn-text-primary);
   font: var(--syn-type-body-s-regular);
-  border-radius: var(--syn-radius-xs);
+  border-radius: var(--syn-radius-element);
 }
-.syn-button--text:hover:not(:disabled) .syn-button__label { text-decoration: underline; text-underline-offset: 3px; }
+.syn-button--text:hover:not(:disabled) .syn-button__label { text-decoration: underline; text-underline-offset: 4px; }
 .syn-button--text:disabled { color: var(--syn-text-disabled); }
 
 .syn-button.is-loading { cursor: progress; }

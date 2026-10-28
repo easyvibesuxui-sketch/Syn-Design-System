@@ -20,7 +20,13 @@ export interface SelectProps {
   onChange?: (value: string) => void;
   /** Text shown while nothing is selected. Defaults to the label. */
   placeholder?: string;
+  /** xs 24px, sm 36px, md 48px, lg 56px. */
   size?: FieldSize;
+  /**
+   * true (default, as Figma draws the dropdown): only the value shows and the label is for screen readers.
+   * false: the label sits inside the field above the value, like TextField. xs always hides it.
+   */
+  hideLabel?: boolean;
   iconStart?: IconName;
   hint?: string;
   error?: string | string[];
@@ -30,7 +36,7 @@ export interface SelectProps {
 }
 
 /** Single-select dropdown. Follows the WAI-ARIA select-only combobox pattern. */
-export function Select({ label, options, value, defaultValue, onChange, placeholder, size = 'lg', iconStart, hint, error, disabled, id, className }: SelectProps) {
+export function Select({ label, options, value, defaultValue, onChange, placeholder, size = 'lg', hideLabel = true, iconStart, hint, error, disabled, id, className }: SelectProps) {
   const autoId = useId();
   const baseId = id ?? `syn-select-${autoId}`;
   const listId = `${baseId}-list`;
@@ -42,6 +48,7 @@ export function Select({ label, options, value, defaultValue, onChange, placehol
   const root = useRef<HTMLDivElement>(null);
   const invalid = error !== undefined && error.length > 0;
   const selectedOption = options.find((o) => o.value === selected);
+  const labelInside = !hideLabel && size !== 'xs';
 
   useEffect(() => {
     if (!open) return;
@@ -88,52 +95,58 @@ export function Select({ label, options, value, defaultValue, onChange, placehol
   };
 
   return (
-    <div ref={root} className={cx('syn-field', 'syn-select', `syn-field--${size}`, invalid && 'is-invalid', disabled && 'is-disabled', open && 'is-open', className)}>
-      <span id={`${baseId}-label`} className="syn-visually-hidden">{label}</span>
-      <button
-        id={baseId}
-        type="button"
-        role="combobox"
-        className="syn-field__box syn-select__trigger"
-        aria-labelledby={`${baseId}-label ${baseId}`}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        aria-controls={listId}
-        aria-activedescendant={open && active >= 0 ? `${baseId}-opt-${active}` : undefined}
-        aria-invalid={invalid || undefined}
-        aria-describedby={hint || invalid ? messagesId : undefined}
-        disabled={disabled}
-        onClick={() => (open ? setOpen(false) : openList())}
-        onKeyDown={onKeyDown}
-      >
-        {iconStart && <Icon name={iconStart} size={20} className="syn-field__icon" />}
-        <span className={cx('syn-select__value', !selectedOption && 'is-placeholder')}>
-          {selectedOption?.label ?? placeholder ?? label}
-        </span>
-        <span className="syn-select__chevron" aria-hidden>
-          <Icon name="chevron-down" size={16} />
-        </span>
-      </button>
-      {open && (
-        <ul id={listId} role="listbox" aria-labelledby={`${baseId}-label`} className="syn-select__list">
-          {options.map((option, index) => (
-            <li
-              key={option.value}
-              id={`${baseId}-opt-${index}`}
-              role="option"
-              aria-selected={option.value === selected}
-              aria-disabled={option.disabled || undefined}
-              className={cx('syn-select__option', index === active && 'is-active')}
-              onMouseEnter={() => !option.disabled && setActive(index)}
-              onMouseDown={(e) => e.preventDefault()}
-              onClick={() => choose(index)}
-            >
-              <span>{option.label}</span>
-              {option.value === selected && <Icon name="check" size={16} />}
-            </li>
-          ))}
-        </ul>
-      )}
+    <div ref={root} className={cx('syn-field', 'syn-select', `syn-field--${size}`, labelInside ? 'syn-select--label' : 'syn-field--no-label', selectedOption && 'has-value', invalid && 'is-invalid', disabled && 'is-disabled', open && 'is-open', className)}>
+      {!labelInside && <span id={`${baseId}-label`} className="syn-visually-hidden">{label}</span>}
+      {/* The list is placed from this wrapper, so it opens 2px under the field whatever sits below it. */}
+      <div className="syn-select__anchor">
+        <button
+          id={baseId}
+          type="button"
+          role="combobox"
+          className="syn-field__box syn-select__trigger"
+          aria-labelledby={`${baseId}-label ${baseId}`}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          aria-controls={listId}
+          aria-activedescendant={open && active >= 0 ? `${baseId}-opt-${active}` : undefined}
+          aria-invalid={invalid || undefined}
+          aria-describedby={hint || invalid ? messagesId : undefined}
+          disabled={disabled}
+          onClick={() => (open ? setOpen(false) : openList())}
+          onKeyDown={onKeyDown}
+        >
+          {iconStart && <Icon name={iconStart} size={20} className="syn-field__icon" />}
+          <span className="syn-field__stack">
+            {labelInside && <span id={`${baseId}-label`} className="syn-field__label">{label}</span>}
+            <span className={cx('syn-select__value', !selectedOption && 'is-placeholder')}>
+              {selectedOption?.label ?? placeholder ?? label}
+            </span>
+          </span>
+          <span className="syn-select__chevron" aria-hidden>
+            <Icon name="chevron-down" size={16} />
+          </span>
+        </button>
+        {open && (
+          <ul id={listId} role="listbox" aria-labelledby={`${baseId}-label`} className="syn-select__list">
+            {options.map((option, index) => (
+              <li
+                key={option.value}
+                id={`${baseId}-opt-${index}`}
+                role="option"
+                aria-selected={option.value === selected}
+                aria-disabled={option.disabled || undefined}
+                className={cx('syn-select__option', index === active && 'is-active')}
+                onMouseEnter={() => !option.disabled && setActive(index)}
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => choose(index)}
+              >
+                <span>{option.label}</span>
+                {option.value === selected && <Icon name="check" size={16} />}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
       <FieldMessages id={messagesId} hint={hint} error={error} />
     </div>
   );

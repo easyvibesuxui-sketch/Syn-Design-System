@@ -38,7 +38,7 @@ export function Notification({ tone = 'info', variant = 'inline', title, childre
         {children && <div className="syn-notification__message">{children}</div>}
         {timestamp && <p className="syn-notification__time">{timestamp}</p>}
       </div>
-      {onClose && <IconButton icon="close" label={closeLabel} size={variant === 'toast' ? 'md' : 'sm'} onClick={onClose} />}
+      {onClose && <IconButton icon="close" label={closeLabel} size="xs" onClick={onClose} />}
     </div>
   );
 }

@@ -1,0 +1,83 @@
+/* Record drawer reference (1280 wide): Snow panel, 48px top-left corner, Cultured hairlines between rows. */
+.syn-drawer {
+  inset: 0 0 0 auto;
+  width: min(var(--drawer-w, 1280px), 100vw);
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--syn-text-primary);
+  overflow: visible;
+}
+.syn-drawer[open] { animation: syn-drawer-in var(--syn-duration-base) ease-out; }
+.syn-drawer::backdrop { background: var(--syn-surface-overlay); }
+@keyframes syn-drawer-in { from { transform: translateX(32px); opacity: 0; } }
+
+.syn-drawer__panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: var(--syn-radius-drawer) 0 0 0;
+  background: var(--syn-surface-raised);
+  outline: none;
+  overflow: hidden;
+}
+
+/* 64px header: status and id on the left; share, more and close on the right. */
+.syn-drawer__header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--syn-space-16);
+  height: 64px;
+  padding: 0 var(--syn-space-16) 0 var(--syn-grid-margin);
+  border-bottom: 1px solid var(--syn-border-default);
+}
+.syn-drawer__header-start { display: flex; align-items: center; gap: var(--syn-space-16); min-width: 0; }
+.syn-drawer__header-actions { display: flex; flex: none; align-items: center; gap: var(--syn-space-8); }
+.syn-drawer__header-actions .syn-icon-button { background: transparent; color: var(--syn-color-silver-chalice); }
+.syn-drawer__header-actions .syn-icon-button:hover:not(:disabled) { background: var(--syn-surface-muted); color: var(--syn-text-primary); }
+
+.syn-drawer__body { flex: 1; min-height: 0; padding-bottom: var(--syn-space-24); overflow-y: auto; }
+
+/* 88px white footer with a soft shadow on top: text action left, primary action right. */
+.syn-drawer__footer {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--syn-space-16);
+  height: 88px;
+  padding: 0 var(--syn-space-24) 0 var(--syn-grid-margin);
+  background: var(--syn-surface-default);
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Rows: 56px minimum, padding 16/16/16/32, Cultured hairline under each. */
+.syn-drawer-row {
+  display: flex;
+  align-items: center;
+  gap: var(--syn-space-16);
+  min-height: 56px;
+  padding: var(--syn-space-16) var(--syn-space-16) var(--syn-space-16) var(--syn-grid-margin);
+  border-bottom: 1px solid var(--syn-border-default);
+}
+.syn-drawer-row__label { display: inline-flex; flex: none; align-items: center; gap: var(--syn-space-8); color: var(--syn-text-secondary); font: var(--syn-type-body-xs-regular); }
+.syn-drawer-row__label .syn-icon { color: var(--syn-color-silver-chalice); }
+.syn-drawer-row__content { display: flex; flex: 1; flex-wrap: wrap; align-items: center; gap: var(--syn-space-8); min-width: 0; }
+.syn-drawer-row__content > .syn-grid { flex: 1; }
+.syn-drawer-row__end { display: flex; flex: none; align-items: center; gap: var(--syn-space-8); }
+
+/* Sections inside the body sit 24px apart, inset by the 32px margin. */
+.syn-drawer__body > .syn-section { margin: var(--syn-space-24) var(--syn-space-16) 0 var(--syn-grid-margin); }
+
+@media (max-width: 640px) {
+  .syn-drawer__header, .syn-drawer-row, .syn-drawer__footer { padding-left: var(--syn-space-16); }
+  .syn-drawer__body > .syn-section { margin-left: var(--syn-space-16); }
+  .syn-drawer-row { flex-direction: column; align-items: flex-start; gap: var(--syn-space-12); }
+  .syn-drawer-row__content { align-self: stretch; }
+}

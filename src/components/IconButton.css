@@ -11,8 +11,10 @@
   cursor: pointer;
   transition: background-color var(--syn-duration-fast);
 }
-.syn-icon-button--sm { width: var(--syn-size-control-xs); height: var(--syn-size-control-xs); }
-.syn-icon-button--md { width: 30px; height: 30px; }
+.syn-icon-button--xs { width: var(--syn-size-control-xs); height: var(--syn-size-control-xs); }
+.syn-icon-button--sm { width: var(--syn-size-control-sm); height: var(--syn-size-control-sm); }
+.syn-icon-button--md { width: var(--syn-size-control-md); height: var(--syn-size-control-md); }
+.syn-icon-button--lg { width: var(--syn-size-control-lg); height: var(--syn-size-control-lg); }
 .syn-icon-button:hover:not(:disabled) { background: var(--syn-action-ghost-hover); }
 .syn-icon-button:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
 .syn-icon-button:disabled { color: var(--syn-text-disabled); cursor: not-allowed; }

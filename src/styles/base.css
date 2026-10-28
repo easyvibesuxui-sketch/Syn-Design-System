@@ -27,10 +27,10 @@
   border: 0;
 }
 
-/* Figma draws focus as a 1px Eerie Black ring 3px outside the control. */
+/* Focus is a 1px Eerie Black ring 2px outside the control. */
 .syn-focus-ring:focus-visible {
   outline: 1px solid var(--syn-border-strong);
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {

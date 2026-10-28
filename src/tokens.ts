@@ -47,31 +47,44 @@ export const tokens = {
     },
     "space": {
       "0": "0px",
-      "1": "2px",
-      "2": "4px",
-      "3": "6px",
-      "4": "8px",
-      "5": "10px",
-      "6": "12px",
-      "7": "16px",
-      "8": "24px",
-      "9": "32px",
-      "10": "48px"
+      "2": "2px",
+      "4": "4px",
+      "6": "6px",
+      "8": "8px",
+      "10": "10px",
+      "12": "12px",
+      "16": "16px",
+      "20": "20px",
+      "24": "24px",
+      "32": "32px",
+      "40": "40px",
+      "48": "48px",
+      "56": "56px",
+      "64": "64px",
+      "72": "72px",
+      "80": "80px",
+      "96": "96px"
     },
     "radius": {
       "xs": "2px",
       "md": "8px",
       "lg": "12px",
+      "xl": "48px",
       "full": "999px"
     },
     "size": {
+      "control-xs": "24px",
       "control-sm": "36px",
       "control-md": "48px",
       "control-lg": "56px",
-      "control-xs": "24px",
       "icon-sm": "16px",
       "icon-md": "20px",
       "icon-lg": "24px"
+    },
+    "grid": {
+      "columns": 12,
+      "gutter": "24px",
+      "margin": "32px"
     },
     "shadow": {
       "float": "4px 4px 40px rgba(21, 21, 21, 0.14)",
@@ -132,6 +145,16 @@ export const tokens = {
         "error": "#ec0808",
         "progress": "#fe7d00"
       }
+    },
+    "radius": {
+      "element": "8px",
+      "widget": "12px",
+      "page": "12px",
+      "drawer": "48px"
+    },
+    "gap": {
+      "dropdown": "2px",
+      "message": "2px"
     },
     "typography": {
       "display-1": {
