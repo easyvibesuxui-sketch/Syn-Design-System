@@ -50,11 +50,9 @@ the `Button size/*` floats) or were measured from its component sets. The source
 | `action-toggle` | Dark Sienna | Switch on-state |
 | `status-info` / `-success` / `-warning` / `-progress` | Dodger Blue / Mantis / Honey / Amber | Notifications, status dots |
 
-### Dark theme
+### Themes
 
-`[data-theme="dark"]` overrides the semantic layer only. It follows the on-dark examples on the Figma
-Colors page: Eerie Black and Jet surfaces, Cultured text, and primary buttons that flip to White with Candy
-Apple text.
+The Figma library defines one theme, light, and Syn keeps it that way. There is no `[data-theme]` override.
 
 ## Typography
 

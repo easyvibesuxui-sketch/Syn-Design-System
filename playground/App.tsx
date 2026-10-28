@@ -1,7 +1,7 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import {
-  Accordion, Button, Checkbox, Dialog, Icon, IconButton, Notification, Radio, RadioGroup, Select, Slider,
-  StatusBadge, StatusChip, Switch, Tabs, TextField, Tooltip, iconNames, tokens,
+  Accordion, Button, Checkbox, Dialog, Icon, IconButton, NewTab, Notification, Radio, RadioGroup, Select, Slider,
+  StatusBadge, StatusChip, Switch, Tabs, TextField, Tooltip, iconData, iconNames, tokens,
 } from '../src';
 
 const sections = [
@@ -35,17 +35,14 @@ const semanticGroups = Object.entries(tokens.semantic.color) as Array<[string, R
 const typeScale = Object.entries(tokens.semantic.typography) as Array<[string, { fontFamily: string; fontWeight: number; fontSize: string; lineHeight: string }]>;
 
 export function App() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [tab, setTab] = useState('overview');
+  const [extraTabs, setExtraTabs] = useState<string[]>(['General']);
+  const [extraSelected, setExtraSelected] = useState<string>();
   const [chips, setChips] = useState<string[]>(['open']);
   const [plan, setPlan] = useState('month');
   const [dialog, setDialog] = useState(false);
   const [slider, setSlider] = useState(40);
   const [machine, setMachine] = useState<string>();
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-  }, [theme]);
 
   return (
     <div className="syn-root pg">
@@ -57,7 +54,6 @@ export function App() {
         <nav aria-label="Sections">
           {sections.map(([id, label]) => <a key={id} href={`#${id}`}>{label}</a>)}
         </nav>
-        <Switch label="Dark theme" size="sm" checked={theme === 'dark'} onChange={(e) => setTheme(e.target.checked ? 'dark' : 'light')} />
       </aside>
 
       <main className="pg-main">
@@ -125,10 +121,14 @@ export function App() {
           </Row>
         </Section>
 
-        <Section id="icons" title="Icons" lead={`${iconNames.length} icons exported from the Figma Icons page, drawn on a 20px grid. They inherit currentColor.`}>
+        <Section id="icons" title="Icons" lead={`All ${iconNames.length} components of the Figma Main icons set, at their native size (most are 20 x 20). Single-ink icons inherit currentColor; pins, status and file-format icons keep their Figma colours.`}>
           <div className="pg-icons">
             {iconNames.map((name) => (
-              <div key={name} className="pg-icon"><Icon name={name} /><code>{name}</code></div>
+              <div key={name} className="pg-icon">
+                <Icon name={name} />
+                <code>{name}</code>
+                {(iconData[name].width !== 20 || iconData[name].height !== 20) && <small>{iconData[name].width} x {iconData[name].height}</small>}
+              </div>
             ))}
           </div>
         </Section>
@@ -156,16 +156,20 @@ export function App() {
           </Row>
         </Section>
 
-        <Section id="inputs" title="Text fields" lead="The label sits in the placeholder position and floats up on focus (Candy Apple) or once filled (Silver Chalice).">
+        <Section id="inputs" title="Text fields" lead="Figma Inputs page. With an icon the Candy Apple label stays above the placeholder; without one the label is the placeholder until focus. Hover draws a 1px Eerie Black border, focus 2px outside; errors use a Snow fill and a Vermilion border, with the message 2px below.">
           <div className="pg-grid">
-            <TextField label="First name" iconStart="person" hint="As it appears on your ID" onClear={() => {}} />
-            <TextField label="First name" defaultValue="John Doe" iconStart="person" onClear={() => {}} />
-            <TextField label="Weight" prefix="$" suffix="kg" defaultValue="1200" />
-            <TextField label="Nickname" maxLength={20} showCount />
+            <TextField label="First name" iconStart="person" hint="Hint text" onClear={() => {}} />
+            <TextField label="First name" defaultValue="E.G. John Doe" iconStart="person" hint="Hint text" onClear={() => {}} />
+            <TextField label="First name" iconStart="person" disabled hint="Hint text" />
+            <TextField label="First name" />
+            <TextField label="First name" defaultValue="E.G. John Doe" onClear={() => {}} />
+            <TextField label="First name" error="Dummy text error message" />
+            <TextField label="First name" defaultValue="E.G. John Doe" error="Dummy text error message" />
+            <TextField label="First name" disabled error="Dummy text error message" />
+            <TextField label="First name" size="md" />
+            <TextField label="First name" size="md" defaultValue="E.G. John Doe" />
+            <TextField label="First name" size="sm" />
             <TextField label="Email" defaultValue="john@" error={['Enter a full email address', 'Use your work domain']} />
-            <TextField label="First name" disabled defaultValue="Locked" />
-            <TextField label="Search" size="md" iconEnd="search" />
-            <TextField label="Max distance" size="sm" suffix="km" />
           </div>
         </Section>
 
@@ -179,41 +183,80 @@ export function App() {
           </div>
         </Section>
 
-        <Section id="choices" title="Checkbox & radio">
-          <Row label="checkbox">
-            <Checkbox label="Text" />
-            <Checkbox label="Text" defaultChecked />
-            <Checkbox label="Text" indeterminate />
-            <Checkbox label="Large" size="lg" defaultChecked />
-            <Checkbox label="Text" disabled />
-            <Checkbox label="Text" disabled defaultChecked />
-            <Checkbox label="Accept the terms*" error="Check this to proceed" />
+        <Section id="choices" title="Checkbox & radio" lead="Figma &quot;Checkbox 20 px&quot; / &quot;24 px&quot; and the radio groups: 1.5px Eerie Black border, Jet when hovered or selected, Gray X when disabled. Errors add a Vermilion ring and asterisk, with either the dark bubble (error 1) or red text (error 2) 2px below.">
+          {([20, 24] as const).map((size) => (
+            <Row key={size} label={`checkbox ${size}`}>
+              <Checkbox size={size} label="Text" />
+              <Checkbox size={size} label="Text" defaultChecked />
+              <Checkbox size={size} label="Text" disabled />
+              <Checkbox size={size} label="Text" disabled defaultChecked />
+            </Row>
+          ))}
+          <Row label="errors">
+            <Checkbox label="Text" error="Dummy text Check this to proceed" errorStyle="tooltip" />
+            <Checkbox label="Text" error="Dummy text Check this to proceed" />
           </Row>
-          <RadioGroup label="Billing period" value={plan} onChange={setPlan} inline>
-            <Radio value="date" label="Specific date" />
-            <Radio value="month" label="By month" />
-            <Radio value="year" label="By year" disabled />
-          </RadioGroup>
+          {([20, 24] as const).map((size) => (
+            <Row key={size} label={`radio ${size}`}>
+              <RadioGroup label="Billing period" hideLabel size={size} value={plan} onChange={setPlan} inline>
+                <Radio value="date" label="Specific date" />
+                <Radio value="month" label="By month" />
+                <Radio value="year" label="By year" disabled />
+              </RadioGroup>
+            </Row>
+          ))}
+          <Row label="radio error">
+            <RadioGroup label="Plan" hideLabel error="Dummy text Check this to proceed" errorStyle="tooltip" inline>
+              <Radio value="a" label="Text" />
+              <Radio value="b" label="Text" />
+            </RadioGroup>
+          </Row>
         </Section>
 
-        <Section id="switch" title="Switch" lead="On-state uses Dark Sienna, off uses Gray X.">
-          <Row>
-            <Switch label="Notifications" size="sm" defaultChecked />
-            <Switch label="Notifications" defaultChecked />
-            <Switch label="Notifications" size="lg" />
-            <Switch label="Mode" hideLabel stateLabels={['On', 'Off']} defaultChecked />
-            <Switch label="Disabled" disabled defaultChecked />
-            <Switch label="Required" error="Switch this to proceed" />
+        <Section id="switch" title="Switch" lead="Figma &quot;Small toggle&quot; (size 20, 34 x 20) and &quot;Default size toggle&quot; (size 24, 48 x 24). On is Dark Sienna; off is Silver Chalice with a Gray X border. Press stretches the thumb.">
+          {([20, 24] as const).map((size) => (
+            <Row key={size} label={`size ${size}`}>
+              <Switch size={size} label="On" defaultChecked />
+              <Switch size={size} label="Loading" loading defaultChecked />
+              <Switch size={size} label="Disabled on" disabled defaultChecked />
+              <Switch size={size} label="Off" />
+              <Switch size={size} label="Loading off" loading />
+              <Switch size={size} label="Disabled off" disabled />
+            </Row>
+          ))}
+          <Row label="errors">
+            <Switch size={20} label="Required" error="Dummy text Switch this to proceed" errorStyle="tooltip" />
+            <Switch size={24} label="Required" defaultChecked error="Dummy text Switch this to proceed" />
+          </Row>
+          <Row label="with label">
+            <Switch size={24} label="Notifications" hideLabel={false} defaultChecked />
           </Row>
         </Section>
 
-        <Section id="tabs" title="Tabs">
+        <Section id="tabs" title="Tabs" lead="Figma &quot;Tab&quot;: white with Silver Chalice text, hover Cultured with a Candy Apple underline, active Eerie Black (Jet on hover), disabled Cultured. Each tab ends with a 16px separator. &quot;New Tab&quot; adds a named tab.">
           <Tabs label="Equipment" value={tab} onChange={setTab} items={[
-            { id: 'overview', label: 'Overview', content: <p>Overview panel.</p> },
-            { id: 'maintenance', label: 'Maintenance', icon: 'settings', content: <p>Maintenance panel.</p> },
-            { id: 'history', label: 'History', icon: 'history', content: <p>History panel.</p> },
-            { id: 'archive', label: 'Archive', disabled: true },
-          ]} />
+            { id: 'overview', label: 'Left section', content: <p>Overview panel.</p> },
+            { id: 'maintenance', label: 'Left section', iconStart: 'arrow-left', iconEnd: 'arrow-right', content: <p>Maintenance panel.</p> },
+            { id: 'history', label: 'Left section', iconStart: 'arrow-left', content: <p>History panel.</p> },
+            { id: 'archive', label: 'Left section', disabled: true },
+          ]} end={(
+            <>
+              {extraTabs.map((name) => (
+                <NewTab key={name} name={name} selected={extraSelected === name} onSelect={() => setExtraSelected(name)}
+                  onRemove={() => setExtraTabs((t) => t.filter((x) => x !== name))} />
+              ))}
+              <NewTab onCreate={(name) => setExtraTabs((t) => [...t, name])} />
+            </>
+          )} />
+          <Row label="default size">
+            <Tabs label="Default size" size="md" value="a" onChange={() => {}} items={[
+              { id: 'a', label: 'Left section' }, { id: 'b', label: 'Left section' },
+              { id: 'c', label: 'Left section', iconStart: 'arrow-left', iconEnd: 'arrow-right' }, { id: 'd', label: 'Left section', disabled: true },
+            ]} />
+          </Row>
+          <Row label="new tab error">
+            <NewTab error="Dummy text error message" />
+          </Row>
         </Section>
 
         <Section id="status" title="Status">
@@ -271,13 +314,11 @@ export function App() {
           <div className="pg-narrow"><Slider label="Fuel threshold" value={slider} onChange={setSlider} /></div>
         </Section>
 
-        <Section id="dialog" title="Dialog">
+        <Section id="dialog" title="Dialog" lead="Figma &quot;Session Time out&quot;: 507px Smoke panel, radius 12, 64px header, 48px Silver Chalice icon, 320 x 48 action, Silver Chalice overlay at 60%.">
           <Button onClick={() => setDialog(true)}>Open dialog</Button>
-          <Dialog open={dialog} onClose={() => setDialog(false)} title="Session time out" size="sm"
-            actions={<Button size="sm" fullWidth onClick={() => setDialog(false)}>Refresh page</Button>}>
-            <Icon name="info-circle" size={28} />
-            <p>You have been inactive for 15 min and there might be updates.</p>
-          </Dialog>
+          <Dialog open={dialog} onClose={() => setDialog(false)} title="Session Time out"
+            description="You have been inactive for 15min and there might be updates"
+            actions={<Button size="md" onClick={() => setDialog(false)}>Refresh page</Button>} />
         </Section>
       </main>
     </div>

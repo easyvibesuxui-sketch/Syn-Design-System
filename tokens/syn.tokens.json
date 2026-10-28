@@ -1,5 +1,5 @@
 {
-  "$description": "Syn design tokens. Primitives are extracted from the Figma library “Design system library (Copy)” (file uNTCaDLpRs00HJFMOWXxP6): the Colors, Type Primitives and Typography tokens collections, plus measurements read off the component sets. Semantic tokens are the Syn layer on top. Edit this file, then run `npm run tokens`.",
+  "$description": "Syn design tokens. Primitives are extracted from the Figma library \u201cDesign system library (Copy)\u201d (file uNTCaDLpRs00HJFMOWXxP6): the Colors, Type Primitives and Typography tokens collections, plus measurements read off the component sets. Semantic tokens are the Syn layer on top. Edit this file, then run `npm run tokens`.",
   "primitive": {
     "color": {
       "$type": "color",
@@ -126,6 +126,9 @@
       },
       "weight": {
         "$type": "fontWeight",
+        "light": {
+          "$value": 300
+        },
         "regular": {
           "$value": 400
         },
@@ -574,87 +577,33 @@
           "fontSize": "12px",
           "lineHeight": "1.4"
         }
-      }
-    }
-  },
-  "dark": {
-    "$description": "Overrides applied under [data-theme=\"dark\"]. Derived from the on-dark examples on the Figma Colors page (Jet and Eerie Black surfaces, White buttons with Candy Apple text).",
-    "color": {
-      "$type": "color",
-      "text": {
-        "primary": {
-          "$value": "{primitive.color.cultured}"
-        },
-        "secondary": {
-          "$value": "{primitive.color.silver-chalice}"
-        },
-        "muted": {
-          "$value": "{primitive.color.silver-chalice}"
-        },
-        "disabled": {
-          "$value": "#6b7173",
-          "$description": "Lifted from Jet so disabled text stays visible on Eerie Black"
-        },
-        "inverse": {
-          "$value": "{primitive.color.eerie-black}"
-        }
       },
-      "surface": {
-        "default": {
-          "$value": "{primitive.color.eerie-black}"
+      "label-m": {
+        "$value": {
+          "fontFamily": "{primitive.font.family.body}",
+          "fontWeight": 400,
+          "fontSize": "15px",
+          "lineHeight": "18px"
         },
-        "raised": {
-          "$value": "{primitive.color.jet}"
-        },
-        "subtle": {
-          "$value": "#1f1f1f"
-        },
-        "muted": {
-          "$value": "{primitive.color.jet}"
-        },
-        "highlight": {
-          "$value": "#3a1f1d"
-        },
-        "inverse": {
-          "$value": "{primitive.color.cultured}"
-        },
-        "inverse-subtle": {
-          "$value": "{primitive.color.white}"
-        },
-        "overlay": {
-          "$value": "rgba(21, 21, 21, 0.7)"
-        }
+        "$description": "Checkbox and radio labels: Montserrat Regular 15."
       },
-      "border": {
-        "default": {
-          "$value": "{primitive.color.jet}"
+      "body-xs-light": {
+        "$value": {
+          "fontFamily": "{primitive.font.family.body}",
+          "fontWeight": 300,
+          "fontSize": "12px",
+          "lineHeight": "15px"
         },
-        "strong": {
-          "$value": "{primitive.color.cultured}"
-        },
-        "muted": {
-          "$value": "#5a5f61"
-        },
-        "disabled": {
-          "$value": "#4a4f51"
-        }
+        "$description": "Choice and switch error messages: Montserrat Light 12/15."
       },
-      "action": {
-        "primary": {
-          "$value": "{primitive.color.white}"
+      "body-l-regular": {
+        "$value": {
+          "fontFamily": "{primitive.font.family.body}",
+          "fontWeight": 400,
+          "fontSize": "18px",
+          "lineHeight": "22px"
         },
-        "primary-text": {
-          "$value": "{primitive.color.candy-apple}"
-        },
-        "selected": {
-          "$value": "{primitive.color.cultured}"
-        },
-        "ghost": {
-          "$value": "rgba(255, 255, 255, 0.06)"
-        },
-        "ghost-hover": {
-          "$value": "rgba(255, 255, 255, 0.12)"
-        }
+        "$description": "Error input placeholder before focus: Montserrat Regular 18."
       }
     }
   }

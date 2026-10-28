@@ -36,19 +36,34 @@ Enter/Space choose, Escape closes. Options hover in Misty Rose. Props: `label`, 
 ## Checkbox, Radio, RadioGroup
 
 Figma: *Checkbox 20 px / 24 px*, *radio group 20 px / 24 px*. Native inputs under custom boxes. `size`
-`md` 20 or `lg` 24. Checkbox supports `indeterminate` and `error`. `RadioGroup` renders a `fieldset` with
-`legend`, takes `value`/`onChange`, `inline`, `error`.
+`20` or `24`. 1.5px Eerie Black border (Jet on hover, Gray X disabled), Jet fill with Figma's 2px white
+check when selected, label Montserrat Regular 15 with an 8px gap. `error` adds a Vermilion ring at 54% and a
+red asterisk; `errorStyle` picks the Figma "error 1" dark bubble (`tooltip`) or the "Error 2" red line
+(`inline`), 2px under the control in Montserrat Light 12. `RadioGroup` renders a `fieldset` with `legend`
+(`hideLabel` to keep it for screen readers only), takes `value`/`onChange`, `size`, `inline`, `error`.
 
 ## Switch
 
-Figma: *Small toggle*, *Default size toggle*, *Big toggle*, *Toggle with label*. `role="switch"` on a
-native checkbox. `size` `sm`/`md`/`lg`, `stateLabels={['On', 'Off']}`, `hideLabel`, `error`.
+Figma: *Small toggle* (`size={20}`, 34 x 20) and *Default size toggle* (`size={24}`, 48 x 24, the default).
+`role="switch"` on a native checkbox. Track and thumb sit at the Figma x positions for on and off; pressing
+stretches the thumb (22 / 28.6px). `loading` spins a ring in the thumb. `error` with `errorStyle`
+(`tooltip` = "Error off", `inline` = "Error on"). The label is hidden by default; `hideLabel={false}` shows
+it to the right.
 
 ## Tabs
 
-Figma: *Tab*, *Tab switcher*. Segmented tabs; the selected tab fills Eerie Black. Arrow keys, Home and End
-move selection (automatic activation). Items can carry `icon`, `disabled` and `content` (renders a
-`tabpanel`). `size` `lg` 48 or `md` 40.
+Figma: *Tab*. Five states: Default (white, Silver Chalice text), Hover (Cultured with a 1px Candy Apple
+underline), Active (Eerie Black, Snow text), Active hover (Jet) and Disabled (Cultured, Gray X). Each tab has
+radius 2 on the left and a 16px Silver Chalice separator on the right. `size` `lg` ("BIG", 48px, Medium 16)
+or `md` ("Default size", 36px or 40px with icons, Medium 14). Items take `iconStart`/`iconEnd`
+(`'arrow-left'`, `'arrow-right'` or any `IconName`), `disabled` and `content` (renders a `tabpanel`). Arrow
+keys, Home and End move selection. `end` holds extra content such as `NewTab`.
+
+## NewTab
+
+Figma: *New Tab*. Default "Add new" with a plus-circle; Hover and Tap (typing a name) on Smoke; Filled and
+Selected (Candy Apple underline) with a trash button; Error with a red underline and message. 220 x 48,
+ABC Favorit Expanded Medium 12/15. `name`, `selected`, `error`, `onCreate`, `onSelect`, `onRemove`.
 
 ## Tooltip
 
@@ -76,9 +91,11 @@ optional `meta` value box. `multiple`, `defaultOpen`. Headers are buttons inside
 
 ## Dialog
 
-Figma: *Popup*, *Popup-Yes no*, and the session-timeout banner. Built on native `<dialog>` (focus trap,
-Escape). Snow panel with a 4px Cultured ring over a 60% Silver Chalice backdrop. `title`, `actions`,
-`size` `sm` 400 / `md` 480 / `lg` 600, `onClose`.
+Figma: *Session Time out* (Banners page). Built on native `<dialog>` (focus trap, Escape). 507px Smoke panel,
+1px white border, radius 12; 64px header with the title centred (ABC Favorit Expanded Medium 14/20) and a
+28px Silver Chalice X; body padding 32 with a 48px icon and a Medium 14/18 description; footer padding
+20/24/20/32 for a 320 x 48 action; 60% Silver Chalice backdrop. `title`, `description`, `icon`, `actions`,
+`onClose`.
 
 ## Slider
 
@@ -87,5 +104,8 @@ track, Candy Apple fill, 30px Snow thumb, pill value bubble. `min`, `max`, `step
 
 ## Icon
 
-52 icons from *Icons → Main icons*, 20px grid, `currentColor`. `<Icon name="search" size={20} />`;
-pass `title` to make it meaningful to screen readers, otherwise it is hidden. `iconNames` lists them all.
+All 164 icons from *Icons → Main icons*, at their native Figma size (most 20 x 20; file formats 24 x 30).
+`<Icon name="search" />`; `size` scales the longer side. Single-ink icons draw in `currentColor`, multicolour
+ones keep their colours (`iconData[name].multicolor`). Pass `title` to make an icon meaningful to screen
+readers, otherwise it is hidden. `iconNames` lists them all; `iconAliases` maps the earlier names
+(`chevron-down` → `down`, `trash` → `trash-bin`, …).

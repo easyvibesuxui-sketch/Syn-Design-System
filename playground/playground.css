@@ -48,7 +48,8 @@ html { scroll-behavior: smooth; scroll-padding-top: 24px; }
 .pg-icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: var(--syn-space-2); }
 .pg-icon { display: flex; flex-direction: column; align-items: center; gap: var(--syn-space-4); padding: var(--syn-space-7) var(--syn-space-2); border-radius: var(--syn-radius-md); color: var(--syn-text-primary); }
 .pg-icon:hover { background: var(--syn-surface-muted); }
-.pg-icon code { font-size: 10px; text-align: center; }
+.pg-icon code { font-size: 10px; text-align: center; word-break: break-word; }
+.pg-icon small { color: var(--syn-text-muted); font-size: 10px; }
 
 @media (max-width: 760px) {
   .pg { grid-template-columns: minmax(0, 1fr); }

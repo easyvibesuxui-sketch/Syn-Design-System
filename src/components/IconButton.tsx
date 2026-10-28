@@ -7,7 +7,7 @@ export interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>
   icon: IconName;
   /** Required: icon-only buttons need an accessible name. */
   label: string;
-  /** sm 24px (inside inputs), md 30px (toasts, dialogs). */
+  /** sm 24px (Figma input "Close button"), md 30px (toasts). Both draw a 16px glyph. */
   size?: 'sm' | 'md';
 }
 
@@ -18,7 +18,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
 ) {
   return (
     <button ref={ref} type={type} aria-label={label} title={label} className={cx('syn-icon-button', `syn-icon-button--${size}`, className)} {...rest}>
-      <Icon name={icon} size={size === 'sm' ? 10 : 12} />
+      <Icon name={icon} size={16} />
     </button>
   );
 });

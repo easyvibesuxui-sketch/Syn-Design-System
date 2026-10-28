@@ -17,13 +17,14 @@ These differ from Figma on purpose. Each one is small and easy to revert in the 
 | Figma | Syn | Why |
 | --- | --- | --- |
 | Names such as "Silver Chalince", "Stile", "Dissabled", "Inavilibility" | `silver-chalice`, `variant`, `disabled` | Spelling in code |
-| Checkbox and radio labels at Montserrat 15px | `body-s-regular` (14/18) | 15px is not on the type scale |
-| Error and toggle captions in Montserrat Light/Thin | Regular | Light and Thin are not in the type tokens and render poorly at 10–12px |
+| Checkbox and radio labels at Montserrat 15px | `label-m` (Regular 15/18) | Kept as drawn |
+| Choice and switch errors in Montserrat Light 12 | `body-xs-light` (Light 12/15) | Kept as drawn |
 | Mixed 2px and 8px radii across input variants | 8px for fields and selects, 2px for list rows | The 8px variants are the majority and match buttons |
 | Icon sizes inside fields of 20 or 24 | 20 | One grid |
 | Button focus drawn as an extra 4px frame around the button | `outline: 1px; outline-offset: 3px` | Same look without changing layout |
-| Field focus as a 2px stroke | 1px border plus 1px inset shadow | Same look without a layout shift |
-| No dark theme defined as variables | `[data-theme="dark"]` semantic overrides | Derived from the on-dark examples on the Colors page |
+| Field focus as a 2px stroke outside | 2px box-shadow outside | Same look without a layout shift |
+| Error input radius 8 at rest, 2 in other states | 8 in every state | The radius jump reads as a glitch |
+| No dark theme in Figma | None | An earlier invented dark theme broke components and was removed |
 
 ## Accessibility findings to raise with design
 
@@ -42,6 +43,5 @@ The values are kept as designed until design decides; they are single-token chan
 ## Not extracted yet
 
 Date picker, time picker and calendar; upload; data sheet; drawer navigation; rating and voting; filter
-button; file-format badges; map; default images; notification centre; 112 of the 164 icons (the rest are
-large or domain-specific). Export more icons by adding their names to the export list and re-running
-`npm run icons` after updating `icons/syn-icons.json`.
+button; map; notification centre. All 164 icons, the 7 file-format badges and the 5 default images are
+exported (`icons/svg`, `assets/`); re-export and run `npm run icons` after updating `icons/syn-icons.json`.

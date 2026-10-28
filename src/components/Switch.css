@@ -1,47 +1,94 @@
-.syn-switch { display: inline-flex; flex-direction: column; gap: var(--syn-space-2); --track-w: 36px; --track-h: 20px; --thumb: 24px; }
-.syn-switch--sm { --track-w: 25px; --track-h: 16px; --thumb: 20px; }
-.syn-switch--lg { --track-w: 50px; --track-h: 30px; --thumb: 32px; }
+/* Figma "Small toggle" (size 20) and "Default size toggle" (size 24). The track and thumb are
+   absolutely placed at the x positions Figma uses for the on and off states. */
+.syn-switch {
+  --track-w: 36px;
+  --track-h: 20px;
+  --track-off-x: 10px;
+  --thumb-w: 24.5px;
+  --thumb-h: 24px;
+  --thumb-on-x: 24px;
+  --thumb-off-x: -1px;
+  --thumb-pressed-w: 28.6px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.syn-switch--20 {
+  --track-w: 24.7px;
+  --track-h: 16px;
+  --track-off-x: 9.3px;
+  --thumb-w: 20px;
+  --thumb-h: 20px;
+  --thumb-on-x: 14.4px;
+  --thumb-off-x: 0px;
+  --thumb-pressed-w: 22px;
+}
 
-.syn-switch__row { display: inline-flex; align-items: center; gap: var(--syn-space-7); color: var(--syn-text-primary); font: var(--syn-type-body-s-regular); cursor: pointer; }
-.syn-switch__state { font: var(--syn-type-body-xs-regular); }
+.syn-switch__row { display: inline-flex; align-items: center; gap: var(--syn-space-4); color: var(--syn-text-primary); font: var(--syn-type-label-m); cursor: pointer; }
 
-.syn-switch__control { position: relative; display: inline-block; flex: none; width: calc(var(--track-w) + var(--thumb) / 2); height: var(--thumb); }
+.syn-switch__control { position: relative; flex: none; width: 48px; height: 24px; }
+.syn-switch--20 .syn-switch__control { width: 34px; height: 20px; }
 .syn-switch__input { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: inherit; }
 
+/* Off: Silver Chalice fill with a Gray X border, shifted right under the thumb. */
 .syn-switch__track {
   position: absolute;
-  top: 50%;
-  left: 0;
+  top: 2px;
+  left: var(--track-off-x);
+  box-sizing: border-box;
   width: var(--track-w);
   height: var(--track-h);
-  border: 1.5px solid var(--syn-action-disabled);
-  border-radius: var(--syn-radius-full);
-  background: var(--syn-action-disabled);
-  transform: translateY(-50%);
-  transition: background-color var(--syn-duration-base), border-color var(--syn-duration-base);
+  border: 1.5px solid var(--syn-color-gray-x);
+  border-radius: 10px;
+  background: var(--syn-color-silver-chalice);
+  transition: left var(--syn-duration-base), background-color var(--syn-duration-base), border-color var(--syn-duration-base);
 }
 .syn-switch__thumb {
   position: absolute;
   top: 0;
-  left: 0;
-  width: var(--thumb);
-  height: var(--thumb);
-  border: 1.5px solid var(--syn-action-disabled);
-  border-radius: var(--syn-radius-full);
+  left: var(--thumb-off-x);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--thumb-w);
+  height: var(--thumb-h);
+  border: 1.5px solid var(--syn-color-gray-x);
+  border-radius: 12px;
   background: var(--syn-color-white);
   box-shadow: var(--syn-shadow-knob);
-  transition: transform var(--syn-duration-base), border-color var(--syn-duration-base);
+  transition: left var(--syn-duration-base), width var(--syn-duration-fast), border-color var(--syn-duration-base);
 }
 
-.syn-switch__input:checked ~ .syn-switch__track { background: var(--syn-action-toggle); border-color: var(--syn-action-toggle); }
-.syn-switch__input:checked ~ .syn-switch__thumb {
-  border-color: var(--syn-action-toggle);
-  transform: translateX(calc(var(--track-w) + var(--thumb) / 2 - var(--thumb)));
-}
-.syn-switch__input:active ~ .syn-switch__thumb { width: calc(var(--thumb) + 2px); }
-.syn-switch__input:focus-visible ~ .syn-switch__track { outline: 1px solid var(--syn-border-strong); outline-offset: 5px; }
+/* On: Dark Sienna track from x0, thumb on the right. */
+.syn-switch__input:checked ~ .syn-switch__track { left: 0; border-color: var(--syn-color-dark-sienna); background: var(--syn-color-dark-sienna); }
+.syn-switch__input:checked ~ .syn-switch__thumb { left: var(--thumb-on-x); border-color: var(--syn-color-dark-sienna); }
 
-.syn-switch.is-invalid .syn-switch__track { border-color: var(--syn-border-error); }
-.syn-switch.is-disabled .syn-switch__row { color: var(--syn-text-disabled); cursor: not-allowed; }
-.syn-switch.is-disabled .syn-switch__input:checked ~ .syn-switch__track { background: var(--syn-action-disabled); border-color: var(--syn-action-disabled); }
-.syn-switch.is-disabled .syn-switch__input:checked ~ .syn-switch__thumb { border-color: var(--syn-action-disabled); }
+/* Pressed: the thumb stretches toward the middle. */
+.syn-switch__input:active:not(:disabled) ~ .syn-switch__thumb { width: var(--thumb-pressed-w); }
+.syn-switch__input:active:not(:disabled):checked ~ .syn-switch__thumb {
+  left: calc(var(--thumb-on-x) + var(--thumb-w) - var(--thumb-pressed-w));
+}
+
+.syn-switch__input:focus-visible ~ .syn-switch__thumb { outline: 1px solid var(--syn-color-eerie-black); outline-offset: 3px; }
+
+/* Disabled: Gray X track and thumb border. */
+.syn-switch.is-disabled .syn-switch__row { cursor: not-allowed; color: var(--syn-color-gray-x); }
+.syn-switch.is-disabled .syn-switch__track,
+.syn-switch.is-disabled .syn-switch__input:checked ~ .syn-switch__track { border-color: var(--syn-color-gray-x); background: var(--syn-color-gray-x); }
+.syn-switch.is-disabled .syn-switch__thumb,
+.syn-switch.is-disabled .syn-switch__input:checked ~ .syn-switch__thumb { border-color: var(--syn-color-gray-x); }
+
+/* Loading: a 0.5px ring spinning inside the thumb. */
+.syn-switch.is-loading .syn-switch__row { cursor: progress; }
+.syn-switch__spinner {
+  width: 12px;
+  height: 12px;
+  border: 0.5px solid transparent;
+  border-top-color: var(--syn-color-silver-chalice);
+  border-right-color: var(--syn-color-silver-chalice);
+  border-radius: var(--syn-radius-full);
+  animation: syn-switch-spin 0.8s linear infinite;
+}
+.syn-switch--24 .syn-switch__spinner { width: 16px; height: 16px; }
+@keyframes syn-switch-spin { to { transform: rotate(360deg); } }

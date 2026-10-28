@@ -28,6 +28,7 @@
   --syn-font-size-6: 20px;
   --syn-font-size-7: 24px;
   --syn-font-size-8: 28px;
+  --syn-font-weight-light: 300;
   --syn-font-weight-regular: 400;
   --syn-font-weight-medium: 500;
   --syn-font-weight-semibold: 600;
@@ -119,31 +120,9 @@
   --syn-type-button-l: 500 16px/1.4 var(--syn-font-family-body);
   --syn-type-button-m: 500 14px/18px var(--syn-font-family-body);
   --syn-type-button-s: 500 12px/1.4 var(--syn-font-family-body);
-}
-
-[data-theme="dark"] {
-  --syn-text-primary: var(--syn-color-cultured);
-  --syn-text-secondary: var(--syn-color-silver-chalice);
-  --syn-text-muted: var(--syn-color-silver-chalice);
-  --syn-text-disabled: #6b7173;
-  --syn-text-inverse: var(--syn-color-eerie-black);
-  --syn-surface-default: var(--syn-color-eerie-black);
-  --syn-surface-raised: var(--syn-color-jet);
-  --syn-surface-subtle: #1f1f1f;
-  --syn-surface-muted: var(--syn-color-jet);
-  --syn-surface-highlight: #3a1f1d;
-  --syn-surface-inverse: var(--syn-color-cultured);
-  --syn-surface-inverse-subtle: var(--syn-color-white);
-  --syn-surface-overlay: rgba(21, 21, 21, 0.7);
-  --syn-border-default: var(--syn-color-jet);
-  --syn-border-strong: var(--syn-color-cultured);
-  --syn-border-muted: #5a5f61;
-  --syn-border-disabled: #4a4f51;
-  --syn-action-primary: var(--syn-color-white);
-  --syn-action-primary-text: var(--syn-color-candy-apple);
-  --syn-action-selected: var(--syn-color-cultured);
-  --syn-action-ghost: rgba(255, 255, 255, 0.06);
-  --syn-action-ghost-hover: rgba(255, 255, 255, 0.12);
+  --syn-type-label-m: 400 15px/18px var(--syn-font-family-body);
+  --syn-type-body-xs-light: 300 12px/15px var(--syn-font-family-body);
+  --syn-type-body-l-regular: 400 18px/22px var(--syn-font-family-body);
 }
 
 .syn-text-display-1 { font: var(--syn-type-display-1); }
@@ -170,3 +149,6 @@
 .syn-text-button-l { font: var(--syn-type-button-l); }
 .syn-text-button-m { font: var(--syn-type-button-m); }
 .syn-text-button-s { font: var(--syn-type-button-s); }
+.syn-text-label-m { font: var(--syn-type-label-m); }
+.syn-text-body-xs-light { font: var(--syn-type-body-xs-light); }
+.syn-text-body-l-regular { font: var(--syn-type-body-l-regular); }

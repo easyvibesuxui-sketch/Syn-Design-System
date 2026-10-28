@@ -7,7 +7,7 @@
   border: 0;
   border-radius: var(--syn-radius-full);
   background: var(--syn-action-ghost);
-  color: var(--syn-text-secondary);
+  color: var(--syn-color-eerie-black);
   cursor: pointer;
   transition: background-color var(--syn-duration-fast);
 }
