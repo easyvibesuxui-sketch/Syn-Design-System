@@ -2,9 +2,9 @@
 .syn-select__trigger { width: 100%; margin: 0; border: 0; gap: var(--syn-space-6); text-align: left; cursor: pointer; font: inherit; }
 .syn-select__trigger:focus-visible { outline: none; }
 .syn-select.is-open .syn-select__trigger { box-shadow: 0 0 0 2px var(--syn-border-strong); }
-.syn-select__value { flex: none; min-width: 0; overflow: hidden; color: var(--syn-text-primary); font: var(--syn-type-body-m-regular); white-space: nowrap; text-overflow: ellipsis; }
-.syn-field--md .syn-select__value, .syn-field--sm .syn-select__value { font: var(--syn-type-body-s-regular); }
-.syn-field--xs .syn-select__value { font: var(--syn-type-body-xs-regular); }
+.syn-select__value { flex: none; min-width: 0; overflow: hidden; color: var(--syn-text-primary); font: var(--syn-type-text-body-m-2); white-space: nowrap; text-overflow: ellipsis; }
+.syn-field--md .syn-select__value, .syn-field--sm .syn-select__value { font: var(--syn-type-text-body-s-2); }
+.syn-field--xs .syn-select__value { font: var(--syn-type-text-body-xs-2); }
 .syn-select--label .syn-select__value { font: var(--field-value); }
 .syn-field--xs .syn-select__chevron { width: 16px; height: 16px; }
 .syn-select__value.is-placeholder { color: var(--syn-text-muted); }
@@ -28,7 +28,7 @@
 
 .syn-select__list {
   position: absolute;
-  top: calc(100% + var(--syn-gap-dropdown));
+  top: calc(100% + var(--syn-space-2));
   left: 0;
   right: 0;
   z-index: 20;
@@ -50,9 +50,9 @@
   min-height: var(--syn-size-control-md);
   padding: var(--syn-space-10) var(--syn-space-8);
   color: var(--syn-text-secondary);
-  font: var(--syn-type-body-m-regular);
+  font: var(--syn-type-text-body-m-2);
   cursor: pointer;
 }
 .syn-select__option.is-active { background: var(--syn-surface-highlight); color: var(--syn-text-primary); }
-.syn-select__option[aria-selected='true'] { color: var(--syn-text-primary); font: var(--syn-type-body-m); }
+.syn-select__option[aria-selected='true'] { color: var(--syn-text-primary); font: var(--syn-type-text-body-m); }
 .syn-select__option[aria-disabled='true'] { color: var(--syn-text-disabled); cursor: not-allowed; }

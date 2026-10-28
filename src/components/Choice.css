@@ -6,7 +6,7 @@
   align-items: center;
   gap: var(--syn-space-8);
   color: var(--syn-text-primary);
-  font: var(--syn-type-label-m);
+  font: var(--syn-type-components-choice-label);
   cursor: pointer;
 }
 .syn-choice__input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: inherit; }
@@ -18,10 +18,10 @@
   box-sizing: border-box;
   width: 20px;
   height: 20px;
-  border: 1.5px solid var(--syn-color-eerie-black);
+  border: 1.5px solid var(--syn-color-black-eerie-black);
   border-radius: var(--syn-radius-xs);
   background: transparent;
-  color: var(--syn-color-white);
+  color: var(--syn-color-white-white);
   transition: background-color var(--syn-duration-fast), border-color var(--syn-duration-fast);
 }
 .syn-choice--24 .syn-choice__box { width: 24px; height: 24px; }
@@ -32,12 +32,12 @@
 /* The check is positioned from the outer edge of the box, as in Figma. */
 .syn-choice__mark { position: absolute; display: none; margin: -1.5px 0 0 -1.5px; }
 
-.syn-choice__row:hover { color: var(--syn-color-jet); }
-.syn-choice__row:hover .syn-choice__box { border-color: var(--syn-color-jet); }
+.syn-choice__row:hover { color: var(--syn-color-secondary-jet); }
+.syn-choice__row:hover .syn-choice__box { border-color: var(--syn-color-secondary-jet); }
 
-.syn-choice__input:checked + .syn-choice__box--check { border-color: var(--syn-color-eerie-black); background: var(--syn-color-jet); }
+.syn-choice__input:checked + .syn-choice__box--check { border-color: var(--syn-color-black-eerie-black); background: var(--syn-action-selected); }
 .syn-choice__input:checked + .syn-choice__box .syn-choice__mark { display: block; }
-.syn-choice__row:hover .syn-choice__input:checked + .syn-choice__box--check { border-color: var(--syn-color-jet); }
+.syn-choice__row:hover .syn-choice__input:checked + .syn-choice__box--check { border-color: var(--syn-color-secondary-jet); }
 
 /* Radio dot: 12px in the 20px circle, 16px in the 24px circle. */
 .syn-choice__box--radio::after {
@@ -48,27 +48,27 @@
   width: 12px;
   height: 12px;
   border-radius: var(--syn-radius-full);
-  background: var(--syn-color-eerie-black);
+  background: var(--syn-color-black-eerie-black);
   transform: translate(-50%, -50%) scale(0);
   transition: transform var(--syn-duration-fast);
 }
 .syn-choice--24 .syn-choice__box--radio::after { width: 16px; height: 16px; }
 .syn-choice__input:checked + .syn-choice__box--radio::after { transform: translate(-50%, -50%) scale(1); }
-.syn-choice__row:hover .syn-choice__box--radio::after { background: var(--syn-color-jet); }
+.syn-choice__row:hover .syn-choice__box--radio::after { background: var(--syn-color-secondary-jet); }
 
-.syn-choice__input:focus-visible + .syn-choice__box { outline: 1px solid var(--syn-color-eerie-black); outline-offset: 2px; }
+.syn-choice__input:focus-visible + .syn-choice__box { outline: 1px solid var(--syn-color-black-eerie-black); outline-offset: 2px; }
 
 /* Error: Eerie Black border with a Vermilion ring at 54% just inside it, and a red asterisk on the label. */
-.syn-choice.is-invalid .syn-choice__box { border-color: var(--syn-color-eerie-black); box-shadow: inset 0 0 0 1px rgba(236, 8, 8, 0.54); }
+.syn-choice.is-invalid .syn-choice__box { border-color: var(--syn-color-black-eerie-black); box-shadow: inset 0 0 0 1px rgba(236, 8, 8, 0.54); }
 .syn-choice.is-invalid .syn-choice__box--radio { border-width: 1px; }
-.syn-choice__required { color: var(--syn-color-vermilion); }
+.syn-choice__required { color: var(--syn-color-error-vermilion); }
 
-.syn-choice.is-disabled .syn-choice__row { color: var(--syn-color-gray-x); cursor: not-allowed; }
-.syn-choice.is-disabled .syn-choice__box { border-color: var(--syn-color-gray-x); }
-.syn-choice.is-disabled .syn-choice__input:checked + .syn-choice__box--check { background: var(--syn-color-gray-x); }
-.syn-choice.is-disabled .syn-choice__box--radio::after { background: var(--syn-color-gray-x); }
+.syn-choice.is-disabled .syn-choice__row { color: var(--syn-color-disabled-gray-x); cursor: not-allowed; }
+.syn-choice.is-disabled .syn-choice__box { border-color: var(--syn-color-disabled-gray-x); }
+.syn-choice.is-disabled .syn-choice__input:checked + .syn-choice__box--check { background: var(--syn-color-disabled-gray-x); }
+.syn-choice.is-disabled .syn-choice__box--radio::after { background: var(--syn-color-disabled-gray-x); }
 
 .syn-radio-group { display: flex; flex-direction: column; align-items: flex-start; margin: 0; padding: 0; border: 0; min-width: 0; }
-.syn-radio-group__legend { margin-bottom: var(--syn-space-8); padding: 0; color: var(--syn-text-primary); font: var(--syn-type-title-8); }
+.syn-radio-group__legend { margin-bottom: var(--syn-space-8); padding: 0; color: var(--syn-text-primary); font: var(--syn-type-titles-title-8); }
 .syn-radio-group__options { display: flex; flex-direction: column; gap: var(--syn-space-12); }
 .syn-radio-group--inline .syn-radio-group__options { flex-direction: row; flex-wrap: wrap; gap: var(--syn-space-24); }

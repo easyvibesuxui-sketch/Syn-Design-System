@@ -13,7 +13,7 @@
 .syn-checklist-item__main { display: flex; align-items: flex-start; gap: var(--syn-space-8); }
 .syn-checklist-item__check { flex: 1; min-width: 0; }
 .syn-checklist-item__check .syn-choice__row { align-items: flex-start; }
-.syn-checklist-item__check .syn-choice__label { font: var(--syn-type-body-s-regular); }
+.syn-checklist-item__check .syn-choice__label { font: var(--syn-type-text-body-s-2); }
 .syn-checklist-item__check.has-hidden-label { flex: none; }
 .syn-checklist-item__check.has-hidden-label .syn-choice__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .syn-checklist-item__editor { flex: 1; min-width: 0; }

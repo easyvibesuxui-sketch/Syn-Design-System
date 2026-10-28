@@ -20,10 +20,10 @@
 
 .syn-notification__icon { flex: none; color: var(--tone); }
 .syn-notification__body { display: flex; flex: 1; flex-direction: column; gap: var(--syn-space-6); min-width: 0; }
-.syn-notification__title { margin: 0; font: var(--syn-type-title-8); }
-.syn-notification__message { font: var(--syn-type-body-xs-regular); }
+.syn-notification__title { margin: 0; font: var(--syn-type-titles-title-8); }
+.syn-notification__message { font: var(--syn-type-text-body-xs-2); }
 .syn-notification__message > p { margin: 0; }
-.syn-notification__time { margin: 0; color: var(--syn-text-secondary); font: var(--syn-type-body-xs-regular); }
+.syn-notification__time { margin: 0; color: var(--syn-text-secondary); font: var(--syn-type-text-body-xs-2); }
 
 .syn-notification--inline { align-items: center; }
 .syn-notification--toast { width: 320px; max-width: 100%; padding: var(--syn-space-10) var(--syn-space-8) var(--syn-space-10) var(--syn-space-16); gap: var(--syn-space-12); }

@@ -3,24 +3,25 @@
 export const tokens = {
   "primitive": {
     "color": {
-      "candy-apple": "#ff1900",
-      "dark-sienna": "#411817",
-      "jet": "#343434",
-      "silver-chalice": "#a7b0b3",
-      "amber": "#fe7d00",
-      "dodger-blue": "#459af7",
-      "xanthous": "#f4b642",
-      "eerie-black": "#151515",
-      "cultured": "#f1f1f1",
-      "misty-rose": "#ffe7e5",
-      "snow": "#fffcfc",
-      "smoke": "#fbfbfb",
-      "vermilion": "#ec0808",
-      "honey": "#ffb30f",
-      "mantis": "#71c562",
-      "gray-x": "#b9b9b9",
-      "white": "#ffffff",
-      "ghost": "#f1f5f8"
+      "primary-candy-apple": "#ff1900",
+      "secondary-dark-sienna": "#411817",
+      "secondary-jet": "#343434",
+      "secondary-silver-chalince": "#a7b0b3",
+      "secondary-amber": "#fe7d00",
+      "secondary-dodger-blue": "#459af7",
+      "secondary-xanthous": "#f4b642",
+      "black-eerie-black": "#151515",
+      "grey-cultured": "#f1f1f1",
+      "light-misty-rose": "#ffe7e5",
+      "light-snow": "#fffcfc",
+      "light-smoke": "#fbfbfb",
+      "error-vermilion": "#ec0808",
+      "pending-honey": "#ffb30f",
+      "success-mantis": "#71c562",
+      "disabled-gray-x": "#b9b9b9",
+      "white-white": "#ffffff",
+      "unnamed-colors-ghost": "#f1f5f8",
+      "unnamed-colors-unnamed-red": "#ff2f00"
     },
     "font": {
       "family": {
@@ -67,9 +68,9 @@ export const tokens = {
     },
     "radius": {
       "xs": "2px",
-      "md": "8px",
-      "lg": "12px",
-      "xl": "48px",
+      "element": "8px",
+      "widget": "12px",
+      "drawer": "48px",
       "full": "999px"
     },
     "size": {
@@ -88,11 +89,12 @@ export const tokens = {
     },
     "shadow": {
       "float": "4px 4px 40px rgba(21, 21, 21, 0.14)",
-      "knob": "3px 3px 6px rgba(65, 24, 24, 0.10)"
+      "knob": "3px 3px 6px rgba(65, 24, 24, 0.10)",
+      "default": "1px 3px 6px rgba(21, 21, 21, 0.08)",
+      "hover": "1px 3px 6px rgba(21, 21, 21, 0.16)"
     },
     "opacity": {
-      "hover": 0.74,
-      "overlay": 0.6
+      "hover": 0.74
     },
     "duration": {
       "fast": "120ms",
@@ -146,178 +148,186 @@ export const tokens = {
         "progress": "#fe7d00"
       }
     },
-    "radius": {
-      "element": "8px",
-      "widget": "12px",
-      "page": "12px",
-      "drawer": "48px"
-    },
-    "gap": {
-      "dropdown": "2px",
-      "message": "2px"
-    },
     "typography": {
-      "display-1": {
+      "titles-display-1": {
         "fontFamily": "Montserrat, system-ui, sans-serif",
         "fontWeight": 600,
         "fontSize": "28px",
         "lineHeight": "34px"
       },
-      "display-2": {
+      "titles-display-2": {
         "fontFamily": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "24px",
         "lineHeight": "32px"
       },
-      "title-1": {
+      "titles-title-1": {
         "fontFamily": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "20px",
         "lineHeight": "24px"
       },
-      "title-2": {
+      "titles-title-2": {
         "fontFamily": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "18px",
         "lineHeight": "22px"
       },
-      "title-3": {
+      "titles-title-3": {
         "fontFamily": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "16px",
         "lineHeight": "20px"
       },
-      "title-4": {
+      "titles-title-4": {
         "fontFamily": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "14px",
         "lineHeight": "20px"
       },
-      "title-5": {
+      "titles-title-5": {
         "fontFamily": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "12px",
         "lineHeight": "15px"
       },
-      "title-6": {
+      "titles-title-6": {
         "fontFamily": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "10px",
         "lineHeight": "15px"
       },
-      "title-7": {
+      "titles-title-7": {
         "fontFamily": "Montserrat, system-ui, sans-serif",
         "fontWeight": 600,
         "fontSize": "18px",
         "lineHeight": "20px"
       },
-      "title-8": {
+      "titles-title-8": {
         "fontFamily": "Montserrat, system-ui, sans-serif",
         "fontWeight": 600,
         "fontSize": "14px",
         "lineHeight": "20px"
       },
-      "body-l": {
+      "text-body-l": {
         "fontFamily": "Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "18px",
         "lineHeight": "22px"
       },
-      "body-m": {
+      "text-body-m": {
         "fontFamily": "Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "16px",
         "lineHeight": "1.4"
       },
-      "body-m-regular": {
+      "text-body-m-2": {
         "fontFamily": "Montserrat, system-ui, sans-serif",
         "fontWeight": 400,
         "fontSize": "16px",
         "lineHeight": "1.4"
       },
-      "body-s": {
+      "text-body-s": {
         "fontFamily": "Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "14px",
         "lineHeight": "18px"
       },
-      "body-s-regular": {
+      "text-body-s-2": {
         "fontFamily": "Montserrat, system-ui, sans-serif",
         "fontWeight": 400,
         "fontSize": "14px",
         "lineHeight": "18px"
       },
-      "body-xs": {
+      "text-body-xs": {
         "fontFamily": "Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "12px",
         "lineHeight": "1.4"
       },
-      "body-xs-regular": {
+      "text-body-xs-2": {
         "fontFamily": "Montserrat, system-ui, sans-serif",
         "fontWeight": 400,
         "fontSize": "12px",
         "lineHeight": "15px"
       },
-      "caption-1": {
+      "text-caption-1": {
         "fontFamily": "Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "10px",
         "lineHeight": "1.4"
       },
-      "caption-2": {
+      "text-caption-2": {
         "fontFamily": "Montserrat, system-ui, sans-serif",
         "fontWeight": 400,
         "fontSize": "10px",
         "lineHeight": "15px"
       },
-      "button-highlight-l": {
+      "button-text-button-highlighted-large": {
         "fontFamily": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "18px",
         "lineHeight": "1.4"
       },
-      "button-highlight-m": {
+      "button-text-button-highlighted-medium": {
         "fontFamily": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "16px",
         "lineHeight": "1.4"
       },
-      "button-l": {
+      "button-text-button-secondary-large": {
         "fontFamily": "Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "16px",
         "lineHeight": "1.4"
       },
-      "button-m": {
+      "button-text-button-secondary-m": {
         "fontFamily": "Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "14px",
         "lineHeight": "18px"
       },
-      "button-s": {
+      "button-text-button-secondary-s": {
         "fontFamily": "Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "12px",
         "lineHeight": "1.4"
       },
-      "label-m": {
+      "components-choice-label": {
         "fontFamily": "Montserrat, system-ui, sans-serif",
         "fontWeight": 400,
         "fontSize": "15px",
         "lineHeight": "18px"
       },
-      "body-xs-light": {
+      "components-choice-error": {
         "fontFamily": "Montserrat, system-ui, sans-serif",
         "fontWeight": 300,
         "fontSize": "12px",
         "lineHeight": "15px"
       },
-      "body-l-regular": {
+      "components-error-input-placeholder": {
         "fontFamily": "Montserrat, system-ui, sans-serif",
         "fontWeight": 400,
         "fontSize": "18px",
         "lineHeight": "22px"
+      },
+      "text-body-link-12": {
+        "fontFamily": "Montserrat, system-ui, sans-serif",
+        "fontWeight": 500,
+        "fontSize": "12px",
+        "lineHeight": "1.4"
+      },
+      "text-body-link-14": {
+        "fontFamily": "Montserrat, system-ui, sans-serif",
+        "fontWeight": 500,
+        "fontSize": "14px",
+        "lineHeight": "1.4"
+      },
+      "button-text-button-secondary-s2": {
+        "fontFamily": "Montserrat, system-ui, sans-serif",
+        "fontWeight": 400,
+        "fontSize": "12px",
+        "lineHeight": "1.4"
       }
     }
   }

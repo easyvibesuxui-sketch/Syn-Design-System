@@ -9,7 +9,7 @@
 }
 
 .syn-root {
-  font: var(--syn-type-body-s-regular);
+  font: var(--syn-type-text-body-s-2);
   color: var(--syn-text-primary);
   background: var(--syn-surface-default);
   -webkit-font-smoothing: antialiased;

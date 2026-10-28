@@ -24,7 +24,7 @@
   --thumb-pressed-w: 24px;
 }
 
-.syn-switch__row { display: inline-flex; align-items: center; gap: var(--syn-space-8); color: var(--syn-text-primary); font: var(--syn-type-label-m); cursor: pointer; }
+.syn-switch__row { display: inline-flex; align-items: center; gap: var(--syn-space-8); color: var(--syn-text-primary); font: var(--syn-type-components-choice-label); cursor: pointer; }
 
 .syn-switch__control { position: relative; flex: none; width: 48px; height: 24px; }
 .syn-switch--20 .syn-switch__control { width: 32px; height: 20px; }
@@ -38,9 +38,9 @@
   box-sizing: border-box;
   width: var(--track-w);
   height: var(--track-h);
-  border: 1.5px solid var(--syn-color-gray-x);
+  border: 1.5px solid var(--syn-color-disabled-gray-x);
   border-radius: 10px;
-  background: var(--syn-color-silver-chalice);
+  background: var(--syn-color-secondary-silver-chalince);
   transition: left var(--syn-duration-base), background-color var(--syn-duration-base), border-color var(--syn-duration-base);
 }
 .syn-switch__thumb {
@@ -53,16 +53,16 @@
   box-sizing: border-box;
   width: var(--thumb-w);
   height: var(--thumb-h);
-  border: 1.5px solid var(--syn-color-gray-x);
+  border: 1.5px solid var(--syn-color-disabled-gray-x);
   border-radius: 12px;
-  background: var(--syn-color-white);
+  background: var(--syn-color-white-white);
   box-shadow: var(--syn-shadow-knob);
   transition: left var(--syn-duration-base), width var(--syn-duration-fast), border-color var(--syn-duration-base);
 }
 
 /* On: Dark Sienna track from x0, thumb on the right. */
-.syn-switch__input:checked ~ .syn-switch__track { left: 0; border-color: var(--syn-color-dark-sienna); background: var(--syn-color-dark-sienna); }
-.syn-switch__input:checked ~ .syn-switch__thumb { left: var(--thumb-on-x); border-color: var(--syn-color-dark-sienna); }
+.syn-switch__input:checked ~ .syn-switch__track { left: 0; border-color: var(--syn-action-toggle); background: var(--syn-action-toggle); }
+.syn-switch__input:checked ~ .syn-switch__thumb { left: var(--thumb-on-x); border-color: var(--syn-action-toggle); }
 
 /* Pressed: the thumb stretches toward the middle. */
 .syn-switch__input:active:not(:disabled) ~ .syn-switch__thumb { width: var(--thumb-pressed-w); }
@@ -70,14 +70,14 @@
   left: calc(var(--thumb-on-x) + var(--thumb-w) - var(--thumb-pressed-w));
 }
 
-.syn-switch__input:focus-visible ~ .syn-switch__thumb { outline: 1px solid var(--syn-color-eerie-black); outline-offset: 2px; }
+.syn-switch__input:focus-visible ~ .syn-switch__thumb { outline: 1px solid var(--syn-color-black-eerie-black); outline-offset: 2px; }
 
 /* Disabled: Gray X track and thumb border. */
-.syn-switch.is-disabled .syn-switch__row { cursor: not-allowed; color: var(--syn-color-gray-x); }
+.syn-switch.is-disabled .syn-switch__row { cursor: not-allowed; color: var(--syn-color-disabled-gray-x); }
 .syn-switch.is-disabled .syn-switch__track,
-.syn-switch.is-disabled .syn-switch__input:checked ~ .syn-switch__track { border-color: var(--syn-color-gray-x); background: var(--syn-color-gray-x); }
+.syn-switch.is-disabled .syn-switch__input:checked ~ .syn-switch__track { border-color: var(--syn-color-disabled-gray-x); background: var(--syn-color-disabled-gray-x); }
 .syn-switch.is-disabled .syn-switch__thumb,
-.syn-switch.is-disabled .syn-switch__input:checked ~ .syn-switch__thumb { border-color: var(--syn-color-gray-x); }
+.syn-switch.is-disabled .syn-switch__input:checked ~ .syn-switch__thumb { border-color: var(--syn-color-disabled-gray-x); }
 
 /* Loading: a 0.5px ring spinning inside the thumb. */
 .syn-switch.is-loading .syn-switch__row { cursor: progress; }
@@ -85,8 +85,8 @@
   width: 12px;
   height: 12px;
   border: 0.5px solid transparent;
-  border-top-color: var(--syn-color-silver-chalice);
-  border-right-color: var(--syn-color-silver-chalice);
+  border-top-color: var(--syn-color-secondary-silver-chalince);
+  border-right-color: var(--syn-color-secondary-silver-chalince);
   border-radius: var(--syn-radius-full);
   animation: syn-switch-spin 0.8s linear infinite;
 }
@@ -94,4 +94,4 @@
 @keyframes syn-switch-spin { to { transform: rotate(360deg); } }
 
 /* Off / on words beside the toggle (record drawer custom fields): ABC Favorit Expanded Medium 12. */
-.syn-switch__state { color: var(--syn-text-primary); font: var(--syn-type-title-5); }
+.syn-switch__state { color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }

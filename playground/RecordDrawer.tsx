@@ -67,7 +67,7 @@ export function RecordDrawer({ open, onClose }: { open: boolean; onClose: () => 
       onClose={onClose}
       label="Hydraulic pipe problem"
       headerStart={<>
-        <Tag color="var(--syn-color-mantis)" icon="dublecheck">Completed</Tag>
+        <Tag color="var(--syn-color-success-mantis)" icon="dublecheck">Completed</Tag>
         <span className="rd-id"><Icon name="settings" size={16} />DR-12457</span>
       </>}
       headerActions={<>
@@ -91,10 +91,10 @@ export function RecordDrawer({ open, onClose }: { open: boolean; onClose: () => 
       </DrawerRow>
 
       {/* Properties */}
-      <DrawerRow end={<Property label="Assignee" icon="person" className="rd-end"><Tag color="var(--syn-color-dodger-blue)" shape="rounded">Max Mustermann</Tag></Property>}>
+      <DrawerRow end={<Property label="Assignee" icon="person" className="rd-end"><Tag color="var(--syn-color-secondary-dodger-blue)" shape="rounded">Max Mustermann</Tag></Property>}>
         <Grid gap={24}>
           <GridItem span={3} spanSm={6}><Property label="Condition" icon="maintenance"><Tag variant="outline" shape="rounded" icon="cant-work">Can’t work</Tag></Property></GridItem>
-          <GridItem span={3} spanSm={6}><Property label="Priority" icon="up"><Tag color="var(--syn-color-candy-apple)" shape="rounded" icon="critical">Blocker</Tag></Property></GridItem>
+          <GridItem span={3} spanSm={6}><Property label="Priority" icon="up"><Tag color="var(--syn-color-primary-candy-apple)" shape="rounded" icon="critical">Blocker</Tag></Property></GridItem>
           <GridItem span={3} spanSm={6}><Property label="Insurance case" icon="insurance"><strong className="rd-strong">Yes</strong></Property></GridItem>
           <GridItem span={3} spanSm={6}><Property label="Due date" icon="calendar"><Tag variant="soft">01.02.2026 14:48</Tag></Property></GridItem>
         </Grid>
@@ -246,7 +246,7 @@ export function RecordDrawer({ open, onClose }: { open: boolean; onClose: () => 
             { key: 'total', header: 'Total', render: (r) => <Value unit="Eur">{r.amount * r.price}</Value> },
             {
               key: 'file', header: 'File',
-              render: (r) => (r.file ? <Tag color="var(--syn-color-amber)" onClick={none}>PDF</Tag> : <IconButton icon="plus-in-circle" label={`Add file to ${r.name}`} className="rd-add-file" />),
+              render: (r) => (r.file ? <Tag color="var(--syn-color-secondary-amber)" onClick={none}>PDF</Tag> : <IconButton icon="plus-in-circle" label={`Add file to ${r.name}`} className="rd-add-file" />),
             },
           ]}
           rowActions={(r) => <More label={`${r.name} actions`} />}
@@ -269,7 +269,7 @@ export function RecordDrawer({ open, onClose }: { open: boolean; onClose: () => 
               author="Max Mustermann" date="11.01.2025" time="12:23"
               actions={<More label="Comment actions" />}
               footer={<>
-                <Tag color="var(--syn-color-amber)" removeIcon="x-in-circle" onRemove={none} removeLabel="Remove PDF">PDF</Tag>
+                <Tag color="var(--syn-color-secondary-amber)" removeIcon="x-in-circle" onRemove={none} removeLabel="Remove PDF">PDF</Tag>
                 <Button size="xs" shape="pill" className="rd-reply">Reply</Button>
               </>}
             >
@@ -299,7 +299,7 @@ export function RecordDrawer({ open, onClose }: { open: boolean; onClose: () => 
             <Comment
               author="Lukas Müller" date="13.01.2025" time="14:15"
               footer={<>
-                <Tag color="var(--syn-color-amber)" removeIcon="x-in-circle" onRemove={none} removeLabel="Remove PDF">PDF</Tag>
+                <Tag color="var(--syn-color-secondary-amber)" removeIcon="x-in-circle" onRemove={none} removeLabel="Remove PDF">PDF</Tag>
                 <Button size="xs" shape="pill" className="rd-reply">Reply</Button>
               </>}
             >

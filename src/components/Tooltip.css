@@ -7,7 +7,7 @@
   max-width: 240px;
   padding: var(--syn-space-8) var(--syn-space-12);
   border-radius: var(--syn-radius-element);
-  font: var(--syn-type-body-s-regular);
+  font: var(--syn-type-text-body-s-2);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;

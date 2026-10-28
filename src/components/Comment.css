@@ -2,9 +2,9 @@
 .syn-comment { display: grid; grid-template-columns: 24px minmax(0, 1fr); column-gap: var(--syn-space-16); }
 .syn-comment__head { display: flex; grid-column: 1 / -1; align-items: center; gap: var(--syn-space-12); min-width: 0; }
 .syn-comment__head .syn-avatar { margin-right: var(--syn-space-4); }
-.syn-comment__author { color: var(--syn-text-primary); font: var(--syn-type-title-5); }
-.syn-comment__date { color: var(--syn-text-primary); font: var(--syn-type-body-xs-regular); }
-.syn-comment__time { margin-left: calc(var(--syn-space-4) * -1); color: var(--syn-text-muted); font: var(--syn-type-body-xs-regular); }
+.syn-comment__author { color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
+.syn-comment__date { color: var(--syn-text-primary); font: var(--syn-type-text-body-xs-2); }
+.syn-comment__time { margin-left: calc(var(--syn-space-4) * -1); color: var(--syn-text-muted); font: var(--syn-type-text-body-xs-2); }
 .syn-comment__actions { display: flex; gap: var(--syn-space-8); margin-left: auto; }
 
 .syn-comment__body { position: relative; grid-column: 2; display: flex; flex-direction: column; gap: var(--syn-space-8); margin-top: var(--syn-space-12); }
@@ -15,7 +15,7 @@
   border-radius: var(--syn-radius-element);
   background: var(--syn-surface-default);
   color: var(--syn-text-primary);
-  font: var(--syn-type-body-xs-regular);
+  font: var(--syn-type-text-body-xs-2);
   overflow-wrap: anywhere;
 }
 .syn-comment__bubble.is-active { border-color: var(--syn-border-strong); }
@@ -35,7 +35,7 @@
 .syn-comment-reply::before { content: ''; position: absolute; top: 0; bottom: 0; left: 0; border-left: 1px solid var(--syn-border-muted); }
 .syn-comment-reply:last-child::before { bottom: auto; height: 28px; }
 .syn-comment-reply::after { content: ''; position: absolute; top: 28px; left: 0; width: 52px; border-top: 1px solid var(--syn-border-muted); }
-.syn-comment-reply__content { flex: 1; min-width: 0; min-height: 24px; padding-top: var(--syn-space-4); color: var(--syn-text-primary); font: var(--syn-type-body-xs-regular); overflow: hidden; text-overflow: ellipsis; }
+.syn-comment-reply__content { flex: 1; min-width: 0; min-height: 24px; padding-top: var(--syn-space-4); color: var(--syn-text-primary); font: var(--syn-type-text-body-xs-2); overflow: hidden; text-overflow: ellipsis; }
 .syn-comment-reply__end { flex: none; }
 
 /* Editor: Discard on the left, the 96 x 36 Amber Save on the right, 12px under the text area. */

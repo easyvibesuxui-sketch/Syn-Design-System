@@ -16,9 +16,14 @@ These differ from Figma on purpose. Each one is small and easy to revert in the 
 
 | Figma | Syn | Why |
 | --- | --- | --- |
-| Names such as "Silver Chalince", "Stile", "Dissabled", "Inavilibility" | `silver-chalice`, `variant`, `disabled` | Spelling in code |
-| Checkbox and radio labels at Montserrat 15px | `label-m` (Regular 15/18) | Kept as drawn |
-| Choice and switch errors in Montserrat Light 12 | `body-xs-light` (Light 12/15) | Kept as drawn |
+| Colour and text-style names | Kept exactly, as kebab-case paths: `Secondary/Silver Chalince` → `--syn-color-secondary-silver-chalince`, `Text/Body S 2` → `--syn-type-text-body-s-2` | So code and Figma use the same names (the "Chalince" spelling included) |
+| Component property names such as "Stile", "Dissabled" | `variant`, `disabled` | Spelling in code |
+| Checkbox and radio labels at Montserrat 15px (no text style) | `components-choice-label` (Regular 15/18) | Kept as drawn |
+| Choice and switch errors in Montserrat Light 12 (no text style) | `components-choice-error` (Light 12/15) | Kept as drawn |
+| Type Primitives `Font Weight/Light = 700` | `--syn-font-weight-light: 300` | The Light layers in Figma are 300; the variable looks like a typo |
+| Two "Jet" paint styles (one empty, unused) | One `--syn-color-secondary-jet` | Duplicate in Figma |
+| "File formats=Orange" icon identical to "Gray" | One drawing, `file-formats-orange` kept as an alias | Duplicate in Figma |
+| `#f1f5f8` close-button fill, not a Figma variable | `--syn-color-unnamed-colors-ghost` | Needed by IconButton |
 | Mixed 2px and 8px radii across elements | 8px on every element (fields, selects, buttons, tabs, tooltips, chips), 12px on widgets | Design rule: elements 8, large widgets and pages 12 |
 | Icon sizes inside fields of 20 or 24 | 20 | One grid |
 | Button focus drawn as an extra 4px frame around the button | `outline: 1px; outline-offset: 2px` | Same look without changing layout; 2px keeps to even sizes |

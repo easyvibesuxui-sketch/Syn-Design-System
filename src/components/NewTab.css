@@ -9,8 +9,8 @@
   width: 224px;
   height: 48px;
   padding: 10px 8px;
-  background: var(--syn-color-white);
-  font: var(--syn-type-title-5);
+  background: var(--syn-color-white-white);
+  font: var(--syn-type-titles-title-5);
 }
 .syn-new-tab::after {
   content: '';
@@ -19,21 +19,21 @@
   right: 0;
   width: 1px;
   height: 16px;
-  background: var(--syn-color-silver-chalice);
+  background: var(--syn-color-secondary-silver-chalince);
   transform: translateY(-50%);
 }
 .syn-new-tab:hover,
-.syn-new-tab.is-editing { background: var(--syn-color-smoke); }
-.syn-new-tab.is-filled { background: var(--syn-color-white); }
-.syn-new-tab.is-selected { box-shadow: inset 0 -1px 0 var(--syn-color-candy-apple); }
+.syn-new-tab.is-editing { background: var(--syn-color-light-smoke); }
+.syn-new-tab.is-filled { background: var(--syn-color-white-white); }
+.syn-new-tab.is-selected { box-shadow: inset 0 -1px 0 var(--syn-color-primary-candy-apple); }
 
 .syn-new-tab button { margin: 0; padding: 0; border: 0; background: none; font: inherit; cursor: pointer; }
-.syn-new-tab button:focus-visible { outline: 1px solid var(--syn-color-eerie-black); outline-offset: 2px; }
+.syn-new-tab button:focus-visible { outline: 1px solid var(--syn-color-black-eerie-black); outline-offset: 2px; }
 
 /* Default: plus-circle icon, 6px gap, "Add new" in ABC Favorit Expanded Medium 12/15. */
-.syn-new-tab__add { display: inline-flex; align-items: center; gap: var(--syn-space-6); color: var(--syn-color-silver-chalice); }
+.syn-new-tab__add { display: inline-flex; align-items: center; gap: var(--syn-space-6); color: var(--syn-color-secondary-silver-chalince); }
 
-.syn-new-tab__name { flex: 1; min-width: 0; overflow: hidden; color: var(--syn-color-eerie-black); text-align: left; text-overflow: ellipsis; white-space: nowrap; }
+.syn-new-tab__name { flex: 1; min-width: 0; overflow: hidden; color: var(--syn-color-black-eerie-black); text-align: left; text-overflow: ellipsis; white-space: nowrap; }
 
 /* Tap: a 16px field with a Silver Chalice underline. */
 .syn-new-tab__input {
@@ -42,14 +42,14 @@
   height: 16px;
   padding: 0;
   border: 0;
-  border-bottom: 1px solid var(--syn-color-silver-chalice);
+  border-bottom: 1px solid var(--syn-color-secondary-silver-chalince);
   outline: 0;
   background: transparent;
-  color: var(--syn-color-eerie-black);
+  color: var(--syn-color-black-eerie-black);
   font: inherit;
 }
-.syn-new-tab__input::placeholder { color: var(--syn-color-cultured); }
-.syn-new-tab.is-invalid .syn-new-tab__input { border-bottom-color: var(--syn-color-vermilion); }
+.syn-new-tab__input::placeholder { color: var(--syn-color-grey-cultured); }
+.syn-new-tab.is-invalid .syn-new-tab__input { border-bottom-color: var(--syn-color-error-vermilion); }
 
 /* 24px Snow helper button with a 16px Eerie Black glyph (X or trash). */
 .syn-new-tab__helper {
@@ -60,8 +60,8 @@
   width: 24px;
   height: 24px;
   border-radius: var(--syn-radius-full);
-  background: var(--syn-color-snow) !important;
-  color: var(--syn-color-eerie-black);
+  background: var(--syn-color-light-snow) !important;
+  color: var(--syn-color-black-eerie-black);
 }
 
 .syn-new-tab__error {
@@ -73,6 +73,6 @@
   gap: var(--syn-space-4);
   margin: 0;
   color: var(--syn-text-error);
-  font: var(--syn-type-caption-2);
+  font: var(--syn-type-text-caption-2);
   white-space: nowrap;
 }

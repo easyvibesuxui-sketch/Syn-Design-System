@@ -9,10 +9,10 @@
   border-radius: var(--syn-radius-full);
   background: var(--syn-surface-default);
   color: var(--syn-text-primary);
-  font: var(--syn-type-body-xs-regular);
+  font: var(--syn-type-text-body-xs-2);
   cursor: pointer;
   transition: background-color var(--syn-duration-fast), color var(--syn-duration-fast);
 }
 .syn-segmented__option:hover { background: var(--syn-surface-muted); }
-.syn-segmented__option[aria-selected='true'] { background: var(--syn-surface-inverse); color: var(--syn-color-white); }
+.syn-segmented__option[aria-selected='true'] { background: var(--syn-surface-inverse); color: var(--syn-color-white-white); }
 .syn-segmented__option:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }

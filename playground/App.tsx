@@ -15,7 +15,7 @@ const sections = [
 function Section({ id, title, lead, children }: { id: string; title: string; lead?: string; children: ReactNode }) {
   return (
     <section id={id} className="pg-section">
-      <h2 className="syn-text-display-2">{title}</h2>
+      <h2 className="syn-text-titles-display-2">{title}</h2>
       {lead && <p className="pg-lead">{lead}</p>}
       {children}
     </section>
@@ -51,7 +51,7 @@ export function App() {
       <aside className="pg-nav">
         <div className="pg-brand">
           <span className="pg-brand__mark" aria-hidden />
-          <span className="syn-text-title-3">Syn</span>
+          <span className="syn-text-titles-title-3">Syn</span>
         </div>
         <nav aria-label="Sections">
           {sections.map(([id, label]) => <a key={id} href={`#${id}`}>{label}</a>)}
@@ -60,8 +60,8 @@ export function App() {
 
       <main className="pg-main">
         <header className="pg-hero">
-          <p className="syn-text-title-5 pg-eyebrow">Design system · v0.1</p>
-          <h1 className="syn-text-display-1">Syn</h1>
+          <p className="syn-text-titles-title-5 pg-eyebrow">Design system · v0.1</p>
+          <h1 className="syn-text-titles-display-1">Syn</h1>
           <p className="pg-lead">
             Tokens, icons and React components extracted from the “Design system library” Figma file. Black-first controls,
             Candy Apple for brand moments, Amber for secondary emphasis, and a Montserrat / ABC Favorit Expanded type pairing.
@@ -73,7 +73,7 @@ export function App() {
             {palette.map(([name, value]) => (
               <div key={name} className="pg-swatch">
                 <span className="pg-swatch__chip" style={{ background: value }} />
-                <span className="syn-text-body-xs">{name}</span>
+                <span className="syn-text-text-body-xs">{name}</span>
                 <code>{value}</code>
               </div>
             ))}
@@ -81,7 +81,7 @@ export function App() {
           <div className="pg-semantic">
             {semanticGroups.map(([group, values]) => (
               <div key={group}>
-                <h3 className="syn-text-title-4">{group}</h3>
+                <h3 className="syn-text-titles-title-4">{group}</h3>
                 {Object.keys(values).map((name) => (
                   <div key={name} className="pg-semantic__row">
                     <span className="pg-semantic__chip" style={{ background: `var(--syn-${group}-${name})` }} />

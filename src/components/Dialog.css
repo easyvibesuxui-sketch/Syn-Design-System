@@ -19,9 +19,9 @@
   flex-direction: column;
   gap: var(--syn-space-16);
   box-sizing: border-box;
-  border: 1px solid var(--syn-color-white);
+  border: 1px solid var(--syn-color-white-white);
   border-radius: var(--syn-radius-widget);
-  background: var(--syn-color-smoke);
+  background: var(--syn-color-light-smoke);
   outline: none;
   overflow: hidden;
 }
@@ -35,9 +35,9 @@
   box-sizing: border-box;
   height: 64px;
   padding: 0 var(--syn-space-56);
-  border-bottom: 1px solid var(--syn-color-cultured);
+  border-bottom: 1px solid var(--syn-color-grey-cultured);
 }
-.syn-dialog__title { margin: 0; color: var(--syn-color-eerie-black); font: var(--syn-type-title-4); text-align: center; }
+.syn-dialog__title { margin: 0; color: var(--syn-color-black-eerie-black); font: var(--syn-type-titles-title-4); text-align: center; }
 .syn-dialog__close {
   position: absolute;
   top: 16px;
@@ -51,11 +51,11 @@
   padding: 0;
   border: 0;
   background: none;
-  color: var(--syn-color-silver-chalice);
+  color: var(--syn-color-secondary-silver-chalince);
   cursor: pointer;
 }
-.syn-dialog__close:hover { color: var(--syn-color-eerie-black); }
-.syn-dialog__close:focus-visible { outline: 1px solid var(--syn-color-eerie-black); outline-offset: 2px; }
+.syn-dialog__close:hover { color: var(--syn-color-black-eerie-black); }
+.syn-dialog__close:focus-visible { outline: 1px solid var(--syn-color-black-eerie-black); outline-offset: 2px; }
 
 /* Body: padding 32, gap 24, centred. */
 .syn-dialog__body {
@@ -67,8 +67,8 @@
   text-align: center;
   overflow-y: auto;
 }
-.syn-dialog__icon { color: var(--syn-color-silver-chalice); }
-.syn-dialog__description { margin: 0; color: var(--syn-color-eerie-black); font: var(--syn-type-body-s); }
+.syn-dialog__icon { color: var(--syn-color-secondary-silver-chalince); }
+.syn-dialog__description { margin: 0; color: var(--syn-color-black-eerie-black); font: var(--syn-type-text-body-s); }
 
 /* Footer: padding 20/24; the action is 320 x 48. */
 .syn-dialog__actions { display: flex; justify-content: center; gap: var(--syn-space-12); padding: var(--syn-space-20) var(--syn-space-24); }

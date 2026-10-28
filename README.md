@@ -51,7 +51,8 @@ up automatically, otherwise they fall back to Montserrat.
 1. Change `tokens/syn.tokens.json`.
 2. Run `npm run tokens` (or `npm run build`) to regenerate `src/styles/tokens.css` and `src/tokens.ts`.
 
-Naming: primitives keep their Figma colour names (`--syn-color-candy-apple`); semantic tokens describe a
+Naming: colours and text styles keep their Figma names as kebab-case paths (`Primary/Candy Apple` → `--syn-color-primary-candy-apple`,
+`Text/Body S 2` → `--syn-type-text-body-s-2`); semantic tokens describe a
 role (`--syn-text-muted`, `--syn-surface-highlight`, `--syn-action-accent`). Components read only semantic
 tokens, so a theme is a set of semantic overrides. See [docs/foundations.md](docs/foundations.md).
 

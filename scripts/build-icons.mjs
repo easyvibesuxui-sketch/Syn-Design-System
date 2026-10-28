@@ -25,6 +25,8 @@ const aliases = {
   'more-vertical': 'dotvertical',
   refresh: 'refresh-change',
   trash: 'trash-bin',
+  // Figma's "File formats=Orange" is the same drawing as "Gray", so it is kept as a name only.
+  'file-formats-orange': 'file-formats-gray',
 };
 for (const target of Object.values(aliases)) if (!icons[target]) throw new Error(`alias target missing: ${target}`);
 

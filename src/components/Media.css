@@ -24,9 +24,9 @@ button.syn-thumb:focus-visible { outline: 1px solid var(--syn-border-strong); ou
 .syn-file__row { display: flex; align-items: center; gap: var(--syn-space-8); min-width: 0; }
 .syn-file__icon { flex: none; }
 .syn-file__text { display: flex; flex-direction: column; gap: var(--syn-space-2); min-width: 0; }
-.syn-file__name { overflow: hidden; color: var(--syn-text-primary); font: var(--syn-type-title-5); text-decoration: none; white-space: nowrap; text-overflow: ellipsis; }
+.syn-file__name { overflow: hidden; color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); text-decoration: none; white-space: nowrap; text-overflow: ellipsis; }
 a.syn-file__name:hover { text-decoration: underline; }
-.syn-file__meta { color: var(--syn-text-muted); font: var(--syn-type-caption-2); }
+.syn-file__meta { color: var(--syn-text-muted); font: var(--syn-type-text-caption-2); }
 
 /* Attachment card: 224 wide, photo 80 high on top, 8px corners. */
 .syn-file--card { width: 224px; overflow: hidden; border-radius: var(--syn-radius-element); background: var(--syn-surface-default); }
@@ -46,13 +46,13 @@ a.syn-file__name:hover { text-decoration: underline; }
   padding: var(--syn-space-16);
   border: 1px solid var(--syn-surface-default);
   border-radius: var(--syn-radius-widget);
-  color: var(--syn-color-silver-chalice);
+  color: var(--syn-color-secondary-silver-chalince);
 }
-.syn-empty__text { margin: 0; color: var(--syn-text-muted); font: var(--syn-type-title-4); }
+.syn-empty__text { margin: 0; color: var(--syn-text-muted); font: var(--syn-type-titles-title-4); }
 
 /* Progress: "1/3" Medium 12, muted percentage, 4px Dodger Blue bar on a Cultured track. */
 .syn-progress { display: flex; align-items: center; gap: var(--syn-space-12); }
-.syn-progress__label { color: var(--syn-text-primary); font: var(--syn-type-title-6); }
-.syn-progress__value { min-width: 32px; color: var(--syn-text-muted); font: var(--syn-type-title-6); }
+.syn-progress__label { color: var(--syn-text-primary); font: var(--syn-type-titles-title-6); }
+.syn-progress__value { min-width: 32px; color: var(--syn-text-muted); font: var(--syn-type-titles-title-6); }
 .syn-progress__track { flex: 1; height: 4px; overflow: hidden; border-radius: var(--syn-radius-full); background: var(--syn-surface-muted); }
 .syn-progress__fill { display: block; height: 100%; border-radius: inherit; background: var(--syn-status-info); transition: width var(--syn-duration-base); }

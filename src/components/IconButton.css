@@ -7,7 +7,7 @@
   border: 0;
   border-radius: var(--syn-radius-full);
   background: var(--syn-action-ghost);
-  color: var(--syn-color-eerie-black);
+  color: var(--syn-color-black-eerie-black);
   cursor: pointer;
   transition: background-color var(--syn-duration-fast);
 }
@@ -16,7 +16,7 @@
 .syn-icon-button--md { width: var(--syn-size-control-md); height: var(--syn-size-control-md); }
 .syn-icon-button--lg { width: var(--syn-size-control-lg); height: var(--syn-size-control-lg); }
 .syn-icon-button:hover:not(:disabled) { background: var(--syn-action-ghost-hover); }
-.syn-icon-button--outline { border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-element); background: var(--syn-surface-default); color: var(--syn-color-silver-chalice); }
+.syn-icon-button--outline { border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-element); background: var(--syn-surface-default); color: var(--syn-color-secondary-silver-chalince); }
 .syn-icon-button--outline:hover:not(:disabled) { border-color: var(--syn-border-muted); background: var(--syn-surface-default); color: var(--syn-text-primary); }
 .syn-icon-button:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
 .syn-icon-button:disabled { color: var(--syn-text-disabled); cursor: not-allowed; }
