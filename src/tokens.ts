@@ -24,7 +24,7 @@ export const tokens = {
     },
     "font": {
       "family": {
-        "title": "ABC Favorit Expanded, Montserrat, system-ui, sans-serif",
+        "title": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "body": "Montserrat, system-ui, sans-serif"
       },
       "size": {
@@ -164,43 +164,43 @@ export const tokens = {
         "lineHeight": "34px"
       },
       "display-2": {
-        "fontFamily": "ABC Favorit Expanded, Montserrat, system-ui, sans-serif",
+        "fontFamily": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "24px",
         "lineHeight": "32px"
       },
       "title-1": {
-        "fontFamily": "ABC Favorit Expanded, Montserrat, system-ui, sans-serif",
+        "fontFamily": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "20px",
         "lineHeight": "24px"
       },
       "title-2": {
-        "fontFamily": "ABC Favorit Expanded, Montserrat, system-ui, sans-serif",
+        "fontFamily": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "18px",
         "lineHeight": "22px"
       },
       "title-3": {
-        "fontFamily": "ABC Favorit Expanded, Montserrat, system-ui, sans-serif",
+        "fontFamily": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "16px",
         "lineHeight": "20px"
       },
       "title-4": {
-        "fontFamily": "ABC Favorit Expanded, Montserrat, system-ui, sans-serif",
+        "fontFamily": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "14px",
         "lineHeight": "20px"
       },
       "title-5": {
-        "fontFamily": "ABC Favorit Expanded, Montserrat, system-ui, sans-serif",
+        "fontFamily": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "12px",
         "lineHeight": "15px"
       },
       "title-6": {
-        "fontFamily": "ABC Favorit Expanded, Montserrat, system-ui, sans-serif",
+        "fontFamily": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "10px",
         "lineHeight": "15px"
@@ -272,13 +272,13 @@ export const tokens = {
         "lineHeight": "15px"
       },
       "button-highlight-l": {
-        "fontFamily": "ABC Favorit Expanded, Montserrat, system-ui, sans-serif",
+        "fontFamily": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "18px",
         "lineHeight": "1.4"
       },
       "button-highlight-m": {
-        "fontFamily": "ABC Favorit Expanded, Montserrat, system-ui, sans-serif",
+        "fontFamily": "ABC Favorit Expanded, ABCFavorit Expanded, Montserrat, system-ui, sans-serif",
         "fontWeight": 500,
         "fontSize": "16px",
         "lineHeight": "1.4"

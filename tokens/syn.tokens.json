@@ -82,6 +82,7 @@
         "title": {
           "$value": [
             "ABC Favorit Expanded",
+            "ABCFavorit Expanded",
             "Montserrat",
             "system-ui",
             "sans-serif"

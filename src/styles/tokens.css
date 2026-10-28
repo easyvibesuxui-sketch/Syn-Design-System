@@ -18,7 +18,7 @@
   --syn-color-gray-x: #b9b9b9;
   --syn-color-white: #ffffff;
   --syn-color-ghost: #f1f5f8;
-  --syn-font-family-title: "ABC Favorit Expanded", Montserrat, system-ui, sans-serif;
+  --syn-font-family-title: "ABC Favorit Expanded", "ABCFavorit Expanded", Montserrat, system-ui, sans-serif;
   --syn-font-family-body: Montserrat, system-ui, sans-serif;
   --syn-font-size-1: 10px;
   --syn-font-size-2: 12px;
