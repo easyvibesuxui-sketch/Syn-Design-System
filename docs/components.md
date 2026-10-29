@@ -149,7 +149,8 @@ box with 8px corners.
 
 The "Resources" table: `columns` (`key`, `header`, `render`, `align`, `width`), `rows`, `rowKey`, `rowActions`
 (a narrow last column) and `footer` (right-aligned, e.g. the total cost); `caption` names it for screen readers.
-White 12px box, 24px muted header, 32px rows split by 2px Cultured lines; it scrolls sideways under 560px.
+White 12px box, 24px muted header, 32px rows split by 2px Cultured lines; a hovered row gets a 1px Eerie
+Black outline (Figma data sheet "cell"). It scrolls sideways under 560px.
 `Value` prints a number with a muted unit (`<Value unit="Meter">12</Value>`), `muted` greys the number too.
 
 ## Segmented

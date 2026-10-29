@@ -17,6 +17,8 @@
   font: var(--syn-type-text-body-xs-2);
   vertical-align: middle;
 }
+/* Figma data sheet "cell": a hovered row gets a 1px Eerie Black outline. */
+.syn-table tbody tr:hover { outline: 1px solid var(--syn-border-strong); outline-offset: -1px; }
 .syn-table th.syn-table__actions, .syn-table td.syn-table__actions { width: 48px; text-align: right; }
 .syn-table tfoot td { height: 40px; text-align: right; }
 
