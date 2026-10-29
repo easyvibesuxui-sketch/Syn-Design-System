@@ -51,3 +51,37 @@ button.syn-tag--soft:hover { border-color: var(--syn-border-muted); }
 }
 .syn-tag__remove:hover { opacity: 1; }
 .syn-tag button:focus-visible, .syn-tag--dashed:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
+
+/* Figma "close button-tag": 36px, padding 0 8 0 16, Cultured border, Regular 14; the 24px round close turns
+   Cultured on hover. Hover: Eerie Black border. Pressed: Cultured fill. Disabled: Cultured fill, Gray X. */
+.syn-tag--chip {
+  height: var(--syn-size-control-sm);
+  padding: 0 var(--syn-space-8) 0 var(--syn-space-16);
+  border-color: var(--syn-border-default);
+  border-radius: var(--syn-radius-element);
+  background: var(--syn-surface-default);
+  color: var(--syn-text-primary);
+  font: var(--syn-type-text-body-s-2);
+  transition: border-color var(--syn-duration-fast), background-color var(--syn-duration-fast);
+}
+.syn-tag--chip:has(.syn-tag__remove), .syn-tag--chip.is-loading { padding-right: var(--syn-space-8); }
+.syn-tag--chip .syn-tag__remove { width: var(--syn-size-control-xs); height: var(--syn-size-control-xs); opacity: 1; transition: background-color var(--syn-duration-fast); }
+.syn-tag--chip:not(.is-disabled):not(.is-loading):hover { border-color: var(--syn-border-strong); }
+.syn-tag--chip .syn-tag__remove:hover { background: var(--syn-surface-muted); }
+.syn-tag--chip:not(.is-disabled):has(.syn-tag__remove:active) { border-color: var(--syn-border-strong); background: var(--syn-surface-muted); }
+.syn-tag--chip:has(.syn-tag__remove:active) .syn-tag__remove { background: var(--syn-surface-default); }
+.syn-tag--chip.is-disabled { border-color: var(--syn-border-disabled); background: var(--syn-surface-muted); color: var(--syn-text-disabled); }
+.syn-tag--chip.is-disabled .syn-tag__remove { cursor: not-allowed; }
+.syn-tag--chip.is-disabled .syn-tag__remove:hover { background: transparent; }
+.syn-tag.is-loading { color: var(--syn-text-disabled); }
+.syn-tag__spinner {
+  width: 14px;
+  height: 14px;
+  margin: 0 var(--syn-space-4);
+  box-sizing: border-box;
+  border: 1px solid var(--syn-surface-muted);
+  border-top-color: var(--syn-border-strong);
+  border-radius: var(--syn-radius-full);
+  animation: syn-tag-spin 0.8s linear infinite;
+}
+@keyframes syn-tag-spin { to { transform: rotate(360deg); } }

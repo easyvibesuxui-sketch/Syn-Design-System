@@ -7,9 +7,14 @@ export interface TagProps {
   children: ReactNode;
   /**
    * solid = filled with white text; outline = white with a Silver Chalice border; soft = white with a
-   * Cultured border (dates, assignees); dashed = the "Add" button.
+   * Cultured border (dates, assignees); dashed = the "Add" button; chip = Figma "close button-tag", a 36px
+   * white tag with Regular 14 text and a round close button (Eerie Black border on hover, Cultured when pressed).
    */
-  variant?: 'solid' | 'outline' | 'soft' | 'dashed';
+  variant?: 'solid' | 'outline' | 'soft' | 'dashed' | 'chip';
+  /** Chip: Cultured fill, Gray X border and text; the remove button is disabled. */
+  disabled?: boolean;
+  /** Chip: a spinner replaces the remove button and the text greys out. */
+  loading?: boolean;
   /** Muted text and icon (an unassigned "Project Manager"). */
   muted?: boolean;
   /** Fill of a solid tag, any CSS colour. Defaults to Eerie Black (collaborator initials). */
@@ -28,11 +33,12 @@ export interface TagProps {
   className?: string;
 }
 
-/** 24px pill from the record reference: tags, collaborators and the dashed "Add" button. */
+/** 24px pill from the record reference (tags, collaborators, the dashed "Add" button), or Figma's 36px chip. */
 export function Tag({
-  children, variant = 'solid', color, icon, shape = 'pill', muted, onRemove, removeLabel, removeIcon = 'close', onClick, className,
+  children, variant = 'solid', color, icon, shape = 'pill', muted, disabled, loading, onRemove, removeLabel, removeIcon = 'close', onClick, className,
 }: TagProps) {
-  const classes = cx('syn-tag', `syn-tag--${variant}`, shape === 'rounded' && 'syn-tag--rounded', muted && 'is-muted', className);
+  const classes = cx('syn-tag', `syn-tag--${variant}`, shape === 'rounded' && 'syn-tag--rounded', muted && 'is-muted', disabled && 'is-disabled', loading && 'is-loading', className);
+  const chip = variant === 'chip';
   const style = color ? ({ '--tag-bg': color } as CSSProperties) : undefined;
   const body = (
     <>
@@ -51,14 +57,16 @@ export function Tag({
   return (
     <span className={classes} style={style}>
       {body}
-      {onRemove && (
+      {loading && <span className="syn-tag__spinner" role="status" aria-label="Loading" />}
+      {onRemove && !loading && (
         <button
           type="button"
           className="syn-tag__remove"
           aria-label={removeLabel ?? `Remove ${typeof children === 'string' ? children : 'tag'}`}
+          disabled={disabled}
           onClick={onRemove}
         >
-          <Icon name={removeIcon} size={removeIcon === 'close' ? 12 : 16} />
+          <Icon name={removeIcon} size={chip ? 16 : removeIcon === 'close' ? 12 : 16} />
         </button>
       )}
     </span>

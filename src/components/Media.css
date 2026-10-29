@@ -29,6 +29,13 @@ a.syn-file__name:hover { text-decoration: underline; }
 .syn-file__meta { color: var(--syn-text-muted); font: var(--syn-type-text-caption-2); }
 
 /* Attachment card: 224 wide, photo 80 high on top, 8px corners. */
+/* Figma "File attached": 48px Snow box, 1px Silver Chalice border, padding 0 16 0 12, 16px gaps. */
+.syn-file--attached { display: flex; justify-content: center; box-sizing: border-box; min-height: var(--syn-size-control-md); padding: 0 var(--syn-space-16) 0 var(--syn-space-12); border: 1px solid var(--syn-border-muted); border-radius: var(--syn-radius-element); background: var(--syn-surface-raised); transition: background-color var(--syn-duration-fast), border-color var(--syn-duration-fast); }
+.syn-file--attached:hover { border-color: var(--syn-border-strong); background: var(--syn-surface-muted); }
+.syn-file--attached .syn-file__row { gap: var(--syn-space-16); }
+.syn-file--attached .syn-file__text { flex: 1; gap: var(--syn-space-4); }
+.syn-file--attached .syn-file__name { font: var(--syn-type-text-body-s-2); }
+.syn-file--attached .syn-file__meta { font: var(--syn-type-text-body-s-2); font-weight: 300; }
 .syn-file--card { width: 224px; overflow: hidden; border-radius: var(--syn-radius-element); background: var(--syn-surface-default); }
 .syn-file--card .syn-file__row { padding: var(--syn-space-8); }
 .syn-file__preview { position: relative; height: 80px; background: var(--syn-surface-muted); }
@@ -56,3 +63,7 @@ a.syn-file__name:hover { text-decoration: underline; }
 .syn-progress__value { min-width: 32px; color: var(--syn-text-muted); font: var(--syn-type-titles-title-6); }
 .syn-progress__track { flex: 1; height: 4px; overflow: hidden; border-radius: var(--syn-radius-full); background: var(--syn-surface-muted); }
 .syn-progress__fill { display: block; height: 100%; border-radius: inherit; background: var(--syn-status-info); transition: width var(--syn-duration-base); }
+
+/* Figma "Loader line": an 8px Amber bar on a Cultured track, square ends. */
+.syn-progress--line .syn-progress__track { height: 8px; border-radius: 0; }
+.syn-progress--line .syn-progress__fill { background: var(--syn-status-progress); }

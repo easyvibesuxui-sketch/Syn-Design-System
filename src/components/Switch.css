@@ -1,5 +1,6 @@
-/* Figma "Small toggle" (size 20, 32 x 20) and "Default size toggle" (size 24, 48 x 24). The track and
-   thumb are absolutely placed at the Figma x positions, rounded to the even-number grid. */
+/* Figma "Small toggle" (size 20, 32 x 20), "Default size toggle" (size 24, 48 x 24) and "Big toggle"
+   (size 32, 48 x 32). The track and thumb are absolutely placed at the Figma x positions, rounded to the
+   even-number grid. */
 .syn-switch {
   --track-w: 36px;
   --track-h: 20px;
@@ -9,6 +10,9 @@
   --thumb-on-x: 24px;
   --thumb-off-x: 0px;
   --thumb-pressed-w: 28px;
+  --track-top: 2px;
+  --control-w: 48px;
+  --control-h: 24px;
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
@@ -22,24 +26,41 @@
   --thumb-on-x: 12px;
   --thumb-off-x: 0px;
   --thumb-pressed-w: 24px;
+  --control-w: 32px;
+  --control-h: 20px;
 }
+/* Big toggle: a full-width 48 x 30 track (Figma 50 x 30) and a 32px thumb that stretches to 36. */
+.syn-switch--32 {
+  --track-w: 48px;
+  --track-h: 30px;
+  --track-top: 1px;
+  --track-off-x: 0px;
+  --thumb-w: 32px;
+  --thumb-h: 32px;
+  --thumb-on-x: 16px;
+  --thumb-pressed-w: 36px;
+  --control-w: 48px;
+  --control-h: 32px;
+}
+/* Toggle with Text and icon: a wider track (Figma 40 x 20; 28 x 16 here so "On" clears the small thumb) holding "On" or a check. */
+.syn-switch--indicator.syn-switch--24 { --track-w: 40px; --track-off-x: 12px; --thumb-on-x: 28px; --control-w: 52px; }
+.syn-switch--indicator.syn-switch--20 { --track-w: 28px; --track-off-x: 10px; --thumb-on-x: 18px; --control-w: 38px; }
 
 .syn-switch__row { display: inline-flex; align-items: center; gap: var(--syn-space-8); color: var(--syn-text-primary); font: var(--syn-type-components-choice-label); cursor: pointer; }
 
-.syn-switch__control { position: relative; flex: none; width: 48px; height: 24px; }
-.syn-switch--20 .syn-switch__control { width: 32px; height: 20px; }
+.syn-switch__control { position: relative; flex: none; width: var(--control-w); height: var(--control-h); }
 .syn-switch__input { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: inherit; }
 
 /* Off: Silver Chalice fill with a Gray X border, shifted right under the thumb. */
 .syn-switch__track {
   position: absolute;
-  top: 2px;
+  top: var(--track-top);
   left: var(--track-off-x);
   box-sizing: border-box;
   width: var(--track-w);
   height: var(--track-h);
   border: 1.5px solid var(--syn-color-disabled-gray-x);
-  border-radius: 10px;
+  border-radius: calc(var(--track-h) / 2);
   background: var(--syn-color-secondary-silver-chalince);
   transition: left var(--syn-duration-base), background-color var(--syn-duration-base), border-color var(--syn-duration-base);
 }
@@ -54,7 +75,7 @@
   width: var(--thumb-w);
   height: var(--thumb-h);
   border: 1.5px solid var(--syn-color-disabled-gray-x);
-  border-radius: 12px;
+  border-radius: calc(var(--thumb-h) / 2);
   background: var(--syn-color-white-white);
   box-shadow: var(--syn-shadow-knob);
   transition: left var(--syn-duration-base), width var(--syn-duration-fast), border-color var(--syn-duration-base);
@@ -95,3 +116,13 @@
 
 /* Off / on words beside the toggle (record drawer custom fields): ABC Favorit Expanded Medium 12. */
 .syn-switch__state { color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
+
+/* Indicator: "On" (Light 12, or 10 at size 20) on the left of the on track; a white check on the right of the off track. */
+.syn-switch__track { display: flex; align-items: center; }
+.syn-switch__on-text { display: none; padding-left: var(--syn-space-4); color: var(--syn-color-white-white); font: var(--syn-type-components-choice-error); }
+.syn-switch--20 .syn-switch__on-text { padding-left: var(--syn-space-2); font-size: 10px; line-height: 12px; }
+.syn-switch__check { margin-left: auto; margin-right: var(--syn-space-4); color: var(--syn-color-white-white); }
+.syn-switch--20 .syn-switch__check { margin-right: var(--syn-space-2); }
+.syn-switch__input:checked ~ .syn-switch__track .syn-switch__on-text { display: block; }
+.syn-switch__input:checked ~ .syn-switch__track .syn-switch__check { display: none; }
+.syn-switch--32 .syn-switch__spinner { width: 20px; height: 20px; }

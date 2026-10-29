@@ -53,6 +53,11 @@ export interface FileItemProps {
   icon?: IconName;
   /** Cover image: draws the item as an attachment card with the photo on top. */
   preview?: string;
+  /**
+   * attached = Figma "File attached": a 48px Snow box with a Silver Chalice border, a 28px format icon,
+   * Regular 14 name over a Light 14 size and the trash button; hover turns it Cultured with an Eerie Black border.
+   */
+  variant?: 'plain' | 'attached';
   previewAlt?: string;
   href?: string;
   onRemove?: () => void;
@@ -64,10 +69,10 @@ export interface FileItemProps {
  * A file: its format badge, name (ABC Favorit Expanded Medium 12) and size. With `preview` it becomes the
  * 224px attachment card from the reference, with the photo on top and a trash button.
  */
-export function FileItem({ name, meta, icon = 'file-formats-pdf', preview, previewAlt = '', href, onRemove, removeLabel = 'Remove file', className }: FileItemProps) {
+export function FileItem({ name, meta, icon = 'file-formats-pdf', variant = 'plain', preview, previewAlt = '', href, onRemove, removeLabel = 'Remove file', className }: FileItemProps) {
   const title = href ? <a className="syn-file__name" href={href}>{name}</a> : <span className="syn-file__name">{name}</span>;
   return (
-    <div className={cx('syn-file', preview && 'syn-file--card', className)}>
+    <div className={cx('syn-file', preview && 'syn-file--card', !preview && variant === 'attached' && 'syn-file--attached', className)}>
       {preview && (
         <div className="syn-file__preview">
           <img src={preview} alt={previewAlt} />
@@ -75,7 +80,7 @@ export function FileItem({ name, meta, icon = 'file-formats-pdf', preview, previ
         </div>
       )}
       <div className="syn-file__row">
-        <Icon name={icon} size={20} className="syn-file__icon" />
+        <Icon name={icon} size={!preview && variant === 'attached' ? 28 : 20} className="syn-file__icon" />
         <span className="syn-file__text">
           {title}
           {meta && <span className="syn-file__meta">{meta}</span>}
@@ -108,6 +113,8 @@ export function EmptyState({ icon = 'empty-state', children, action, className }
 export interface ProgressBarProps {
   /** 0 to 100. */
   value: number;
+  /** checklist = the record reference ("1/3", %, 4px Dodger Blue bar); line = Figma "Loader line", a bare 8px Amber bar. */
+  variant?: 'checklist' | 'line';
   /** Text before the percentage, e.g. "1/3". */
   label?: ReactNode;
   /** Accessible name. */
@@ -116,12 +123,13 @@ export interface ProgressBarProps {
 }
 
 /** Checklist progress: "1/3", the percentage, then a 4px Dodger Blue bar on a Cultured track. */
-export function ProgressBar({ value, label, title = 'Progress', className }: ProgressBarProps) {
+export function ProgressBar({ value, variant = 'checklist', label, title = 'Progress', className }: ProgressBarProps) {
   const v = Math.max(0, Math.min(100, Math.round(value)));
+  const line = variant === 'line';
   return (
-    <div className={cx('syn-progress', className)}>
-      {label && <span className="syn-progress__label">{label}</span>}
-      <span className="syn-progress__value">{v}%</span>
+    <div className={cx('syn-progress', line && 'syn-progress--line', className)}>
+      {!line && label && <span className="syn-progress__label">{label}</span>}
+      {!line && <span className="syn-progress__value">{v}%</span>}
       <span className="syn-progress__track" role="progressbar" aria-label={title} aria-valuemin={0} aria-valuemax={100} aria-valuenow={v}>
         <span className="syn-progress__fill" style={{ width: `${v}%` }} />
       </span>

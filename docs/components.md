@@ -52,7 +52,9 @@ red asterisk; `errorStyle` picks the Figma "error 1" dark bubble (`tooltip`) or 
 
 ## Switch
 
-Figma: *Small toggle* (`size={20}`, 32 x 20) and *Default size toggle* (`size={24}`, 48 x 24, the default).
+Figma: *Small toggle* (`size={20}`, 32 x 20), *Default size toggle* (`size={24}`, 48 x 24, the default) and
+*Big toggle* (`size={32}`, 48 x 32). `indicator` is *Toggle with Text and icon*: "On" (`indicatorText`) in the
+track when on, a white check when off (sizes 20 and 24).
 `role="switch"` on a native checkbox. Track and thumb sit at the Figma x positions for on and off; pressing
 stretches the thumb (24 / 28px). `loading` spins a ring in the thumb. `error` with `errorStyle`
 (`tooltip` = "Error off", `inline` = "Error on"). The label is hidden by default; `hideLabel={false}` shows
@@ -134,16 +136,19 @@ box with 8px corners.
 24px tag for tags, collaborators, dates and people: `variant` `solid` (fill from `color`, Eerie Black by default),
 `outline`, `soft` (Cultured border; dates, assignees; `muted` greys it) or `dashed` (the "Add" button, with `onClick`).
 `shape` `pill` or `rounded` (8px). `icon` adds a 12px icon; `onRemove` adds the remove button (`removeIcon` `close` or
-`x-in-circle`).
+`x-in-circle`). `variant="chip"` is Figma *close button-tag*: 36px, white with a Cultured border, Regular 14 and a 24px
+round close; Eerie Black border on hover, Cultured fill when pressed, `disabled` and `loading` states.
 
 ## Avatar, Thumbnail, FileItem, EmptyState, ProgressBar
 
 - `Avatar`: 24 or 32px Misty Rose circle with the person glyph, or a photo (`src`).
 - `Thumbnail`: square photo (24–56px, default 36) with 4px corners; a zoom button when `onClick` is set. `alt` is required.
 - `FileItem`: format badge (`icon`, default `file-formats-pdf`), name in ABC Favorit Expanded Medium 12 and a muted
-  `meta` line; `preview` turns it into the 224px attachment card with the photo on top and a trash button (`onRemove`).
+  `meta` line; `variant="attached"` is Figma *File attached* (48px Snow box, Silver Chalice border, Regular 14 name over a
+  Light 14 size, trash button; Cultured with an Eerie Black border on hover); `preview` turns it into the 224px attachment card with the photo on top and a trash button (`onRemove`).
 - `EmptyState`: muted 32px icon over a Medium 14 message ("Nothing assigned"), optional `action`.
 - `ProgressBar`: "1/3" `label`, the percentage and a 4px Dodger Blue bar; `role="progressbar"` with `title` as its name.
+  `variant="line"` is Figma *Loader line*: a bare 8px Amber bar with square ends.
 
 ## Table and Value
 

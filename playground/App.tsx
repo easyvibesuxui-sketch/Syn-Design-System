@@ -1,14 +1,14 @@
 import { useState, type ReactNode } from 'react';
 import {
   Accordion, Button, Checkbox, Dialog, Grid, GridItem, Icon, IconButton, NewTab, Notification, Radio, RadioGroup, Select,
-  Slider, StatusBadge, StatusChip, Switch, Tabs, TextField, Tooltip, iconData, iconNames, tokens,
+  Slider, StatusBadge, StatusChip, Switch, Tabs, TextField, Tooltip, Tag, FileItem, ProgressBar, iconData, iconNames, tokens,
 } from '../src';
 import { RecordDrawer } from './RecordDrawer';
 
 const sections = [
   ['colors', 'Colour'], ['typography', 'Typography'], ['spacing', 'Spacing & shape'], ['grid', 'Grid'], ['icons', 'Icons'],
   ['buttons', 'Buttons'], ['inputs', 'Text fields'], ['select', 'Select'], ['choices', 'Checkbox & radio'],
-  ['switch', 'Switch'], ['tabs', 'Tabs'], ['status', 'Status'], ['notifications', 'Notifications'],
+  ['switch', 'Switch'], ['tabs', 'Tabs'], ['tags', 'Tags & files'], ['status', 'Status'], ['notifications', 'Notifications'],
   ['tooltip', 'Tooltip'], ['accordion', 'Accordion'], ['slider', 'Slider'], ['dialog', 'Dialog'], ['drawer', 'Drawer'],
 ] as const;
 
@@ -253,8 +253,8 @@ export function App() {
           </Row>
         </Section>
 
-        <Section id="switch" title="Switch" lead="Figma &quot;Small toggle&quot; (size 20, 32 x 20) and &quot;Default size toggle&quot; (size 24, 48 x 24). On is Dark Sienna; off is Silver Chalice with a Gray X border. Press stretches the thumb.">
-          {([20, 24] as const).map((size) => (
+        <Section id="switch" title="Switch" lead="Figma &quot;Small toggle&quot; (size 20, 32 x 20) and &quot;Default size toggle&quot; (size 24, 48 x 24) and &quot;Big toggle&quot; (size 32, 48 x 32). &quot;Toggle with Text and icon&quot; (indicator) shows On or a check in the track. On is Dark Sienna; off is Silver Chalice with a Gray X border. Press stretches the thumb.">
+          {([20, 24, 32] as const).map((size) => (
             <Row key={size} label={`size ${size}`}>
               <Switch size={size} label="On" defaultChecked />
               <Switch size={size} label="Loading" loading defaultChecked />
@@ -264,12 +264,37 @@ export function App() {
               <Switch size={size} label="Disabled off" disabled />
             </Row>
           ))}
+          {([20, 24] as const).map((size) => (
+            <Row key={`i${size}`} label={`indicator ${size}`}>
+              <Switch size={size} indicator label="On" defaultChecked />
+              <Switch size={size} indicator label="Off" />
+              <Switch size={size} indicator label="Disabled on" disabled defaultChecked />
+              <Switch size={size} indicator label="Disabled off" disabled />
+            </Row>
+          ))}
           <Row label="errors">
             <Switch size={20} label="Required" error="Dummy text Switch this to proceed" errorStyle="tooltip" />
             <Switch size={24} label="Required" defaultChecked error="Dummy text Switch this to proceed" />
           </Row>
           <Row label="with label">
             <Switch size={24} label="Notifications" hideLabel={false} defaultChecked />
+          </Row>
+        </Section>
+
+        <Section id="tags" title="Tags & files" lead="Figma &quot;close button-tag&quot; (Tag variant=&quot;chip&quot;: 36px, Regular 14, round close), &quot;File attached&quot; (FileItem variant=&quot;attached&quot;) and &quot;Loader line&quot; (ProgressBar variant=&quot;line&quot;).">
+          <Row label="chip">
+            <Tag variant="chip" onRemove={() => {}}>Tag Text</Tag>
+            <Tag variant="chip" onRemove={() => {}} disabled>Tag Text</Tag>
+            <Tag variant="chip" loading>Tag Text</Tag>
+          </Row>
+          <Row label="file attached">
+            <div style={{ width: 312 }}><FileItem variant="attached" name="File Name.Pdf" meta="256 MB" onRemove={() => {}} /></div>
+          </Row>
+          <Row label="loader line">
+            <div style={{ display: 'grid', gap: 24, width: 312 }}>
+              <ProgressBar variant="line" value={2} title="Upload" />
+              <ProgressBar variant="line" value={100} title="Upload" />
+            </div>
           </Row>
         </Section>
 
