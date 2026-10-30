@@ -749,3 +749,5 @@ html { scroll-behavior: smooth; }
 .shop-card__stock .syn-status-badge__dot { box-sizing: content-box; width: 8px; height: 8px; border: 2px solid var(--syn-surface-default); box-shadow: 0 0 0 1px var(--syn-border-muted); }
 /* Most used stands apart from the stock pill: black fill, white text, the star in brand red. */
 .shop-card__flag { border-color: var(--syn-surface-inverse); background: var(--syn-surface-inverse); color: var(--syn-color-white-white); }
+/* Point markers: hollow silver-outlined dots, so they don't read as errors. */
+.shop-context__points li::before { box-sizing: border-box; width: 8px; height: 8px; border: 1px solid var(--syn-border-muted); background: none; }
