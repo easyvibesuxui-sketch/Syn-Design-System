@@ -144,13 +144,13 @@ round close; Eerie Black border on hover, Cultured fill when pressed, `disabled`
 ## Avatar, Thumbnail, FileItem, EmptyState, ProgressBar
 
 - `Avatar`: 24 or 32px Misty Rose circle with the person glyph, or a photo (`src`).
-- `Thumbnail`: square photo (24–56px, default 36) with 4px corners; a zoom button when `onClick` is set. `alt` is required.
+- `Thumbnail`: square photo (24–56px, default 36) with 8px corners; a zoom button when `onClick` is set. `alt` is required.
 - `FileItem`: format badge (`icon`, default `file-formats-pdf`), name in ABC Favorit Expanded Medium 12 and a muted
   `meta` line; `variant="attached"` is Figma *File attached* (48px Snow box, Silver Chalice border, Regular 14 name over a
   Light 14 size, trash button; Cultured with an Eerie Black border on hover); `preview` turns it into the 224px attachment card with the photo on top and a trash button (`onRemove`).
 - `EmptyState`: muted 32px icon over a Medium 14 message ("Nothing assigned"), optional `action`.
 - `ProgressBar`: "1/3" `label`, the percentage and a 4px Dodger Blue bar; `role="progressbar"` with `title` as its name.
-  `variant="line"` is Figma *Loader line*: a bare 8px Amber bar with square ends.
+  `variant="line"` is Figma *Loader line*: a bare 8px Amber bar with 8px corners.
 
 ## Table and Value
 
@@ -167,8 +167,17 @@ Pill switcher between views ("Comments" / "Activity"): 24px pills at least 128px
 
 ## TextArea
 
-Multi-line input, 48px minimum, 8px corners. `variant` `default` (1px Cultured) or `strong` (2px Silver Chalice, the
-comment editor); both turn 2px Eerie Black on focus. The label is screen-reader only unless `hideLabel={false}`.
+Figma: *Text Box*. Multi-line input with 8px corners, two kinds once the label is shown (`hideLabel={false}`; by
+default it is screen-reader only, for the comment and checklist editors):
+- `labelPosition="inside"` (default): the label sits in the box, Regular 14 Eerie Black while empty, then Regular 12
+  (Candy Apple when focused, Silver Chalice when filled) over Regular 14 text. `size` `lg` 64 · `md` 56 · `sm` 48
+  (Small: Medium 10 over 12). The border turns Silver Chalice once filled.
+- `labelPosition="outside"`: the label (ABC Favorit Expanded Medium 12) above a 48px box.
+
+`showCount` with `maxLength` adds "0/20" (Regular 10 Silver Chalice) under the box, right-aligned. `onClear` adds
+Figma's 16px *Close small* button in the top-right corner while typing. `variant` `default` (1px Cultured) or `strong`
+(2px Silver Chalice, the comment editor); both turn 2px Eerie Black on focus. Disabled is Cultured with a Gray X
+border. No resize handle, as in Figma.
 
 ## Checklist and ChecklistItem
 

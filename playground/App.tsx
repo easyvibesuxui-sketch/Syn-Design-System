@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import {
   Accordion, Button, Checkbox, Dialog, Grid, GridItem, Icon, IconButton, NewTab, Notification, Radio, RadioGroup, Select,
-  Slider, StatusBadge, StatusChip, Switch, Tabs, TextField, Tooltip, Tag, FileItem, ProgressBar, iconData, iconNames, tokens,
+  Slider, StatusBadge, StatusChip, Switch, Tabs, TextArea, TextField, Tooltip, Tag, FileItem, ProgressBar, iconData, iconNames, tokens,
 } from '../src';
 import { RecordDrawer } from './RecordDrawer';
 
@@ -200,6 +200,10 @@ export function App() {
             <TextField label="Search" hideLabel size="sm" defaultValue="Wheel loader" onClear={() => {}} />
             <TextField label="Filter" size="xs" placeholder="Filter" />
             <TextField label="Email" defaultValue="john@" error={['Enter a full email address', 'Use your work domain']} />
+            <TextArea label="Additional information" hideLabel={false} placeholder="Helper text" maxLength={20} showCount onClear={() => {}} />
+            <TextArea label="Additional information" hideLabel={false} size="sm" defaultValue="Text area" maxLength={20} showCount />
+            <TextArea label="Additional information" hideLabel={false} labelPosition="outside" placeholder="Helper text" maxLength={20} showCount />
+            <TextArea label="Additional information" hideLabel={false} disabled maxLength={20} showCount />
           </div>
         </Section>
 
