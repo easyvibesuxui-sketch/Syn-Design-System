@@ -519,23 +519,12 @@ html { scroll-behavior: smooth; }
 .shop-termbar:has(.shop-termbar__arrow--start)::before { left: 0; background: linear-gradient(90deg, var(--syn-surface-default) 40%, transparent); }
 .shop-termbar:has(.shop-termbar__arrow--end)::after { right: 0; background: linear-gradient(270deg, var(--syn-surface-default) 40%, transparent); }
 
-/* Ordering row: the steps card, then the last order in a card of its own. */
-.shop-ordering { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--syn-space-16); }
-.shop-last { display: flex; align-items: center; gap: var(--syn-space-12); padding: var(--syn-space-12) var(--syn-space-16) var(--syn-space-12) var(--syn-space-12); border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-widget); background: var(--syn-surface-default); color: var(--syn-text-secondary); text-align: left; cursor: pointer; transition: border-color var(--syn-duration-fast); }
-.shop-last:hover { border-color: var(--syn-border-strong); color: var(--syn-text-primary); }
-.shop-last:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
-.shop-last__icon { display: grid; flex: none; place-items: center; width: 40px; height: 40px; border-radius: var(--syn-radius-full); background: var(--syn-surface-muted); color: var(--syn-text-primary); }
-.shop-last__text { display: flex; flex: 1; flex-direction: column; gap: var(--syn-space-2); min-width: 0; }
-.shop-last__title { color: var(--syn-text-primary); font: var(--syn-type-text-body-s); }
-.shop-last__meta { color: var(--syn-text-secondary); font: var(--syn-type-text-body-xs-2); white-space: nowrap; }
 
 @media (max-width: 760px) {
   .shop-topbar { padding: 0 var(--syn-space-16); }
   .shop-topbar__brand { display: none; }
   .shop-content { padding: var(--syn-space-16) var(--syn-space-16) var(--syn-space-48); }
   .shop-finder .shop-panel__head { flex-direction: column; align-items: flex-start; }
-  .shop-ordering { grid-template-columns: minmax(0, 1fr); }
-  .shop-last__meta { white-space: normal; }
 }
 .shop-termbar__item { max-width: none; white-space: nowrap; }
 
@@ -629,20 +618,78 @@ html { scroll-behavior: smooth; }
 /* Filter and results hierarchy: section titles (16), group titles (14 medium), options (14 regular, grey until chosen),
    counts and Clear all (12). The selected-count badge is a quiet chip, not the loudest thing in the panel. */
 .shop-filters .shop-panel__title, .shop-results__count { font: var(--syn-type-titles-title-3); }
-.shop-filters__clear { color: var(--syn-text-secondary); font: var(--syn-type-text-body-xs-2); text-decoration: underline; text-underline-offset: 3px; }
 .shop-filter .syn-choice__row { color: var(--syn-text-secondary); font: var(--syn-type-text-body-s-2); }
 .shop-filter .syn-choice__row:has(input:checked), .shop-filter .syn-choice__row:hover { color: var(--syn-text-primary); }
 .shop-filter__selected { background: var(--syn-surface-muted); color: var(--syn-text-primary); font: var(--syn-type-text-body-xs); }
 
-/* Results toolbar: one 36px line. Search leads, sort follows, and the Grid/Table switch is a quiet bordered group. */
-.shop-results__bar .syn-segmented { gap: var(--syn-space-2); height: var(--syn-size-control-sm); padding: var(--syn-space-2); border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-element); background: var(--syn-surface-default); }
-.shop-results__bar .syn-segmented__option { min-width: 72px; height: 100%; border-radius: var(--syn-radius-xs); color: var(--syn-text-secondary); font: var(--syn-type-text-body-xs-2); }
-.shop-results__bar .syn-segmented__option[aria-selected='true'] { background: var(--syn-surface-muted); color: var(--syn-text-primary); font: var(--syn-type-text-body-xs); }
 
 /* Page hierarchy: page title, then the finder as the main section; steps and Order again are supporting, one level down.
    In the header, Cart is the primary action, Order by SKU secondary and My orders a plain link. */
 .shop-finder .shop-panel__title { font: var(--syn-type-titles-title-2); }
 .shop-steps__n { width: 24px; height: 24px; font: var(--syn-type-text-body-xs); }
-.shop-last__icon { width: 32px; height: 32px; }
-.shop-last__icon .syn-icon { width: 16px; height: 16px; }
 .shop-page-head__actions .syn-button--text { font: var(--syn-type-button-text-button-secondary-s); padding-inline: var(--syn-space-12); }
+
+/* Review round 2. Header actions share one 36px height and 8px radius: Cart is the filled primary, Order by SKU a light
+   outline that darkens on hover, My orders a plain link. */
+.shop-page-head__actions { align-items: center; gap: var(--syn-space-8); }
+.shop-page-head__actions .syn-button { height: var(--syn-size-control-sm); gap: var(--syn-space-8); padding-inline: var(--syn-space-16); border-radius: var(--syn-radius-element); font: var(--syn-type-button-text-button-secondary-s); transition: border-color var(--syn-duration-fast), background-color var(--syn-duration-fast); }
+.shop-page-head__actions .syn-button--secondary { border-color: var(--syn-border-default); }
+.shop-page-head__actions .syn-button--secondary:hover { border-color: var(--syn-border-strong); background: var(--syn-surface-default); }
+.shop-page-head__actions .syn-button--text { padding-inline: var(--syn-space-12); }
+.shop-page-head__actions .syn-button--text:hover { background: var(--syn-surface-default); }
+
+/* Steps: brand-red number in a light ring, black title, grey description; thin dividers between the steps. */
+.shop-steps li { align-items: center; gap: var(--syn-space-12); }
+.shop-steps li + li { padding-left: var(--syn-space-16); border-left: 1px solid var(--syn-border-default); }
+.shop-steps__n { width: 32px; height: 32px; border: 1px solid var(--syn-border-default); background: var(--syn-surface-default); color: var(--syn-text-brand); font: var(--syn-type-titles-title-4); }
+.shop-steps__text { display: flex; flex-direction: column; gap: var(--syn-space-2); }
+.shop-steps__text strong { color: var(--syn-text-primary); font: var(--syn-type-text-body-s); }
+.shop-steps__text > span { color: var(--syn-text-secondary); font: var(--syn-type-text-body-xs-2); }
+@media (max-width: 760px) { .shop-steps li + li { padding-left: 0; border-left: 0; } }
+
+/* Cards: three per row; stock top-left and Add (then − count +) bottom-right on the photo. */
+.shop-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 1100px) { .shop-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .shop-cards { grid-template-columns: minmax(0, 1fr); } }
+.shop-card__media { position: relative; }
+.shop-card__photo { display: block; }
+.shop-card__stock { position: absolute; top: var(--syn-space-12); left: var(--syn-space-12); }
+.shop-card__stock .syn-status-badge { height: 24px; padding: 0 var(--syn-space-8); border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-full); background: var(--syn-surface-default); color: var(--syn-text-primary); font: var(--syn-type-text-body-xs-2); }
+.shop-card__badge { position: absolute; top: var(--syn-space-12); right: var(--syn-space-12); }
+.shop-card__quick { position: absolute; right: var(--syn-space-12); bottom: var(--syn-space-12); }
+.shop-card__quick .syn-button { border-radius: var(--syn-radius-element); }
+.shop-card__stepper { display: flex; align-items: center; gap: var(--syn-space-2); height: var(--syn-size-control-sm); padding: 0 var(--syn-space-2); border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-element); background: var(--syn-surface-default); box-shadow: var(--syn-shadow-default); }
+.shop-card__stepper output { min-width: 24px; text-align: center; font: var(--syn-type-text-body-s); font-variant-numeric: tabular-nums; }
+.shop-card__kind { color: var(--syn-text-secondary); font: var(--syn-type-titles-title-6); letter-spacing: 0.08em; text-transform: uppercase; }
+.shop-card__foot { align-items: center; padding: var(--syn-space-12) var(--syn-space-16) var(--syn-space-16); }
+
+/* Toolbar: a search box of reading width, then Sort and the view switch on the right. Both use a light 1px outline
+   and 2px corners. */
+.shop-results__bar { justify-content: space-between; }
+.shop-results__search { flex: 0 1 360px; }
+.shop-results__tools { display: flex; align-items: center; gap: var(--syn-space-8); margin-left: auto; }
+.shop-sort { position: relative; }
+.shop-sort__button { display: inline-flex; align-items: center; gap: var(--syn-space-8); height: var(--syn-size-control-sm); padding: 0 var(--syn-space-12); border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-xs); background: var(--syn-surface-default); color: var(--syn-text-primary); font: var(--syn-type-text-body-xs); cursor: pointer; transition: border-color var(--syn-duration-fast); }
+.shop-sort__button:hover, .shop-sort__button[aria-expanded="true"] { border-color: var(--syn-border-strong); }
+.shop-sort__button:focus-visible, .shop-sort__menu button:focus-visible, .shop-view__option:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
+.shop-sort__chevron { transition: transform var(--syn-duration-fast); }
+.shop-sort__button[aria-expanded="true"] .shop-sort__chevron { transform: rotate(180deg); }
+.shop-sort__menu { position: absolute; top: calc(100% + 4px); right: 0; z-index: 4; min-width: 208px; margin: 0; padding: var(--syn-space-4); border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-element); background: var(--syn-surface-default); box-shadow: var(--syn-shadow-float); list-style: none; }
+.shop-sort__menu button { display: flex; align-items: center; justify-content: space-between; gap: var(--syn-space-12); width: 100%; height: var(--syn-size-control-sm); padding: 0 var(--syn-space-12); border: 0; border-radius: var(--syn-radius-xs); background: none; color: var(--syn-text-primary); font: var(--syn-type-text-body-s-2); text-align: left; cursor: pointer; }
+.shop-sort__menu button:hover { background: var(--syn-surface-muted); }
+.shop-sort__menu button[aria-pressed="true"] { font: var(--syn-type-text-body-s); }
+.shop-view { display: inline-flex; gap: var(--syn-space-2); height: var(--syn-size-control-sm); padding: var(--syn-space-2); border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-xs); background: var(--syn-surface-muted); }
+.shop-view__option { display: grid; place-items: center; width: 36px; height: 100%; padding: 0; border: 0; border-radius: var(--syn-radius-xs); background: none; color: var(--syn-text-secondary); cursor: pointer; transition: background-color var(--syn-duration-fast), color var(--syn-duration-fast); }
+.shop-view__option:hover { color: var(--syn-text-primary); }
+.shop-view__option.is-on { background: var(--syn-surface-default); color: var(--syn-text-primary); box-shadow: var(--syn-shadow-default); }
+
+/* Results count in Montserrat; selected-count chip outlined, not filled. */
+.shop-results__count { font: var(--syn-type-text-body-m); }
+.shop-filter__selected { border: 1px solid var(--syn-border-strong); background: none; color: var(--syn-text-primary); }
+
+/* My orders: each row lists its products with price, so an order can be repeated without opening it. */
+.shop-order-products { display: flex; flex-direction: column; gap: var(--syn-space-6); margin: 0; padding: 0; list-style: none; }
+.shop-order-products li { display: flex; align-items: center; gap: var(--syn-space-8); }
+.shop-order-products li > span { display: flex; flex-direction: column; }
+.shop-order-products strong { font: var(--syn-type-text-body-xs); }
+.shop-order-products li > span > span { color: var(--syn-text-secondary); font: var(--syn-type-text-body-xs-2); }

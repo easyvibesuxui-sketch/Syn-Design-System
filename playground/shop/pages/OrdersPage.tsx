@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Card, EmptyState, Section, Select, Table, TextField, Value } from '../../../src';
+import { Button, Card, EmptyState, Section, Select, Table, TextField } from '../../../src';
 import { cx } from '../../../src/utils';
 import { CURRENT_USER, ORDER_STAGES, ORDER_STATUSES, money, type Order, type OrderStatus } from '../data';
 import { BackLink, OrderStatusBadge, ProductArt, ShopHeader, SpecList, Summary } from '../parts';
@@ -111,7 +111,7 @@ export function OrdersPage({ id }: { id?: string }) {
       <div className="shop-section-head">
         <div>
           <h2 className="shop-section-head__title">Order history</h2>
-          <p className="shop-muted">Open an order to see its items, delivery details and status, or order the same products again.</p>
+          <p className="shop-muted">Each order shows its products, prices and when you sent it. Order again puts the same products back in your cart in one click.</p>
         </div>
       </div>
       <div className="shop-toolbar">
@@ -128,11 +128,24 @@ export function OrdersPage({ id }: { id?: string }) {
             columns={[
               { key: 'id', header: 'Order', render: (o) => <a className="shop-cell-link" href={routeHref({ name: 'orders', id: o.id })}>{o.id}<span>{o.reference || 'No reference'}</span></a> },
               { key: 'date', header: 'Submitted', render: (o) => <span className="shop-cell">{o.date}<span>{o.time}</span></span> },
-              { key: 'items', header: 'Items', render: (o) => <Value>{o.items.reduce((n, i) => n + i.qty, 0)}</Value> },
+              {
+                key: 'items',
+                header: 'Products',
+                render: (o) => (
+                  <ul className="shop-order-products">
+                    {o.items.map((i) => (
+                      <li key={i.id}>
+                        <ProductArt src={i.image} type={i.type} alt="" size="xs" />
+                        <span><strong>{i.qty} × {i.name}</strong><span>{money(i.price)} each</span></span>
+                      </li>
+                    ))}
+                  </ul>
+                ),
+              },
               { key: 'total', header: 'Total', align: 'end', render: (o) => <strong>{money(o.total)}</strong> },
               { key: 'status', header: 'Status', render: (o) => <OrderStatusBadge status={o.status} /> },
             ]}
-            rowActions={(o) => <Button size="xs" variant="secondary" iconStart="refresh" onClick={() => reorder(o)} aria-label={`Order ${o.id} again`}>Order again</Button>}
+            rowActions={(o) => <Button size="sm" iconStart="refresh" onClick={() => reorder(o)} aria-label={`Order ${o.id} again`}>Order again</Button>}
           />
         )
         : (

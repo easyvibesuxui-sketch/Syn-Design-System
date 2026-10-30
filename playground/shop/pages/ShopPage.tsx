@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { Button, Checkbox, Drawer, EmptyState, Icon, IconButton, Segmented, Select, Table, Tag, TextField } from '../../../src';
+import { Button, Checkbox, Drawer, EmptyState, Icon, IconButton, Table, Tag, TextField } from '../../../src';
 import { cx } from '../../../src/utils';
 import {
-  CURRENT_USER, FEATURED_ORDER, POWER_OPTIONS, canOrder, hasPrice, money, plural, priceLabel, suitableFor, suitableTerms,
+  FEATURED_ORDER, POWER_OPTIONS, canOrder, hasPrice, plural, priceLabel, suitableFor, suitableTerms,
   type Availability, type Category, type Power, type Product,
 } from '../data';
 import { PriceRequestDialog } from '../PriceRequest';
@@ -81,25 +81,47 @@ function CompareToggle({ product: p, compare, onToggle }: { product: Product; co
   );
 }
 
+/** Buying on the product photo: Add until the product is in the cart, then − count + that edits that cart line. */
+function CardBuy({ product: p, onRequest }: { product: Product; onRequest: (p: Product) => void }) {
+  const { cart, addToCart, setQty, removeFromCart } = useShop();
+  const inCart = cart.find((l) => l.productId === p.id)?.qty ?? 0;
+  if (p.availability === 'Temporarily unavailable') return null;
+  if (!canOrder(p)) return <Button size="sm" variant="secondary" iconStart="mail" onClick={() => onRequest(p)}>Request price</Button>;
+  if (!inCart) return <Button size="sm" iconStart="plus" onClick={() => addToCart(p, 1)}>Add</Button>;
+  const last = inCart === 1;
+  return (
+    <div className="shop-card__stepper" role="group" aria-label={`${p.name} in your cart`}>
+      <IconButton
+        icon={last ? 'trash' : 'minus'}
+        label={last ? `Remove ${p.name} from cart` : `Decrease ${p.name}`}
+        size="sm"
+        onClick={() => (last ? removeFromCart(p.id) : setQty(p.id, inCart - 1))}
+      />
+      <output aria-live="polite">{inCart}</output>
+      <IconButton icon="plus" label={`Increase ${p.name}`} size="sm" disabled={inCart >= 999} onClick={() => setQty(p.id, inCart + 1)} />
+    </div>
+  );
+}
+
 function ProductCard({ product: p, compare, onCompare, onRequest }: {
   product: Product; compare: string[]; onCompare: (id: string) => void; onRequest: (p: Product) => void;
 }) {
-  const { cart } = useShop();
   const href = routeHref({ name: 'product', id: p.id });
-  const inCart = cart.find((l) => l.productId === p.id)?.qty ?? 0;
   // Skip "For" when the one-line description already says it (TAG L: “For construction machinery and large equipment”).
   const forText = suitableFor(p);
   const repeats = forText && p.short.toLowerCase().includes(forText.toLowerCase());
   return (
     <article className="shop-card">
-      <a className="shop-card__media" href={href} tabIndex={-1} aria-hidden>
-        <ProductArt src={p.image} type={p.type} alt="" size="md" />
-      </a>
-      <div className="shop-card__tags">
-        <span className="shop-pill">{p.category === 'Hardware' ? 'Hardware' : 'Tag'}</span>
-        {p.badge && <Tag color="var(--syn-action-brand)">{p.badge}</Tag>}
+      <div className="shop-card__media">
+        <a className="shop-card__photo" href={href} tabIndex={-1} aria-hidden>
+          <ProductArt src={p.image} type={p.type} alt="" size="md" />
+        </a>
+        <span className="shop-card__stock"><AvailabilityBadge availability={p.availability} /></span>
+        {p.badge && <span className="shop-card__badge"><Tag color="var(--syn-action-brand)">{p.badge}</Tag></span>}
+        <div className="shop-card__quick"><CardBuy product={p} onRequest={onRequest} /></div>
       </div>
       <div className="shop-card__body">
+        <span className="shop-card__kind">{p.category === 'Hardware' ? 'Hardware' : 'Tag'}</span>
         <h3 className="shop-card__name"><a href={href}>{p.name}</a></h3>
         <p className="shop-card__short">{p.short}</p>
         <dl className="shop-card__facts">
@@ -113,14 +135,63 @@ function ProductCard({ product: p, compare, onCompare, onRequest }: {
           <span className="shop-price">{priceLabel(p)}</span>
           <span className="shop-tax">{hasPrice(p) ? 'per item, excl. VAT' : 'quoted for your quantity'}</span>
         </div>
-        <AvailabilityBadge availability={p.availability} />
-      </div>
-      <div className="shop-card__actions">
-        <BuyControls product={p} onRequest={onRequest} />
         <CompareToggle product={p} compare={compare} onToggle={onCompare} />
       </div>
-      {inCart > 0 && <p className="shop-in-cart"><Icon name="check" size={16} />{inCart} in your cart</p>}
     </article>
+  );
+}
+
+/** Classic “Sort” control: a small outlined button with the sort icon that opens the list of orders. */
+function SortMenu({ value, onChange }: { value: Sort; onChange: (s: Sort) => void }) {
+  const [open, setOpen] = useState(false);
+  const root = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const onPointer = (e: PointerEvent) => { if (!root.current?.contains(e.target as Node)) setOpen(false); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
+    document.addEventListener('pointerdown', onPointer);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('pointerdown', onPointer); document.removeEventListener('keydown', onKey); };
+  }, [open]);
+  const current = sortOptions.find((o) => o.value === value) ?? sortOptions[0];
+  return (
+    <div className="shop-sort" ref={root}>
+      <button type="button" className="shop-sort__button" aria-expanded={open} aria-label={`Sort: ${current.label}`} onClick={() => setOpen(!open)}>
+        <Icon name="sort" size={16} />
+        <span>Sort</span>
+        <Icon name="down" size={16} className="shop-sort__chevron" />
+      </button>
+      {open && (
+        <ul className="shop-sort__menu" aria-label="Sort by">
+          {sortOptions.map((o) => (
+            <li key={o.value}>
+              <button type="button" aria-pressed={o.value === value} onClick={() => { onChange(o.value as Sort); setOpen(false); }}>
+                {o.label}{o.value === value && <Icon name="check" size={16} />}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+/** Grid / Table switch with icons (Tabler layout-grid and list). */
+const viewIcons: Record<View, string[]> = {
+  grid: ['M4 4h6v6h-6z', 'M14 4h6v6h-6z', 'M4 14h6v6h-6z', 'M14 14h6v6h-6z'],
+  table: ['M9 6l11 0', 'M9 12l11 0', 'M9 18l11 0', 'M5 6l0 .01', 'M5 12l0 .01', 'M5 18l0 .01'],
+};
+function ViewSwitch({ value, onChange }: { value: View; onChange: (v: View) => void }) {
+  return (
+    <div className="shop-view" role="radiogroup" aria-label="View">
+      {(['grid', 'table'] as View[]).map((v) => (
+        <button key={v} type="button" role="radio" aria-checked={value === v} aria-label={v === 'grid' ? 'Grid view' : 'Table view'} title={v === 'grid' ? 'Grid view' : 'Table view'} className={cx('shop-view__option', value === v && 'is-on')} onClick={() => onChange(v)}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="square" strokeLinejoin="miter" aria-hidden>
+            {viewIcons[v].map((d) => <path key={d} d={d} />)}
+          </svg>
+        </button>
+      ))}
+    </div>
   );
 }
 
@@ -218,25 +289,6 @@ function CompareDrawer({ ids, open, onClose, onRemove, onRequest }: {
         </div>
       </div>
     </Drawer>
-  );
-}
-
-/** The buyer's latest order, one click from being ordered again. Most B2B orders repeat an earlier one. */
-/** The buyer's latest order as one compact line with Order again, in the corner of the finder. */
-/** The signed-in user's latest order, as a clickable card beside the ordering steps: one click puts the same items back in the cart. */
-function LastOrder() {
-  const { orders, reorder } = useShop();
-  const last = orders.find((o) => o.orderedBy === CURRENT_USER.name);
-  if (!last) return null;
-  return (
-    <button type="button" className="shop-last" onClick={() => reorder(last)}>
-      <span className="shop-last__icon"><Icon name="refresh" size={20} /></span>
-      <span className="shop-last__text">
-        <span className="shop-last__title">Order again</span>
-        <span className="shop-last__meta">Last order {last.id} · {money(last.total)}</span>
-      </span>
-      <Icon name="next" size={16} />
-    </button>
   );
 }
 
@@ -374,20 +426,20 @@ export function ShopPage() {
         <TermBar terms={terms} selected={filters.use} onToggle={toggleUse} onAll={() => set('use')([])} />
       </section>
 
-      <div className="shop-ordering">
-        <ol className="shop-steps" aria-label="How ordering works">
-          {steps.map(([title, text], i) => (
-            <li key={title}><span className="shop-steps__n">{i + 1}</span><span><strong>{title}</strong> {text}</span></li>
-          ))}
-        </ol>
-        <LastOrder />
-      </div>
+      <ol className="shop-steps" aria-label="How ordering works">
+        {steps.map(([title, text], i) => (
+          <li key={title}>
+            <span className="shop-steps__n">{i + 1}</span>
+            <span className="shop-steps__text"><strong>{title}</strong><span>{text}</span></span>
+          </li>
+        ))}
+      </ol>
 
       <div className="shop-catalog">
         <aside className={cx('shop-filters', filtersOpen && 'is-open')} aria-label="Filters">
           <div className="shop-filters__head">
             <h2 className="shop-panel__title">Filters{applied.length ? ` · ${applied.length}` : ''}</h2>
-            {applied.length > 0 && <Button size="xs" variant="text" className="shop-filters__clear" onClick={clearAll}>Clear all</Button>}
+            {applied.length > 0 && <Button size="xs" variant="secondary" className="shop-filters__clear" onClick={clearAll}>Clear all</Button>}
             {/* On narrow screens the filters fold away so the results stay near the top. */}
             <Button size="xs" variant="secondary" className="shop-filters__toggle" aria-expanded={filtersOpen} onClick={() => setFiltersOpen(!filtersOpen)}>{filtersOpen ? 'Hide' : 'Show'}</Button>
           </div>
@@ -410,8 +462,10 @@ export function ShopPage() {
               onChange={(e) => setSearch(e.target.value)}
               onClear={() => setSearch('')}
             />
-            <Select className="shop-results__sort" label="Sort by" size="sm" options={sortOptions} value={sort} onChange={(v) => setSort(v as Sort)} />
-            <Segmented label="View" options={[{ value: 'grid', label: 'Grid' }, { value: 'table', label: 'Table' }]} value={view} onChange={(v) => setView(v as View)} />
+            <div className="shop-results__tools">
+              <SortMenu value={sort} onChange={setSort} />
+              <ViewSwitch value={view} onChange={setView} />
+            </div>
           </div>
           <div className="shop-results__meta">
             <h2 id="results-title" className="shop-results__count" aria-live="polite">{plural(list.length, 'product')}</h2>
