@@ -33,7 +33,7 @@ export interface ThumbnailProps {
   className?: string;
 }
 
-/** Square photo with 4px corners; a button when onClick is given. */
+/** Square photo with 8px corners; a button when onClick is given. */
 export function Thumbnail({ src, alt, size = 36, onClick, className }: ThumbnailProps) {
   const img = <img src={src} alt={alt} width={size} height={size} />;
   const classes = cx('syn-thumb', className);
@@ -113,7 +113,7 @@ export function EmptyState({ icon = 'empty-state', children, action, className }
 export interface ProgressBarProps {
   /** 0 to 100. */
   value: number;
-  /** checklist = the record reference ("1/3", %, 4px Dodger Blue bar); line = Figma "Loader line", a bare 8px Amber bar. */
+  /** checklist = the record reference ("1/3", %, 4px Dodger Blue bar); line = Figma "Loader line", a bare 8px Amber bar with 8px corners. */
   variant?: 'checklist' | 'line';
   /** Text before the percentage, e.g. "1/3". */
   label?: ReactNode;

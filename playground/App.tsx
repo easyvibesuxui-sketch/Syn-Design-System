@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import {
   Accordion, Button, Checkbox, Dialog, Grid, GridItem, Icon, IconButton, NewTab, Notification, Radio, RadioGroup, Select,
-  Slider, StatusBadge, StatusChip, Switch, Tabs, TextField, Tooltip, Tag, FileItem, ProgressBar, iconData, iconNames, tokens,
+  Slider, StatusBadge, StatusChip, Switch, Tabs, TextArea, TextField, Tooltip, Tag, FileItem, ProgressBar, iconData, iconNames, tokens,
 } from '../src';
 import { RecordDrawer } from './RecordDrawer';
 
@@ -187,9 +187,9 @@ export function App() {
 
         <Section id="inputs" title="Text fields" lead="Figma Inputs page. Two kinds: with the label inside (with an icon the Candy Apple label stays above the placeholder; without one it is the placeholder until focus) and without a label (hideLabel). Heights 56 / 48 / 36 / 24; the 24px field never has a label inside. Hover draws a 1px Eerie Black border, focus 2px outside; errors use a Snow fill and a Vermilion border, with the message 2px below.">
           <div className="pg-grid">
-            <TextField label="First name" iconStart="person" hint="Hint text" onClear={() => {}} />
-            <TextField label="First name" defaultValue="E.G. John Doe" iconStart="person" hint="Hint text" onClear={() => {}} />
-            <TextField label="First name" iconStart="person" disabled hint="Hint text" />
+            <TextField label="First name" persistentLabel clearVisibility="always" iconStart="person" hint="Hint text" onClear={() => {}} />
+            <TextField label="First name" persistentLabel clearVisibility="always" defaultValue="E.G. John Doe" iconStart="person" hint="Hint text" onClear={() => {}} />
+            <TextField label="First name" persistentLabel clearVisibility="always" iconStart="person" disabled hint="Hint text" onClear={() => {}} />
             <TextField label="First name" />
             <TextField label="First name" defaultValue="E.G. John Doe" onClear={() => {}} />
             <TextField label="First name" error="Dummy text error message" />
@@ -203,6 +203,10 @@ export function App() {
             <TextField label="Search" hideLabel size="sm" defaultValue="Wheel loader" onClear={() => {}} />
             <TextField label="Filter" size="xs" placeholder="Filter" />
             <TextField label="Email" defaultValue="john@" error={['Enter a full email address', 'Use your work domain']} />
+            <TextArea label="Additional information" hideLabel={false} placeholder="Helper text" maxLength={20} showCount onClear={() => {}} />
+            <TextArea label="Additional information" hideLabel={false} size="sm" defaultValue="Text area" maxLength={20} showCount />
+            <TextArea label="Additional information" hideLabel={false} labelPosition="outside" placeholder="Helper text" maxLength={20} showCount />
+            <TextArea label="Additional information" hideLabel={false} disabled maxLength={20} showCount />
           </div>
         </Section>
 

@@ -13,8 +13,8 @@
 .syn-avatar--32 { width: 32px; height: 32px; }
 .syn-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Thumbnail: square photo, 4px corners. */
-.syn-thumb { display: inline-block; flex: none; margin: 0; padding: 0; overflow: hidden; border: 0; border-radius: var(--syn-space-4); background: var(--syn-surface-muted); }
+/* Thumbnail: square photo, 8px corners. */
+.syn-thumb { display: inline-block; flex: none; margin: 0; padding: 0; overflow: hidden; border: 0; border-radius: var(--syn-radius-element); background: var(--syn-surface-muted); }
 .syn-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
 button.syn-thumb { cursor: zoom-in; }
 button.syn-thumb:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
@@ -64,6 +64,6 @@ a.syn-file__name:hover { text-decoration: underline; }
 .syn-progress__track { flex: 1; height: 4px; overflow: hidden; border-radius: var(--syn-radius-full); background: var(--syn-surface-muted); }
 .syn-progress__fill { display: block; height: 100%; border-radius: inherit; background: var(--syn-status-info); transition: width var(--syn-duration-base); }
 
-/* Figma "Loader line": an 8px Amber bar on a Cultured track, square ends. */
-.syn-progress--line .syn-progress__track { height: 8px; border-radius: 0; }
+/* Figma "Loader line": an 8px Amber bar on a Cultured track, 8px corners. */
+.syn-progress--line .syn-progress__track { height: 8px; border-radius: var(--syn-radius-element); }
 .syn-progress--line .syn-progress__fill { background: var(--syn-status-progress); }

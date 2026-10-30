@@ -20,3 +20,6 @@
 .syn-icon-button--outline:hover:not(:disabled) { border-color: var(--syn-border-muted); background: var(--syn-surface-default); color: var(--syn-text-primary); }
 .syn-icon-button:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
 .syn-icon-button:disabled { color: var(--syn-text-disabled); cursor: not-allowed; }
+
+/* Close glyph: Jet, as in Figma's "Close Button". */
+.syn-close-glyph { flex: none; color: var(--syn-color-secondary-jet); }
