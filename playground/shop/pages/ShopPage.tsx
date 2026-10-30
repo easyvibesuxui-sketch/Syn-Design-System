@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { Button, Checkbox, Drawer, EmptyState, Icon, IconButton, Table, Tag, TextField, Tooltip } from '../../../src';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Button, Checkbox, EmptyState, Icon, IconButton, Table, Tag, TextField, Tooltip } from '../../../src';
 import { cx } from '../../../src/utils';
 import {
   FEATURED_ORDER, POWER_OPTIONS, canOrder, hasPrice, plural, priceLabel, suitableFor, suitableTerms,
@@ -7,7 +7,7 @@ import {
 } from '../data';
 import { PriceRequestDialog } from '../PriceRequest';
 import { QuickOrder } from '../QuickOrder';
-import { AvailabilityBadge, Chips, DrawerContext, DrawerTitle, ProductArt, QuantityStepper, ShopHeader } from '../parts';
+import { AvailabilityBadge, Chips, ProductArt, QuantityStepper, ShopHeader } from '../parts';
 import { routeHref, useShop } from '../store';
 import { TermIcon } from '../termIcons';
 
@@ -31,7 +31,6 @@ const sortOptions = [
   { value: 'price-desc', label: 'Price: high to low' },
 ];
 const CONNECTIVITY = ['LTE-M', '4G', 'NB-IoT', '2G fallback', 'Bluetooth', 'CAN', 'GPS', 'QR', 'NFC'];
-const MAX_COMPARE = 3;
 
 
 function matches(p: Product, f: Filters, q: string) {
@@ -64,20 +63,6 @@ function BuyControls({ product: p, onRequest, compact }: { product: Product; onR
       <QuantityStepper size="xs" label={p.name} value={qty} onChange={setQty} />
       <Button size="sm" iconStart="plus" onClick={() => { addToCart(p, qty); setQty(1); }}>Add</Button>
     </div>
-  );
-}
-
-function CompareToggle({ product: p, compare, onToggle }: { product: Product; compare: string[]; onToggle: (id: string) => void }) {
-  const on = compare.includes(p.id);
-  return (
-    <Checkbox
-      className="shop-compare-toggle"
-      label="Compare"
-      checked={on}
-      disabled={!on && compare.length >= MAX_COMPARE}
-      onChange={() => onToggle(p.id)}
-      aria-label={`Compare ${p.name}`}
-    />
   );
 }
 
@@ -116,9 +101,7 @@ function CardBuy({ product: p, onRequest }: { product: Product; onRequest: (p: P
   );
 }
 
-function ProductCard({ product: p, compare, onCompare, onRequest }: {
-  product: Product; compare: string[]; onCompare: (id: string) => void; onRequest: (p: Product) => void;
-}) {
+function ProductCard({ product: p, onRequest }: { product: Product; onRequest: (p: Product) => void }) {
   const href = routeHref({ name: 'product', id: p.id });
   // Skip "For" when the one-line description already says it (TAG L: “For construction machinery and large equipment”).
   const forText = suitableFor(p);
@@ -150,7 +133,6 @@ function ProductCard({ product: p, compare, onCompare, onRequest }: {
           <span className="shop-price">{priceLabel(p)}</span>
           <span className="shop-tax">{hasPrice(p) ? 'per item, excl. VAT' : 'quoted for your quantity'}</span>
         </div>
-        <CompareToggle product={p} compare={compare} onToggle={onCompare} />
       </div>
     </article>
   );
@@ -199,7 +181,7 @@ const viewIcons: Record<View, string[]> = {
 /** Hover hints say what each view is good for. */
 const viewHints: Record<View, string> = {
   grid: 'Grid: product cards with photos',
-  table: 'Table: compact list to compare prices and stock',
+  table: 'Table: compact list of prices and stock',
 };
 function ViewSwitch({ value, onChange }: { value: View; onChange: (v: View) => void }) {
   return (
@@ -266,51 +248,6 @@ function FilterGroup<T extends string>({ title, options, selected, onChange, cou
       )}
       </div>
     </fieldset>
-  );
-}
-
-/** Side-by-side specs of up to three products: what buyers otherwise do in a spreadsheet. */
-function CompareDrawer({ ids, open, onClose, onRemove, onRequest }: {
-  ids: string[]; open: boolean; onClose: () => void; onRemove: (id: string) => void; onRequest: (p: Product) => void;
-}) {
-  const { products } = useShop();
-  const items = ids.map((id) => products.find((p) => p.id === id)).filter((p): p is Product => !!p);
-  const specKeys = [...new Set(items.flatMap((p) => p.specs.map(([k]) => k)))];
-  const rows: Array<[string, (p: Product) => ReactNode]> = [
-    ['Price', (p) => <strong>{priceLabel(p)}</strong>],
-    ['Availability', (p) => <AvailabilityBadge availability={p.availability} />],
-    ['Power', (p) => [p.power, p.ip].filter(Boolean).join(' · ') || '—'],
-    ['Interfaces', (p) => (p.connectivity?.length ? p.connectivity.join(', ') : '—')],
-    ...specKeys.map((k): [string, (p: Product) => ReactNode] => [k, (p) => p.specs.find(([sk]) => sk === k)?.[1] ?? '—']),
-  ];
-  return (
-    <Drawer open={open} onClose={onClose} label="Compare products" width={1024} headerStart={<DrawerContext icon="compare">Syniotec Shop</DrawerContext>}>
-      <DrawerTitle title={`Compare ${plural(items.length, 'product')}`} lead="Differences in power, connectivity and specifications at a glance. Values come from the data sheets." />
-      <div className="shop-drawer-body">
-        <div className="shop-compare" style={{ gridTemplateColumns: `200px repeat(${items.length}, minmax(0, 1fr))` }} role="table" aria-label="Product comparison">
-          <div role="row" className="shop-compare__row shop-compare__row--head">
-            <span role="columnheader" />
-            {items.map((p) => (
-              <div role="columnheader" key={p.id} className="shop-compare__product">
-                <ProductArt src={p.image} type={p.type} alt="" size="sm" />
-                <strong>{p.name}</strong>
-                <span className="shop-sku">SKU · {p.id}</span>
-                <div className="shop-row">
-                  <BuyControls product={p} onRequest={onRequest} compact />
-                  <IconButton icon="close" label={`Remove ${p.name} from comparison`} size="sm" variant="outline" onClick={() => onRemove(p.id)} />
-                </div>
-              </div>
-            ))}
-          </div>
-          {rows.map(([label, value]) => (
-            <div role="row" key={label} className="shop-compare__row">
-              <span role="rowheader" className="shop-compare__label">{label}</span>
-              {items.map((p) => <span role="cell" key={p.id}>{value(p)}</span>)}
-            </div>
-          ))}
-        </div>
-      </div>
-    </Drawer>
   );
 }
 
@@ -397,9 +334,7 @@ export function ShopPage() {
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<Sort>('featured');
   const [view, setView] = useState<View>('grid');
-  const [compare, setCompare] = useState<string[]>([]);
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [comparing, setComparing] = useState(false);
   const [quick, setQuick] = useState(false);
   const [requesting, setRequesting] = useState<Product | null>(null);
 
@@ -422,7 +357,6 @@ export function ShopPage() {
     set('use')(filters.use.includes(u) ? filters.use.filter((x) => x !== u) : [u]);
     document.getElementById('results-title')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
-  const toggleCompare = (id: string) => setCompare((c) => (c.includes(id) ? c.filter((x) => x !== id) : [...c, id].slice(0, MAX_COMPARE)));
 
   const applied: Array<[string, () => void]> = [
     ...filters.category.map((v): [string, () => void] => [v, () => set('category')(filters.category.filter((x) => x !== v))]),
@@ -504,7 +438,7 @@ export function ShopPage() {
 
           {list.length > 0 && view === 'grid' && (
             <div className="shop-cards">
-              {list.map((p) => <ProductCard key={p.id} product={p} compare={compare} onCompare={toggleCompare} onRequest={setRequesting} />)}
+              {list.map((p) => <ProductCard key={p.id} product={p} onRequest={setRequesting} />)}
             </div>
           )}
 
@@ -530,21 +464,10 @@ export function ShopPage() {
                 { key: 'price', header: 'Price', align: 'end', render: (p) => <strong>{priceLabel(p)}</strong> },
                 { key: 'buy', header: 'Order', render: (p) => <BuyControls product={p} onRequest={setRequesting} compact /> },
               ]}
-              rowActions={(p) => <CompareToggle product={p} compare={compare} onToggle={toggleCompare} />}
             />
           )}
         </section>
       </div>
-
-      {compare.length > 0 && (
-        <div className="shop-compare-bar" role="region" aria-label="Comparison">
-          <span><strong>{plural(compare.length, 'product')}</strong> selected to compare{compare.length >= MAX_COMPARE ? ' (maximum)' : ''}</span>
-          <div className="shop-row">
-            <Button size="sm" variant="text" onClick={() => setCompare([])}>Clear</Button>
-            <Button size="sm" iconStart="compare" disabled={compare.length < 2} onClick={() => setComparing(true)}>Compare</Button>
-          </div>
-        </div>
-      )}
 
       <aside className="shop-context">
         <div>
@@ -558,7 +481,6 @@ export function ShopPage() {
         </ul>
       </aside>
 
-      <CompareDrawer ids={compare} open={comparing} onClose={() => setComparing(false)} onRemove={toggleCompare} onRequest={setRequesting} />
       <QuickOrder open={quick} onClose={() => setQuick(false)} />
       <PriceRequestDialog key={requesting?.id ?? 'none'} product={requesting} onClose={() => setRequesting(null)} />
     </>

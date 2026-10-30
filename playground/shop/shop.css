@@ -406,22 +406,10 @@ html { scroll-behavior: smooth; }
 .shop-card__actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--syn-space-8); padding: var(--syn-space-12) var(--syn-space-16) var(--syn-space-16); }
 .shop-card .shop-in-cart { margin: calc(-1 * var(--syn-space-8)) var(--syn-space-16) var(--syn-space-16); }
 .shop-buy-controls { display: flex; align-items: center; gap: var(--syn-space-8); }
-.shop-compare-toggle .syn-choice__row { gap: var(--syn-space-6); }
 .shop-product-table .shop-product-cell { color: inherit; text-decoration: none; }
 .shop-product-table td { font: var(--syn-type-text-body-xs-2); }
 
 /* Comparison bar and drawer. */
-.shop-compare-bar { position: sticky; bottom: var(--syn-space-16); z-index: 3; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--syn-space-12); padding: var(--syn-space-12) var(--syn-space-16) var(--syn-space-12) var(--syn-space-24); border-radius: var(--syn-radius-widget); background: var(--syn-surface-inverse); color: var(--syn-color-white-white); box-shadow: var(--syn-shadow-float); }
-.shop-compare-bar .syn-button--text { color: var(--syn-color-white-white); }
-.shop-compare-bar .syn-button--primary { background: var(--syn-color-white-white); color: var(--syn-text-primary); }
-.shop-compare { display: grid; border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-widget); background: var(--syn-surface-default); }
-.shop-compare__row { display: contents; }
-.shop-compare__row > * { padding: var(--syn-space-12) var(--syn-space-16); border-bottom: 1px solid var(--syn-border-default); font: var(--syn-type-text-body-xs-2); }
-.shop-compare__row:last-child > * { border-bottom: 0; }
-.shop-compare__label { color: var(--syn-text-secondary); }
-.shop-compare__product { display: flex; flex-direction: column; gap: var(--syn-space-6); }
-.shop-compare__product strong { font: var(--syn-type-titles-title-4); }
-.shop-compare__product .shop-art--sm { aspect-ratio: 4 / 3; background: var(--syn-surface-muted); }
 
 @media (max-width: 1280px) {
 }
@@ -435,7 +423,6 @@ html { scroll-behavior: smooth; }
 @media (max-width: 760px) {
   .shop-steps { grid-template-columns: minmax(0, 1fr); }
   .shop-results__sort { flex: 1 1 100%; }
-  .shop-compare { overflow-x: auto; }
 }
 .shop-gallery__badge { position: absolute; top: var(--syn-space-16); left: var(--syn-space-16); z-index: 1; }
 /* .shop-app resets list and fieldset spacing; these restore it with enough specificity. */
@@ -443,9 +430,7 @@ html { scroll-behavior: smooth; }
 .shop-app .shop-filter { border-top: 0; box-shadow: inset 0 1px 0 var(--syn-border-default); }
 .shop-filter__title { float: left; width: 100%; }
 .shop-filter__title + * { clear: both; }
-.shop-compare__product .shop-art--sm { aspect-ratio: 16 / 9; max-height: 160px; }
 .shop-results__count { scroll-margin-top: 96px; }
-.shop-product-table .shop-compare-toggle .syn-choice__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .shop-product-table .syn-status-badge, .shop-product-table .syn-button { white-space: nowrap; }
 .shop-filters__toggle { display: none; }
 .shop-filters__head { gap: var(--syn-space-8); }
@@ -612,8 +597,6 @@ html { scroll-behavior: smooth; }
 .shop-card__price .shop-price { font: var(--syn-type-titles-title-7); }
 .shop-card .syn-status-badge { height: auto; padding: 0; border: 0; background: none; color: var(--syn-text-secondary); font: var(--syn-type-text-body-xs-2); }
 .shop-card .syn-status-badge__dot { width: 8px; height: 8px; }
-.shop-card .shop-compare-toggle .syn-choice__row { gap: var(--syn-space-6); color: var(--syn-text-secondary); font: var(--syn-type-text-body-xs-2); }
-.shop-card .shop-compare-toggle .syn-choice__box { width: 16px; height: 16px; }
 
 /* Filter and results hierarchy: section titles (16), group titles (14 medium), options (14 regular, grey until chosen),
    counts and Clear all (12). The selected-count badge is a quiet chip, not the loudest thing in the panel. */
@@ -725,3 +708,13 @@ html { scroll-behavior: smooth; }
 .shop-card__fab:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
 .shop-card__stepper { border-radius: var(--syn-radius-full); }
 @media (prefers-reduced-motion: reduce) { .shop-card__fab:hover { transform: none; } }
+
+/* Everything on the photo shares one 36px height: stock and Most used pills, the round + and the − count + pill. */
+.shop-card__stock .syn-status-badge, .shop-card__stock .syn-tag { height: var(--syn-size-control-sm); padding: 0 var(--syn-space-12); border-radius: var(--syn-radius-full); font: var(--syn-type-text-body-xs); }
+.shop-card__stock .syn-status-badge { gap: var(--syn-space-8); }
+.shop-card__stock .syn-status-badge__dot { width: 10px; height: 10px; border-width: 0; box-shadow: none; }
+.shop-card__fab { width: var(--syn-size-control-sm); height: var(--syn-size-control-sm); }
+.shop-card__fab .syn-icon { width: 18px; height: 18px; }
+/* Sort and the view switch: 8px corners; the selected pad inside the switch follows at 6px. */
+.shop-sort__button, .shop-view { border-radius: var(--syn-radius-element); }
+.shop-view__option { border-radius: 6px; }
