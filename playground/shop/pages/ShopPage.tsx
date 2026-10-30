@@ -120,16 +120,27 @@ function ProductCard({ product: p, compare, onCompare, onRequest }: {
   );
 }
 
-function FilterGroup<T extends string>({ title, options, selected, onChange, counts, label, limit }: {
+/** A collapsible filter group: the header shows the title and how many values are selected; the options fold away. */
+function FilterGroup<T extends string>({ title, options, selected, onChange, counts, label, limit, defaultOpen = false }: {
   title: string; options: T[]; selected: T[]; onChange: (next: T[]) => void; counts: (o: T) => number; label?: (o: T) => string;
   /** Long lists show this many options, plus any selected ones, behind a "Show all" toggle. */
   limit?: number;
+  defaultOpen?: boolean;
 }) {
   const [all, setAll] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
+  const bodyId = `filter-${title.replace(/\W+/g, '-').toLowerCase()}`;
   const shown = !limit || all ? options : options.filter((o, i) => i < limit || selected.includes(o));
   return (
-    <fieldset className="shop-filter">
-      <legend className="shop-filter__title">{title}</legend>
+    <fieldset className={cx('shop-filter', open && 'is-open')}>
+      <legend className="shop-filter__title">
+        <button type="button" className="shop-filter__toggle" aria-expanded={open} aria-controls={bodyId} onClick={() => setOpen(!open)}>
+          <span>{title}</span>
+          {selected.length > 0 && <span className="shop-filter__selected">{selected.length}</span>}
+          <Icon name="down" size={16} className="shop-filter__chevron" />
+        </button>
+      </legend>
+      <div id={bodyId} className="shop-filter__body" hidden={!open}>
       {shown.map((o) => {
         const n = counts(o);
         const on = selected.includes(o);
@@ -150,6 +161,7 @@ function FilterGroup<T extends string>({ title, options, selected, onChange, cou
           {all ? 'Show fewer' : `Show all ${options.length}`}
         </Button>
       )}
+      </div>
     </fieldset>
   );
 }
@@ -336,7 +348,7 @@ export function ShopPage() {
             {/* On narrow screens the filters fold away so the results stay near the top. */}
             <Button size="xs" variant="secondary" className="shop-filters__toggle" aria-expanded={filtersOpen} onClick={() => setFiltersOpen(!filtersOpen)}>{filtersOpen ? 'Hide' : 'Show'}</Button>
           </div>
-          <FilterGroup<Category> title="Category" options={['Hardware', 'Tags']} selected={filters.category} onChange={set('category')} counts={(o) => countWith('category', o)} label={(o) => (o === 'Hardware' ? 'Active telematics' : 'Passive tags')} />
+          <FilterGroup<Category> defaultOpen title="Category" options={['Hardware', 'Tags']} selected={filters.category} onChange={set('category')} counts={(o) => countWith('category', o)} label={(o) => (o === 'Hardware' ? 'Active telematics' : 'Passive tags')} />
           <FilterGroup<string> title="Suitable for" options={terms} selected={filters.use} onChange={set('use')} counts={(o) => countWith('use', o)} limit={6} />
           <FilterGroup<Power> title="Power source" options={POWER_OPTIONS} selected={filters.power} onChange={set('power')} counts={(o) => countWith('power', o)} />
           <FilterGroup<string> title="Connectivity" options={CONNECTIVITY} selected={filters.connectivity} onChange={set('connectivity')} counts={(o) => countWith('connectivity', o)} />

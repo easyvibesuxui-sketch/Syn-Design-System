@@ -535,3 +535,27 @@ html { scroll-behavior: smooth; }
   .shop-last-mini__text { white-space: normal; }
 }
 .shop-termbar__item { max-width: none; white-space: nowrap; }
+
+/* Filters: a narrower column of collapsible groups. */
+.shop-catalog { grid-template-columns: 216px minmax(0, 1fr); }
+.shop-filters { gap: 0; padding: var(--syn-space-16); }
+.shop-filters__head { padding-bottom: var(--syn-space-8); }
+.shop-app .shop-filter { gap: 0; padding: 0; }
+.shop-filter__title { float: none; width: 100%; margin: 0; }
+.shop-filter__toggle { display: flex; align-items: center; gap: var(--syn-space-8); width: 100%; min-height: var(--syn-size-control-md); padding: 0; border: 0; background: none; color: var(--syn-text-primary); font: var(--syn-type-text-body-s); text-align: left; cursor: pointer; }
+.shop-filter__toggle > span:first-child { flex: 1; }
+.shop-filter__toggle:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; border-radius: var(--syn-radius-xs); }
+.shop-filter__selected { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 var(--syn-space-6); border-radius: var(--syn-radius-full); background: var(--syn-surface-inverse); color: var(--syn-color-white-white); font: var(--syn-type-text-body-xs); }
+.shop-filter__chevron { transition: transform var(--syn-duration-base); }
+.shop-filter.is-open .shop-filter__chevron { transform: rotate(180deg); }
+.shop-filter__body { display: flex; flex-direction: column; gap: var(--syn-space-8); padding-bottom: var(--syn-space-16); }
+.shop-filter__body[hidden] { display: none; }
+.shop-filter__row .syn-choice__label { font: var(--syn-type-text-body-xs-2); }
+@media (max-width: 1080px) {
+  .shop-catalog { grid-template-columns: minmax(0, 1fr); }
+  .shop-filters:not(.is-open) .shop-filter { display: none; }
+}
+/* A legend sits on its fieldset's top edge, so the divider goes under each group instead. */
+.shop-app .shop-filter { box-shadow: none; border-bottom: 1px solid var(--syn-border-default); }
+.shop-app .shop-filter:last-child { border-bottom: 0; }
+.shop-filters__head { border-bottom: 1px solid var(--syn-border-default); }
