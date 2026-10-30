@@ -1,4 +1,4 @@
-import { Avatar, Icon, IconButton, Notification, type IconName } from '../../src';
+import { Avatar, Button, Icon, IconButton, Notification, type IconName } from '../../src';
 import { cx } from '../../src/utils';
 import { CURRENT_USER } from './data';
 import { CartDrawer } from './CartDrawer';
@@ -11,7 +11,7 @@ import { ShopPage } from './pages/ShopPage';
 import { routeHref, useShop, type Route } from './store';
 
 const crumbs: Record<Route['name'], string> = {
-  shop: 'Shop', product: 'Shop / Product', checkout: 'Shop / Submit order', confirmation: 'Shop / Order submitted',
+  shop: 'Shop', product: 'Shop / Product', checkout: 'Shop / Send order', confirmation: 'Shop / Order sent',
   orders: 'Shop / My orders', admin: 'Shop Admin',
 };
 
@@ -76,7 +76,10 @@ export function App() {
       <CartDrawer />
       <div className="shop-toasts">
         {toasts.map((t) => (
-          <Notification key={t.id} variant="inline" tone={t.tone} title={t.title} onClose={() => dismiss(t.id)}>{t.message}</Notification>
+          <Notification key={t.id} variant="inline" tone={t.tone} title={t.title} onClose={() => dismiss(t.id)}>
+            {t.message}
+            {t.action && <Button size="xs" variant="secondary" className="shop-toast-action" onClick={() => { t.action!.run(); dismiss(t.id); }}>{t.action.label}</Button>}
+          </Notification>
         ))}
       </div>
     </div>

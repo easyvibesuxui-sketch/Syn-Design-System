@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, EmptyState, Section, Select, Table, TextField, Value } from '../../../src';
+import { Button, Card, EmptyState, Section, Select, Table, TextField, Value } from '../../../src';
 import { cx } from '../../../src/utils';
 import { CURRENT_USER, ORDER_STAGES, ORDER_STATUSES, money, type Order, type OrderStatus } from '../data';
 import { BackLink, OrderStatusBadge, ProductArt, ShopHeader, SpecList, Summary } from '../parts';
@@ -52,21 +52,25 @@ export function orderInfo(o: Order): Array<[string, string]> {
 }
 
 function OrderDetail({ order: o }: { order: Order }) {
+  const { reorder } = useShop();
   return (
     <>
-      <ShopHeader title="My orders" lead="Review orders you have submitted through the Shop." back />
+      <ShopHeader title="My orders" lead="Items, delivery details and status of this order." back />
       <BackLink href={routeHref({ name: 'orders' })}>Back to orders</BackLink>
       <div className="shop-order-head">
         <div>
           <h2 className="shop-order-head__id">{o.id}</h2>
           <p className="shop-muted">Submitted {o.date} · {o.time} by {o.orderedBy}</p>
         </div>
-        <OrderStatusBadge status={o.status} />
+        <div className="shop-row">
+          <OrderStatusBadge status={o.status} />
+          <Button size="sm" iconStart="refresh" onClick={() => reorder(o)}>Order again</Button>
+        </div>
       </div>
       <div className="shop-order-grid">
         <div className="shop-stack">
           <Section title="Order items">
-            <p className="shop-muted">Prices are snapshots from the time the order was submitted.</p>
+            <p className="shop-muted">Prices as they were when you sent the order. Ordering again uses today’s prices.</p>
             <OrderItems order={o} />
             <Summary total={o.total} subtotal={false} />
           </Section>
@@ -76,11 +80,11 @@ function OrderDetail({ order: o }: { order: Order }) {
           </Section>
         </div>
         <Section title="Order status">
-          <p className="shop-muted">{o.status === 'Cancelled' ? 'This order was cancelled by Syniotec.' : 'Syniotec updates the status as the order is processed.'}</p>
+          <p className="shop-muted">{o.status === 'Cancelled' ? 'Syniotec cancelled this order. Contact Syniotec if you have questions.' : 'Syniotec updates the status at each step and emails you when it changes.'}</p>
           {o.status === 'Cancelled' ? <OrderStatusBadge status="Cancelled" /> : <OrderTimeline order={o} />}
           <Card>
             <strong className="shop-card-title">Need to change or cancel this order?</strong>
-            <p className="shop-muted">Contact Syniotec. Customer self-service cancellation is not included in V1.</p>
+            <p className="shop-muted">Contact Syniotec with the order number {o.id}. Orders can’t be changed in the Shop yet.</p>
           </Card>
         </Section>
       </div>
@@ -89,7 +93,7 @@ function OrderDetail({ order: o }: { order: Order }) {
 }
 
 export function OrdersPage({ id }: { id?: string }) {
-  const { orders } = useShop();
+  const { orders, reorder } = useShop();
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('all');
 
@@ -103,11 +107,11 @@ export function OrdersPage({ id }: { id?: string }) {
 
   return (
     <>
-      <ShopHeader title="My orders" lead="Orders you have submitted through the Shop." back />
+      <ShopHeader title="My orders" lead="Orders you sent through the Shop, newest first." back />
       <div className="shop-section-head">
         <div>
           <h2 className="shop-section-head__title">Order history</h2>
-          <p className="shop-muted">Open an order to review submitted items, delivery information and current status.</p>
+          <p className="shop-muted">Open an order to see its items, delivery details and status, or order the same products again.</p>
         </div>
       </div>
       <div className="shop-toolbar">
@@ -128,9 +132,14 @@ export function OrdersPage({ id }: { id?: string }) {
               { key: 'total', header: 'Total', align: 'end', render: (o) => <strong>{money(o.total)}</strong> },
               { key: 'status', header: 'Status', render: (o) => <OrderStatusBadge status={o.status} /> },
             ]}
+            rowActions={(o) => <Button size="xs" variant="secondary" iconStart="refresh" onClick={() => reorder(o)} aria-label={`Order ${o.id} again`}>Order again</Button>}
           />
         )
-        : <EmptyState icon="search">No matching orders.</EmptyState>}
+        : (
+          <EmptyState icon="search" action={<Button size="sm" variant="secondary" onClick={() => { setSearch(''); setStatus('all'); }}>Show all orders</Button>}>
+            No orders match this search or status.
+          </EmptyState>
+        )}
     </>
   );
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Card, Dialog, Drawer, EmptyState, IconButton, Section, Select, StatusBadge, Table, Tabs, TextArea, TextField } from '../../../src';
+import { Button, Card, Dialog, Drawer, EmptyState, IconButton, Section, Select, StatusBadge, Table, Tabs, TextArea, TextField, Value } from '../../../src';
 import { ORDER_STATUSES, money, priceLabel, hasPrice, stamp, type Order, type OrderStatus } from '../data';
 import { InfoNote, OrderStatusBadge, PageHeader, ProductArt, SpecList, LinkButton } from '../parts';
 import { routeHref, useShop, type AdminTab } from '../store';
@@ -14,28 +14,49 @@ function OrderId({ order, onOpen }: { order: Order; onOpen: (o: Order) => void }
   );
 }
 
-function Overview({ onOpen, onAll }: { onOpen: (o: Order) => void; onAll: () => void }) {
-  const { products, orders } = useShop();
+function Overview({ onOpen, onAll }: { onOpen: (o: Order) => void; onAll: (status?: OrderStatus) => void }) {
+  const { products, orders, requests } = useShop();
   const active = products.filter((p) => p.active).length;
+  const waiting = orders.filter((o) => o.status === 'Submitted');
   const open = orders.filter((o) => o.status !== 'Completed' && o.status !== 'Cancelled').length;
-  const metrics: Array<[string, string, string]> = [
-    ['Active products', String(active), `${products.length - active} inactive`],
-    ['Open orders', String(open), 'Manual processing'],
-    ['All orders', String(orders.length), 'Customer order requests'],
-    ['Order value', money(orders.reduce((n, o) => n + o.total, 0)), 'Excl. VAT · demo data'],
+  const noPrice = products.filter((p) => p.active && !hasPrice(p)).length;
+  const metrics: Array<[string, string, string, (() => void)?]> = [
+    ['Waiting for confirmation', String(waiting.length), waiting.length ? 'Customers wait for your reply' : 'All caught up', waiting.length ? () => onAll('Submitted') : undefined],
+    ['Open orders', String(open), 'Confirmed, processing or shipped', () => onAll()],
+    ['Active products', String(active), noPrice ? `${noPrice} without a price` : `${products.length - active} inactive`],
+    ['Order value', money(orders.reduce((n, o) => n + o.total, 0)), 'All orders, excl. VAT'],
   ];
   return (
     <div className="shop-stack">
       <div className="shop-metrics">
-        {metrics.map(([label, value, note]) => (
+        {metrics.map(([label, value, note, run]) => (
           <Card key={label} className="shop-metric">
             <span className="shop-metric__label">{label}</span>
             <span className="shop-metric__value">{value}</span>
             <span className="shop-muted">{note}</span>
+            {run && <Button size="xs" variant="text" iconEnd="arrow" className="shop-metric__link" onClick={run}>Show orders</Button>}
           </Card>
         ))}
       </div>
-      <Section title="Recent orders" actions={<Button size="xs" variant="secondary" onClick={onAll}>View all orders</Button>}>
+      {requests.length > 0 && (
+        <Section title={`Price requests · ${requests.length}`}>
+          <p className="shop-muted">Customers asked for a price on products without one. Reply by email, then set a price in Products.</p>
+          <Table
+            caption="Price requests"
+            className="shop-table"
+            rows={requests}
+            rowKey={(r) => r.id}
+            columns={[
+              { key: 'productName', header: 'Product', render: (r) => <span className="shop-cell"><strong>{r.productName}</strong><span>{r.id}</span></span> },
+              { key: 'qty', header: 'Quantity', render: (r) => <Value>{r.qty}</Value> },
+              { key: 'requestedBy', header: 'Requested by' },
+              { key: 'date', header: 'Date' },
+              { key: 'note', header: 'Note', render: (r) => r.note || '—' },
+            ]}
+          />
+        </Section>
+      )}
+      <Section title="Recent orders" actions={<Button size="xs" variant="secondary" onClick={() => onAll()}>View all orders</Button>}>
         <Table
           caption="Recent orders"
           className="shop-table"
@@ -93,10 +114,10 @@ function Products({ onEdit }: { onEdit: (id: string | null) => void }) {
   );
 }
 
-function Orders({ onOpen }: { onOpen: (o: Order) => void }) {
+function Orders({ onOpen, initialStatus = 'all' }: { onOpen: (o: Order) => void; initialStatus?: string }) {
   const { orders } = useShop();
   const [search, setSearch] = useState('');
-  const [status, setStatus] = useState('all');
+  const [status, setStatus] = useState(initialStatus);
   const q = search.trim().toLowerCase();
   const list = orders.filter((o) => (status === 'all' || o.status === status)
     && [o.id, o.org, o.orderedBy, o.reference].join(' ').toLowerCase().includes(q));
@@ -136,7 +157,7 @@ function OrderDrawer({ order, onClose }: { order: Order | null; onClose: () => v
     if (!order) return;
     const history = status === order.status ? order.history : [...order.history, [status, stamp().both] as [OrderStatus, string]];
     setOrders(orders.map((o) => (o.id === order.id ? { ...o, status, internalNote: note.trim(), history } : o)));
-    notify('Order updated', `${order.id} was saved.`);
+    notify(status === order.status ? `${order.id} saved` : `${order.id} is now ${status}`, status === order.status ? 'The internal note was updated.' : 'The customer sees the new status in My orders.');
     onClose();
   };
 
@@ -189,23 +210,25 @@ export function AdminPage({ tab }: { tab: AdminTab }) {
   const [order, setOrder] = useState<Order | null>(null);
   const [editing, setEditing] = useState<string | null | undefined>(undefined);
   const [confirmReset, setConfirmReset] = useState(false);
-  const setTab = (t: string) => go({ name: 'admin', tab: t as AdminTab });
+  const [orderFilter, setOrderFilter] = useState('all');
+  const setTab = (t: string) => { setOrderFilter('all'); go({ name: 'admin', tab: t as AdminTab }); };
+  const showOrders = (status?: OrderStatus) => { setTab('orders'); setOrderFilter(status ?? 'all'); };
 
   const content = tab === 'products'
     ? <Products onEdit={setEditing} />
-    : tab === 'orders' ? <Orders onOpen={setOrder} /> : <Overview onOpen={setOrder} onAll={() => setTab('orders')} />;
+    : tab === 'orders' ? <Orders key={orderFilter} onOpen={setOrder} initialStatus={orderFilter} /> : <Overview onOpen={setOrder} onAll={showOrders} />;
 
   return (
     <>
       <PageHeader
         title="Shop Admin"
-        lead="Manage the product catalogue, general prices and incoming Shop orders."
+        lead="Confirm incoming orders, answer price requests and keep the catalogue and prices up to date."
         actions={<>
           <Button size="sm" variant="text" iconStart="refresh" onClick={() => setConfirmReset(true)}>Reset demo data</Button>
           <LinkButton href={routeHref({ name: 'shop' })}>Open Shop</LinkButton>
         </>}
       />
-      <InfoNote tone="warning"><strong>Prototype note:</strong> product prices shown here are sample values until Syniotec provides the real selling prices. In production, Shop Admin is the source of truth.</InfoNote>
+      <InfoNote tone="warning"><strong>Sample prices:</strong> the prices in this prototype are placeholders until Syniotec sets the real selling prices. In production, the prices set here are what customers see.</InfoNote>
       <Tabs
         label="Shop Admin"
         size="md"
@@ -225,10 +248,10 @@ export function AdminPage({ tab }: { tab: AdminTab }) {
       <Dialog
         open={confirmReset}
         onClose={() => setConfirmReset(false)}
-        title="Reset demo data"
+        title="Reset demo data?"
         icon="refresh"
-        description="Restore the initial products and sample orders and empty the cart?"
-        actions={<Button size="md" fullWidth onClick={() => { reset(); setConfirmReset(false); notify('Prototype reset', 'Initial products and sample orders were restored.'); }}>Reset</Button>}
+        description="Products, sample orders and price requests go back to their defaults and the cart is emptied. Your changes in this demo are lost."
+        actions={<Button size="md" fullWidth onClick={() => { reset(); setConfirmReset(false); notify('Demo data reset', 'Products, sample orders and price requests are back to their defaults.'); }}>Reset demo data</Button>}
       />
     </>
   );

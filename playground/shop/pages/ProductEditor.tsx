@@ -43,7 +43,7 @@ export function ProductEditor({ open, productId, onClose }: { open: boolean; pro
   const pickImage = (f?: File) => {
     if (!f) return;
     if (f.size > 2 * 1024 * 1024) {
-      notify('Image too large', 'For this prototype, please use an image smaller than 2 MB.', 'error');
+      notify('Image is larger than 2 MB', 'Choose a smaller PNG, JPG or WebP file.', 'error');
       return;
     }
     const reader = new FileReader();
@@ -70,7 +70,7 @@ export function ProductEditor({ open, productId, onClose }: { open: boolean; pro
       specs: specs.map((s): [string, string] => [s.label.trim(), s.value.trim()]).filter(([l, v]) => l && v),
     };
     setProducts(existing ? products.map((p) => (p.id === existing.id ? next : p)) : [next, ...products]);
-    notify('Product saved', `${next.name} is now in the catalogue.`);
+    notify(`${next.name} saved`, next.active ? 'Customers see the changes in the Shop now.' : 'The product is inactive, so customers don’t see it.');
     onClose();
   };
 
@@ -78,7 +78,7 @@ export function ProductEditor({ open, productId, onClose }: { open: boolean; pro
     if (!existing) return;
     setProducts(products.filter((p) => p.id !== existing.id));
     setCart((list) => list.filter((l) => l.productId !== existing.id));
-    notify('Product deleted', `${existing.id} was removed from the catalogue.`);
+    notify(`${existing.name} deleted`, 'It is no longer in the catalogue or in any cart.');
     setConfirmDelete(false);
     onClose();
   };
@@ -162,10 +162,10 @@ export function ProductEditor({ open, productId, onClose }: { open: boolean; pro
       <Dialog
         open={confirmDelete}
         onClose={() => setConfirmDelete(false)}
-        title={`Delete ${existing?.name ?? ''}`}
+        title={`Delete ${existing?.name ?? 'product'}?`}
         icon="trash"
-        description="The product is removed from the catalogue and from carts. Submitted orders keep their product snapshots."
-        actions={<Button size="md" variant="brand" fullWidth onClick={remove}>Delete product</Button>}
+        description="Customers can no longer order it and it is removed from their carts. Orders already sent keep it. This can’t be undone; to hide it for now, switch off “Active in the Shop” instead."
+        actions={<Button size="md" variant="brand" fullWidth onClick={remove}>Delete {existing?.name ?? 'product'}</Button>}
       />
     </Drawer>
   );

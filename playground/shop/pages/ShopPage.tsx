@@ -1,7 +1,9 @@
 import { useMemo, useRef, useState } from 'react';
-import { Button, Card, EmptyState, Icon, Segmented, Select, Tag, TextField, type IconName } from '../../../src';
-import { canOrder, hardwareImages, hasPrice, plural, priceLabel, tagCollage, type Product } from '../data';
-import { AvailabilityBadge, InfoNote, LinkButton, ProductArt, ShopHeader } from '../parts';
+import { Button, Card, EmptyState, Icon, Segmented, Select, Tag, TextField } from '../../../src';
+import { CURRENT_USER, canOrder, hardwareImages, hasPrice, money, plural, priceLabel, type Product } from '../data';
+import { PriceRequestDialog } from '../PriceRequest';
+import { QuickOrder } from '../QuickOrder';
+import { AvailabilityBadge, InfoNote, LinkButton, OrderStatusBadge, ProductArt, ShopHeader } from '../parts';
 import { routeHref, useShop } from '../store';
 
 type Filter = 'All' | 'Hardware' | 'Tags';
@@ -14,10 +16,10 @@ const sortOptions = [
   { value: 'price-desc', label: 'Price: high to low' },
 ];
 
-const benefits: Array<[IconName, string, string]> = [
-  ['dublecheck', 'Platform integration', 'Syniotec hardware is designed to work directly with your connected platform.'],
-  ['inventory', 'Hardware for every application', 'From Bluetooth beacons to passive telematics for equipment access.'],
-  ['settings', 'Quick & easy installation', 'Devices appear in the platform only after installation and commissioning.'],
+const benefits = [
+  'Works directly with your syniotec platform',
+  'Invoice after review, no online payment',
+  'Devices appear once installed and commissioned',
 ];
 
 function sortProducts(list: Product[], sort: Sort) {
@@ -28,9 +30,10 @@ function sortProducts(list: Product[], sort: Sort) {
   return list;
 }
 
-function ProductCard({ product: p }: { product: Product }) {
-  const { addToCart } = useShop();
+function ProductCard({ product: p, onRequest }: { product: Product; onRequest: (p: Product) => void }) {
+  const { addToCart, cart } = useShop();
   const href = routeHref({ name: 'product', id: p.id });
+  const inCart = cart.find((l) => l.productId === p.id)?.qty ?? 0;
   const unavailable = p.availability === 'Temporarily unavailable';
   return (
     <Card className="shop-product">
@@ -48,15 +51,41 @@ function ProductCard({ product: p }: { product: Product }) {
         <div className="shop-product__foot">
           <div>
             <span className="shop-price">{priceLabel(p)}</span>
-            {hasPrice(p) && <span className="shop-tax">excl. VAT</span>}
+            <span className="shop-tax">{hasPrice(p) ? 'excl. VAT' : 'Quoted for your quantity'}</span>
           </div>
           <div className="shop-product__actions">
             <LinkButton href={href}>Details</LinkButton>
-            <Button size="sm" disabled={!canOrder(p)} iconStart={canOrder(p) ? 'plus' : undefined} onClick={() => addToCart(p)}>
-              {unavailable ? 'Unavailable' : hasPrice(p) ? 'Add to cart' : 'On request'}
-            </Button>
+            {canOrder(p) && <Button size="sm" iconStart="plus" onClick={() => addToCart(p)}>{inCart ? 'Add 1 more' : 'Add to cart'}</Button>}
+            {!canOrder(p) && !unavailable && <Button size="sm" variant="secondary" iconStart="mail" onClick={() => onRequest(p)}>Request price</Button>}
+            {unavailable && <Button size="sm" disabled>Unavailable</Button>}
           </div>
         </div>
+        {inCart > 0 && <p className="shop-in-cart"><Icon name="check" size={16} />{inCart} in your cart</p>}
+      </div>
+    </Card>
+  );
+}
+
+/** The buyer's latest order, one click from being ordered again. Most B2B orders repeat an earlier one. */
+function OrderAgain() {
+  const { orders, reorder } = useShop();
+  const last = orders.find((o) => o.orderedBy === CURRENT_USER.name);
+  if (!last) return null;
+  const count = last.items.reduce((n, i) => n + i.qty, 0);
+  return (
+    <Card className="shop-again">
+      <span className="shop-again__thumbs" aria-hidden>
+        {last.items.slice(0, 3).map((i) => <ProductArt key={i.id} src={i.image} type={i.type} alt="" size="xs" />)}
+      </span>
+      <div className="shop-again__copy">
+        <span className="shop-eyebrow">Your last order</span>
+        <strong>{last.items.map((i) => `${i.qty} × ${i.name}`).join(', ')}</strong>
+        <span className="shop-muted">{last.id} · {last.date} · {plural(count, 'item')} · {money(last.total)}</span>
+      </div>
+      <OrderStatusBadge status={last.status} />
+      <div className="shop-again__actions">
+        <LinkButton href={routeHref({ name: 'orders', id: last.id })}>View order</LinkButton>
+        <Button size="sm" iconStart="refresh" onClick={() => reorder(last)}>Order again</Button>
       </div>
     </Card>
   );
@@ -67,33 +96,41 @@ export function ShopPage() {
   const [filter, setFilter] = useState<Filter>('All');
   const [sort, setSort] = useState<Sort>('featured');
   const [search, setSearch] = useState('');
+  const [quick, setQuick] = useState(false);
+  const [requesting, setRequesting] = useState<Product | null>(null);
   const catalogue = useRef<HTMLElement>(null);
 
+  const active = products.filter((p) => p.active);
+  const count = (c: Filter) => active.filter((p) => c === 'All' || p.category === c).length;
   const list = useMemo(() => {
     const q = search.trim().toLowerCase();
-    const shown = products.filter((p) => p.active
-      && (filter === 'All' || p.category === filter)
+    const shown = active.filter((p) => (filter === 'All' || p.category === filter)
       && (!q || [p.name, p.id, p.short, p.description, p.category].some((v) => v.toLowerCase().includes(q))));
     return sortProducts(shown, sort);
-  }, [products, filter, sort, search]);
+  }, [active, filter, sort, search]);
 
-  const browse = (f?: Filter) => {
-    if (f) setFilter(f);
-    catalogue.current?.scrollIntoView({ behavior: 'smooth' });
-  };
   const clear = () => { setSearch(''); setFilter('All'); setSort('featured'); };
 
   return (
     <>
-      <ShopHeader title="Shop" lead="Order Syniotec hardware and passive tags directly from your platform." />
+      <ShopHeader
+        title="Shop"
+        lead="Order syniotec hardware and passive tags for your fleet."
+        extra={<Button size="sm" variant="secondary" iconStart="list" onClick={() => setQuick(true)}>Quick order</Button>}
+      />
 
       <section className="shop-hero" aria-labelledby="hero-title">
         <div className="shop-hero__copy">
-          <p className="shop-eyebrow shop-eyebrow--brand">Syniotec telematics & hardware</p>
+          <p className="shop-eyebrow shop-eyebrow--brand">Telematics & hardware</p>
           <h2 id="hero-title" className="shop-hero__title">Network your fleet.</h2>
-          <p className="shop-hero__lead">A single comprehensive solution that makes equipment management as easy as possible.</p>
-          <div><Button size="md" iconEnd="arrow" onClick={() => browse()}>Browse products</Button></div>
-          <InfoNote>No online payment is required — Syniotec reviews the order and issues the invoice separately.</InfoNote>
+          <p className="shop-hero__lead">Trackers, beacons and passive tags for every machine, vehicle and tool, ordered from the platform you already use.</p>
+          <ul className="shop-hero__points">
+            {benefits.map((b) => <li key={b}><Icon name="check" size={16} />{b}</li>)}
+          </ul>
+          <div className="shop-row">
+            <Button size="md" iconEnd="arrow" onClick={() => catalogue.current?.scrollIntoView({ behavior: 'smooth' })}>Browse products</Button>
+            <Button size="md" variant="secondary" onClick={() => setQuick(true)}>Order by SKU</Button>
+          </div>
         </div>
         <div className="shop-hero__art" aria-hidden>
           <ProductArt src={hardwareImages.edge} type="hardware" alt="" size="lg" />
@@ -102,46 +139,13 @@ export function ShopPage() {
         </div>
       </section>
 
-      <div className="shop-categories">
-        <button type="button" className="shop-category" onClick={() => browse('Hardware')}>
-          <span className="shop-category__copy">
-            <span className="shop-eyebrow">Active telematics</span>
-            <span className="shop-category__title">Hardware</span>
-            <span className="shop-category__text">Connected devices for machines, vehicles, trailers and powered or unpowered equipment.</span>
-            <span className="shop-category__link">Browse hardware<Icon name="arrow" size={16} /></span>
-          </span>
-          <span className="shop-category__art" aria-hidden>
-            <ProductArt src={hardwareImages.edge} type="hardware" alt="" size="sm" />
-            <ProductArt src={hardwareImages.dot} type="dot" alt="" size="sm" />
-          </span>
-        </button>
-        <button type="button" className="shop-category" onClick={() => browse('Tags')}>
-          <span className="shop-category__copy">
-            <span className="shop-eyebrow">Passive telematics</span>
-            <span className="shop-category__title">Tags</span>
-            <span className="shop-category__text">TAG L, TAG M, TAG S, TOOL-TAGS, CHAIN-TAG and QR-Sticker for direct equipment-profile access.</span>
-            <span className="shop-category__link">Browse tags<Icon name="arrow" size={16} /></span>
-          </span>
-          <span className="shop-category__art" aria-hidden>
-            <ProductArt src={tagCollage} type="tags" alt="" size="md" />
-          </span>
-        </button>
-      </div>
-
-      <ul className="shop-benefits">
-        {benefits.map(([icon, title, text]) => (
-          <li key={title}>
-            <span className="shop-benefits__icon"><Icon name={icon} size={20} /></span>
-            <span><strong>{title}</strong><span>{text}</span></span>
-          </li>
-        ))}
-      </ul>
+      <OrderAgain />
 
       <section ref={catalogue} className="shop-catalogue" aria-labelledby="catalogue-title">
         <div className="shop-section-head">
           <div>
-            <h2 id="catalogue-title" className="shop-section-head__title">Hardware for every application</h2>
-            <p className="shop-muted">Browse Syniotec hardware and passive tags available to order.</p>
+            <h2 id="catalogue-title" className="shop-section-head__title">Products</h2>
+            <p className="shop-muted">Active telematics for powered and unpowered equipment, and passive tags for direct access to the equipment profile.</p>
           </div>
           <span className="shop-muted" aria-live="polite">{plural(list.length, 'product')}</span>
         </div>
@@ -149,7 +153,7 @@ export function ShopPage() {
         <div className="shop-toolbar">
           <TextField
             className="shop-toolbar__search"
-            label="Search products"
+            label="Search by name, SKU or use"
             hideLabel
             size="sm"
             iconStart="search"
@@ -159,7 +163,7 @@ export function ShopPage() {
           />
           <Segmented
             label="Product category"
-            options={[{ value: 'All', label: 'All' }, { value: 'Hardware', label: 'Hardware' }, { value: 'Tags', label: 'Tags' }]}
+            options={(['All', 'Hardware', 'Tags'] as Filter[]).map((c) => ({ value: c, label: `${c} · ${count(c)}` }))}
             value={filter}
             onChange={(v) => setFilter(v as Filter)}
           />
@@ -167,21 +171,18 @@ export function ShopPage() {
         </div>
 
         {list.length
-          ? <div className="shop-grid">{list.map((p) => <ProductCard key={p.id} product={p} />)}</div>
-          : <EmptyState icon="search" action={<Button size="sm" variant="secondary" onClick={clear}>Clear filters</Button>}>No products found. Try a different search or category.</EmptyState>}
+          ? <div className="shop-grid">{list.map((p) => <ProductCard key={p.id} product={p} onRequest={setRequesting} />)}</div>
+          : (
+            <EmptyState icon="search" action={<Button size="sm" variant="secondary" onClick={clear}>Clear search and filters</Button>}>
+              {search ? `No products match “${search.trim()}”.` : 'No products in this category.'} Try a SKU such as DOT or TAG-S, or clear the filters.
+            </EmptyState>
+          )}
       </section>
 
-      <aside className="shop-context">
-        <div>
-          <strong>Strengthening the construction industry with IoT solutions</strong>
-          <p className="shop-muted">Syniotec combines manufacturer-independent telematics with software designed for construction.</p>
-        </div>
-        <div className="shop-context__tags">
-          <Tag variant="soft">Platform integration</Tag>
-          <Tag variant="soft">Equipment tracking</Tag>
-          <Tag variant="soft">Digital equipment profiles</Tag>
-        </div>
-      </aside>
+      <InfoNote>Prices are general list prices excl. VAT. Syniotec confirms delivery costs and dates when it reviews your order.</InfoNote>
+
+      <QuickOrder open={quick} onClose={() => setQuick(false)} />
+      <PriceRequestDialog key={requesting?.id ?? 'none'} product={requesting} onClose={() => setRequesting(null)} />
     </>
   );
 }

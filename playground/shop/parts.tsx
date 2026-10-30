@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { Button, Icon, IconButton, StatusBadge, type StatusTone } from '../../src';
+import { Button, Icon, IconButton, StatusBadge, type IconName, type StatusTone } from '../../src';
 import { cx } from '../../src/utils';
 import { money, plural, type ArtType, type Availability, type OrderStatus } from './data';
 import { routeHref, useShop } from './store';
@@ -56,7 +56,7 @@ export function QuantityStepper({ value, onChange, label, size = 'sm' }: {
 }
 
 /** Shop module header: eyebrow, title and lead on the left; My orders / Back to Shop and the cart on the right. */
-export function ShopHeader({ title, lead, back }: { title: string; lead: string; back?: boolean }) {
+export function ShopHeader({ title, lead, back, extra }: { title: string; lead: string; back?: boolean; extra?: ReactNode }) {
   const { cartQty, setCartOpen } = useShop();
   return (
     <PageHeader
@@ -66,7 +66,8 @@ export function ShopHeader({ title, lead, back }: { title: string; lead: string;
       actions={<>
         {back
           ? <LinkButton href={routeHref({ name: 'shop' })} iconStart="back">Back to Shop</LinkButton>
-          : <LinkButton href={routeHref({ name: 'orders' })} iconStart="list">My orders</LinkButton>}
+          : <LinkButton href={routeHref({ name: 'orders' })} iconStart="history">My orders</LinkButton>}
+        {extra}
         <Button size="sm" iconStart="inventory" onClick={() => setCartOpen(true)} aria-label={cartQty ? `Cart, ${plural(cartQty, 'item')}` : 'Cart'}>
           Cart{cartQty > 0 && <span className="shop-count" aria-hidden>{cartQty}</span>}
         </Button>
@@ -90,7 +91,7 @@ export function PageHeader({ eyebrow, title, lead, actions }: { eyebrow?: string
 
 /** A navigation link drawn as a Syn secondary button. */
 export function LinkButton({ href, iconStart, children, variant = 'secondary' }: {
-  href: string; iconStart?: 'back' | 'list' | 'arrow'; children: ReactNode; variant?: 'secondary' | 'text';
+  href: string; iconStart?: IconName; children: ReactNode; variant?: 'secondary' | 'text';
 }) {
   return (
     <a href={href} className={cx('syn-button', `syn-button--${variant}`, 'syn-button--sm', 'shop-link-button')}>

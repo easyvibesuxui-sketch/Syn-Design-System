@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { Button, Card, FileItem, Icon, Section } from '../../../src';
 import { cx } from '../../../src/utils';
-import { canOrder, hasPrice, priceLabel } from '../data';
+import { canOrder, hasPrice, money, priceLabel } from '../data';
+import { PriceRequestDialog } from '../PriceRequest';
 import { AvailabilityBadge, BackLink, InfoNote, ProductArt, QuantityStepper, ShopHeader, SpecList } from '../parts';
 import { routeHref, useShop } from '../store';
 
 export function ProductPage({ id }: { id: string }) {
-  const { products, addToCart, notify } = useShop();
+  const { products, addToCart, notify, cart } = useShop();
+  const [requesting, setRequesting] = useState(false);
   const p = products.find((x) => x.id === id && x.active);
   const [qty, setQty] = useState(1);
   const [shown, setShown] = useState(0);
@@ -14,7 +16,7 @@ export function ProductPage({ id }: { id: string }) {
   if (!p) {
     return (
       <>
-        <ShopHeader title="Product details" lead="This product is not in the catalogue." />
+        <ShopHeader title="Product not found" lead="This product is no longer in the catalogue. It may have been renamed or removed." />
         <BackLink href={routeHref({ name: 'shop' })}>Back to products</BackLink>
       </>
     );
@@ -22,10 +24,11 @@ export function ProductPage({ id }: { id: string }) {
 
   const gallery = [...new Set([p.image, ...p.gallery].filter(Boolean))];
   const unavailable = p.availability === 'Temporarily unavailable';
+  const inCart = cart.find((l) => l.productId === p.id)?.qty ?? 0;
 
   return (
     <>
-      <ShopHeader title="Product details" lead="Review product information, specifications and ordering options." />
+      <ShopHeader title={p.name} lead={p.short} />
       <BackLink href={routeHref({ name: 'shop' })}>Back to products</BackLink>
 
       <div className="shop-detail">
@@ -67,12 +70,12 @@ export function ProductPage({ id }: { id: string }) {
                     {p.docs.map((d) => (
                       <li key={d}>
                         <FileItem name={d} meta="PDF" />
-                        <Button size="sm" variant="secondary" iconStart="download" onClick={() => notify('Prototype', 'Document download is shown in the UI, but no file is attached to this demo.', 'info')}>Download</Button>
+                        <Button size="sm" variant="secondary" iconStart="download" onClick={() => notify('No file in this demo', `In the live Shop, “${d}” downloads as a PDF.`, 'info')}>Download</Button>
                       </li>
                     ))}
                   </ul>
                 )
-                : <p className="shop-muted">No documents have been added for this product.</p>}
+                : <p className="shop-muted">No documents for this product yet. Ask Syniotec if you need a data sheet.</p>}
             </Section>
           </div>
         </div>
@@ -84,16 +87,24 @@ export function ProductPage({ id }: { id: string }) {
           <AvailabilityBadge availability={p.availability} />
           <div>
             <p className="shop-buy__price">{priceLabel(p)}</p>
-            {hasPrice(p) && <p className="shop-tax">Price excl. VAT</p>}
+            <p className="shop-tax">{hasPrice(p) ? 'Per item, excl. VAT' : 'Syniotec quotes a price for your quantity'}</p>
           </div>
-          <div className="shop-buy__row">
-            <QuantityStepper label={p.name} value={qty} onChange={setQty} />
-            <Button size="sm" fullWidth disabled={!canOrder(p)} iconStart={canOrder(p) ? 'plus' : undefined} onClick={() => addToCart(p, qty)}>
-              {unavailable ? 'Temporarily unavailable' : hasPrice(p) ? 'Add to cart' : 'Price on request'}
-            </Button>
-          </div>
-          <InfoNote>Submitting an order does not automatically add devices to equipment. Hardware appears in the platform only after installation and commissioning.</InfoNote>
+          {unavailable ? (
+            <Button size="md" fullWidth disabled>Temporarily unavailable</Button>
+          ) : canOrder(p) ? (
+            <div className="shop-buy__row">
+              <QuantityStepper label={p.name} value={qty} onChange={setQty} />
+              <Button size="md" fullWidth iconStart="plus" onClick={() => addToCart(p, qty)}>
+                Add {qty > 1 ? `${qty} ` : ''}to cart{qty > 1 ? ` · ${money(qty * p.price)}` : ''}
+              </Button>
+            </div>
+          ) : (
+            <Button size="md" fullWidth variant="secondary" iconStart="mail" onClick={() => setRequesting(true)}>Request a price</Button>
+          )}
+          {inCart > 0 && <p className="shop-in-cart"><Icon name="check" size={16} />{inCart} already in your cart</p>}
+          <InfoNote>Ordering doesn’t add devices to your equipment yet. They appear in the platform once they are installed and commissioned.</InfoNote>
         </Card>
+        {requesting && <PriceRequestDialog product={p} onClose={() => setRequesting(false)} />}
       </div>
     </>
   );

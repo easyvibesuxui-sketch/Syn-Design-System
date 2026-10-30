@@ -61,6 +61,17 @@ export interface Order {
   history: Array<[OrderStatus, string]>;
 }
 
+/** A request for a price on a product that has none yet ("Price on request"). */
+export interface PriceRequest {
+  id: string;
+  productId: string;
+  productName: string;
+  qty: number;
+  note: string;
+  date: string;
+  requestedBy: string;
+}
+
 export interface CartLine {
   productId: string;
   qty: number;
