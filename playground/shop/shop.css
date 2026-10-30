@@ -1,5 +1,5 @@
 /* Syniotec Shop, built on Syn. Layout only: every colour, size, radius and type style is a Syn token. */
-html, body { margin: 0; background: var(--syn-surface-default); }
+html, body { margin: 0; background: var(--syn-surface-muted); }
 html { scroll-behavior: smooth; }
 
 .shop-app { display: grid; grid-template-columns: 56px minmax(0, 1fr); min-height: 100vh; }
@@ -465,3 +465,10 @@ html { scroll-behavior: smooth; }
 .shop-finder__term-count { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 var(--syn-space-6); border-radius: var(--syn-radius-full); background: var(--syn-surface-muted); color: var(--syn-text-primary); font: var(--syn-type-text-body-xs); }
 .shop-finder__term.is-on .shop-finder__term-count { background: var(--syn-color-secondary-jet); color: var(--syn-color-white-white); }
 .shop-filter__more { align-self: flex-start; padding: 0; }
+
+/* Page background: Cultured (#f1f1f1). White widgets sit on it; blocks that were Cultured on white become white. */
+.shop-app.syn-root { background: var(--syn-surface-muted); }
+.shop-app .shop-steps, .shop-app .shop-context { border: 1px solid var(--syn-border-default); background: var(--syn-surface-default); }
+.shop-gallery { border: 1px solid var(--syn-border-default); background: var(--syn-surface-default); }
+.shop-gallery > .shop-art { background: var(--syn-surface-muted); }
+.shop-card__media { border-bottom: 1px solid var(--syn-border-default); background: var(--syn-surface-default); }
