@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { Button, Checkbox, Drawer, EmptyState, Icon, IconButton, Segmented, Select, Table, Tag, TextField, type IconName } from '../../../src';
+import { Button, Checkbox, Drawer, EmptyState, Icon, IconButton, Segmented, Select, Table, Tag, TextField } from '../../../src';
 import { cx } from '../../../src/utils';
 import {
   CURRENT_USER, FEATURED_ORDER, POWER_OPTIONS, canOrder, hasPrice, money, plural, priceLabel, suitableFor, suitableTerms,
@@ -9,6 +9,7 @@ import { PriceRequestDialog } from '../PriceRequest';
 import { QuickOrder } from '../QuickOrder';
 import { AvailabilityBadge, Chips, DrawerContext, DrawerTitle, ProductArt, QuantityStepper, ShopHeader } from '../parts';
 import { routeHref, useShop } from '../store';
+import { TermIcon } from '../termIcons';
 
 type Sort = 'featured' | 'name' | 'price-asc' | 'price-desc';
 type View = 'grid' | 'table';
@@ -121,8 +122,10 @@ function ProductCard({ product: p, compare, onCompare, onRequest }: {
 }
 
 /** A collapsible filter group: the header shows the title and how many values are selected; the options fold away. */
-function FilterGroup<T extends string>({ title, options, selected, onChange, counts, label, limit, defaultOpen = false }: {
+function FilterGroup<T extends string>({ title, options, selected, onChange, counts, total, label, limit, defaultOpen = false }: {
   title: string; options: T[]; selected: T[]; onChange: (next: T[]) => void; counts: (o: T) => number; label?: (o: T) => string;
+  /** Products shown with this group cleared ("All"). */
+  total: number;
   /** Long lists show this many options, plus any selected ones, behind a "Show all" toggle. */
   limit?: number;
   defaultOpen?: boolean;
@@ -141,6 +144,10 @@ function FilterGroup<T extends string>({ title, options, selected, onChange, cou
         </button>
       </legend>
       <div id={bodyId} className="shop-filter__body" hidden={!open}>
+      <div className="shop-filter__row">
+        <Checkbox label="All" checked={!selected.length} onChange={() => onChange([])} />
+        <span className="shop-filter__count">{total}</span>
+      </div>
       {shown.map((o) => {
         const n = counts(o);
         const on = selected.includes(o);
@@ -227,19 +234,11 @@ function LastOrder() {
   );
 }
 
-/** Icons for the Suitable-for values, chosen from Syn's icon set by keyword. Only the picture is chosen; the text stays as written. */
-const termIcons: Array<[RegExp, IconName]> = [
-  [/cab|driver/i, 'person'], [/vehicle|car|truck|tractor/i, 'truck'], [/trailer/i, 'nav-transportation'],
-  [/container/i, 'inventory'], [/pump|generator/i, 'charged'], [/lifting/i, 'up-icon'], [/chain/i, 'attachment'],
-  [/attachment/i, 'attach'], [/tool/i, 'maintenance'], [/machin|equipment/i, 'equipment'],
-];
-const termIcon = (t: string): IconName => termIcons.find(([re]) => re.test(t))?.[1] ?? 'categories';
-
 /**
  * Airbnb-style category bar: one scrolling row of icon-over-label items, muted until hovered, the selected one
  * black with a 2px underline, and round arrow buttons when the row overflows.
  */
-function TermBar({ terms, selected, onToggle }: { terms: string[]; selected: string[]; onToggle: (t: string) => void }) {
+function TermBar({ terms, selected, onToggle, onAll }: { terms: string[]; selected: string[]; onToggle: (t: string) => void; onAll: () => void }) {
   const row = useRef<HTMLDivElement>(null);
   const [edges, setEdges] = useState({ start: true, end: true });
   const measure = useCallback(() => {
@@ -256,11 +255,15 @@ function TermBar({ terms, selected, onToggle }: { terms: string[]; selected: str
     <div className="shop-termbar">
       {!edges.start && <IconButton icon="back" label="Scroll back" size="sm" variant="outline" className="shop-termbar__arrow shop-termbar__arrow--start" onClick={() => scroll(-1)} />}
       <div ref={row} className="shop-termbar__row" role="group" aria-label="Suitable for" onScroll={measure}>
+        <button type="button" className={cx('shop-termbar__item', !selected.length && 'is-on')} aria-pressed={!selected.length} onClick={onAll}>
+          <TermIcon term={null} />
+          <span>All</span>
+        </button>
         {terms.map((t) => {
           const on = selected.includes(t);
           return (
             <button key={t} type="button" className={cx('shop-termbar__item', on && 'is-on')} aria-pressed={on} onClick={() => onToggle(t)}>
-              <Icon name={termIcon(t)} size={24} />
+              <TermIcon term={t} />
               <span>{t}</span>
             </button>
           );
@@ -296,6 +299,7 @@ export function ShopPage() {
   // Facet counts: how many products a value would show, given every other active filter.
   const countWith = <K extends keyof Filters>(key: K, value: Filters[K][number]) =>
     active.filter((p) => matches(p, { ...filters, [key]: [value] }, q)).length;
+  const countAll = (key: keyof Filters) => active.filter((p) => matches(p, { ...filters, [key]: [] }, q)).length;
   const set = <K extends keyof Filters>(key: K) => (next: Filters[K]) => setFilters({ ...filters, [key]: next });
   // Every "Suitable for" value in the catalogue, most common first.
   const terms = useMemo(() => {
@@ -331,7 +335,7 @@ export function ShopPage() {
           <h2 id="finder-title" className="shop-panel__title">What do you want to track?</h2>
           <LastOrder />
         </div>
-        <TermBar terms={terms} selected={filters.use} onToggle={toggleUse} />
+        <TermBar terms={terms} selected={filters.use} onToggle={toggleUse} onAll={() => set('use')([])} />
       </section>
 
       <ol className="shop-steps" aria-label="How ordering works">
@@ -348,11 +352,11 @@ export function ShopPage() {
             {/* On narrow screens the filters fold away so the results stay near the top. */}
             <Button size="xs" variant="secondary" className="shop-filters__toggle" aria-expanded={filtersOpen} onClick={() => setFiltersOpen(!filtersOpen)}>{filtersOpen ? 'Hide' : 'Show'}</Button>
           </div>
-          <FilterGroup<Category> defaultOpen title="Category" options={['Hardware', 'Tags']} selected={filters.category} onChange={set('category')} counts={(o) => countWith('category', o)} label={(o) => (o === 'Hardware' ? 'Active telematics' : 'Passive tags')} />
-          <FilterGroup<string> title="Suitable for" options={terms} selected={filters.use} onChange={set('use')} counts={(o) => countWith('use', o)} limit={6} />
-          <FilterGroup<Power> title="Power source" options={POWER_OPTIONS} selected={filters.power} onChange={set('power')} counts={(o) => countWith('power', o)} />
-          <FilterGroup<string> title="Connectivity" options={CONNECTIVITY} selected={filters.connectivity} onChange={set('connectivity')} counts={(o) => countWith('connectivity', o)} />
-          <FilterGroup<Availability> title="Availability" options={['Available', 'Available on request']} selected={filters.availability} onChange={set('availability')} counts={(o) => countWith('availability', o)} />
+          <FilterGroup<Category> defaultOpen title="Category" options={['Hardware', 'Tags']} selected={filters.category} onChange={set('category')} counts={(o) => countWith('category', o)} total={countAll('category')} label={(o) => (o === 'Hardware' ? 'Active telematics' : 'Passive tags')} />
+          <FilterGroup<string> title="Suitable for" options={terms} selected={filters.use} onChange={set('use')} counts={(o) => countWith('use', o)} total={countAll('use')} limit={6} />
+          <FilterGroup<Power> title="Power source" options={POWER_OPTIONS} selected={filters.power} onChange={set('power')} counts={(o) => countWith('power', o)} total={countAll('power')} />
+          <FilterGroup<string> title="Connectivity" options={CONNECTIVITY} selected={filters.connectivity} onChange={set('connectivity')} counts={(o) => countWith('connectivity', o)} total={countAll('connectivity')} />
+          <FilterGroup<Availability> title="Availability" options={['Available', 'Available on request']} selected={filters.availability} onChange={set('availability')} counts={(o) => countWith('availability', o)} total={countAll('availability')} />
         </aside>
 
         <section className="shop-results" aria-labelledby="results-title">
