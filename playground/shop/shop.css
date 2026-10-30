@@ -745,3 +745,5 @@ html { scroll-behavior: smooth; }
 .shop-card__flag .syn-icon { color: var(--syn-action-brand); }
 /* Selected view: black pad, white icon. */
 .shop-view__option.is-on { background: var(--syn-surface-inverse); color: var(--syn-color-white-white); }
+/* Status dot on the photo: 8px dot, 2px white gap, 1px silver outline. */
+.shop-card__stock .syn-status-badge__dot { box-sizing: content-box; width: 8px; height: 8px; border: 2px solid var(--syn-surface-default); box-shadow: 0 0 0 1px var(--syn-border-muted); }
