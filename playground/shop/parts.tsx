@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { Button, Icon, IconButton, StatusBadge, type IconName, type StatusTone } from '../../src';
+import { Button, DrawerRow, Icon, IconButton, StatusBadge, type IconName, type StatusTone } from '../../src';
 import { cx } from '../../src/utils';
 import { money, plural, type ArtType, type Availability, type OrderStatus } from './data';
 import { routeHref, useShop } from './store';
@@ -161,5 +161,24 @@ export function InfoNote({ children, tone = 'info' }: { children: ReactNode; ton
       <Icon name={tone === 'warning' ? 'warning' : 'info-circle'} size={16} />
       <span>{children}</span>
     </p>
+  );
+}
+
+/**
+ * Drawers follow the Syn record drawer: the 64px header carries context (an icon and a label, or a status and an
+ * id) and the title with its description is the first row of the body, not squeezed into the header.
+ */
+export function DrawerContext({ icon, children }: { icon: IconName; children: ReactNode }) {
+  return <span className="shop-drawer-context"><Icon name={icon} size={16} />{children}</span>;
+}
+
+export function DrawerTitle({ title, lead, end }: { title: ReactNode; lead?: ReactNode; end?: ReactNode }) {
+  return (
+    <DrawerRow end={end} className="shop-drawer-heading">
+      <div>
+        <h2 className="shop-drawer-heading__title">{title}</h2>
+        {lead && <p className="shop-drawer-heading__lead">{lead}</p>}
+      </div>
+    </DrawerRow>
   );
 }

@@ -80,7 +80,7 @@ export function CheckoutPage() {
     setErrors(found);
     const count = Object.keys(found).length;
     if (count) {
-      notify(`${plural(count, 'field')} still ${count === 1 ? 'needs' : 'need'} your input`, 'Fill in the highlighted fields, then send the order again.', 'error');
+      notify(`${plural(count, 'field')} still ${count === 1 ? 'needs' : 'need'} your input`, 'Fill in the highlighted fields, then submit the order again.', 'error');
       document.querySelector<HTMLInputElement>('.shop-checkout [aria-invalid="true"]')?.focus();
       return;
     }
@@ -103,7 +103,7 @@ export function CheckoutPage() {
 
   return (
     <>
-      <ShopHeader title="Send order" lead="Check your contact, delivery and billing details. Syniotec reviews every order before it is confirmed." />
+      <ShopHeader title="Submit order" lead="Review your contact, delivery and billing information before sending the order to Syniotec." />
       <button type="button" className="shop-back" onClick={() => setCartOpen(true)}><Icon name="back" size={16} />Back to cart</button>
 
       <form className="shop-checkout" onSubmit={submit} noValidate>
@@ -162,7 +162,7 @@ export function CheckoutPage() {
             ))}
           </ul>
           <Summary total={cartTotal} />
-          <Button type="submit" size="md" fullWidth>Send order · {money(cartTotal)}</Button>
+          <Button type="submit" size="md" fullWidth>Submit order · {money(cartTotal)}</Button>
           <div className="shop-next">
             <span className="shop-eyebrow">What happens next</span>
             <ol>

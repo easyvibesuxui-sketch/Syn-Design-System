@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Button, Card, Dialog, Drawer, EmptyState, IconButton, Section, Select, StatusBadge, Table, Tabs, TextArea, TextField, Value } from '../../../src';
+import { Button, Card, Dialog, Drawer, EmptyState, IconButton, Icon, Section, Select, StatusBadge, Table, TextArea, TextField, Value, type IconName } from '../../../src';
 import { ORDER_STATUSES, money, priceLabel, hasPrice, stamp, type Order, type OrderStatus } from '../data';
-import { InfoNote, OrderStatusBadge, PageHeader, ProductArt, SpecList, LinkButton } from '../parts';
+import { DrawerContext, DrawerTitle, InfoNote, OrderStatusBadge, PageHeader, ProductArt, SpecList, LinkButton } from '../parts';
 import { routeHref, useShop, type AdminTab } from '../store';
 import { OrderItems, orderInfo, statusFilterOptions } from './OrdersPage';
 import { ProductEditor } from './ProductEditor';
@@ -20,11 +20,12 @@ function Overview({ onOpen, onAll }: { onOpen: (o: Order) => void; onAll: (statu
   const waiting = orders.filter((o) => o.status === 'Submitted');
   const open = orders.filter((o) => o.status !== 'Completed' && o.status !== 'Cancelled').length;
   const noPrice = products.filter((p) => p.active && !hasPrice(p)).length;
+  // The prototype's four metrics; open orders link to the waiting ones first.
   const metrics: Array<[string, string, string, (() => void)?]> = [
-    ['Waiting for confirmation', String(waiting.length), waiting.length ? 'Customers wait for your reply' : 'All caught up', waiting.length ? () => onAll('Submitted') : undefined],
-    ['Open orders', String(open), 'Confirmed, processing or shipped', () => onAll()],
-    ['Active products', String(active), noPrice ? `${noPrice} without a price` : `${products.length - active} inactive`],
-    ['Order value', money(orders.reduce((n, o) => n + o.total, 0)), 'All orders, excl. VAT'],
+    ['Active products', String(active), noPrice ? `${products.length - active} inactive · ${noPrice} without a price` : `${products.length - active} inactive`],
+    ['Open orders', String(open), waiting.length ? `Manual processing · ${waiting.length} waiting for confirmation` : 'Manual processing', open ? () => onAll(waiting.length ? 'Submitted' : undefined) : undefined],
+    ['All orders', String(orders.length), 'Customer order requests', () => onAll()],
+    ['Order value', money(orders.reduce((n, o) => n + o.total, 0)), 'Excl. VAT · demo data'],
   ];
   return (
     <div className="shop-stack">
@@ -169,14 +170,14 @@ function OrderDrawer({ order, onClose }: { order: Order | null; onClose: () => v
       width={1024}
       headerStart={order && <>
         <OrderStatusBadge status={order.status} />
-        <span className="shop-drawer-title">{order.id}</span>
-        <span className="shop-muted">{order.org} · {order.date} {order.time}</span>
+        <DrawerContext icon="inventory">{order.id}</DrawerContext>
       </>}
       footer={<>
         <Button variant="text" onClick={onClose}>Discard</Button>
         <Button size="md" onClick={save}>Save changes</Button>
       </>}
     >
+      {order && <DrawerTitle title={order.org} lead={`Submitted ${order.date} · ${order.time} by ${order.contactName || order.orderedBy}${order.reference ? ` · ${order.reference}` : ''}`} />}
       {order && (
         <div className="shop-drawer-grid">
           <div className="shop-stack">
@@ -205,6 +206,9 @@ function OrderDrawer({ order, onClose }: { order: Order | null; onClose: () => v
   );
 }
 
+// The prototype's admin side navigation (Overview, Products, Orders).
+const adminSections: Array<[AdminTab, string, IconName]> = [['overview', 'Overview', 'inventory'], ['products', 'Products', 'list'], ['orders', 'Orders', 'kanban']];
+
 export function AdminPage({ tab }: { tab: AdminTab }) {
   const { go, reset, notify } = useShop();
   const [order, setOrder] = useState<Order | null>(null);
@@ -222,26 +226,24 @@ export function AdminPage({ tab }: { tab: AdminTab }) {
     <>
       <PageHeader
         title="Shop Admin"
-        lead="Confirm incoming orders, answer price requests and keep the catalogue and prices up to date."
+        lead="Manage the product catalogue, general prices and incoming Shop orders."
         actions={<>
           <Button size="sm" variant="text" iconStart="refresh" onClick={() => setConfirmReset(true)}>Reset demo data</Button>
           <LinkButton href={routeHref({ name: 'shop' })}>Open Shop</LinkButton>
         </>}
       />
-      <InfoNote tone="warning"><strong>Sample prices:</strong> the prices in this prototype are placeholders until Syniotec sets the real selling prices. In production, the prices set here are what customers see.</InfoNote>
-      <Tabs
-        label="Shop Admin"
-        size="md"
-        className="shop-admin-tabs"
-        value={tab}
-        onChange={setTab}
-        items={[
-          { id: 'overview', label: 'Overview', iconStart: 'kanban' },
-          { id: 'products', label: 'Products', iconStart: 'list' },
-          { id: 'orders', label: 'Orders', iconStart: 'inventory' },
-        ]}
-      />
-      {content}
+      <InfoNote tone="warning"><strong>Prototype note:</strong> product prices shown here are sample values until Syniotec provides the real selling prices. In production, Shop Admin is the source of truth.</InfoNote>
+      <div className="shop-admin">
+        <nav className="shop-admin__nav" aria-label="Shop Admin">
+          <span className="shop-eyebrow">Shop Admin</span>
+          {adminSections.map(([id, label, icon]) => (
+            <a key={id} href={routeHref({ name: 'admin', tab: id })} className={tab === id ? 'is-active' : undefined} aria-current={tab === id ? 'page' : undefined} onClick={() => setOrderFilter('all')}>
+              <Icon name={icon} size={16} />{label}
+            </a>
+          ))}
+        </nav>
+        <div className="shop-admin__main">{content}</div>
+      </div>
 
       <OrderDrawer key={order?.id ?? 'none'} order={order} onClose={() => setOrder(null)} />
       <ProductEditor key={String(editing)} open={editing !== undefined} productId={editing ?? null} onClose={() => setEditing(undefined)} />

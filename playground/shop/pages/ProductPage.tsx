@@ -28,7 +28,7 @@ export function ProductPage({ id }: { id: string }) {
 
   return (
     <>
-      <ShopHeader title={p.name} lead={p.short} />
+      <ShopHeader title="Product details" lead="Review product information, specifications and ordering options." />
       <BackLink href={routeHref({ name: 'shop' })}>Back to products</BackLink>
 
       <div className="shop-detail">
@@ -93,14 +93,15 @@ export function ProductPage({ id }: { id: string }) {
           </div>
           {unavailable ? (
             <Button size="md" fullWidth disabled>Temporarily unavailable</Button>
-          ) : canOrder(p) ? (
+          ) : canOrder(p) ? (<>
+            <span className="shop-card-title">Quantity</span>
             <div className="shop-buy__row">
               <QuantityStepper label={p.name} value={qty} onChange={setQty} />
               <Button size="md" fullWidth iconStart="plus" onClick={() => addToCart(p, qty)}>
                 Add {qty > 1 ? `${qty} ` : ''}to cart{qty > 1 ? ` · ${money(qty * p.price)}` : ''}
               </Button>
             </div>
-          ) : (
+          </>) : (
             <Button size="md" fullWidth variant="secondary" iconStart="mail" onClick={() => setRequesting(true)}>Request a price</Button>
           )}
           {inCart > 0 && <p className="shop-in-cart"><Icon name="check" size={16} />{inCart} already in your cart</p>}

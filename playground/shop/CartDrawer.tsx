@@ -1,6 +1,6 @@
 import { Button, Drawer, EmptyState } from '../../src';
 import { money, plural } from './data';
-import { InfoNote, ProductArt, QuantityStepper, Summary } from './parts';
+import { DrawerContext, DrawerTitle, InfoNote, ProductArt, QuantityStepper, Summary } from './parts';
 import { useShop } from './store';
 
 /** The cart as a narrow Syn drawer: lines with a quantity stepper, the summary and "Continue to order". */
@@ -20,9 +20,10 @@ export function CartDrawer() {
       label="Your cart"
       width={480}
       closeLabel="Close cart"
-      headerStart={<span className="shop-drawer-title">Your cart<span className="shop-muted">{cartQty ? plural(cartQty, 'item') : 'No products added yet'}</span></span>}
-      footer={cart.length ? <Button size="md" fullWidth iconEnd="arrow" onClick={() => to('checkout')}>Check out · {money(cartTotal)}</Button> : undefined}
+      headerStart={<DrawerContext icon="inventory">Syniotec Shop</DrawerContext>}
+      footer={cart.length ? <Button size="md" fullWidth iconEnd="arrow" onClick={() => to('checkout')}>Continue to order</Button> : undefined}
     >
+      <DrawerTitle title="Your cart" lead={cartQty ? plural(cartQty, 'item') : 'No products added yet'} />
       {cart.length ? (
         <div className="shop-cart">
           <ul className="shop-cart__lines">
@@ -42,12 +43,12 @@ export function CartDrawer() {
             ))}
           </ul>
           <Summary total={cartTotal} />
-          <InfoNote>You pay by invoice after Syniotec confirms the order. Delivery costs are confirmed then too.</InfoNote>
+          <InfoNote>No online payment is required. Syniotec will review the order, confirm delivery details and issue the invoice separately.</InfoNote>
         </div>
       ) : (
         <div className="shop-cart">
           <EmptyState icon="inventory" action={<Button size="sm" onClick={() => to('shop')}>Browse products</Button>}>
-            Your cart is empty. Browse the catalogue, or use Quick order on the Shop page if you know the SKUs.
+            Your cart is empty. Add Syniotec hardware to start an order.
           </EmptyState>
         </div>
       )}

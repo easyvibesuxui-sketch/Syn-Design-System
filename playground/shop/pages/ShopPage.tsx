@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from 'react';
 import { Button, EmptyState, Icon, Segmented, Select, TextField, type IconName } from '../../../src';
 import { cx } from '../../../src/utils';
-import { CURRENT_USER, FEATURED_ORDER, canOrder, hardwareImages, hasPrice, money, plural, priceLabel, type Product } from '../data';
+import { CURRENT_USER, FEATURED_ORDER, canOrder, hardwareImages, hasPrice, money, plural, priceLabel, tagCollage, type Product } from '../data';
 import { PriceRequestDialog } from '../PriceRequest';
 import { QuickOrder } from '../QuickOrder';
 import { AvailabilityBadge, Chips, LinkButton, OrderStatusBadge, ProductArt, ShopHeader } from '../parts';
@@ -18,11 +18,14 @@ const sortOptions = [
   { value: 'price-desc', label: 'Price: high to low' },
 ];
 
+// The prototype's benefit strip, drawn like the syniotec.com benefits row.
 const benefits: Array<[IconName, string, string]> = [
-  ['settings', 'Plug & Play installation', 'Install the hardware in a few steps and start tracking devices and machines with minimal effort.'],
-  ['gps-location-default', 'syniotec Service App', 'Add, edit and configure telematics devices on site at the touch of a button.'],
-  ['person-2', 'Our customer service', 'We support you through the whole process, from choosing hardware to commissioning.'],
+  ['dublecheck', 'Platform integration', 'Syniotec hardware is designed to work directly with your connected platform.'],
+  ['inventory', 'Hardware for every application', 'From Bluetooth beacons to passive telematics for equipment access.'],
+  ['settings', 'Quick & easy installation', 'Devices appear in the platform only after installation and commissioning.'],
 ];
+
+const HERO_IMAGE = 'https://syniotec.com/wp-content/uploads/2026/03/24_syniotec-IOT.png';
 
 /**
  * Bento rhythm of the syniotec.com hardware page: two large tiles, three medium, two large, then four small.
@@ -48,15 +51,18 @@ function ProductTile({ product: p, size, onRequest }: { product: Product; size: 
   return (
     <article className={cx('shop-tile', `shop-tile--${size}`)}>
       {p.badge && <span className="shop-tile__ribbon" aria-hidden><span>{p.badge}</span></span>}
+      <div className="shop-tile__pills">
+        <span className="shop-pill">{p.category === 'Hardware' ? 'Hardware' : 'Tag'}</span>
+        <AvailabilityBadge availability={p.availability} />
+      </div>
       <a className="shop-tile__link" href={href}>
         <h3 className="shop-tile__name">{p.name}</h3>
         <span className="syn-visually-hidden">{p.badge ? `, ${p.badge}` : ''}, view details</span>
       </a>
-      <p className="shop-tile__short">{p.short}</p>
+      <p className="shop-tile__short">{p.short}<span className="shop-sku">SKU · {p.id}</span></p>
       <ProductArt src={p.image} type={p.type} alt="" size="tile" className="shop-tile__art" />
       <div className="shop-tile__chips">
         <Chips items={p.connectivity ?? []} />
-        {p.availability !== 'Available' && <AvailabilityBadge availability={p.availability} />}
       </div>
       <div className="shop-tile__foot">
         <div>
@@ -65,6 +71,7 @@ function ProductTile({ product: p, size, onRequest }: { product: Product; size: 
         </div>
         <div className="shop-tile__actions">
           {inCart > 0 && <span className="shop-in-cart"><Icon name="check" size={16} />{inCart} in cart</span>}
+          <LinkButton href={href}>Details</LinkButton>
           {canOrder(p) && <Button size="sm" iconStart="plus" onClick={() => addToCart(p)}>{inCart ? 'Add 1 more' : 'Add to cart'}</Button>}
           {!canOrder(p) && !unavailable && <Button size="sm" variant="secondary" iconStart="mail" onClick={() => onRequest(p)}>Request price</Button>}
           {unavailable && <Button size="sm" disabled>Unavailable</Button>}
@@ -117,7 +124,12 @@ export function ShopPage() {
   const [search, setSearch] = useState('');
   const [quick, setQuick] = useState(false);
   const [requesting, setRequesting] = useState<Product | null>(null);
+  const [heroImage, setHeroImage] = useState(true);
   const catalogue = useRef<HTMLElement>(null);
+  const browse = (f?: Filter) => {
+    if (f) setFilter(f);
+    catalogue.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const active = products.filter((p) => p.active);
   const count = (c: Filter) => active.filter((p) => c === 'All' || p.category === c).length;
@@ -147,24 +159,72 @@ export function ShopPage() {
 
       <section className="shop-hero" aria-labelledby="hero-title">
         <div className="shop-hero__copy">
-          <h2 id="hero-title" className="shop-hero__title">Network<br />your fleet</h2>
-          <p className="shop-hero__lead">Trackers, beacons and passive tags for every machine, vehicle and tool, ordered from the platform you already use. You pay by invoice after review.</p>
+          <p className="shop-eyebrow shop-eyebrow--brand">Syniotec telematics & hardware</p>
+          <h2 id="hero-title" className="shop-hero__title">Network<br />your fleet.</h2>
+          <p className="shop-hero__lead">A single comprehensive solution that makes equipment management as easy as possible.</p>
           <div className="shop-row">
-            <Button size="md" variant="brand" onClick={() => catalogue.current?.scrollIntoView({ behavior: 'smooth' })}>Browse hardware</Button>
+            <Button size="md" variant="brand" onClick={() => browse()}>Browse products</Button>
             <Button size="md" variant="secondary" className="shop-hero__secondary" onClick={() => setQuick(true)}>Order by SKU</Button>
           </div>
+          <p className="shop-hero__note"><Icon name="info-circle" size={16} />No online payment is required — Syniotec reviews the order and issues the invoice separately.</p>
         </div>
         <div className="shop-hero__art" aria-hidden>
-          <Signal />
-          <ProductArt src={hardwareImages.core} type="hardware" alt="" size="hero" className="shop-hero__device shop-hero__device--main" />
-          <ProductArt src={hardwareImages.link} type="hardware" alt="" size="hero" className="shop-hero__device shop-hero__device--side" />
+          {heroImage ? <img className="shop-hero__image" src={HERO_IMAGE} alt="" onError={() => setHeroImage(false)} /> : <>
+            <Signal />
+            <ProductArt src={hardwareImages.core} type="hardware" alt="" size="hero" className="shop-hero__device shop-hero__device--main" />
+            <ProductArt src={hardwareImages.link} type="hardware" alt="" size="hero" className="shop-hero__device shop-hero__device--side" />
+          </>}
         </div>
       </section>
 
       <OrderAgain />
 
+      <div className="shop-categories">
+        <button type="button" className="shop-category" onClick={() => browse('Hardware')}>
+          <span className="shop-category__copy">
+            <span className="shop-eyebrow">Active telematics</span>
+            <span className="shop-category__title">Hardware</span>
+            <span className="shop-category__text">Connected devices for machines, vehicles, trailers and powered or unpowered equipment.</span>
+            <span className="shop-category__link">Browse hardware<Icon name="arrow" size={16} /></span>
+          </span>
+          <span className="shop-category__art shop-category__art--hardware" aria-hidden>
+            <ProductArt src={hardwareImages.edge} type="hardware" alt="" size="hero" />
+            <ProductArt src={hardwareImages.dot} type="dot" alt="" size="hero" />
+            <ProductArt src={hardwareImages.link} type="hardware" alt="" size="hero" />
+          </span>
+        </button>
+        <button type="button" className="shop-category" onClick={() => browse('Tags')}>
+          <span className="shop-category__copy">
+            <span className="shop-eyebrow">Passive telematics</span>
+            <span className="shop-category__title">Tags</span>
+            <span className="shop-category__text">TAG L, TAG M, TAG S, TOOL-TAGS, CHAIN-TAG and QR-Sticker for direct equipment-profile access.</span>
+            <span className="shop-category__link">Browse tags<Icon name="arrow" size={16} /></span>
+          </span>
+          <span className="shop-category__art" aria-hidden>
+            <ProductArt src={tagCollage} type="tags" alt="" size="hero" />
+          </span>
+        </button>
+      </div>
+
+      <section className="shop-benefits" aria-label="Benefits">
+        <ul>
+          {benefits.map(([icon, title, text], i) => (
+            <li key={title}>
+              <span className={cx('shop-benefits__icon', i === 0 && 'is-brand')}><Icon name={icon} size={48} /></span>
+              <span>
+                <strong>{title}</strong>
+                <span>{text}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       <section ref={catalogue} className="shop-catalogue" aria-labelledby="catalogue-title">
-        <h2 id="catalogue-title" className="shop-display">Our telematics hardware</h2>
+        <div className="shop-catalogue__head">
+          <h2 id="catalogue-title" className="shop-display">Hardware for every application</h2>
+          <p className="shop-muted">Browse Syniotec hardware and passive tags available to order.</p>
+        </div>
 
         <div className="shop-toolbar">
           <TextField
@@ -188,8 +248,8 @@ export function ShopPage() {
         </div>
 
         {!list.length && (
-          <EmptyState icon="search" action={<Button size="sm" variant="secondary" onClick={clear}>Clear search and filters</Button>}>
-            {search ? `No products match “${search.trim()}”.` : 'No products in this category.'} Try a SKU such as DOT or TAG-S, or a radio such as LTE-M.
+          <EmptyState icon="search" action={<Button size="sm" variant="secondary" onClick={clear}>Clear filters</Button>}>
+            No products found. Try a different search or category.
           </EmptyState>
         )}
 
@@ -209,20 +269,17 @@ export function ShopPage() {
         ) : list.length > 0 && <div className="shop-bento">{tiles(list)}</div>}
       </section>
 
-      <section className="shop-benefits" aria-labelledby="benefits-title">
-        <h2 id="benefits-title" className="shop-display">Your benefits are not just<br />limited to telematics</h2>
-        <ul>
-          {benefits.map(([icon, title, text], i) => (
-            <li key={title}>
-              <span className={cx('shop-benefits__icon', i === 0 && 'is-brand')}><Icon name={icon} size={48} /></span>
-              <span>
-                <strong>{title}</strong>
-                <span>{text}</span>
-              </span>
-            </li>
-          ))}
+      <aside className="shop-context">
+        <div>
+          <strong>Strengthening the construction industry with IoT solutions</strong>
+          <p className="shop-muted">Syniotec combines manufacturer-independent telematics with software designed for construction. Product imagery uses the current Syniotec hardware and passive-tag assets.</p>
+        </div>
+        <ul className="shop-context__points">
+          <li>Platform integration</li>
+          <li>Equipment tracking</li>
+          <li>Digital equipment profiles</li>
         </ul>
-      </section>
+      </aside>
 
       <QuickOrder open={quick} onClose={() => setQuick(false)} />
       <PriceRequestDialog key={requesting?.id ?? 'none'} product={requesting} onClose={() => setRequesting(null)} />

@@ -1,4 +1,4 @@
-import { Avatar, Button, Icon, IconButton, Notification, type IconName } from '../../src';
+import { Avatar, Button, Icon, Notification, Tooltip, type IconName } from '../../src';
 import { cx } from '../../src/utils';
 import { CURRENT_USER } from './data';
 import { CartDrawer } from './CartDrawer';
@@ -11,35 +11,40 @@ import { ShopPage } from './pages/ShopPage';
 import { routeHref, useShop, type Route } from './store';
 
 const crumbs: Record<Route['name'], string> = {
-  shop: 'Shop', product: 'Shop / Product', checkout: 'Shop / Send order', confirmation: 'Shop / Order sent',
+  shop: 'Shop', product: 'Shop / Product', checkout: 'Shop / Submit order', confirmation: 'Shop / Order submitted',
   orders: 'Shop / My orders', admin: 'Shop Admin',
 };
 
-/** SAM's dark icon rail. The first three items stand in for the rest of the platform. */
+/**
+ * SAM's dark icon rail, as in the prototype: Collapse, Dashboard, Equipment and Bookings belong to the rest of the
+ * platform and only say so; Shop and Shop Admin navigate. Every item has a Syn tooltip with its name.
+ */
 function Rail({ route }: { route: Route }) {
-  const item = (icon: IconName, label: string, href?: string, active = false) => (
-    <a
-      key={label}
-      href={href ?? '#'}
-      className={cx('shop-rail__item', active && 'is-active')}
-      aria-label={label}
-      aria-current={active ? 'page' : undefined}
-      title={label}
-      onClick={href ? undefined : (e) => e.preventDefault()}
-    >
-      <Icon name={icon} size={20} />
-    </a>
+  const { notify } = useShop();
+  const outside = (label: string) => () => notify(label, `${label} is outside this Shop prototype.`, 'info');
+  const item = (icon: IconName, label: string, opts: { href?: string; active?: boolean } = {}) => (
+    <Tooltip key={label} content={label} placement="right">
+      {opts.href ? (
+        <a href={opts.href} className={cx('shop-rail__item', opts.active && 'is-active')} aria-label={label} aria-current={opts.active ? 'page' : undefined}>
+          <Icon name={icon} size={20} />
+        </a>
+      ) : (
+        <button type="button" className="shop-rail__item" aria-label={label} onClick={outside(label)}>
+          <Icon name={icon} size={20} />
+        </button>
+      )}
+    </Tooltip>
   );
   return (
     <nav className="shop-rail" aria-label="Platform">
-      <IconButton icon="navbar" label="Expand navigation" size="sm" className="shop-rail__toggle" />
+      <span className="shop-rail__collapse">{item('navbar', 'Collapse navigation')}</span>
       <span className="shop-rail__divider" />
       {item('kanban', 'Dashboard')}
       {item('truck', 'Equipment')}
-      {item('calendar', 'Planning')}
-      {item('inventory', 'Shop', routeHref({ name: 'shop' }), route.name !== 'admin')}
+      {item('calendar', 'Bookings')}
+      {item('inventory', 'Shop', { href: routeHref({ name: 'shop' }), active: route.name !== 'admin' })}
       <span className="shop-rail__spacer" />
-      {item('settings', 'Shop Admin', routeHref({ name: 'admin', tab: 'overview' }), route.name === 'admin')}
+      {item('settings', 'Shop Admin', { href: routeHref({ name: 'admin', tab: 'overview' }), active: route.name === 'admin' })}
     </nav>
   );
 }

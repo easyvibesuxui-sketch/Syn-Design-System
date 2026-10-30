@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Button, Drawer, Icon, TextArea } from '../../src';
 import { cx } from '../../src/utils';
 import { canOrder, money, plural, type Product } from './data';
+import { DrawerContext, DrawerTitle } from './parts';
 import { useShop } from './store';
 
 interface Parsed {
@@ -49,12 +50,13 @@ export function QuickOrder({ open, onClose }: { open: boolean; onClose: () => vo
       onClose={onClose}
       label="Quick order"
       width={560}
-      headerStart={<span className="shop-drawer-title">Quick order<span className="shop-muted">Know the SKUs? Paste them here.</span></span>}
+      headerStart={<DrawerContext icon="list">Syniotec Shop</DrawerContext>}
       footer={<>
         <Button variant="text" onClick={onClose}>Cancel</Button>
         <Button size="md" disabled={!ok.length} onClick={add}>{ok.length ? `Add ${plural(ok.length, 'product')} to cart` : 'Add to cart'}</Button>
       </>}
     >
+      <DrawerTitle title="Quick order" lead="Know the SKUs? Paste them here and add everything to the cart at once." />
       <div className="shop-drawer-body">
         <TextArea
           label="Products and quantities"

@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
-import { Button, Dialog, Drawer, Grid, GridItem, IconButton, Section, Select, Switch, TextArea, TextField } from '../../../src';
+import { Button, Dialog, Drawer, Grid, GridItem, IconButton, Section, Select, StatusBadge, Switch, TextArea, TextField } from '../../../src';
 import { AVAILABILITIES, type ArtType, type Availability, type Category, type Product } from '../data';
-import { ProductArt } from '../parts';
+import { DrawerContext, DrawerTitle, ProductArt } from '../parts';
 import { useShop } from '../store';
 
 const artOptions: Array<{ value: ArtType; label: string }> = [
@@ -89,7 +89,9 @@ export function ProductEditor({ open, productId, onClose }: { open: boolean; pro
       onClose={onClose}
       label={existing ? `Edit ${existing.name}` : 'Add product'}
       width={880}
-      headerStart={<span className="shop-drawer-title">{existing ? 'Edit product' : 'Add product'}</span>}
+      headerStart={existing
+        ? <><StatusBadge tone={existing.active ? 'success' : 'neutral'}>{existing.active ? 'Active' : 'Inactive'}</StatusBadge><DrawerContext icon="tag">{existing.id}</DrawerContext></>
+        : <DrawerContext icon="plus">New product</DrawerContext>}
       footer={<>
         {existing ? <Button variant="text" iconStart="trash" onClick={() => setConfirmDelete(true)}>Delete</Button> : <span />}
         <span className="shop-drawer-actions">
@@ -98,6 +100,10 @@ export function ProductEditor({ open, productId, onClose }: { open: boolean; pro
         </span>
       </>}
     >
+      <DrawerTitle
+        title={existing ? `Edit ${existing.name}` : 'Add product'}
+        lead={existing ? 'Changes are visible in the Shop as soon as you save.' : 'Fill in the general data, price and availability. Customers see the product once it is active.'}
+      />
       <div className="shop-drawer-body">
         <Section title="General">
           <Grid gap={16}>
