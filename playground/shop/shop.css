@@ -603,3 +603,9 @@ html { scroll-behavior: smooth; }
   .shop-create__label { display: none; }
   .shop-account__menu { position: fixed; top: 64px; right: var(--syn-space-16); width: min(320px, calc(100vw - 80px)); }
 }
+
+/* Category icons in the syniotec.com style: black line drawing, one detail in brand red, always at full strength. */
+.shop-termbar__item { opacity: 1; }
+.shop-term-icon { color: var(--syn-text-primary); }
+.shop-term-icon__accent { stroke: var(--syn-action-brand); }
+.shop-termbar__item:hover { color: var(--syn-text-primary); }

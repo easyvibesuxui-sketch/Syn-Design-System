@@ -1,7 +1,7 @@
 /*
  * Outline icons for the Suitable-for bar, from Tabler Icons (MIT, https://tabler.io/icons). Syn's own set has no
  * construction machines or vehicles, so these fill the gap. Only the picture is chosen here; every label stays the
- * product's own "Suitable for" text.
+ * product's own "Suitable for" text. Drawn like syniotec.com's icons: thin black lines with one detail in brand red.
  */
 const paths: Record<string, string[]> = {
   bulldozer: ['M2 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0', 'M12 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0', 'M19 13v4a2 2 0 0 0 2 2h1', 'M14 19h-10', 'M4 15h10', 'M9 11v-5h2a3 3 0 0 1 3 3v6', 'M5 15v-3a1 1 0 0 1 1 -1h8', 'M19 17h-3'],
@@ -23,6 +23,13 @@ const paths: Record<string, string[]> = {
   tractor: ['M3 15a4 4 0 1 0 8 0a4 4 0 1 0 -8 0', 'M7 15l0 .01', 'M17 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0', 'M10.5 17l6.5 0', 'M20 15.2v-4.2a1 1 0 0 0 -1 -1h-6l-2 -5h-6v6.5', 'M18 5h-1a1 1 0 0 0 -1 1v4'],
   'car-crane': ['M3 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0', 'M15 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0', 'M7 18h8m4 0h2v-6a5 5 0 0 0 -5 -5h-1l1.5 5h4.5', 'M12 18v-11h3', 'M3 17v-5h9', 'M4 12v-6l18 -3v2', 'M8 12v-4l-4 -2'],
   all: ['M4 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4', 'M14 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4', 'M4 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4', 'M14 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4'],
+};
+
+/** Which paths of each icon are the red detail, by index into `paths`. */
+const accents: Record<string, number[]> = {
+  bulldozer: [2], backhoe: [6, 7], forklift: [6, 7], crane: [3], engine: [1, 2], caravan: [3],
+  container: [0, 2, 3, 4], shovel: [2], package: [4], 'truck-delivery': [3], car: [1], truck: [1],
+  'truck-loading': [1], tools: [4, 5], link: [0], 'steering-wheel': [1], tractor: [2], 'car-crane': [5], all: [1],
 };
 
 /** Picture for each Suitable-for value; the first matching rule wins, so specific phrases come before general ones. */
@@ -47,11 +54,11 @@ const rules: Array<[RegExp, string]> = [
   [/chain/i, 'link'],
 ];
 
-export function TermIcon({ term, size = 28 }: { term: string | null; size?: number }) {
+export function TermIcon({ term, size = 32 }: { term: string | null; size?: number }) {
   const key = term === null ? 'all' : rules.find(([re]) => re.test(term))?.[1] ?? 'all';
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      {paths[key].map((d) => <path key={d} d={d} />)}
+    <svg className="shop-term-icon" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      {paths[key].map((d, i) => <path key={d} d={d} className={accents[key]?.includes(i) ? 'shop-term-icon__accent' : undefined} />)}
     </svg>
   );
 }
