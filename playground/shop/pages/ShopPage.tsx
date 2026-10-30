@@ -114,7 +114,11 @@ function ProductCard({ product: p, onRequest }: { product: Product; onRequest: (
         </a>
         <span className="shop-card__stock">
           <AvailabilityBadge availability={p.availability} />
-          {p.badge && <span className="shop-card__flag"><Icon name="star" size={14} />{p.badge}</span>}
+          {p.badge && (
+            <Tooltip content={p.badge} placement="bottom">
+              <span className="shop-card__flag" role="img" aria-label={p.badge} tabIndex={0}><Icon name="star" size={16} /></span>
+            </Tooltip>
+          )}
         </span>
         <div className="shop-card__quick"><CardBuy product={p} onRequest={onRequest} /></div>
       </div>

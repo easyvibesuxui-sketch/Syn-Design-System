@@ -751,3 +751,7 @@ html { scroll-behavior: smooth; }
 .shop-card__flag { border-color: var(--syn-surface-inverse); background: var(--syn-surface-inverse); color: var(--syn-color-white-white); }
 /* Point markers: hollow silver-outlined dots, so they don't read as errors. */
 .shop-context__points li::before { box-sizing: border-box; width: 8px; height: 8px; border: 1px solid var(--syn-border-muted); background: none; }
+/* Most used as a round icon badge (black, red star); its name shows in a tooltip. */
+.shop-card__flag { justify-content: center; width: var(--syn-size-control-sm); padding: 0; cursor: default; }
+.shop-card__flag:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
+.shop-card__stock .syn-tooltip { display: inline-flex; }
