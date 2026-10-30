@@ -15,7 +15,7 @@ const artOptions: Array<{ value: ArtType; label: string }> = [
 
 const blank: Product = {
   id: '', name: '', category: 'Tags', type: 'tags', price: 0, active: true, availability: 'Available',
-  short: '', description: '', features: [], specs: [], docs: [], image: '', gallery: [],
+  short: '', description: '', features: [], specs: [], docs: [], image: '', gallery: [], connectivity: [],
 };
 
 const lines = (text: string) => text.split('\n').map((x) => x.trim()).filter(Boolean);

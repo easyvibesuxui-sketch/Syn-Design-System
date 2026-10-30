@@ -36,7 +36,8 @@ export function routeHref(r: Route): string {
   return `#/${r.name}${arg ? `/${encodeURIComponent(arg)}` : ''}`;
 }
 
-const VERSION = 'syn-shop-v1';
+// v2: products gained connectivity chips and badges, so stored v1 catalogues are not reused.
+const VERSION = 'syn-shop-v2';
 function load<T>(key: string, fallback: T): T {
   try {
     const raw = localStorage.getItem(`${VERSION}:${key}`);

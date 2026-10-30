@@ -30,6 +30,10 @@ export interface Product {
   docs: string[];
   image: string;
   gallery: string[];
+  /** Radio and interfaces shown as chips on the product tile ("4G", "CAN", "Bluetooth"). */
+  connectivity?: string[];
+  /** Ribbon on the tile, e.g. "Most used". */
+  badge?: string;
 }
 
 export interface OrderItem {
@@ -84,7 +88,7 @@ export const AVAILABILITIES: Availability[] = ['Available', 'Available on reques
 export const COUNTRIES = ['Germany', 'Austria', 'Switzerland', 'Netherlands', 'Belgium', 'France', 'Other'];
 
 const sam = (file: string) => `https://sam.dev.syniotec.com/assets/img/${file}`;
-export const hardwareImages = { edge: sam('syniotec%20EDGE.png'), link: sam('syniotec%20LINK.png'), dot: sam('syniotec%20DOT.png') };
+export const hardwareImages = { edge: sam('syniotec%20EDGE.png'), link: sam('syniotec%20LINK.png'), dot: sam('syniotec%20DOT.png'), core: sam('syniotec%20CORE.png') };
 
 function hardware(p: Omit<Product, 'category' | 'active' | 'gallery' | 'type'> & { type?: ArtType }): Product {
   return { category: 'Hardware', active: true, type: 'hardware', gallery: [], ...p };
@@ -99,7 +103,7 @@ const tagSpecs = (variant: string): Array<[string, string]> => [
 ];
 const tagDescription = 'Passive telematics tag for direct access to the individual equipment profile using QR and NFC.';
 
-export const defaultProducts: Product[] = [
+const catalogue: Product[] = [
   hardware({
     id: 'EDGE', name: 'EDGE', price: 199, availability: 'Available',
     short: 'Telematics for construction machinery',
@@ -239,6 +243,36 @@ export const defaultProducts: Product[] = [
     image: tagQr, gallery: [tagCollage],
   }),
 ];
+
+/** Chips as on syniotec.com; only what the product data supports. */
+const connectivity: Record<string, string[]> = {
+  CORE: ['4G', 'CAN', '2G fallback', 'Bluetooth'],
+  LINK: ['LTE-M', 'Bluetooth', 'Wi-Fi', 'NB-IoT', '2G fallback'],
+  'LINK-MINI': ['GPS'],
+  DOT: ['Bluetooth'],
+  'DOT-MINI': ['Bluetooth'],
+  VOLT: ['LTE-M', 'Bluetooth', 'NB-IoT', '2G fallback'],
+  OBD: ['LTE-M', 'Bluetooth', 'NB-IoT', '2G fallback'],
+  EDGE: ['CAN'],
+  SOLAR: ['GPS', 'Solar'],
+  DASHCAM: ['GNSS', 'Video'],
+  'TAG-L': ['QR', 'NFC'],
+  'TAG-M': ['QR', 'NFC'],
+  'TAG-S': ['QR', 'NFC'],
+  'TOOL-TAGS': ['QR'],
+  'CHAIN-TAG': ['QR'],
+  'QR-STICKER': ['QR'],
+};
+const mostUsed = ['CORE', 'LINK'];
+
+export const defaultProducts: Product[] = catalogue.map((p) => ({
+  ...p,
+  connectivity: connectivity[p.id] ?? [],
+  badge: mostUsed.includes(p.id) ? 'Most used' : undefined,
+}));
+
+/** Catalogue order of the syniotec.com hardware page; the tile layout follows it. */
+export const FEATURED_ORDER = ['CORE', 'LINK', 'DOT', 'VOLT', 'OBD', 'EDGE', 'SOLAR', 'DASHCAM', 'LINK-MINI', 'DOT-MINI', 'LITE', 'TAG-L', 'TAG-M', 'TAG-S', 'CHAIN-TAG', 'TOOL-TAGS', 'QR-STICKER'];
 
 export const seedOrders: Order[] = [
   {

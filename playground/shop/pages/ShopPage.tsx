@@ -1,13 +1,15 @@
 import { useMemo, useRef, useState } from 'react';
-import { Button, Card, EmptyState, Icon, Segmented, Select, Tag, TextField } from '../../../src';
-import { CURRENT_USER, canOrder, hardwareImages, hasPrice, money, plural, priceLabel, type Product } from '../data';
+import { Button, EmptyState, Icon, Segmented, Select, TextField, type IconName } from '../../../src';
+import { cx } from '../../../src/utils';
+import { CURRENT_USER, FEATURED_ORDER, canOrder, hardwareImages, hasPrice, money, plural, priceLabel, type Product } from '../data';
 import { PriceRequestDialog } from '../PriceRequest';
 import { QuickOrder } from '../QuickOrder';
-import { AvailabilityBadge, InfoNote, LinkButton, OrderStatusBadge, ProductArt, ShopHeader } from '../parts';
+import { AvailabilityBadge, Chips, LinkButton, OrderStatusBadge, ProductArt, ShopHeader } from '../parts';
 import { routeHref, useShop } from '../store';
 
 type Filter = 'All' | 'Hardware' | 'Tags';
 type Sort = 'featured' | 'name' | 'price-asc' | 'price-desc';
+type TileSize = 'lg' | 'md' | 'sm';
 
 const sortOptions = [
   { value: 'featured', label: 'Featured' },
@@ -16,53 +18,70 @@ const sortOptions = [
   { value: 'price-desc', label: 'Price: high to low' },
 ];
 
-const benefits = [
-  'Works directly with your syniotec platform',
-  'Invoice after review, no online payment',
-  'Devices appear once installed and commissioned',
+const benefits: Array<[IconName, string, string]> = [
+  ['settings', 'Plug & Play installation', 'Install the hardware in a few steps and start tracking devices and machines with minimal effort.'],
+  ['gps-location-default', 'syniotec Service App', 'Add, edit and configure telematics devices on site at the touch of a button.'],
+  ['person-2', 'Our customer service', 'We support you through the whole process, from choosing hardware to commissioning.'],
 ];
+
+/**
+ * Bento rhythm of the syniotec.com hardware page: two large tiles, three medium, two large, then four small.
+ * Tags run in rows of three. Search, filters and sorting fall back to an even grid.
+ */
+const hardwareRhythm: TileSize[] = ['lg', 'lg', 'md', 'md', 'md', 'lg', 'lg', 'sm', 'sm', 'sm', 'sm'];
 
 function sortProducts(list: Product[], sort: Sort) {
   const price = (p: Product, empty: number) => (hasPrice(p) ? p.price : empty);
+  const featured = (p: Product) => { const i = FEATURED_ORDER.indexOf(p.id); return i < 0 ? 999 : i; };
   if (sort === 'name') return [...list].sort((a, b) => a.name.localeCompare(b.name));
   if (sort === 'price-asc') return [...list].sort((a, b) => price(a, Infinity) - price(b, Infinity));
   if (sort === 'price-desc') return [...list].sort((a, b) => price(b, -Infinity) - price(a, -Infinity));
-  return list;
+  return [...list].sort((a, b) => featured(a) - featured(b));
 }
 
-function ProductCard({ product: p, onRequest }: { product: Product; onRequest: (p: Product) => void }) {
+/** Product tile: big name top left, the product on the right, chips bottom left, price and action in the footer. */
+function ProductTile({ product: p, size, onRequest }: { product: Product; size: TileSize; onRequest: (p: Product) => void }) {
   const { addToCart, cart } = useShop();
   const href = routeHref({ name: 'product', id: p.id });
   const inCart = cart.find((l) => l.productId === p.id)?.qty ?? 0;
   const unavailable = p.availability === 'Temporarily unavailable';
   return (
-    <Card className="shop-product">
-      <a className="shop-product__media" href={href} aria-label={`View ${p.name}`}>
-        <span className="shop-product__badges">
-          <Tag variant="soft">{p.category === 'Hardware' ? 'Hardware' : 'Tag'}</Tag>
-          <AvailabilityBadge availability={p.availability} />
-        </span>
-        <ProductArt src={p.image} type={p.type} alt="" size="md" />
+    <article className={cx('shop-tile', `shop-tile--${size}`)}>
+      {p.badge && <span className="shop-tile__ribbon" aria-hidden><span>{p.badge}</span></span>}
+      <a className="shop-tile__link" href={href}>
+        <h3 className="shop-tile__name">{p.name}</h3>
+        <span className="syn-visually-hidden">{p.badge ? `, ${p.badge}` : ''}, view details</span>
       </a>
-      <div className="shop-product__info">
-        <h3 className="shop-product__name"><a href={href}>{p.name}</a></h3>
-        <p className="shop-product__short">{p.short}</p>
-        <p className="shop-sku">SKU · {p.id}</p>
-        <div className="shop-product__foot">
-          <div>
-            <span className="shop-price">{priceLabel(p)}</span>
-            <span className="shop-tax">{hasPrice(p) ? 'excl. VAT' : 'Quoted for your quantity'}</span>
-          </div>
-          <div className="shop-product__actions">
-            <LinkButton href={href}>Details</LinkButton>
-            {canOrder(p) && <Button size="sm" iconStart="plus" onClick={() => addToCart(p)}>{inCart ? 'Add 1 more' : 'Add to cart'}</Button>}
-            {!canOrder(p) && !unavailable && <Button size="sm" variant="secondary" iconStart="mail" onClick={() => onRequest(p)}>Request price</Button>}
-            {unavailable && <Button size="sm" disabled>Unavailable</Button>}
-          </div>
-        </div>
-        {inCart > 0 && <p className="shop-in-cart"><Icon name="check" size={16} />{inCart} in your cart</p>}
+      <p className="shop-tile__short">{p.short}</p>
+      <ProductArt src={p.image} type={p.type} alt="" size="tile" className="shop-tile__art" />
+      <div className="shop-tile__chips">
+        <Chips items={p.connectivity ?? []} />
+        {p.availability !== 'Available' && <AvailabilityBadge availability={p.availability} />}
       </div>
-    </Card>
+      <div className="shop-tile__foot">
+        <div>
+          <span className="shop-price">{priceLabel(p)}</span>
+          <span className="shop-tax">{hasPrice(p) ? 'excl. VAT' : 'Quoted for your quantity'}</span>
+        </div>
+        <div className="shop-tile__actions">
+          {inCart > 0 && <span className="shop-in-cart"><Icon name="check" size={16} />{inCart} in cart</span>}
+          {canOrder(p) && <Button size="sm" iconStart="plus" onClick={() => addToCart(p)}>{inCart ? 'Add 1 more' : 'Add to cart'}</Button>}
+          {!canOrder(p) && !unavailable && <Button size="sm" variant="secondary" iconStart="mail" onClick={() => onRequest(p)}>Request price</Button>}
+          {unavailable && <Button size="sm" disabled>Unavailable</Button>}
+        </div>
+      </div>
+    </article>
+  );
+}
+
+/** Three red arcs, the "signal" mark from the syniotec hero. */
+function Signal() {
+  return (
+    <svg className="shop-hero__signal" viewBox="0 0 160 200" aria-hidden>
+      <path d="M8 20 A140 140 0 0 1 148 160" />
+      <path d="M8 64 A96 96 0 0 1 104 160" />
+      <path d="M8 108 A52 52 0 0 1 60 160" />
+    </svg>
   );
 }
 
@@ -73,21 +92,21 @@ function OrderAgain() {
   if (!last) return null;
   const count = last.items.reduce((n, i) => n + i.qty, 0);
   return (
-    <Card className="shop-again">
+    <section className="shop-again" aria-label="Your last order">
       <span className="shop-again__thumbs" aria-hidden>
         {last.items.slice(0, 3).map((i) => <ProductArt key={i.id} src={i.image} type={i.type} alt="" size="xs" />)}
       </span>
       <div className="shop-again__copy">
-        <span className="shop-eyebrow">Your last order</span>
+        <span className="shop-eyebrow">Your last order · {last.id}</span>
         <strong>{last.items.map((i) => `${i.qty} × ${i.name}`).join(', ')}</strong>
-        <span className="shop-muted">{last.id} · {last.date} · {plural(count, 'item')} · {money(last.total)}</span>
+        <span className="shop-muted">{last.date} · {plural(count, 'item')} · {money(last.total)}</span>
       </div>
       <OrderStatusBadge status={last.status} />
       <div className="shop-again__actions">
         <LinkButton href={routeHref({ name: 'orders', id: last.id })}>View order</LinkButton>
         <Button size="sm" iconStart="refresh" onClick={() => reorder(last)}>Order again</Button>
       </div>
-    </Card>
+    </section>
   );
 }
 
@@ -105,11 +124,18 @@ export function ShopPage() {
   const list = useMemo(() => {
     const q = search.trim().toLowerCase();
     const shown = active.filter((p) => (filter === 'All' || p.category === filter)
-      && (!q || [p.name, p.id, p.short, p.description, p.category].some((v) => v.toLowerCase().includes(q))));
+      && (!q || [p.name, p.id, p.short, p.description, p.category, ...(p.connectivity ?? [])].some((v) => v.toLowerCase().includes(q))));
     return sortProducts(shown, sort);
   }, [active, filter, sort, search]);
 
+  // The bento layout only reads well for the full, featured catalogue.
+  const bento = sort === 'featured' && !search.trim();
+  const hardware = list.filter((p) => p.category === 'Hardware');
+  const tags = list.filter((p) => p.category === 'Tags');
   const clear = () => { setSearch(''); setFilter('All'); setSort('featured'); };
+  const tiles = (items: Product[], rhythm?: TileSize[]) => items.map((p, i) => (
+    <ProductTile key={p.id} product={p} size={bento ? (rhythm?.[i] ?? 'sm') : 'sm'} onRequest={setRequesting} />
+  ));
 
   return (
     <>
@@ -121,39 +147,29 @@ export function ShopPage() {
 
       <section className="shop-hero" aria-labelledby="hero-title">
         <div className="shop-hero__copy">
-          <p className="shop-eyebrow shop-eyebrow--brand">Telematics & hardware</p>
-          <h2 id="hero-title" className="shop-hero__title">Network your fleet.</h2>
-          <p className="shop-hero__lead">Trackers, beacons and passive tags for every machine, vehicle and tool, ordered from the platform you already use.</p>
-          <ul className="shop-hero__points">
-            {benefits.map((b) => <li key={b}><Icon name="check" size={16} />{b}</li>)}
-          </ul>
+          <h2 id="hero-title" className="shop-hero__title">Network<br />your fleet</h2>
+          <p className="shop-hero__lead">Trackers, beacons and passive tags for every machine, vehicle and tool, ordered from the platform you already use. You pay by invoice after review.</p>
           <div className="shop-row">
-            <Button size="md" iconEnd="arrow" onClick={() => catalogue.current?.scrollIntoView({ behavior: 'smooth' })}>Browse products</Button>
-            <Button size="md" variant="secondary" onClick={() => setQuick(true)}>Order by SKU</Button>
+            <Button size="md" variant="brand" onClick={() => catalogue.current?.scrollIntoView({ behavior: 'smooth' })}>Browse hardware</Button>
+            <Button size="md" variant="secondary" className="shop-hero__secondary" onClick={() => setQuick(true)}>Order by SKU</Button>
           </div>
         </div>
         <div className="shop-hero__art" aria-hidden>
-          <ProductArt src={hardwareImages.edge} type="hardware" alt="" size="lg" />
-          <ProductArt src={hardwareImages.link} type="hardware" alt="" size="sm" />
-          <ProductArt src={hardwareImages.dot} type="dot" alt="" size="sm" />
+          <Signal />
+          <ProductArt src={hardwareImages.core} type="hardware" alt="" size="hero" className="shop-hero__device shop-hero__device--main" />
+          <ProductArt src={hardwareImages.link} type="hardware" alt="" size="hero" className="shop-hero__device shop-hero__device--side" />
         </div>
       </section>
 
       <OrderAgain />
 
       <section ref={catalogue} className="shop-catalogue" aria-labelledby="catalogue-title">
-        <div className="shop-section-head">
-          <div>
-            <h2 id="catalogue-title" className="shop-section-head__title">Products</h2>
-            <p className="shop-muted">Active telematics for powered and unpowered equipment, and passive tags for direct access to the equipment profile.</p>
-          </div>
-          <span className="shop-muted" aria-live="polite">{plural(list.length, 'product')}</span>
-        </div>
+        <h2 id="catalogue-title" className="shop-display">Our telematics hardware</h2>
 
         <div className="shop-toolbar">
           <TextField
             className="shop-toolbar__search"
-            label="Search by name, SKU or use"
+            label="Search by name, SKU or connectivity"
             hideLabel
             size="sm"
             iconStart="search"
@@ -168,18 +184,45 @@ export function ShopPage() {
             onChange={(v) => setFilter(v as Filter)}
           />
           <Select className="shop-toolbar__sort" label="Sort products" size="sm" options={sortOptions} value={sort} onChange={(v) => setSort(v as Sort)} />
+          <span className="shop-muted" aria-live="polite">{plural(list.length, 'product')}</span>
         </div>
 
-        {list.length
-          ? <div className="shop-grid">{list.map((p) => <ProductCard key={p.id} product={p} onRequest={setRequesting} />)}</div>
-          : (
-            <EmptyState icon="search" action={<Button size="sm" variant="secondary" onClick={clear}>Clear search and filters</Button>}>
-              {search ? `No products match “${search.trim()}”.` : 'No products in this category.'} Try a SKU such as DOT or TAG-S, or clear the filters.
-            </EmptyState>
-          )}
+        {!list.length && (
+          <EmptyState icon="search" action={<Button size="sm" variant="secondary" onClick={clear}>Clear search and filters</Button>}>
+            {search ? `No products match “${search.trim()}”.` : 'No products in this category.'} Try a SKU such as DOT or TAG-S, or a radio such as LTE-M.
+          </EmptyState>
+        )}
+
+        {bento ? (
+          <>
+            {hardware.length > 0 && <div className="shop-bento">{tiles(hardware, hardwareRhythm)}</div>}
+            {tags.length > 0 && (
+              <>
+                <div className="shop-subhead">
+                  <h3 className="shop-subhead__title">Passive telematics</h3>
+                  <p className="shop-muted">Tags with QR code and NFC give direct access to the equipment profile, no power supply needed.</p>
+                </div>
+                <div className="shop-bento">{tiles(tags, tags.map(() => 'md' as TileSize))}</div>
+              </>
+            )}
+          </>
+        ) : list.length > 0 && <div className="shop-bento">{tiles(list)}</div>}
       </section>
 
-      <InfoNote>Prices are general list prices excl. VAT. Syniotec confirms delivery costs and dates when it reviews your order.</InfoNote>
+      <section className="shop-benefits" aria-labelledby="benefits-title">
+        <h2 id="benefits-title" className="shop-display">Your benefits are not just<br />limited to telematics</h2>
+        <ul>
+          {benefits.map(([icon, title, text], i) => (
+            <li key={title}>
+              <span className={cx('shop-benefits__icon', i === 0 && 'is-brand')}><Icon name={icon} size={48} /></span>
+              <span>
+                <strong>{title}</strong>
+                <span>{text}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <QuickOrder open={quick} onClose={() => setQuick(false)} />
       <PriceRequestDialog key={requesting?.id ?? 'none'} product={requesting} onClose={() => setRequesting(null)} />

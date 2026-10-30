@@ -3,7 +3,7 @@ import { Button, Card, FileItem, Icon, Section } from '../../../src';
 import { cx } from '../../../src/utils';
 import { canOrder, hasPrice, money, priceLabel } from '../data';
 import { PriceRequestDialog } from '../PriceRequest';
-import { AvailabilityBadge, BackLink, InfoNote, ProductArt, QuantityStepper, ShopHeader, SpecList } from '../parts';
+import { AvailabilityBadge, BackLink, Chips, InfoNote, ProductArt, QuantityStepper, ShopHeader, SpecList } from '../parts';
 import { routeHref, useShop } from '../store';
 
 export function ProductPage({ id }: { id: string }) {
@@ -34,6 +34,7 @@ export function ProductPage({ id }: { id: string }) {
       <div className="shop-detail">
         <div className="shop-detail__main">
           <Card className="shop-gallery">
+            {p.badge && <span className="shop-tile__ribbon" aria-hidden><span>{p.badge}</span></span>}
             <ProductArt src={gallery[shown]} type={p.type} alt={`${p.name}, image ${shown + 1} of ${Math.max(gallery.length, 1)}`} size="lg" />
             {gallery.length > 1 && (
               <div className="shop-gallery__thumbs" role="group" aria-label="Product images">
@@ -84,6 +85,7 @@ export function ProductPage({ id }: { id: string }) {
           <p className="shop-sku">{p.category === 'Hardware' ? 'Hardware' : 'Passive telematics'} · {p.id}</p>
           <h2 className="shop-buy__name">{p.name}</h2>
           <p className="shop-text">{p.short}</p>
+          <Chips items={p.connectivity ?? []} />
           <AvailabilityBadge availability={p.availability} />
           <div>
             <p className="shop-buy__price">{priceLabel(p)}</p>

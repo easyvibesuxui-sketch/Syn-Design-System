@@ -14,7 +14,7 @@ const illustrations: Record<ArtType, string> = { hardware: hardwareArt, dot: dot
 
 /** Product image on a Smoke stage; falls back to the built-in illustration when there is no image or it fails to load. */
 export function ProductArt({ src, type, alt, size = 'md', className }: {
-  src?: string; type: ArtType; alt: string; size?: 'xs' | 'sm' | 'md' | 'lg'; className?: string;
+  src?: string; type: ArtType; alt: string; size?: 'xs' | 'sm' | 'md' | 'lg' | 'tile' | 'hero'; className?: string;
 }) {
   const [failed, setFailed] = useState(false);
   useEffect(() => setFailed(false), [src]);
@@ -23,6 +23,26 @@ export function ProductArt({ src, type, alt, size = 'md', className }: {
     <div className={cx('shop-art', `shop-art--${size}`, className)}>
       <img src={shown} alt={alt} loading="lazy" onError={() => setFailed(true)} />
     </div>
+  );
+}
+
+const chipIcon: Partial<Record<string, IconName>> = { Bluetooth: 'bloetooth', 'NB-IoT': 'find-globe', GPS: 'gps-location-default', GNSS: 'gps-location-default', Video: 'video-1' };
+
+/** Connectivity chips from the syniotec.com product tiles: small white boxes with an icon or a short label. */
+export function Chips({ items }: { items: string[] }) {
+  if (!items.length) return null;
+  return (
+    <ul className="shop-chips" aria-label="Connectivity">
+      {items.map((c) => {
+        const icon = chipIcon[c];
+        return (
+          <li key={c} className="shop-chip" title={c}>
+            {icon && <Icon name={icon} size={16} />}
+            <span className={icon === 'bloetooth' ? 'syn-visually-hidden' : undefined}>{c}</span>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
