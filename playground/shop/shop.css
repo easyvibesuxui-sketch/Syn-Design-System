@@ -712,3 +712,16 @@ html { scroll-behavior: smooth; }
 /* House rule for labelled text: the label in ABC Favorit, the explanation in Silver Chalice Montserrat. */
 .shop-steps__text strong { font: var(--syn-type-titles-title-4); }
 .shop-steps__text > span { color: var(--syn-text-muted); font: var(--syn-type-text-body-xs-2); }
+
+/* Cards two per row on desktop with a wider, shorter photo. Badges stack top-left; buying sits top-right as a round
+   icon button (then the − count + pill), like Airbnb's save button. */
+.shop-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--syn-space-20); }
+@media (max-width: 900px) { .shop-cards { grid-template-columns: minmax(0, 1fr); } }
+.shop-card__media .shop-art { aspect-ratio: 16 / 9; }
+.shop-card__stock { display: flex; align-items: center; gap: var(--syn-space-8); }
+.shop-card__quick { top: var(--syn-space-12); bottom: auto; }
+.shop-card__fab { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-full); background: var(--syn-surface-default); color: var(--syn-text-primary); box-shadow: var(--syn-shadow-default); cursor: pointer; transition: transform var(--syn-duration-fast), border-color var(--syn-duration-fast); }
+.shop-card__fab:hover { border-color: var(--syn-border-strong); transform: scale(1.06); }
+.shop-card__fab:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
+.shop-card__stepper { border-radius: var(--syn-radius-full); }
+@media (prefers-reduced-motion: reduce) { .shop-card__fab:hover { transform: none; } }

@@ -81,13 +81,26 @@ function CompareToggle({ product: p, compare, onToggle }: { product: Product; co
   );
 }
 
-/** Buying on the product photo: Add until the product is in the cart, then − count + that edits that cart line. */
+/** Buying on the product photo, Airbnb-style: a round + in the top-right corner until the product is in the cart, then
+ * − count + that edits that cart line. */
 function CardBuy({ product: p, onRequest }: { product: Product; onRequest: (p: Product) => void }) {
   const { cart, addToCart, setQty, removeFromCart } = useShop();
   const inCart = cart.find((l) => l.productId === p.id)?.qty ?? 0;
   if (p.availability === 'Temporarily unavailable') return null;
-  if (!canOrder(p)) return <Button size="sm" variant="secondary" iconStart="mail" onClick={() => onRequest(p)}>Request price</Button>;
-  if (!inCart) return <Button size="sm" iconStart="plus" onClick={() => addToCart(p, 1)}>Add</Button>;
+  if (!canOrder(p)) {
+    return (
+      <Tooltip content="Request a price" placement="left">
+        <button type="button" className="shop-card__fab" aria-label={`Request a price for ${p.name}`} onClick={() => onRequest(p)}><Icon name="mail" size={20} /></button>
+      </Tooltip>
+    );
+  }
+  if (!inCart) {
+    return (
+      <Tooltip content="Add to cart" placement="left">
+        <button type="button" className="shop-card__fab" aria-label={`Add ${p.name} to cart`} onClick={() => addToCart(p, 1)}><Icon name="plus" size={20} /></button>
+      </Tooltip>
+    );
+  }
   const last = inCart === 1;
   return (
     <div className="shop-card__stepper" role="group" aria-label={`${p.name} in your cart`}>
@@ -116,8 +129,10 @@ function ProductCard({ product: p, compare, onCompare, onRequest }: {
         <a className="shop-card__photo" href={href} tabIndex={-1} aria-hidden>
           <ProductArt src={p.image} type={p.type} alt="" size="md" />
         </a>
-        <span className="shop-card__stock"><AvailabilityBadge availability={p.availability} /></span>
-        {p.badge && <span className="shop-card__badge"><Tag color="var(--syn-action-brand)">{p.badge}</Tag></span>}
+        <span className="shop-card__stock">
+          <AvailabilityBadge availability={p.availability} />
+          {p.badge && <Tag color="var(--syn-action-brand)">{p.badge}</Tag>}
+        </span>
         <div className="shop-card__quick"><CardBuy product={p} onRequest={onRequest} /></div>
       </div>
       <div className="shop-card__body">
