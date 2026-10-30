@@ -46,7 +46,7 @@ export function CartDrawer() {
           <InfoNote>No online payment is required. Syniotec will review the order, confirm delivery details and issue the invoice separately.</InfoNote>
         </div>
       ) : (
-        <div className="shop-cart">
+        <div className="shop-cart shop-cart--empty">
           <EmptyState icon="inventory" action={<Button size="sm" onClick={() => to('shop')}>Browse products</Button>}>
             Your cart is empty. Add Syniotec hardware to start an order.
           </EmptyState>

@@ -693,3 +693,9 @@ html { scroll-behavior: smooth; }
 .shop-order-products li > span { display: flex; flex-direction: column; }
 .shop-order-products strong { font: var(--syn-type-text-body-xs); }
 .shop-order-products li > span > span { color: var(--syn-text-secondary); font: var(--syn-type-text-body-xs-2); }
+
+/* Drawer header that only names the drawer (Quick order): Favorit Medium 16 in Silver Chalice. */
+.shop-drawer-label { color: var(--syn-text-muted); font: var(--syn-type-titles-title-3); }
+/* Empty cart: the message sits in the vertical middle of the drawer body. */
+.syn-drawer__body:has(> .shop-cart--empty) { display: flex; flex-direction: column; }
+.shop-cart--empty { display: flex; flex: 1; align-items: center; justify-content: center; }
