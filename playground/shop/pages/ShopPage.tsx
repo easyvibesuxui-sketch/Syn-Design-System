@@ -220,7 +220,7 @@ function CompareDrawer({ ids, open, onClose, onRemove, onRequest }: {
 
 /** The buyer's latest order, one click from being ordered again. Most B2B orders repeat an earlier one. */
 /** The buyer's latest order as one compact line with Order again, in the corner of the finder. */
-/** The signed-in user's latest order, closing the “how ordering works” strip, so a repeat order is one click. */
+/** The signed-in user's latest order, in its own card beside the ordering steps, so a repeat order is one click. */
 function LastOrder() {
   const { orders, reorder } = useShop();
   const last = orders.find((o) => o.orderedBy === CURRENT_USER.name);
