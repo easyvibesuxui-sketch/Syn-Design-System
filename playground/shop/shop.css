@@ -724,3 +724,12 @@ html { scroll-behavior: smooth; }
 /* Quick order: the intro and the field's helper text share the description style, Montserrat 12 in Silver Chalice. */
 .shop-drawer-heading--flush .shop-drawer-heading__lead,
 .shop-quick-form .syn-field-messages p.syn-field-messages__hint { color: var(--syn-text-muted); font: var(--syn-type-text-body-xs-2); }
+
+/* My orders: the whole row opens the order's drawer. */
+.shop-rows-open tbody tr { cursor: pointer; transition: background-color var(--syn-duration-fast); }
+.shop-rows-open tbody tr:hover { background: var(--syn-surface-muted); }
+.shop-rows-open .shop-cell-link:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
+.shop-order-drawer { padding-bottom: var(--syn-space-16); }
+/* Page descriptions follow the label rule: Montserrat in Silver Chalice. The back link sits above the title. */
+.shop-page-head__lead { color: var(--syn-text-muted); }
+.shop-page-head > div > .shop-back { margin-bottom: var(--syn-space-8); }

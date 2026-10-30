@@ -89,19 +89,21 @@ export function QuantityStepper({ value, onChange, label, size = 'sm' }: {
   );
 }
 
-/** Shop module header: eyebrow, title and lead on the left; My orders / Back to Shop and the cart on the right. */
-export function ShopHeader({ title, lead, back, extra }: { title: string; lead: string; back?: boolean; extra?: ReactNode }) {
+/** Shop module header: title and lead on the left; My orders / Order by SKU and the cart on the right. Inner pages pass
+ * `back`, which puts the way back above the title on the left (navigation reads first) and leaves only the cart right. */
+export function ShopHeader({ title, lead, back, extra }: {
+  title: string; lead: string; back?: { href: string; label: string }; extra?: ReactNode;
+}) {
   const { cartQty, setCartOpen } = useShop();
   return (
     <PageHeader
-      // The landing page's title already says Shop, as does the top bar; the eyebrow only adds context on inner pages.
-      eyebrow={title === 'Shop' ? undefined : 'Syniotec Shop'}
+      // The landing page's title already says Shop, as does the top bar; the eyebrow only adds context on other pages.
+      eyebrow={title === 'Shop' || back ? undefined : 'Syniotec Shop'}
+      before={back && <BackLink href={back.href}>{back.label}</BackLink>}
       title={title}
       lead={lead}
       actions={<>
-        {back
-          ? <LinkButton href={routeHref({ name: 'shop' })} iconStart="back">Back to Shop</LinkButton>
-          : <LinkButton href={routeHref({ name: 'orders' })} iconStart="history" variant="text">My orders</LinkButton>}
+        {!back && <LinkButton href={routeHref({ name: 'orders' })} iconStart="history" variant="text">My orders</LinkButton>}
         {extra}
         <Button size="sm" className="shop-cart-button" onClick={() => setCartOpen(true)} aria-label={cartQty ? `Cart, ${plural(cartQty, 'item')}` : 'Cart'}>
           <LineIcon name="cart" size={16} />Cart{cartQty > 0 && <span className="shop-count" aria-hidden>{cartQty}</span>}
@@ -111,10 +113,13 @@ export function ShopHeader({ title, lead, back, extra }: { title: string; lead: 
   );
 }
 
-export function PageHeader({ eyebrow, title, lead, actions }: { eyebrow?: string; title: ReactNode; lead?: ReactNode; actions?: ReactNode }) {
+export function PageHeader({ eyebrow, before, title, lead, actions }: {
+  eyebrow?: string; before?: ReactNode; title: ReactNode; lead?: ReactNode; actions?: ReactNode;
+}) {
   return (
     <header className="shop-page-head">
       <div>
+        {before}
         {eyebrow && <p className="shop-eyebrow">{eyebrow}</p>}
         <h1 className="shop-page-head__title">{title}</h1>
         {lead && <p className="shop-page-head__lead">{lead}</p>}
