@@ -2,8 +2,8 @@ import { useMemo, useState, type ReactNode } from 'react';
 import { Button, Checkbox, Drawer, EmptyState, Icon, IconButton, Segmented, Select, Table, Tag, TextField } from '../../../src';
 import { cx } from '../../../src/utils';
 import {
-  CURRENT_USER, FEATURED_ORDER, POWER_OPTIONS, USE_CASES, canOrder, hasPrice, money, plural, priceLabel,
-  type Availability, type Category, type Power, type Product, type UseCase,
+  CURRENT_USER, FEATURED_ORDER, POWER_OPTIONS, canOrder, hasPrice, money, plural, priceLabel, suitableFor, suitableTerms,
+  type Availability, type Category, type Power, type Product,
 } from '../data';
 import { PriceRequestDialog } from '../PriceRequest';
 import { QuickOrder } from '../QuickOrder';
@@ -15,7 +15,8 @@ type View = 'grid' | 'table';
 
 interface Filters {
   category: Category[];
-  use: UseCase[];
+  /** Values from the products' own "Suitable for" texts. */
+  use: string[];
   power: Power[];
   connectivity: string[];
   availability: Availability[];
@@ -31,16 +32,15 @@ const sortOptions = [
 const CONNECTIVITY = ['LTE-M', '4G', 'NB-IoT', '2G fallback', 'Bluetooth', 'CAN', 'GPS', 'QR', 'NFC'];
 const MAX_COMPARE = 3;
 
-const useLabel = (u: UseCase) => USE_CASES.find((x) => x.id === u)?.label ?? u;
 
 function matches(p: Product, f: Filters, q: string) {
   if (f.category.length && !f.category.includes(p.category)) return false;
-  if (f.use.length && !f.use.some((u) => p.useCases?.includes(u))) return false;
+  if (f.use.length && !f.use.some((u) => suitableTerms(p).includes(u))) return false;
   if (f.power.length && !(p.power && f.power.includes(p.power))) return false;
   if (f.connectivity.length && !f.connectivity.some((c) => p.connectivity?.includes(c))) return false;
   if (f.availability.length && !f.availability.includes(p.availability)) return false;
   if (!q) return true;
-  return [p.name, p.id, p.short, p.description, ...(p.connectivity ?? []), ...(p.useCases ?? []).map(useLabel)].some((v) => v.toLowerCase().includes(q));
+  return [p.name, p.id, p.short, p.description, ...(p.connectivity ?? []), suitableFor(p) ?? ''].some((v) => v.toLowerCase().includes(q));
 }
 
 function sortProducts(list: Product[], sort: Sort) {
@@ -100,7 +100,7 @@ function ProductCard({ product: p, compare, onCompare, onRequest }: {
         <p className="shop-card__short">{p.short}</p>
         <dl className="shop-card__facts">
           {p.power && <div><dt>Power</dt><dd>{p.power}{p.ip ? ` · ${p.ip}` : ''}</dd></div>}
-          {!!p.useCases?.length && <div><dt>For</dt><dd>{p.useCases.map(useLabel).join(', ')}</dd></div>}
+          {suitableFor(p) && <div><dt>For</dt><dd>{suitableFor(p)}</dd></div>}
         </dl>
         <Chips items={p.connectivity ?? []} />
       </div>
@@ -120,13 +120,17 @@ function ProductCard({ product: p, compare, onCompare, onRequest }: {
   );
 }
 
-function FilterGroup<T extends string>({ title, options, selected, onChange, counts, label }: {
+function FilterGroup<T extends string>({ title, options, selected, onChange, counts, label, limit }: {
   title: string; options: T[]; selected: T[]; onChange: (next: T[]) => void; counts: (o: T) => number; label?: (o: T) => string;
+  /** Long lists show this many options, plus any selected ones, behind a "Show all" toggle. */
+  limit?: number;
 }) {
+  const [all, setAll] = useState(false);
+  const shown = !limit || all ? options : options.filter((o, i) => i < limit || selected.includes(o));
   return (
     <fieldset className="shop-filter">
       <legend className="shop-filter__title">{title}</legend>
-      {options.map((o) => {
+      {shown.map((o) => {
         const n = counts(o);
         const on = selected.includes(o);
         return (
@@ -141,6 +145,11 @@ function FilterGroup<T extends string>({ title, options, selected, onChange, cou
           </div>
         );
       })}
+      {limit && options.length > limit && (
+        <Button size="xs" variant="text" className="shop-filter__more" aria-expanded={all} onClick={() => setAll(!all)}>
+          {all ? 'Show fewer' : `Show all ${options.length}`}
+        </Button>
+      )}
     </fieldset>
   );
 }
@@ -156,7 +165,6 @@ function CompareDrawer({ ids, open, onClose, onRemove, onRequest }: {
     ['Price', (p) => <strong>{priceLabel(p)}</strong>],
     ['Availability', (p) => <AvailabilityBadge availability={p.availability} />],
     ['Power', (p) => [p.power, p.ip].filter(Boolean).join(' · ') || '—'],
-    ['Asset types', (p) => p.useCases?.map(useLabel).join(', ') || '—'],
     ['Interfaces', (p) => (p.connectivity?.length ? p.connectivity.join(', ') : '—')],
     ...specKeys.map((k): [string, (p: Product) => ReactNode] => [k, (p) => p.specs.find(([sk]) => sk === k)?.[1] ?? '—']),
   ];
@@ -239,7 +247,13 @@ export function ShopPage() {
   const countWith = <K extends keyof Filters>(key: K, value: Filters[K][number]) =>
     active.filter((p) => matches(p, { ...filters, [key]: [value] }, q)).length;
   const set = <K extends keyof Filters>(key: K) => (next: Filters[K]) => setFilters({ ...filters, [key]: next });
-  const toggleUse = (u: UseCase) => {
+  // Every "Suitable for" value in the catalogue, most common first.
+  const terms = useMemo(() => {
+    const n = new Map<string, number>();
+    active.forEach((p) => suitableTerms(p).forEach((t) => n.set(t, (n.get(t) ?? 0) + 1)));
+    return [...n.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([t]) => t);
+  }, [active]);
+  const toggleUse = (u: string) => {
     set('use')(filters.use.includes(u) ? filters.use.filter((x) => x !== u) : [u]);
     document.getElementById('results-title')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
@@ -247,7 +261,7 @@ export function ShopPage() {
 
   const applied: Array<[string, () => void]> = [
     ...filters.category.map((v): [string, () => void] => [v, () => set('category')(filters.category.filter((x) => x !== v))]),
-    ...filters.use.map((v): [string, () => void] => [useLabel(v), () => set('use')(filters.use.filter((x) => x !== v))]),
+    ...filters.use.map((v): [string, () => void] => [v, () => set('use')(filters.use.filter((x) => x !== v))]),
     ...filters.power.map((v): [string, () => void] => [v, () => set('power')(filters.power.filter((x) => x !== v))]),
     ...filters.connectivity.map((v): [string, () => void] => [v, () => set('connectivity')(filters.connectivity.filter((x) => x !== v))]),
     ...filters.availability.map((v): [string, () => void] => [v, () => set('availability')(filters.availability.filter((x) => x !== v))]),
@@ -268,15 +282,14 @@ export function ShopPage() {
             <h2 id="finder-title" className="shop-panel__title">What do you want to track?</h2>
             {filters.use.length > 0 && <Button size="xs" variant="text" onClick={() => set('use')([])}>Show all</Button>}
           </div>
-          <div className="shop-finder__options">
-            {USE_CASES.map((u) => {
-              const on = filters.use.includes(u.id);
+          <p className="shop-muted">Pick what you want to equip. The options are the “Suitable for” values of the products.</p>
+          <div className="shop-finder__terms" role="group" aria-label="Suitable for">
+            {terms.map((t) => {
+              const on = filters.use.includes(t);
+              const n = active.filter((p) => suitableTerms(p).includes(t)).length;
               return (
-                <button key={u.id} type="button" className={cx('shop-finder__option', on && 'is-on')} aria-pressed={on} onClick={() => toggleUse(u.id)}>
-                  <Icon name={u.icon} size={24} />
-                  <span className="shop-finder__label">{u.label}</span>
-                  <span className="shop-finder__hint">{u.hint}</span>
-                  <span className="shop-finder__count">{plural(active.filter((p) => p.useCases?.includes(u.id)).length, 'product')}</span>
+                <button key={t} type="button" className={cx('shop-finder__term', on && 'is-on')} aria-pressed={on} onClick={() => toggleUse(t)}>
+                  {t}<span className="shop-finder__term-count">{n}</span>
                 </button>
               );
             })}
@@ -300,7 +313,7 @@ export function ShopPage() {
             <Button size="xs" variant="secondary" className="shop-filters__toggle" aria-expanded={filtersOpen} onClick={() => setFiltersOpen(!filtersOpen)}>{filtersOpen ? 'Hide' : 'Show'}</Button>
           </div>
           <FilterGroup<Category> title="Category" options={['Hardware', 'Tags']} selected={filters.category} onChange={set('category')} counts={(o) => countWith('category', o)} label={(o) => (o === 'Hardware' ? 'Active telematics' : 'Passive tags')} />
-          <FilterGroup<UseCase> title="Suitable for" options={USE_CASES.map((u) => u.id)} selected={filters.use} onChange={set('use')} counts={(o) => countWith('use', o)} label={useLabel} />
+          <FilterGroup<string> title="Suitable for" options={terms} selected={filters.use} onChange={set('use')} counts={(o) => countWith('use', o)} limit={6} />
           <FilterGroup<Power> title="Power source" options={POWER_OPTIONS} selected={filters.power} onChange={set('power')} counts={(o) => countWith('power', o)} />
           <FilterGroup<string> title="Connectivity" options={CONNECTIVITY} selected={filters.connectivity} onChange={set('connectivity')} counts={(o) => countWith('connectivity', o)} />
           <FilterGroup<Availability> title="Availability" options={['Available', 'Available on request']} selected={filters.availability} onChange={set('availability')} counts={(o) => countWith('availability', o)} />
@@ -353,7 +366,7 @@ export function ShopPage() {
                     </a>
                   ),
                 },
-                { key: 'use', header: 'Suitable for', render: (p) => p.useCases?.map(useLabel).join(', ') || '—' },
+                { key: 'use', header: 'Suitable for', render: (p) => suitableFor(p) ?? '—' },
                 { key: 'power', header: 'Power', render: (p) => p.power ?? '—' },
                 { key: 'conn', header: 'Connectivity', render: (p) => p.connectivity?.join(', ') || '—' },
                 { key: 'availability', header: 'Availability', render: (p) => <AvailabilityBadge availability={p.availability} /> },

@@ -34,23 +34,13 @@ export interface Product {
   connectivity?: string[];
   /** Ribbon on the tile, e.g. "Most used". */
   badge?: string;
-  /** What the product is for; drives the "What do you want to track?" finder and the Use filter. */
-  useCases?: UseCase[];
   /** How the device is powered; passive tags need no power. */
   power?: Power;
   /** Ingress protection, where the data sheet states it. */
   ip?: string;
 }
 
-export type UseCase = 'machines' | 'vehicles' | 'attachments' | 'containers' | 'tools';
 export type Power = 'External power' | 'Battery' | 'Solar' | 'Passive';
-export const USE_CASES: Array<{ id: UseCase; label: string; hint: string; icon: 'equipment' | 'truck' | 'nav-transportation' | 'inventory' | 'maintenance' }> = [
-  { id: 'machines', label: 'Powered machines', hint: 'Excavators, lifts, generators', icon: 'equipment' },
-  { id: 'vehicles', label: 'Vehicles & trucks', hint: 'Cars, vans, trucks', icon: 'truck' },
-  { id: 'attachments', label: 'Attachments & trailers', hint: 'No own power supply', icon: 'nav-transportation' },
-  { id: 'containers', label: 'Containers & mobile units', hint: 'Site containers, pumps', icon: 'inventory' },
-  { id: 'tools', label: 'Tools & small equipment', hint: 'Power tools, chains, gear', icon: 'maintenance' },
-];
 export const POWER_OPTIONS: Power[] = ['External power', 'Battery', 'Solar', 'Passive'];
 
 export interface OrderItem {
@@ -282,32 +272,30 @@ const connectivity: Record<string, string[]> = {
 };
 const mostUsed = ['CORE', 'LINK'];
 
-/** Use, power and protection from the product texts and data sheets above; no value is guessed beyond them. */
-const facts: Record<string, { useCases: UseCase[]; power?: Power; ip?: string }> = {
-  EDGE: { useCases: ['machines'], power: 'External power', ip: 'IP67' },
-  LINK: { useCases: ['attachments', 'containers'], power: 'Battery' },
-  'LINK-MINI': { useCases: ['attachments'], power: 'Battery' },
-  DOT: { useCases: ['tools', 'attachments'], power: 'Battery', ip: 'IP67' },
-  'DOT-MINI': { useCases: ['tools'], power: 'Battery' },
-  LITE: { useCases: ['machines'] },
-  VOLT: { useCases: ['attachments', 'machines'], power: 'Battery' },
-  OBD: { useCases: ['vehicles'], power: 'External power' },
-  CORE: { useCases: ['vehicles'], power: 'External power' },
-  SOLAR: { useCases: ['containers', 'attachments'], power: 'Solar', ip: 'IP67' },
-  DASHCAM: { useCases: ['vehicles', 'machines'], power: 'External power' },
-  'TAG-L': { useCases: ['machines'], power: 'Passive' },
-  'TAG-M': { useCases: ['machines'], power: 'Passive' },
-  'TAG-S': { useCases: ['machines', 'attachments'], power: 'Passive' },
-  'TOOL-TAGS': { useCases: ['tools'], power: 'Passive' },
-  'CHAIN-TAG': { useCases: ['tools', 'attachments'], power: 'Passive' },
-  'QR-STICKER': { useCases: ['machines', 'tools'], power: 'Passive' },
+/**
+ * Power source and protection, only where the product data above states them (a power-supply range, batteries,
+ * solar, IP67, or a passive tag). Products whose data says nothing about power have none.
+ */
+const facts: Record<string, { power?: Power; ip?: string }> = {
+  EDGE: { power: 'External power', ip: 'IP67' },
+  LINK: { power: 'Battery' },
+  'LINK-MINI': { power: 'Battery' },
+  DOT: { ip: 'IP67' },
+  VOLT: { power: 'Battery' },
+  OBD: { power: 'External power' },
+  SOLAR: { power: 'Solar', ip: 'IP67' },
+  'TAG-L': { power: 'Passive' },
+  'TAG-M': { power: 'Passive' },
+  'TAG-S': { power: 'Passive' },
+  'TOOL-TAGS': { power: 'Passive' },
+  'CHAIN-TAG': { power: 'Passive' },
+  'QR-STICKER': { power: 'Passive' },
 };
 
 export const defaultProducts: Product[] = catalogue.map((p) => ({
   ...p,
   connectivity: connectivity[p.id] ?? [],
   badge: mostUsed.includes(p.id) ? 'Most used' : undefined,
-  useCases: facts[p.id]?.useCases ?? [],
   power: facts[p.id]?.power,
   ip: facts[p.id]?.ip,
 }));
@@ -355,4 +343,17 @@ export function stamp(now = new Date()) {
   const date = `${two(now.getDate())}.${two(now.getMonth() + 1)}.${now.getFullYear()}`;
   const time = `${two(now.getHours())}:${two(now.getMinutes())}`;
   return { date, time, both: `${date} · ${time}`, year: now.getFullYear() };
+}
+
+/** The product's own "Suitable for" text from its specifications, verbatim. */
+export const suitableFor = (p: Pick<Product, 'specs'>) => p.specs.find(([k]) => k === 'Suitable for')?.[1];
+
+/**
+ * The "Suitable for" text split at its commas into filter values, e.g. "Trailers, containers, pumps & generators"
+ * becomes Trailers / Containers / Pumps & generators. Nothing is renamed or grouped; only the first letter is capitalised.
+ */
+export function suitableTerms(p: Pick<Product, 'specs'>): string[] {
+  const text = suitableFor(p);
+  if (!text) return [];
+  return text.split(',').map((t) => t.trim()).filter(Boolean).map((t) => t[0].toUpperCase() + t.slice(1));
 }
