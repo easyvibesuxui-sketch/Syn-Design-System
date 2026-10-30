@@ -187,6 +187,16 @@ export function DrawerContext({ icon, children }: { icon: IconName | 'cart'; chi
   return <span className="shop-drawer-context">{icon === 'cart' ? <LineIcon name="cart" size={16} /> : <Icon name={icon} size={16} />}{children}</span>;
 }
 
+/** Header of a task drawer (Quick order, Cart): just its name, Favorit Medium 16 in Silver Chalice. */
+export function DrawerLabel({ children }: { children: ReactNode }) {
+  return <span className="shop-drawer-label">{children}</span>;
+}
+
+/** One-line intro under a task drawer's header, in the description style and with no divider below. */
+export function DrawerIntro({ children }: { children: ReactNode }) {
+  return <DrawerRow className="shop-drawer-heading shop-drawer-heading--flush"><p className="shop-drawer-heading__lead">{children}</p></DrawerRow>;
+}
+
 export function DrawerTitle({ title, lead, end }: { title: ReactNode; lead?: ReactNode; end?: ReactNode }) {
   return (
     <DrawerRow end={end} className="shop-drawer-heading">

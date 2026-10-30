@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
-import { Button, Drawer, DrawerRow, Icon, TextArea } from '../../src';
+import { Button, Drawer, Icon, TextArea } from '../../src';
 import { cx } from '../../src/utils';
 import { canOrder, money, plural, type Product } from './data';
+import { DrawerIntro, DrawerLabel } from './parts';
 import { useShop } from './store';
 
 interface Parsed {
@@ -49,15 +50,15 @@ export function QuickOrder({ open, onClose }: { open: boolean; onClose: () => vo
       onClose={onClose}
       label="Quick order"
       width={560}
-      headerStart={<span className="shop-drawer-label">Quick order</span>}
+      headerStart={<DrawerLabel>Quick order</DrawerLabel>}
       footer={<>
         <Button variant="text" onClick={onClose}>Cancel</Button>
         <Button size="md" disabled={!ok.length} onClick={add}>{ok.length ? `Add ${plural(ok.length, 'product')} to cart` : 'Add to cart'}</Button>
       </>}
     >
       {/* The header already names the drawer, so the body opens with what to do. */}
-      <DrawerRow className="shop-drawer-heading"><p className="shop-drawer-heading__lead">Know the SKUs? Paste them here and add everything to the cart at once.</p></DrawerRow>
-      <div className="shop-drawer-body">
+      <DrawerIntro>Know the SKUs? Paste them here and add everything to the cart at once.</DrawerIntro>
+      <div className="shop-drawer-body shop-quick-form">
         <TextArea
           label="Products and quantities"
           hideLabel={false}

@@ -1,6 +1,6 @@
 import { Button, Drawer, EmptyState } from '../../src';
 import { money, plural } from './data';
-import { DrawerContext, DrawerTitle, InfoNote, ProductArt, QuantityStepper, Summary } from './parts';
+import { DrawerIntro, DrawerLabel, InfoNote, ProductArt, QuantityStepper, Summary } from './parts';
 import { useShop } from './store';
 
 /** The cart as a narrow Syn drawer: lines with a quantity stepper, the summary and "Continue to order". */
@@ -20,10 +20,10 @@ export function CartDrawer() {
       label="Your cart"
       width={480}
       closeLabel="Close cart"
-      headerStart={<DrawerContext icon="cart">Syniotec Shop</DrawerContext>}
+      headerStart={<DrawerLabel>Your cart</DrawerLabel>}
       footer={cart.length ? <Button size="md" fullWidth iconEnd="arrow" onClick={() => to('checkout')}>Continue to order</Button> : undefined}
     >
-      <DrawerTitle title="Your cart" lead={cartQty ? plural(cartQty, 'item') : 'No products added yet'} />
+      <DrawerIntro>{cartQty ? `${plural(cartQty, 'item')} · prices excl. VAT` : 'No products added yet'}</DrawerIntro>
       {cart.length ? (
         <div className="shop-cart">
           <ul className="shop-cart__lines">
