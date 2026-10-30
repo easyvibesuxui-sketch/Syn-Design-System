@@ -737,6 +737,6 @@ html { scroll-behavior: smooth; }
 .shop-topbar .shop-create { gap: var(--syn-space-8); padding-left: var(--syn-space-12); padding-right: var(--syn-space-16); }
 @media (max-width: 760px) { .shop-topbar .shop-create { padding-inline: var(--syn-space-8); } }
 /* SAM wordmark in Cultured. */
-.shop-topbar__brand { color: var(--syn-color-grey-cultured); }
+.shop-topbar__brand { color: var(--syn-color-grey-cultured); font: var(--syn-type-titles-display-2); letter-spacing: 0; }
 /* Landing page without a visible title: description and actions share one centred row. */
 .shop-page-head:has(h1.syn-visually-hidden) { align-items: center; }
