@@ -238,21 +238,33 @@ function LastOrder() {
  * Airbnb-style category bar: one scrolling row of icon-over-label items, muted until hovered, the selected one
  * black with a 2px underline, and round arrow buttons when the row overflows.
  */
-/** Splits a term into at most two lines of similar length, so the row stays short. */
-function twoLines(term: string): [string, string?] {
+/**
+ * Splits a term into as few lines as fit `fit` characters, at most `max`, so the row stays narrow.
+ * A line never starts with “&” or “/”: they stay with the word before them.
+ */
+function termLines(term: string, max = 3, fit = 13): string[] {
   const words = term.split(' ');
-  if (words.length < 2) return [term];
-  let best = 1;
-  for (let i = 1; i < words.length; i++) {
-    const worst = (n: number) => Math.max(words.slice(0, n).join(' ').length, words.slice(n).join(' ').length);
-    if (worst(i) < worst(best)) best = i;
-  }
-  return [words.slice(0, best).join(' '), words.slice(best).join(' ')];
+  const options: string[][] = [];
+  const walk = (from: number, lines: string[]) => {
+    if (from === words.length) { options.push(lines); return; }
+    if (lines.length === max) return;
+    for (let to = from + 1; to <= words.length; to++) {
+      if (to < words.length && /^[&/]$/.test(words[to])) continue;
+      walk(to, [...lines, words.slice(from, to).join(' ')]);
+    }
+  };
+  walk(0, []);
+  const width = (lines: string[]) => Math.max(...lines.map((l) => l.length));
+  const fitting = options.filter((o) => width(o) <= fit).sort((a, b) => a.length - b.length || width(a) - width(b));
+  return fitting[0] ?? options.sort((a, b) => width(a) - width(b))[0] ?? [term];
 }
 
 function TermLabel({ term }: { term: string }) {
-  const [a, b] = twoLines(term);
-  return <span className="shop-termbar__label"><span>{a}</span>{b && <>{' '}<span>{b}</span></>}</span>;
+  return (
+    <span className="shop-termbar__label">
+      {termLines(term).map((line, i) => <span key={line}>{i > 0 && ' '}{line}</span>)}
+    </span>
+  );
 }
 
 function TermBar({ terms, selected, onToggle, onAll }: { terms: string[]; selected: string[]; onToggle: (t: string) => void; onAll: () => void }) {
