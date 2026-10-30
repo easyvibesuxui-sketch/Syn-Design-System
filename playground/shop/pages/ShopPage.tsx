@@ -220,19 +220,20 @@ function CompareDrawer({ ids, open, onClose, onRemove, onRequest }: {
 
 /** The buyer's latest order, one click from being ordered again. Most B2B orders repeat an earlier one. */
 /** The buyer's latest order as one compact line with Order again, in the corner of the finder. */
-/** The signed-in user's latest order, in its own card beside the ordering steps, so a repeat order is one click. */
+/** The signed-in user's latest order, as a clickable card beside the ordering steps: one click puts the same items back in the cart. */
 function LastOrder() {
   const { orders, reorder } = useShop();
   const last = orders.find((o) => o.orderedBy === CURRENT_USER.name);
   if (!last) return null;
   return (
-    <section className="shop-last" aria-label="Your last order">
+    <button type="button" className="shop-last" onClick={() => reorder(last)}>
+      <span className="shop-last__icon"><Icon name="refresh" size={20} /></span>
       <span className="shop-last__text">
-        <span className="shop-last__label">Your last order · {last.date} · <a href={routeHref({ name: 'orders', id: last.id })}>{last.id}</a></span>
-        <span className="shop-last__items">{last.items.map((i) => `${i.qty} × ${i.name}`).join(', ')} · {money(last.total)}</span>
+        <span className="shop-last__title">Order again</span>
+        <span className="shop-last__meta">Last order {last.id} · {money(last.total)}</span>
       </span>
-      <Button size="sm" variant="secondary" iconStart="refresh" onClick={() => reorder(last)}>Order again</Button>
-    </section>
+      <Icon name="next" size={16} />
+    </button>
   );
 }
 

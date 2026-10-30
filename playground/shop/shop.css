@@ -358,8 +358,6 @@ html { scroll-behavior: smooth; }
 .shop-panel__title { margin: 0; font: var(--syn-type-titles-title-4); }
 
 
-.shop-last__items { margin: 0; font: var(--syn-type-text-body-s); }
-.shop-last .shop-row { margin-top: auto; }
 
 /* How ordering works: three numbered steps in one quiet line. */
 .shop-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--syn-space-16); margin: 0; padding: var(--syn-space-16) var(--syn-space-20); border-radius: var(--syn-radius-widget); background: var(--syn-surface-muted); list-style: none; }
@@ -523,11 +521,13 @@ html { scroll-behavior: smooth; }
 
 /* Ordering row: the steps card, then the last order in a card of its own. */
 .shop-ordering { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--syn-space-16); }
-.shop-last { display: flex; align-items: center; gap: var(--syn-space-24); padding: var(--syn-space-16) var(--syn-space-20); border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-widget); background: var(--syn-surface-default); }
-.shop-last__text { display: flex; flex-direction: column; gap: var(--syn-space-4); }
-.shop-last__label { color: var(--syn-text-secondary); font: var(--syn-type-text-body-xs-2); }
-.shop-last__label a { color: var(--syn-text-primary); font-weight: var(--syn-font-weight-medium); white-space: nowrap; }
-.shop-last__items { color: var(--syn-text-primary); font: var(--syn-type-text-body-s); }
+.shop-last { display: flex; align-items: center; gap: var(--syn-space-12); padding: var(--syn-space-12) var(--syn-space-16) var(--syn-space-12) var(--syn-space-12); border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-widget); background: var(--syn-surface-default); color: var(--syn-text-secondary); text-align: left; cursor: pointer; transition: border-color var(--syn-duration-fast); }
+.shop-last:hover { border-color: var(--syn-border-strong); color: var(--syn-text-primary); }
+.shop-last:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
+.shop-last__icon { display: grid; flex: none; place-items: center; width: 40px; height: 40px; border-radius: var(--syn-radius-full); background: var(--syn-surface-muted); color: var(--syn-text-primary); }
+.shop-last__text { display: flex; flex: 1; flex-direction: column; gap: var(--syn-space-2); min-width: 0; }
+.shop-last__title { color: var(--syn-text-primary); font: var(--syn-type-text-body-s); }
+.shop-last__meta { color: var(--syn-text-secondary); font: var(--syn-type-text-body-xs-2); white-space: nowrap; }
 
 @media (max-width: 760px) {
   .shop-topbar { padding: 0 var(--syn-space-16); }
@@ -535,7 +535,7 @@ html { scroll-behavior: smooth; }
   .shop-content { padding: var(--syn-space-16) var(--syn-space-16) var(--syn-space-48); }
   .shop-finder .shop-panel__head { flex-direction: column; align-items: flex-start; }
   .shop-ordering { grid-template-columns: minmax(0, 1fr); }
-  .shop-last { flex-wrap: wrap; gap: var(--syn-space-12); }
+  .shop-last__meta { white-space: normal; }
 }
 .shop-termbar__item { max-width: none; white-space: nowrap; }
 
