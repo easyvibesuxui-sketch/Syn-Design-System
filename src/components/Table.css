@@ -1,0 +1,27 @@
+/* Resources table: white 12px box, 24px muted header, 32px rows split by 2px Cultured lines. */
+.syn-table { overflow-x: auto; border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-widget); background: var(--syn-surface-default); }
+.syn-table table { width: 100%; min-width: 560px; border-collapse: collapse; }
+.syn-table th {
+  height: var(--syn-size-control-xs);
+  padding: 0 var(--syn-space-12);
+  color: var(--syn-text-muted);
+  font: var(--syn-type-text-body-xs-2);
+  text-align: left;
+  white-space: nowrap;
+}
+.syn-table td {
+  height: 32px;
+  padding: var(--syn-space-4) var(--syn-space-12);
+  border-top: 2px solid var(--syn-border-default);
+  color: var(--syn-text-primary);
+  font: var(--syn-type-text-body-xs-2);
+  vertical-align: middle;
+}
+/* Figma data sheet "cell": a hovered row gets a 1px Eerie Black outline. */
+.syn-table tbody tr:hover { outline: 1px solid var(--syn-border-strong); outline-offset: -1px; }
+.syn-table th.syn-table__actions, .syn-table td.syn-table__actions { width: 48px; text-align: right; }
+.syn-table tfoot td { height: 40px; text-align: right; }
+
+.syn-value { display: inline-flex; align-items: baseline; gap: var(--syn-space-6); white-space: nowrap; }
+.syn-value.is-muted { color: var(--syn-text-muted); }
+.syn-value__unit { color: var(--syn-text-muted); }

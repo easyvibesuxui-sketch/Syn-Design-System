@@ -1,47 +1,75 @@
+/* Figma "Session Time out" popup (Banners page). */
 .syn-dialog {
   width: calc(100% - 32px);
+  max-width: 512px;
   max-height: calc(100% - 32px);
   padding: 0;
   border: 0;
-  border-radius: var(--syn-radius-md);
+  border-radius: var(--syn-radius-widget);
   background: transparent;
   color: var(--syn-text-primary);
   overflow: visible;
 }
-.syn-dialog--sm { max-width: 400px; }
-.syn-dialog--md { max-width: 480px; }
-.syn-dialog--lg { max-width: 600px; }
+/* Overlay: Silver Chalice at 60%. */
 .syn-dialog::backdrop { background: var(--syn-surface-overlay); }
 
-/* Snow panel with a 4px Cultured ring, as drawn in the Figma popups. */
+/* Smoke panel, 1px white border inside, radius 12, vertical stack with a 16px gap. */
 .syn-dialog__panel {
   display: flex;
   flex-direction: column;
-  border-radius: var(--syn-radius-md);
-  background: var(--syn-surface-raised);
-  box-shadow: 0 0 0 4px var(--syn-border-default);
+  gap: var(--syn-space-16);
+  box-sizing: border-box;
+  border: 1px solid var(--syn-color-white-white);
+  border-radius: var(--syn-radius-widget);
+  background: var(--syn-color-light-smoke);
+  outline: none;
   overflow: hidden;
 }
+
+/* 64px header with the title centred, Cultured hairline under it; title ABC Favorit Expanded Medium 14/20. */
 .syn-dialog__header {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 56px;
-  padding: var(--syn-space-6) 56px;
-  border-bottom: 1px solid var(--syn-border-default);
+  box-sizing: border-box;
+  height: 64px;
+  padding: 0 var(--syn-space-56);
+  border-bottom: 1px solid var(--syn-color-grey-cultured);
 }
-.syn-dialog__title { margin: 0; font: var(--syn-type-title-5); text-align: center; }
-.syn-dialog__close { position: absolute; top: 50%; right: var(--syn-space-6); transform: translateY(-50%); background: transparent; }
+.syn-dialog__title { margin: 0; color: var(--syn-color-black-eerie-black); font: var(--syn-type-titles-title-4); text-align: center; }
+.syn-dialog__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--syn-color-secondary-silver-chalince);
+  cursor: pointer;
+}
+.syn-dialog__close:hover { color: var(--syn-color-black-eerie-black); }
+.syn-dialog__close:focus-visible { outline: 1px solid var(--syn-color-black-eerie-black); outline-offset: 2px; }
+
+/* Body: padding 32, gap 24, centred. */
 .syn-dialog__body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--syn-space-7);
-  padding: var(--syn-space-8) var(--syn-space-8) var(--syn-space-7);
-  font: var(--syn-type-body-xs);
+  gap: var(--syn-space-24);
+  padding: var(--syn-space-32);
   text-align: center;
   overflow-y: auto;
 }
-.syn-dialog__actions { display: flex; justify-content: center; gap: var(--syn-space-6); padding: var(--syn-space-7) var(--syn-space-8) var(--syn-space-8); }
-.syn-dialog__actions > .syn-button { flex: 1; max-width: 320px; }
+.syn-dialog__icon { color: var(--syn-color-secondary-silver-chalince); }
+.syn-dialog__description { margin: 0; color: var(--syn-color-black-eerie-black); font: var(--syn-type-text-body-s); }
+
+/* Footer: padding 20/24; the action is 320 x 48. */
+.syn-dialog__actions { display: flex; justify-content: center; gap: var(--syn-space-12); padding: var(--syn-space-20) var(--syn-space-24); }
+.syn-dialog__actions > .syn-button { flex: 0 1 320px; }

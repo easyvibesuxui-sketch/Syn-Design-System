@@ -1,0 +1,23 @@
+/* Checklist rows: Smoke, 8px corners, padding 8; the item being written gets a 1px Eerie Black frame. */
+.syn-checklist { display: flex; flex-direction: column; gap: var(--syn-space-8); margin: 0; padding: 0; list-style: none; }
+.syn-checklist-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--syn-space-12);
+  padding: var(--syn-space-8);
+  border: 1px solid transparent;
+  border-radius: var(--syn-radius-element);
+  background: var(--syn-surface-subtle);
+}
+.syn-checklist-item.is-editing { border-color: var(--syn-border-strong); background: var(--syn-surface-default); }
+.syn-checklist-item__main { display: flex; align-items: flex-start; gap: var(--syn-space-8); }
+.syn-checklist-item__check { flex: 1; min-width: 0; }
+.syn-checklist-item__check .syn-choice__row { align-items: flex-start; }
+.syn-checklist-item__check .syn-choice__label { font: var(--syn-type-text-body-s-2); }
+.syn-checklist-item__check.has-hidden-label { flex: none; }
+.syn-checklist-item__check.has-hidden-label .syn-choice__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.syn-checklist-item__editor { flex: 1; min-width: 0; }
+.syn-checklist-item__actions { display: flex; flex: none; gap: var(--syn-space-8); }
+.syn-checklist-item__footer { display: flex; align-items: center; justify-content: space-between; gap: var(--syn-space-12); }
+.syn-checklist-item__footer > div { display: flex; flex-wrap: wrap; gap: var(--syn-space-8); }
+.syn-checklist-item__extra { display: flex; flex-wrap: wrap; gap: var(--syn-space-8); }

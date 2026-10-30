@@ -1,25 +1,26 @@
+/* Figma "Accordion": 40px rows with a bottom rule and 8px corners (the element radius); open shows the chevron in an Eerie Black circle. */
 .syn-accordion { width: 100%; background: var(--syn-surface-default); }
 .syn-accordion__item { border-bottom: 1px solid var(--syn-border-muted); }
 .syn-accordion__heading { margin: 0; font: inherit; }
 .syn-accordion__trigger {
   display: flex;
   align-items: center;
-  gap: var(--syn-space-4);
+  gap: var(--syn-space-8);
   width: 100%;
   min-height: 40px;
-  padding: var(--syn-space-4) var(--syn-space-7);
+  padding: var(--syn-space-8) var(--syn-space-16);
   border: 0;
-  border-radius: var(--syn-radius-xs);
+  border-radius: var(--syn-radius-element);
   background: var(--syn-surface-default);
   color: var(--syn-text-primary);
-  font: var(--syn-type-body-s);
+  font: var(--syn-type-text-body-s);
   text-align: left;
   cursor: pointer;
 }
 .syn-accordion__trigger:hover:not(:disabled) { background: var(--syn-surface-subtle); }
 .syn-accordion__trigger:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: -1px; }
 .syn-accordion__title { flex: 1; min-width: 0; }
-.syn-accordion__meta { padding: var(--syn-space-1) var(--syn-space-5); border: 1px solid var(--syn-border-strong); border-radius: var(--syn-radius-xs); background: var(--syn-surface-muted); font: var(--syn-type-body-s); }
+.syn-accordion__meta { padding: var(--syn-space-2) var(--syn-space-10); border: 1px solid var(--syn-border-strong); border-radius: var(--syn-radius-element); background: var(--syn-surface-muted); font: var(--syn-type-text-body-s); }
 .syn-accordion__chevron {
   display: inline-flex;
   flex: none;
@@ -31,7 +32,7 @@
   transition: background-color var(--syn-duration-fast), transform var(--syn-duration-base);
 }
 .syn-accordion__trigger:hover .syn-accordion__chevron { background: var(--syn-surface-muted); }
-.syn-accordion__item.is-open .syn-accordion__chevron { transform: rotate(180deg); }
-.syn-accordion__panel { padding: var(--syn-space-2) var(--syn-space-7) var(--syn-space-7); color: var(--syn-text-secondary); font: var(--syn-type-body-s-regular); }
+.syn-accordion__item.is-open .syn-accordion__chevron { background: var(--syn-color-black-eerie-black); color: var(--syn-color-white-white); transform: rotate(180deg); }
+.syn-accordion__panel { padding: var(--syn-space-4) var(--syn-space-16) var(--syn-space-16); color: var(--syn-text-primary); font: var(--syn-type-text-body-s-2); }
 .syn-accordion__item.is-disabled .syn-accordion__trigger { color: var(--syn-text-disabled); cursor: not-allowed; }
 .syn-accordion__item.is-disabled .syn-accordion__chevron { background: var(--syn-action-disabled); color: var(--syn-surface-muted); }

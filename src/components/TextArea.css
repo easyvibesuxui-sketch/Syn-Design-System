@@ -1,0 +1,114 @@
+/* Figma "Text Box": 8px corners, 1px Cultured border inside, Eerie Black on hover, 2px when focused,
+   Silver Chalice once filled; disabled is Cultured with a Gray X border. */
+.syn-textarea { display: flex; flex-direction: column; gap: var(--syn-space-4); width: 100%; }
+.syn-textarea__label { color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
+.syn-textarea__input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--syn-size-control-md);
+  margin: 0;
+  padding: var(--syn-space-8) var(--syn-space-12);
+  border: 1px solid var(--syn-border-default);
+  border-radius: var(--syn-radius-element);
+  outline: 0;
+  background: var(--syn-surface-default);
+  color: var(--syn-text-primary);
+  font: var(--syn-type-text-body-s-2);
+  resize: none;
+  transition: border-color var(--syn-duration-fast);
+}
+.syn-textarea__input::placeholder { color: var(--syn-text-muted); }
+.syn-textarea--default.has-value .syn-textarea__input { border-color: var(--syn-border-muted); }
+.syn-textarea .syn-textarea__input:hover { border-color: var(--syn-border-strong); }
+.syn-textarea--strong .syn-textarea__input { border: 2px solid var(--syn-border-muted); }
+/* Focus: 2px Eerie Black (the default border adds a 1px inner ring so the text does not shift). */
+.syn-textarea .syn-textarea__input:focus { border-color: var(--syn-border-strong); box-shadow: inset 0 0 0 1px var(--syn-border-strong); }
+.syn-textarea--strong .syn-textarea__input:focus { box-shadow: none; }
+.syn-textarea.is-invalid .syn-textarea__input { border-color: var(--syn-border-error); background: var(--syn-surface-raised); }
+.syn-textarea.is-disabled .syn-textarea__input { border-color: var(--syn-border-disabled); background: var(--syn-surface-muted); color: var(--syn-text-disabled); cursor: not-allowed; }
+.syn-textarea .syn-field-messages { margin-top: calc(var(--syn-space-2) - var(--syn-space-4)); }
+
+/* Footer: messages on the left, "0/20" Regular 10 Silver Chalice on the right, 2px under the box. */
+.syn-textarea__footer { display: flex; justify-content: space-between; gap: var(--syn-space-8); margin-top: calc(var(--syn-space-2) - var(--syn-space-4)); }
+.syn-textarea__footer .syn-field-messages { margin-top: 0; }
+.syn-textarea__count { margin-left: auto; color: var(--syn-text-muted); font: var(--syn-type-text-caption-2); }
+
+/* Label inside (Figma Text Box Large 64 / Medium 56 / Small 48): padding 8/4/0/8 (Small 4/4/0/8).
+   Empty: Regular 14 Eerie Black label, no placeholder. Focused: Regular 12 Candy Apple label over a
+   Regular 14 placeholder or text. Filled: the label turns Silver Chalice. Small uses Medium 10 over 12. */
+.syn-textarea--inside {
+  --box-h: 64px;
+  --box-pad: var(--syn-space-8) var(--syn-space-4) 0 var(--syn-space-8);
+  --label-rest: var(--syn-type-text-body-s-2);
+  --label-up: var(--syn-type-text-body-xs-2);
+  --value: var(--syn-type-text-body-s-2);
+}
+.syn-textarea--inside.syn-textarea--md { --box-h: 56px; }
+.syn-textarea--inside.syn-textarea--sm {
+  --box-h: 48px;
+  --box-pad: var(--syn-space-4) var(--syn-space-4) 0 var(--syn-space-8);
+  --label-rest: var(--syn-type-text-body-xs-2);
+  --label-up: var(--syn-type-text-caption-1);
+  --value: var(--syn-type-text-body-xs-2);
+}
+.syn-textarea__box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--syn-space-2);
+  box-sizing: border-box;
+  min-height: var(--box-h);
+  padding: var(--box-pad);
+  border-radius: var(--syn-radius-element);
+  background: var(--syn-surface-default);
+  box-shadow: inset 0 0 0 1px var(--syn-border-default);
+  cursor: text;
+  transition: box-shadow var(--syn-duration-fast);
+}
+.syn-textarea--inside .syn-textarea__label { color: var(--syn-text-primary); font: var(--label-up); }
+.syn-textarea--inside .syn-textarea__input {
+  flex: 1;
+  min-height: 0;
+  padding: 0 var(--syn-space-20) var(--syn-space-4) 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font: var(--value);
+  resize: none;
+}
+.syn-textarea--inside .syn-textarea__input:focus { box-shadow: none; }
+.syn-textarea__box:hover { box-shadow: inset 0 0 0 1px var(--syn-border-strong); }
+.syn-textarea__box:focus-within { box-shadow: inset 0 0 0 2px var(--syn-border-strong); }
+.syn-textarea--inside.has-value .syn-textarea__box:not(:focus-within):not(:hover) { box-shadow: inset 0 0 0 1px var(--syn-border-muted); }
+
+/* Empty and not focused: only the label, at the larger size. */
+.syn-textarea--inside:not(.has-value) .syn-textarea__box:not(:focus-within) .syn-textarea__label { font: var(--label-rest); }
+.syn-textarea--inside:not(.has-value) .syn-textarea__box:not(:focus-within) .syn-textarea__input::placeholder { color: transparent; }
+.syn-textarea--inside .syn-textarea__box:focus-within .syn-textarea__label { color: var(--syn-color-primary-candy-apple); }
+.syn-textarea--inside.has-value .syn-textarea__box:not(:focus-within) .syn-textarea__label { color: var(--syn-text-muted); }
+
+/* Clear: Figma "Close small", a 16px Ghost circle in the top-right corner, only while typing. */
+.syn-textarea__clear {
+  position: absolute;
+  top: var(--syn-space-4);
+  right: var(--syn-space-4);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--syn-radius-full);
+  background: var(--syn-color-unnamed-colors-ghost);
+  cursor: pointer;
+}
+.syn-textarea__clear .syn-close-glyph { width: 8px; height: 8px; color: var(--syn-text-muted); }
+.syn-textarea__box:focus-within .syn-textarea__clear { display: inline-flex; }
+
+.syn-textarea--inside.is-invalid .syn-textarea__box { background: var(--syn-surface-raised); box-shadow: inset 0 0 0 1px var(--syn-border-error); }
+.syn-textarea--inside.is-invalid .syn-textarea__box:focus-within { box-shadow: inset 0 0 0 2px var(--syn-border-error); }
+.syn-textarea--inside.is-disabled .syn-textarea__box { background: var(--syn-surface-muted); box-shadow: inset 0 0 0 1px var(--syn-border-disabled); cursor: not-allowed; }
+.syn-textarea--inside.is-disabled .syn-textarea__label { color: var(--syn-text-disabled); }
+.syn-textarea--inside.is-disabled .syn-textarea__input { background: transparent; }

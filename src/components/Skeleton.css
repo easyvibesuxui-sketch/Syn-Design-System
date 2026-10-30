@@ -1,0 +1,47 @@
+/* Material-style skeleton with Syn colours: Cultured shapes, 8px corners (circles stay round). */
+.syn-skeleton {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--syn-color-grey-cultured);
+}
+/* text: one line at 60% of the font height, like Material; width follows the container unless set. */
+.syn-skeleton--text { height: auto; margin: 0; border-radius: var(--syn-radius-element); transform: scale(1, 0.6); transform-origin: 0 60%; }
+.syn-skeleton--text:empty::before { content: '\00a0'; }
+.syn-skeleton--circular { width: 40px; height: 40px; border-radius: var(--syn-radius-full); }
+.syn-skeleton--rectangular { height: 120px; border-radius: var(--syn-radius-element); }
+
+/* Figma "Skeleton": a Cultured field with a Smoke bar. field 56/48/36 with the bar 16px in and centred
+   (lg 96 x 28, md and sm 76 x 20); textbox 64/56/48 with a 152 x 18 bar at 8/10 (sm 152 x 16 at 8/8). */
+.syn-skeleton--field, .syn-skeleton--textbox { width: 100%; border-radius: var(--syn-radius-element); }
+.syn-skeleton--field { display: flex; align-items: center; height: 56px; padding: 0 var(--syn-space-16); box-sizing: border-box; }
+.syn-skeleton--field.syn-skeleton--md { height: 48px; }
+.syn-skeleton--field.syn-skeleton--sm { height: 36px; }
+.syn-skeleton--field .syn-skeleton__bar { width: 96px; height: 28px; }
+.syn-skeleton--field.syn-skeleton--md .syn-skeleton__bar,
+.syn-skeleton--field.syn-skeleton--sm .syn-skeleton__bar { width: 76px; height: 20px; }
+.syn-skeleton--textbox { height: 64px; padding: var(--syn-space-10) var(--syn-space-8); box-sizing: border-box; }
+.syn-skeleton--textbox.syn-skeleton--md { height: 56px; }
+.syn-skeleton--textbox.syn-skeleton--sm { height: 48px; padding-top: var(--syn-space-8); }
+.syn-skeleton--textbox .syn-skeleton__bar { width: 152px; max-width: 100%; height: 18px; }
+.syn-skeleton--textbox.syn-skeleton--sm .syn-skeleton__bar { height: 16px; }
+.syn-skeleton__bar { display: block; flex: none; border-radius: var(--syn-radius-element); background: var(--syn-color-light-smoke); }
+
+/* pulse: Material's 1.5s fade to 40% and back. */
+.syn-skeleton--pulse { animation: syn-skeleton-pulse 1.5s ease-in-out 0.5s infinite; }
+@keyframes syn-skeleton-pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+/* wave: a white band sweeps left to right every 1.6s. */
+.syn-skeleton--wave::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+  transform: translateX(-100%);
+  animation: syn-skeleton-wave 1.6s linear 0.5s infinite;
+}
+@keyframes syn-skeleton-wave { 0% { transform: translateX(-100%); } 60%, 100% { transform: translateX(100%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .syn-skeleton--pulse, .syn-skeleton--wave::after { animation: none; }
+}

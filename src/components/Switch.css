@@ -1,47 +1,128 @@
-.syn-switch { display: inline-flex; flex-direction: column; gap: var(--syn-space-2); --track-w: 36px; --track-h: 20px; --thumb: 24px; }
-.syn-switch--sm { --track-w: 25px; --track-h: 16px; --thumb: 20px; }
-.syn-switch--lg { --track-w: 50px; --track-h: 30px; --thumb: 32px; }
+/* Figma "Small toggle" (size 20, 32 x 20), "Default size toggle" (size 24, 48 x 24) and "Big toggle"
+   (size 32, 48 x 32). The track and thumb are absolutely placed at the Figma x positions, rounded to the
+   even-number grid. */
+.syn-switch {
+  --track-w: 36px;
+  --track-h: 20px;
+  --track-off-x: 10px;
+  --thumb-w: 24px;
+  --thumb-h: 24px;
+  --thumb-on-x: 24px;
+  --thumb-off-x: 0px;
+  --thumb-pressed-w: 28px;
+  --track-top: 2px;
+  --control-w: 48px;
+  --control-h: 24px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.syn-switch--20 {
+  --track-w: 24px;
+  --track-h: 16px;
+  --track-off-x: 8px;
+  --thumb-w: 20px;
+  --thumb-h: 20px;
+  --thumb-on-x: 12px;
+  --thumb-off-x: 0px;
+  --thumb-pressed-w: 24px;
+  --control-w: 32px;
+  --control-h: 20px;
+}
+/* Big toggle: a full-width 48 x 30 track (Figma 50 x 30) and a 32px thumb that stretches to 36. */
+.syn-switch--32 {
+  --track-w: 48px;
+  --track-h: 30px;
+  --track-top: 1px;
+  --track-off-x: 0px;
+  --thumb-w: 32px;
+  --thumb-h: 32px;
+  --thumb-on-x: 16px;
+  --thumb-pressed-w: 36px;
+  --control-w: 48px;
+  --control-h: 32px;
+}
+/* Toggle with Text and icon: a wider track (Figma 40 x 20; 28 x 16 here so "On" clears the small thumb) holding "On" or a check. */
+.syn-switch--indicator.syn-switch--24 { --track-w: 40px; --track-off-x: 12px; --thumb-on-x: 28px; --control-w: 52px; }
+.syn-switch--indicator.syn-switch--20 { --track-w: 28px; --track-off-x: 10px; --thumb-on-x: 18px; --control-w: 38px; }
 
-.syn-switch__row { display: inline-flex; align-items: center; gap: var(--syn-space-7); color: var(--syn-text-primary); font: var(--syn-type-body-s-regular); cursor: pointer; }
-.syn-switch__state { font: var(--syn-type-body-xs-regular); }
+.syn-switch__row { display: inline-flex; align-items: center; gap: var(--syn-space-8); color: var(--syn-text-primary); font: var(--syn-type-components-choice-label); cursor: pointer; }
 
-.syn-switch__control { position: relative; display: inline-block; flex: none; width: calc(var(--track-w) + var(--thumb) / 2); height: var(--thumb); }
+.syn-switch__control { position: relative; flex: none; width: var(--control-w); height: var(--control-h); }
 .syn-switch__input { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: inherit; }
 
+/* Off: Silver Chalice fill with a Gray X border, shifted right under the thumb. */
 .syn-switch__track {
   position: absolute;
-  top: 50%;
-  left: 0;
+  top: var(--track-top);
+  left: var(--track-off-x);
+  box-sizing: border-box;
   width: var(--track-w);
   height: var(--track-h);
-  border: 1.5px solid var(--syn-action-disabled);
-  border-radius: var(--syn-radius-full);
-  background: var(--syn-action-disabled);
-  transform: translateY(-50%);
-  transition: background-color var(--syn-duration-base), border-color var(--syn-duration-base);
+  border: 1.5px solid var(--syn-color-disabled-gray-x);
+  border-radius: calc(var(--track-h) / 2);
+  background: var(--syn-color-secondary-silver-chalince);
+  transition: left var(--syn-duration-base), background-color var(--syn-duration-base), border-color var(--syn-duration-base);
 }
 .syn-switch__thumb {
   position: absolute;
   top: 0;
-  left: 0;
-  width: var(--thumb);
-  height: var(--thumb);
-  border: 1.5px solid var(--syn-action-disabled);
-  border-radius: var(--syn-radius-full);
-  background: var(--syn-color-white);
+  left: var(--thumb-off-x);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--thumb-w);
+  height: var(--thumb-h);
+  border: 1.5px solid var(--syn-color-disabled-gray-x);
+  border-radius: calc(var(--thumb-h) / 2);
+  background: var(--syn-color-white-white);
   box-shadow: var(--syn-shadow-knob);
-  transition: transform var(--syn-duration-base), border-color var(--syn-duration-base);
+  transition: left var(--syn-duration-base), width var(--syn-duration-fast), border-color var(--syn-duration-base);
 }
 
-.syn-switch__input:checked ~ .syn-switch__track { background: var(--syn-action-toggle); border-color: var(--syn-action-toggle); }
-.syn-switch__input:checked ~ .syn-switch__thumb {
-  border-color: var(--syn-action-toggle);
-  transform: translateX(calc(var(--track-w) + var(--thumb) / 2 - var(--thumb)));
-}
-.syn-switch__input:active ~ .syn-switch__thumb { width: calc(var(--thumb) + 2px); }
-.syn-switch__input:focus-visible ~ .syn-switch__track { outline: 1px solid var(--syn-border-strong); outline-offset: 5px; }
+/* On: Dark Sienna track from x0, thumb on the right. */
+.syn-switch__input:checked ~ .syn-switch__track { left: 0; border-color: var(--syn-action-toggle); background: var(--syn-action-toggle); }
+.syn-switch__input:checked ~ .syn-switch__thumb { left: var(--thumb-on-x); border-color: var(--syn-action-toggle); }
 
-.syn-switch.is-invalid .syn-switch__track { border-color: var(--syn-border-error); }
-.syn-switch.is-disabled .syn-switch__row { color: var(--syn-text-disabled); cursor: not-allowed; }
-.syn-switch.is-disabled .syn-switch__input:checked ~ .syn-switch__track { background: var(--syn-action-disabled); border-color: var(--syn-action-disabled); }
-.syn-switch.is-disabled .syn-switch__input:checked ~ .syn-switch__thumb { border-color: var(--syn-action-disabled); }
+/* Pressed: the thumb stretches toward the middle. */
+.syn-switch__input:active:not(:disabled) ~ .syn-switch__thumb { width: var(--thumb-pressed-w); }
+.syn-switch__input:active:not(:disabled):checked ~ .syn-switch__thumb {
+  left: calc(var(--thumb-on-x) + var(--thumb-w) - var(--thumb-pressed-w));
+}
+
+.syn-switch__input:focus-visible ~ .syn-switch__thumb { outline: 1px solid var(--syn-color-black-eerie-black); outline-offset: 2px; }
+
+/* Disabled: Gray X track and thumb border. */
+.syn-switch.is-disabled .syn-switch__row { cursor: not-allowed; color: var(--syn-color-disabled-gray-x); }
+.syn-switch.is-disabled .syn-switch__track,
+.syn-switch.is-disabled .syn-switch__input:checked ~ .syn-switch__track { border-color: var(--syn-color-disabled-gray-x); background: var(--syn-color-disabled-gray-x); }
+.syn-switch.is-disabled .syn-switch__thumb,
+.syn-switch.is-disabled .syn-switch__input:checked ~ .syn-switch__thumb { border-color: var(--syn-color-disabled-gray-x); }
+
+/* Loading: a 0.5px ring spinning inside the thumb. */
+.syn-switch.is-loading .syn-switch__row { cursor: progress; }
+.syn-switch__spinner {
+  width: 12px;
+  height: 12px;
+  border: 0.5px solid transparent;
+  border-top-color: var(--syn-color-secondary-silver-chalince);
+  border-right-color: var(--syn-color-secondary-silver-chalince);
+  border-radius: var(--syn-radius-full);
+  animation: syn-switch-spin 0.8s linear infinite;
+}
+.syn-switch--24 .syn-switch__spinner { width: 16px; height: 16px; }
+@keyframes syn-switch-spin { to { transform: rotate(360deg); } }
+
+/* Off / on words beside the toggle (record drawer custom fields): ABC Favorit Expanded Medium 12. */
+.syn-switch__state { color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
+
+/* Indicator: "On" (Light 12, or 10 at size 20) on the left of the on track; a white check on the right of the off track. */
+.syn-switch__track { display: flex; align-items: center; }
+.syn-switch__on-text { display: none; padding-left: var(--syn-space-4); color: var(--syn-color-white-white); font: var(--syn-type-components-choice-error); }
+.syn-switch--20 .syn-switch__on-text { padding-left: var(--syn-space-2); font-size: 10px; line-height: 12px; }
+.syn-switch__check { margin-left: auto; margin-right: var(--syn-space-4); color: var(--syn-color-white-white); }
+.syn-switch--20 .syn-switch__check { margin-right: var(--syn-space-2); }
+.syn-switch__input:checked ~ .syn-switch__track .syn-switch__on-text { display: block; }
+.syn-switch__input:checked ~ .syn-switch__track .syn-switch__check { display: none; }
+.syn-switch--32 .syn-switch__spinner { width: 20px; height: 20px; }
