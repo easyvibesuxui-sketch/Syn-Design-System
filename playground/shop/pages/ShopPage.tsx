@@ -173,22 +173,18 @@ function SortMenu({ value, onChange }: { value: Sort; onChange: (s: Sort) => voi
   );
 }
 
-/** Grid / Table switch with icons (Tabler layout-grid and list). */
+/** Grid / list switch with icons (Tabler layout-grid and list). */
 const viewIcons: Record<View, string[]> = {
   grid: ['M4 4h6v6h-6z', 'M14 4h6v6h-6z', 'M4 14h6v6h-6z', 'M14 14h6v6h-6z'],
   table: ['M9 6l11 0', 'M9 12l11 0', 'M9 18l11 0', 'M5 6l0 .01', 'M5 12l0 .01', 'M5 18l0 .01'],
 };
-/** Hover hints say what each view is good for. */
-const viewHints: Record<View, string> = {
-  grid: 'Grid: product cards with photos',
-  table: 'Table: compact list of prices and stock',
-};
+const viewHints: Record<View, string> = { grid: 'Grid view', table: 'List view' };
 function ViewSwitch({ value, onChange }: { value: View; onChange: (v: View) => void }) {
   return (
     <div className="shop-view" role="radiogroup" aria-label="View">
       {(['grid', 'table'] as View[]).map((v) => (
         <Tooltip key={v} content={viewHints[v]} placement="bottom">
-          <button type="button" role="radio" aria-checked={value === v} aria-label={v === 'grid' ? 'Grid view' : 'Table view'} className={cx('shop-view__option', value === v && 'is-on')} onClick={() => onChange(v)}>
+          <button type="button" role="radio" aria-checked={value === v} aria-label={viewHints[v]} className={cx('shop-view__option', value === v && 'is-on')} onClick={() => onChange(v)}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="square" strokeLinejoin="miter" aria-hidden>
               {viewIcons[v].map((d) => <path key={d} d={d} />)}
             </svg>
