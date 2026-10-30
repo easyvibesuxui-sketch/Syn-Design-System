@@ -1,7 +1,8 @@
 /*
  * Outline icons for the Suitable-for bar, from Tabler Icons (MIT, https://tabler.io/icons). Syn's own set has no
  * construction machines or vehicles, so these fill the gap. Only the picture is chosen here; every label stays the
- * product's own "Suitable for" text. Drawn like syniotec.com's icons: thin black lines with one detail in brand red.
+ * product's own "Suitable for" text. Drawn like syniotec.com's icons: a thin outline with sharp corners, Silver Chalice at rest, black with one detail in
+ * brand red once selected.
  */
 const paths: Record<string, string[]> = {
   bulldozer: ['M2 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0', 'M12 17a2 2 0 1 0 4 0a2 2 0 0 0 -4 0', 'M19 13v4a2 2 0 0 0 2 2h1', 'M14 19h-10', 'M4 15h10', 'M9 11v-5h2a3 3 0 0 1 3 3v6', 'M5 15v-3a1 1 0 0 1 1 -1h8', 'M19 17h-3'],
@@ -57,7 +58,7 @@ const rules: Array<[RegExp, string]> = [
 export function TermIcon({ term, size = 32 }: { term: string | null; size?: number }) {
   const key = term === null ? 'all' : rules.find(([re]) => re.test(term))?.[1] ?? 'all';
   return (
-    <svg className="shop-term-icon" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg className="shop-term-icon" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="square" strokeLinejoin="miter" aria-hidden>
       {paths[key].map((d, i) => <path key={d} d={d} className={accents[key]?.includes(i) ? 'shop-term-icon__accent' : undefined} />)}
     </svg>
   );
