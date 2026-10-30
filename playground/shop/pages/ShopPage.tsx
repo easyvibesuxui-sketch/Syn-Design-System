@@ -238,6 +238,23 @@ function LastOrder() {
  * Airbnb-style category bar: one scrolling row of icon-over-label items, muted until hovered, the selected one
  * black with a 2px underline, and round arrow buttons when the row overflows.
  */
+/** Splits a term into at most two lines of similar length, so the row stays short. */
+function twoLines(term: string): [string, string?] {
+  const words = term.split(' ');
+  if (words.length < 2) return [term];
+  let best = 1;
+  for (let i = 1; i < words.length; i++) {
+    const worst = (n: number) => Math.max(words.slice(0, n).join(' ').length, words.slice(n).join(' ').length);
+    if (worst(i) < worst(best)) best = i;
+  }
+  return [words.slice(0, best).join(' '), words.slice(best).join(' ')];
+}
+
+function TermLabel({ term }: { term: string }) {
+  const [a, b] = twoLines(term);
+  return <span className="shop-termbar__label"><span>{a}</span>{b && <>{' '}<span>{b}</span></>}</span>;
+}
+
 function TermBar({ terms, selected, onToggle, onAll }: { terms: string[]; selected: string[]; onToggle: (t: string) => void; onAll: () => void }) {
   const row = useRef<HTMLDivElement>(null);
   const [edges, setEdges] = useState({ start: true, end: true });
@@ -247,6 +264,8 @@ function TermBar({ terms, selected, onToggle, onAll }: { terms: string[]; select
   }, []);
   useEffect(() => {
     measure();
+    // Labels change width once the web font loads.
+    document.fonts?.ready.then(measure);
     window.addEventListener('resize', measure);
     return () => window.removeEventListener('resize', measure);
   }, [measure, terms]);
@@ -257,14 +276,14 @@ function TermBar({ terms, selected, onToggle, onAll }: { terms: string[]; select
       <div ref={row} className="shop-termbar__row" role="group" aria-label="Suitable for" onScroll={measure}>
         <button type="button" className={cx('shop-termbar__item', !selected.length && 'is-on')} aria-pressed={!selected.length} onClick={onAll}>
           <TermIcon term={null} />
-          <span>All</span>
+          <TermLabel term="All" />
         </button>
         {terms.map((t) => {
           const on = selected.includes(t);
           return (
             <button key={t} type="button" className={cx('shop-termbar__item', on && 'is-on')} aria-pressed={on} onClick={() => onToggle(t)}>
               <TermIcon term={t} />
-              <span>{t}</span>
+              <TermLabel term={t} />
             </button>
           );
         })}

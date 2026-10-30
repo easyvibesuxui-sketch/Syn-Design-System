@@ -536,6 +536,12 @@ html { scroll-behavior: smooth; }
 }
 .shop-termbar__item { max-width: none; white-space: nowrap; }
 
+/* Term labels sit on two balanced lines, so all terms fit a full-HD row without scrolling. */
+.shop-termbar__row { gap: var(--syn-space-8); justify-content: space-between; }
+.shop-termbar__item { padding-inline: 0; font: var(--syn-type-text-body-xs-2); }
+.shop-panel.shop-finder { padding-inline: var(--syn-space-16); }
+.shop-termbar__label { display: flex; flex-direction: column; align-items: center; min-height: 30px; text-align: center; }
+
 /* Filters: a narrower column of collapsible groups. */
 .shop-catalog { grid-template-columns: 216px minmax(0, 1fr); }
 .shop-filters { gap: 0; padding: var(--syn-space-16); }
