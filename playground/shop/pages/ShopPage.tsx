@@ -87,6 +87,9 @@ function ProductCard({ product: p, compare, onCompare, onRequest }: {
   const { cart } = useShop();
   const href = routeHref({ name: 'product', id: p.id });
   const inCart = cart.find((l) => l.productId === p.id)?.qty ?? 0;
+  // Skip "For" when the one-line description already says it (TAG L: “For construction machinery and large equipment”).
+  const forText = suitableFor(p);
+  const repeats = forText && p.short.toLowerCase().includes(forText.toLowerCase());
   return (
     <article className="shop-card">
       <a className="shop-card__media" href={href} tabIndex={-1} aria-hidden>
@@ -101,7 +104,7 @@ function ProductCard({ product: p, compare, onCompare, onRequest }: {
         <p className="shop-card__short">{p.short}</p>
         <dl className="shop-card__facts">
           {p.power && <div><dt>Power</dt><dd>{p.power}{p.ip ? ` · ${p.ip}` : ''}</dd></div>}
-          {suitableFor(p) && <div><dt>For</dt><dd>{suitableFor(p)}</dd></div>}
+          {forText && !repeats && <div><dt>For</dt><dd>{forText}</dd></div>}
         </dl>
         <Chips items={p.connectivity ?? []} />
       </div>
@@ -384,7 +387,7 @@ export function ShopPage() {
         <aside className={cx('shop-filters', filtersOpen && 'is-open')} aria-label="Filters">
           <div className="shop-filters__head">
             <h2 className="shop-panel__title">Filters{applied.length ? ` · ${applied.length}` : ''}</h2>
-            {applied.length > 0 && <Button size="xs" variant="text" onClick={clearAll}>Clear all</Button>}
+            {applied.length > 0 && <Button size="xs" variant="text" className="shop-filters__clear" onClick={clearAll}>Clear all</Button>}
             {/* On narrow screens the filters fold away so the results stay near the top. */}
             <Button size="xs" variant="secondary" className="shop-filters__toggle" aria-expanded={filtersOpen} onClick={() => setFiltersOpen(!filtersOpen)}>{filtersOpen ? 'Hide' : 'Show'}</Button>
           </div>

@@ -94,13 +94,14 @@ export function ShopHeader({ title, lead, back, extra }: { title: string; lead: 
   const { cartQty, setCartOpen } = useShop();
   return (
     <PageHeader
-      eyebrow="Syniotec Shop"
+      // The landing page's title already says Shop, as does the top bar; the eyebrow only adds context on inner pages.
+      eyebrow={title === 'Shop' ? undefined : 'Syniotec Shop'}
       title={title}
       lead={lead}
       actions={<>
         {back
           ? <LinkButton href={routeHref({ name: 'shop' })} iconStart="back">Back to Shop</LinkButton>
-          : <LinkButton href={routeHref({ name: 'orders' })} iconStart="history">My orders</LinkButton>}
+          : <LinkButton href={routeHref({ name: 'orders' })} iconStart="history" variant="text">My orders</LinkButton>}
         {extra}
         <Button size="sm" className="shop-cart-button" onClick={() => setCartOpen(true)} aria-label={cartQty ? `Cart, ${plural(cartQty, 'item')}` : 'Cart'}>
           <LineIcon name="cart" size={16} />Cart{cartQty > 0 && <span className="shop-count" aria-hidden>{cartQty}</span>}
