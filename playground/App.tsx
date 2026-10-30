@@ -184,9 +184,9 @@ export function App() {
 
         <Section id="inputs" title="Text fields" lead="Figma Inputs page. Two kinds: with the label inside (with an icon the Candy Apple label stays above the placeholder; without one it is the placeholder until focus) and without a label (hideLabel). Heights 56 / 48 / 36 / 24; the 24px field never has a label inside. Hover draws a 1px Eerie Black border, focus 2px outside; errors use a Snow fill and a Vermilion border, with the message 2px below.">
           <div className="pg-grid">
-            <TextField label="First name" iconStart="person" hint="Hint text" onClear={() => {}} />
-            <TextField label="First name" defaultValue="E.G. John Doe" iconStart="person" hint="Hint text" onClear={() => {}} />
-            <TextField label="First name" iconStart="person" disabled hint="Hint text" />
+            <TextField label="First name" persistentLabel clearVisibility="always" iconStart="person" hint="Hint text" onClear={() => {}} />
+            <TextField label="First name" persistentLabel clearVisibility="always" defaultValue="E.G. John Doe" iconStart="person" hint="Hint text" onClear={() => {}} />
+            <TextField label="First name" persistentLabel clearVisibility="always" iconStart="person" disabled hint="Hint text" onClear={() => {}} />
             <TextField label="First name" />
             <TextField label="First name" defaultValue="E.G. John Doe" onClear={() => {}} />
             <TextField label="First name" error="Dummy text error message" />

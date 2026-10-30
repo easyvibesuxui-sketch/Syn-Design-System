@@ -23,13 +23,15 @@ requires `label`. `variant="outline"` is the white square with a Cultured border
 Figma: *Inputs → input large / Default size input / Small size input* and the icon and unit variants.
 States Default, Hover, Focused, Typing, Filled, Disabled and error are all CSS states of one component.
 
-Two kinds: with the label inside (the default; it floats, or stays above the placeholder when there is an
-`iconStart`) and without a label (`hideLabel`: only the placeholder and value show; the label is still read by
+Two kinds: with the label inside (the default: the label is the placeholder until the field has focus or a
+value, then moves up; `persistentLabel` keeps it above in every state, as in Figma *input large*) and without a label (`hideLabel`: only the placeholder and value show; the label is still read by
 screen readers). `size` `lg` 56 · `md` 48 · `sm` 36 · `xs` 24; `xs` is always without a label.
 
 Props: `label` (required), `hideLabel`, `size`, `hint`, `error` (string or string[] for the
-"multiple error" variant), `iconStart`, `iconEnd`, `prefix`, `suffix` ("$", "kg"), `onClear` (shows the
-clear button), `showCount` with `maxLength` ("0/20").
+"multiple error" variant), `iconStart`, `iconEnd`, `prefix`, `suffix` ("$", "kg"), `onClear` (adds the
+clear button: 24px Ghost circle with Figma's 12px Jet X, 1.5px lines), `clearVisibility` (`typing`, the default:
+only while the field has focus and a value; `always`: every state, as in *input large* and *multiple error*),
+`persistentLabel`, `showCount` with `maxLength` ("0/20").
 
 ## Select
 

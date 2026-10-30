@@ -100,6 +100,10 @@
 .syn-field--floating:not(.has-value) .syn-field__box:not(:focus-within) .syn-field__input { font: var(--field-rest); }
 
 .syn-field__icon { flex: none; color: var(--syn-color-secondary-silver-chalince); }
+/* Clear button: by default only while typing (focus and a value), as in Figma. */
+.syn-field__clear--typing { display: none; }
+.syn-field__box:focus-within .syn-field__clear--typing { display: inline-flex; }
+.syn-field.is-disabled .syn-field__clear { cursor: not-allowed; }
 .syn-field__affix { flex: none; color: var(--syn-color-secondary-silver-chalince); font: var(--field-value); }
 
 /* Hint: Regular 10 Eerie Black, 2px under the field. */

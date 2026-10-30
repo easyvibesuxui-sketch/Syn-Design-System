@@ -23,18 +23,24 @@ export interface TextFieldProps extends Omit<InputHTMLAttributes<HTMLInputElemen
   placeholder?: string;
   hint?: string;
   error?: string | string[];
-  /**
-   * 20px Silver Chalice icon before the text (Figma "input large" with the person icon). With an icon the
-   * label stays visible above the placeholder; without one the label is the placeholder until the field
-   * has focus or a value.
-   */
+  /** 20px Silver Chalice icon before the text, e.g. the person icon. */
   iconStart?: IconName;
+  /**
+   * Figma "input large" (with hint): the label stays above the placeholder in every state, Regular 14 over
+   * Regular 16. By default the label is the placeholder until the field has focus or a value, then moves up.
+   */
+  persistentLabel?: boolean;
   iconEnd?: IconName;
   /** Short text before or after the value, e.g. "$" or "kg". */
   prefix?: ReactNode;
   suffix?: ReactNode;
-  /** Shows the 24px clear button while the field has a value. Called after the value is cleared. */
+  /** Adds the 24px clear button. Called after the value is cleared. */
   onClear?: () => void;
+  /**
+   * typing (default) = Figma: the clear button shows only while the field has focus and a value.
+   * always = Figma "input large" and "multiple error": it shows in every state, empty and disabled included.
+   */
+  clearVisibility?: 'typing' | 'always';
   /** Shows "count/maxLength" under the field. Needs maxLength. */
   showCount?: boolean;
 }
@@ -42,6 +48,7 @@ export interface TextFieldProps extends Omit<InputHTMLAttributes<HTMLInputElemen
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function TextField(
   {
     label, size = 'lg', hideLabel = false, placeholder, hint, error, iconStart, iconEnd, prefix, suffix, onClear, showCount,
+    persistentLabel = false, clearVisibility = 'typing',
     id, className, disabled, value, defaultValue, onChange, maxLength, ...rest
   },
   ref,
@@ -60,7 +67,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function T
       className={cx(
         'syn-field',
         `syn-field--${size}`,
-        noLabel ? 'syn-field--no-label' : iconStart ? 'syn-field--fixed-label' : 'syn-field--floating',
+        noLabel ? 'syn-field--no-label' : persistentLabel ? 'syn-field--fixed-label' : 'syn-field--floating',
         hasValue && 'has-value',
         invalid && 'is-invalid',
         disabled && 'is-disabled',
@@ -91,11 +98,13 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function T
           />
         </div>
         {suffix && <span className="syn-field__affix">{suffix}</span>}
-        {onClear && hasValue && !disabled && (
+        {onClear && (clearVisibility === 'always' || (hasValue && !disabled)) && (
           <IconButton
             icon="close"
             label={`Clear ${label}`}
             size="xs"
+            disabled={disabled}
+            className={cx('syn-field__clear', clearVisibility === 'typing' && 'syn-field__clear--typing')}
             onClick={() => {
               if (value === undefined) setInner('');
               onClear();

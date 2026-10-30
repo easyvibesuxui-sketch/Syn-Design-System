@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
 import { Icon, type IconName } from './Icon';
+import { CloseGlyph } from './IconButton';
 import { FieldMessages } from './FieldMessages';
 import type { FieldSize } from './TextField';
 import { cx } from '../utils';
@@ -141,7 +142,7 @@ export function Select({ label, options, value, defaultValue, onChange, placehol
         </button>
         {clearable && (
           <button type="button" className="syn-select__clear" aria-label={clearLabel} onClick={clear}>
-            <Icon name="close" size={12} />
+            <CloseGlyph />
           </button>
         )}
         {open && (
