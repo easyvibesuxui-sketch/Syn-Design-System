@@ -114,7 +114,7 @@ function ProductCard({ product: p, onRequest }: { product: Product; onRequest: (
         </a>
         <span className="shop-card__stock">
           <AvailabilityBadge availability={p.availability} />
-          {p.badge && <Tag color="var(--syn-action-brand)">{p.badge}</Tag>}
+          {p.badge && <span className="shop-card__flag"><Icon name="star" size={14} />{p.badge}</span>}
         </span>
         <div className="shop-card__quick"><CardBuy product={p} onRequest={onRequest} /></div>
       </div>

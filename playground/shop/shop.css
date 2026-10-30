@@ -740,3 +740,8 @@ html { scroll-behavior: smooth; }
 .shop-topbar__brand { color: var(--syn-color-grey-cultured); font: var(--syn-type-titles-display-2); letter-spacing: 0; }
 /* Landing page without a visible title: description and actions share one centred row. */
 .shop-page-head:has(h1.syn-visually-hidden) { align-items: center; }
+/* Most used: a sibling of the stock pill (white, light outline, 36px) whose only colour is the red star. */
+.shop-card__flag { display: inline-flex; align-items: center; gap: var(--syn-space-6); height: var(--syn-size-control-sm); padding: 0 var(--syn-space-12); border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-full); background: var(--syn-surface-default); color: var(--syn-text-primary); font: var(--syn-type-text-body-xs); }
+.shop-card__flag .syn-icon { color: var(--syn-action-brand); }
+/* Selected view: black pad, white icon. */
+.shop-view__option.is-on { background: var(--syn-surface-inverse); color: var(--syn-color-white-white); }
