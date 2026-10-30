@@ -758,3 +758,9 @@ html { scroll-behavior: smooth; }
 /* Product search: 12px text and placeholder. */
 .shop-results__search .syn-field__box .syn-field__input, .shop-results__search .syn-field__input::placeholder { font: var(--syn-type-text-body-xs-2); }
 .shop-results__search .syn-field__icon { width: 16px; height: 16px; }
+/* Order by SKU: barcode icon centred beside the label. */
+.shop-sku-button .syn-button__label { display: inline-flex; align-items: center; gap: var(--syn-space-8); }
+.shop-sku-button svg { flex: none; }
+/* Most used, calmer: white round badge with a light outline and a black outline star, like the + button. */
+.shop-card__flag { border-color: var(--syn-border-default); background: var(--syn-surface-default); color: var(--syn-text-primary); box-shadow: var(--syn-shadow-default); }
+.shop-card__flag .syn-icon { color: var(--syn-text-primary); }

@@ -182,6 +182,15 @@ const viewIcons: Record<View, string[]> = {
   grid: ['M4 4h6v6h-6z', 'M14 4h6v6h-6z', 'M4 14h6v6h-6z', 'M14 14h6v6h-6z'],
   table: ['M9 6l11 0', 'M9 12l11 0', 'M9 18l11 0', 'M5 6l0 .01', 'M5 12l0 .01', 'M5 18l0 .01'],
 };
+/** Barcode for “Order by SKU” (Tabler barcode, MIT): the sign people know for article numbers. */
+function BarcodeIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="square" strokeLinejoin="miter" aria-hidden>
+      {['M4 7v-1a2 2 0 0 1 2 -2h2', 'M4 17v1a2 2 0 0 0 2 2h2', 'M16 4h2a2 2 0 0 1 2 2v1', 'M16 20h2a2 2 0 0 0 2 -2v-1', 'M5 11h1v2h-1z', 'M10 11l0 2', 'M14 11h1v2h-1z', 'M19 11l0 2'].map((d) => <path key={d} d={d} />)}
+    </svg>
+  );
+}
+
 const viewHints: Record<View, string> = { grid: 'Grid view', table: 'List view' };
 function ViewSwitch({ value, onChange }: { value: View; onChange: (v: View) => void }) {
   return (
@@ -372,7 +381,7 @@ export function ShopPage() {
       <ShopHeader
         title="Shop"
         lead="Order Syniotec hardware and passive tags directly from your platform."
-        extra={<Button size="sm" variant="secondary" iconStart="list" onClick={() => setQuick(true)}>Order by SKU</Button>}
+        extra={<Button size="sm" variant="secondary" className="shop-sku-button" onClick={() => setQuick(true)}><BarcodeIcon />Order by SKU</Button>}
       />
 
       <section className="shop-panel shop-finder" aria-labelledby="finder-title">
