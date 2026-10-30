@@ -121,7 +121,8 @@ export function PageHeader({ eyebrow, before, title, lead, actions }: {
       <div>
         {before}
         {eyebrow && <p className="shop-eyebrow">{eyebrow}</p>}
-        <h1 className="shop-page-head__title">{title}</h1>
+        {/* The landing page's name is already in the top bar, so its h1 is for screen readers only. */}
+        <h1 className={title === 'Shop' ? 'syn-visually-hidden' : 'shop-page-head__title'}>{title}</h1>
         {lead && <p className="shop-page-head__lead">{lead}</p>}
       </div>
       {actions && <div className="shop-page-head__actions">{actions}</div>}

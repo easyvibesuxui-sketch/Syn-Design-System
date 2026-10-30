@@ -738,3 +738,5 @@ html { scroll-behavior: smooth; }
 @media (max-width: 760px) { .shop-topbar .shop-create { padding-inline: var(--syn-space-8); } }
 /* SAM wordmark in Cultured. */
 .shop-topbar__brand { color: var(--syn-color-grey-cultured); }
+/* Landing page without a visible title: description and actions share one centred row. */
+.shop-page-head:has(h1.syn-visually-hidden) { align-items: center; }
