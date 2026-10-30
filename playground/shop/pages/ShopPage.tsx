@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { Button, Checkbox, Drawer, EmptyState, Icon, IconButton, Table, Tag, TextField } from '../../../src';
+import { Button, Checkbox, Drawer, EmptyState, Icon, IconButton, Table, Tag, TextField, Tooltip } from '../../../src';
 import { cx } from '../../../src/utils';
 import {
   FEATURED_ORDER, POWER_OPTIONS, canOrder, hasPrice, plural, priceLabel, suitableFor, suitableTerms,
@@ -181,15 +181,22 @@ const viewIcons: Record<View, string[]> = {
   grid: ['M4 4h6v6h-6z', 'M14 4h6v6h-6z', 'M4 14h6v6h-6z', 'M14 14h6v6h-6z'],
   table: ['M9 6l11 0', 'M9 12l11 0', 'M9 18l11 0', 'M5 6l0 .01', 'M5 12l0 .01', 'M5 18l0 .01'],
 };
+/** Hover hints say what each view is good for. */
+const viewHints: Record<View, string> = {
+  grid: 'Grid: product cards with photos',
+  table: 'Table: compact list to compare prices and stock',
+};
 function ViewSwitch({ value, onChange }: { value: View; onChange: (v: View) => void }) {
   return (
     <div className="shop-view" role="radiogroup" aria-label="View">
       {(['grid', 'table'] as View[]).map((v) => (
-        <button key={v} type="button" role="radio" aria-checked={value === v} aria-label={v === 'grid' ? 'Grid view' : 'Table view'} title={v === 'grid' ? 'Grid view' : 'Table view'} className={cx('shop-view__option', value === v && 'is-on')} onClick={() => onChange(v)}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="square" strokeLinejoin="miter" aria-hidden>
-            {viewIcons[v].map((d) => <path key={d} d={d} />)}
-          </svg>
-        </button>
+        <Tooltip key={v} content={viewHints[v]} placement="bottom">
+          <button type="button" role="radio" aria-checked={value === v} aria-label={v === 'grid' ? 'Grid view' : 'Table view'} className={cx('shop-view__option', value === v && 'is-on')} onClick={() => onChange(v)}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="square" strokeLinejoin="miter" aria-hidden>
+              {viewIcons[v].map((d) => <path key={d} d={d} />)}
+            </svg>
+          </button>
+        </Tooltip>
       ))}
     </div>
   );
@@ -462,15 +469,17 @@ export function ShopPage() {
               onChange={(e) => setSearch(e.target.value)}
               onClear={() => setSearch('')}
             />
+            <h2 id="results-title" className="shop-results__count" aria-live="polite">{plural(list.length, 'product')}</h2>
             <div className="shop-results__tools">
               <SortMenu value={sort} onChange={setSort} />
               <ViewSwitch value={view} onChange={setView} />
             </div>
           </div>
-          <div className="shop-results__meta">
-            <h2 id="results-title" className="shop-results__count" aria-live="polite">{plural(list.length, 'product')}</h2>
-            {applied.map(([label, remove]) => <Tag key={label} variant="soft" onRemove={remove} removeLabel={`Remove filter ${label}`}>{label}</Tag>)}
-          </div>
+          {applied.length > 0 && (
+            <div className="shop-results__meta">
+              {applied.map(([label, remove]) => <Tag key={label} variant="soft" onRemove={remove} removeLabel={`Remove filter ${label}`}>{label}</Tag>)}
+            </div>
+          )}
 
           {!list.length && (
             <EmptyState icon="search" action={<Button size="sm" variant="secondary" onClick={clearAll}>Clear filters</Button>}>

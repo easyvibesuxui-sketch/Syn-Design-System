@@ -699,3 +699,16 @@ html { scroll-behavior: smooth; }
 /* Empty cart: the message sits in the vertical middle of the drawer body. */
 .syn-drawer__body:has(> .shop-cart--empty) { display: flex; flex-direction: column; }
 .shop-cart--empty { display: flex; flex: 1; align-items: center; justify-content: center; }
+/* View switch as one control: a white track with a 1px outline holds both icons; the chosen view sits on a grey pad. */
+.shop-view { border-color: var(--syn-border-muted); background: var(--syn-surface-default); }
+.shop-view .syn-tooltip { display: flex; height: 100%; }
+.shop-view__option.is-on { background: var(--syn-surface-muted); box-shadow: none; }
+/* Result count right after the keyword search: 12px Silver Chalice, quieter than the controls around it. */
+.shop-results__count { margin: 0; color: var(--syn-text-muted); font: var(--syn-type-text-body-xs-2); white-space: nowrap; }
+/* View-switch hints open leftwards from the switch's right edge, so they never run off the screen. */
+.shop-view .syn-tooltip__bubble--bottom { right: 0; left: auto; transform: none; }
+.shop-view .syn-tooltip__bubble--bottom::after { right: 10px; left: auto; margin-left: 0; }
+
+/* House rule for labelled text: the label in ABC Favorit, the explanation in Silver Chalice Montserrat. */
+.shop-steps__text strong { font: var(--syn-type-titles-title-4); }
+.shop-steps__text > span { color: var(--syn-text-muted); font: var(--syn-type-text-body-xs-2); }
