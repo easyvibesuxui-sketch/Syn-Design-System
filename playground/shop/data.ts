@@ -34,7 +34,24 @@ export interface Product {
   connectivity?: string[];
   /** Ribbon on the tile, e.g. "Most used". */
   badge?: string;
+  /** What the product is for; drives the "What do you want to track?" finder and the Use filter. */
+  useCases?: UseCase[];
+  /** How the device is powered; passive tags need no power. */
+  power?: Power;
+  /** Ingress protection, where the data sheet states it. */
+  ip?: string;
 }
+
+export type UseCase = 'machines' | 'vehicles' | 'attachments' | 'containers' | 'tools';
+export type Power = 'External power' | 'Battery' | 'Solar' | 'Passive';
+export const USE_CASES: Array<{ id: UseCase; label: string; hint: string; icon: 'equipment' | 'truck' | 'nav-transportation' | 'inventory' | 'maintenance' }> = [
+  { id: 'machines', label: 'Powered machines', hint: 'Excavators, lifts, generators', icon: 'equipment' },
+  { id: 'vehicles', label: 'Vehicles & trucks', hint: 'Cars, vans, trucks', icon: 'truck' },
+  { id: 'attachments', label: 'Attachments & trailers', hint: 'No own power supply', icon: 'nav-transportation' },
+  { id: 'containers', label: 'Containers & mobile units', hint: 'Site containers, pumps', icon: 'inventory' },
+  { id: 'tools', label: 'Tools & small equipment', hint: 'Power tools, chains, gear', icon: 'maintenance' },
+];
+export const POWER_OPTIONS: Power[] = ['External power', 'Battery', 'Solar', 'Passive'];
 
 export interface OrderItem {
   id: string;
@@ -265,10 +282,34 @@ const connectivity: Record<string, string[]> = {
 };
 const mostUsed = ['CORE', 'LINK'];
 
+/** Use, power and protection from the product texts and data sheets above; no value is guessed beyond them. */
+const facts: Record<string, { useCases: UseCase[]; power?: Power; ip?: string }> = {
+  EDGE: { useCases: ['machines'], power: 'External power', ip: 'IP67' },
+  LINK: { useCases: ['attachments', 'containers'], power: 'Battery' },
+  'LINK-MINI': { useCases: ['attachments'], power: 'Battery' },
+  DOT: { useCases: ['tools', 'attachments'], power: 'Battery', ip: 'IP67' },
+  'DOT-MINI': { useCases: ['tools'], power: 'Battery' },
+  LITE: { useCases: ['machines'] },
+  VOLT: { useCases: ['attachments', 'machines'], power: 'Battery' },
+  OBD: { useCases: ['vehicles'], power: 'External power' },
+  CORE: { useCases: ['vehicles'], power: 'External power' },
+  SOLAR: { useCases: ['containers', 'attachments'], power: 'Solar', ip: 'IP67' },
+  DASHCAM: { useCases: ['vehicles', 'machines'], power: 'External power' },
+  'TAG-L': { useCases: ['machines'], power: 'Passive' },
+  'TAG-M': { useCases: ['machines'], power: 'Passive' },
+  'TAG-S': { useCases: ['machines', 'attachments'], power: 'Passive' },
+  'TOOL-TAGS': { useCases: ['tools'], power: 'Passive' },
+  'CHAIN-TAG': { useCases: ['tools', 'attachments'], power: 'Passive' },
+  'QR-STICKER': { useCases: ['machines', 'tools'], power: 'Passive' },
+};
+
 export const defaultProducts: Product[] = catalogue.map((p) => ({
   ...p,
   connectivity: connectivity[p.id] ?? [],
   badge: mostUsed.includes(p.id) ? 'Most used' : undefined,
+  useCases: facts[p.id]?.useCases ?? [],
+  power: facts[p.id]?.power,
+  ip: facts[p.id]?.ip,
 }));
 
 /** Catalogue order of the syniotec.com hardware page; the tile layout follows it. */

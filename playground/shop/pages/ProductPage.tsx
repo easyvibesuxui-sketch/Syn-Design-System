@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Card, FileItem, Icon, Section } from '../../../src';
+import { Button, Card, FileItem, Icon, Section, Tag } from '../../../src';
 import { cx } from '../../../src/utils';
 import { canOrder, hasPrice, money, priceLabel } from '../data';
 import { PriceRequestDialog } from '../PriceRequest';
@@ -34,7 +34,7 @@ export function ProductPage({ id }: { id: string }) {
       <div className="shop-detail">
         <div className="shop-detail__main">
           <Card className="shop-gallery">
-            {p.badge && <span className="shop-tile__ribbon" aria-hidden><span>{p.badge}</span></span>}
+            {p.badge && <span className="shop-gallery__badge"><Tag color="var(--syn-action-brand)">{p.badge}</Tag></span>}
             <ProductArt src={gallery[shown]} type={p.type} alt={`${p.name}, image ${shown + 1} of ${Math.max(gallery.length, 1)}`} size="lg" />
             {gallery.length > 1 && (
               <div className="shop-gallery__thumbs" role="group" aria-label="Product images">
