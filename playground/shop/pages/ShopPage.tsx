@@ -220,17 +220,19 @@ function CompareDrawer({ ids, open, onClose, onRemove, onRequest }: {
 
 /** The buyer's latest order, one click from being ordered again. Most B2B orders repeat an earlier one. */
 /** The buyer's latest order as one compact line with Order again, in the corner of the finder. */
+/** The signed-in user's latest order, closing the “how ordering works” strip, so a repeat order is one click. */
 function LastOrder() {
   const { orders, reorder } = useShop();
   const last = orders.find((o) => o.orderedBy === CURRENT_USER.name);
   if (!last) return null;
   return (
-    <div className="shop-last-mini">
-      <span className="shop-last-mini__text">
-        Last order <a href={routeHref({ name: 'orders', id: last.id })}>{last.id}</a> · {last.items.map((i) => `${i.qty} × ${i.name}`).join(', ')} · {money(last.total)}
+    <section className="shop-last" aria-label="Your last order">
+      <span className="shop-last__text">
+        <span className="shop-last__label">Your last order · {last.date} · <a href={routeHref({ name: 'orders', id: last.id })}>{last.id}</a></span>
+        <span className="shop-last__items">{last.items.map((i) => `${i.qty} × ${i.name}`).join(', ')} · {money(last.total)}</span>
       </span>
-      <Button size="xs" variant="secondary" iconStart="refresh" onClick={() => reorder(last)}>Order again</Button>
-    </div>
+      <Button size="sm" variant="secondary" iconStart="refresh" onClick={() => reorder(last)}>Order again</Button>
+    </section>
   );
 }
 
@@ -364,16 +366,18 @@ export function ShopPage() {
       <section className="shop-panel shop-finder" aria-labelledby="finder-title">
         <div className="shop-panel__head">
           <h2 id="finder-title" className="shop-panel__title">What do you want to track?</h2>
-          <LastOrder />
         </div>
         <TermBar terms={terms} selected={filters.use} onToggle={toggleUse} onAll={() => set('use')([])} />
       </section>
 
-      <ol className="shop-steps" aria-label="How ordering works">
-        {steps.map(([title, text], i) => (
-          <li key={title}><span className="shop-steps__n">{i + 1}</span><span><strong>{title}</strong> {text}</span></li>
-        ))}
-      </ol>
+      <div className="shop-ordering">
+        <ol className="shop-steps" aria-label="How ordering works">
+          {steps.map(([title, text], i) => (
+            <li key={title}><span className="shop-steps__n">{i + 1}</span><span><strong>{title}</strong> {text}</span></li>
+          ))}
+        </ol>
+        <LastOrder />
+      </div>
 
       <div className="shop-catalog">
         <aside className={cx('shop-filters', filtersOpen && 'is-open')} aria-label="Filters">

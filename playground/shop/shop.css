@@ -521,18 +521,22 @@ html { scroll-behavior: smooth; }
 .shop-termbar:has(.shop-termbar__arrow--start)::before { left: 0; background: linear-gradient(90deg, var(--syn-surface-default) 40%, transparent); }
 .shop-termbar:has(.shop-termbar__arrow--end)::after { right: 0; background: linear-gradient(270deg, var(--syn-surface-default) 40%, transparent); }
 
-/* Last order: one line in the finder's top-right corner. */
-.shop-last-mini { display: flex; align-items: center; gap: var(--syn-space-12); min-width: 0; color: var(--syn-text-secondary); font: var(--syn-type-text-body-xs-2); }
-.shop-last-mini__text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.shop-last-mini a { color: var(--syn-text-primary); font-weight: var(--syn-font-weight-medium); }
+/* Ordering strip: the three steps, then the last order behind a divider. */
+.shop-ordering { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--syn-space-24); padding: var(--syn-space-16) var(--syn-space-20); border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-widget); background: var(--syn-surface-default); }
+.shop-app .shop-ordering .shop-steps { padding: 0; border: 0; border-radius: 0; background: none; }
+.shop-last { display: flex; align-items: center; gap: var(--syn-space-24); align-self: stretch; padding-left: var(--syn-space-24); border-left: 1px solid var(--syn-border-default); }
+.shop-last__text { display: flex; flex-direction: column; gap: var(--syn-space-4); }
+.shop-last__label { color: var(--syn-text-secondary); font: var(--syn-type-text-body-xs-2); }
+.shop-last__label a { color: var(--syn-text-primary); font-weight: var(--syn-font-weight-medium); white-space: nowrap; }
+.shop-last__items { color: var(--syn-text-primary); font: var(--syn-type-text-body-s); }
 
 @media (max-width: 760px) {
   .shop-topbar { padding: 0 var(--syn-space-16); }
   .shop-topbar__brand { display: none; }
   .shop-content { padding: var(--syn-space-16) var(--syn-space-16) var(--syn-space-48); }
   .shop-finder .shop-panel__head { flex-direction: column; align-items: flex-start; }
-  .shop-last-mini { flex-wrap: wrap; }
-  .shop-last-mini__text { white-space: normal; }
+  .shop-ordering { grid-template-columns: minmax(0, 1fr); }
+  .shop-last { flex-wrap: wrap; gap: var(--syn-space-12); padding: var(--syn-space-16) 0 0; border-left: 0; border-top: 1px solid var(--syn-border-default); }
 }
 .shop-termbar__item { max-width: none; white-space: nowrap; }
 
