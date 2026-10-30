@@ -736,5 +736,5 @@ html { scroll-behavior: smooth; }
 /* Create in the top bar: tight 12px before the icon, 16px after the label. */
 .shop-topbar .shop-create { gap: var(--syn-space-8); padding-left: var(--syn-space-12); padding-right: var(--syn-space-16); }
 @media (max-width: 760px) { .shop-topbar .shop-create { padding-inline: var(--syn-space-8); } }
-/* SAM wordmark in Silver Chalice. */
-.shop-topbar__brand { color: var(--syn-text-muted); }
+/* SAM wordmark in Cultured. */
+.shop-topbar__brand { color: var(--syn-color-grey-cultured); }
