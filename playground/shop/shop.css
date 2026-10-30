@@ -568,3 +568,38 @@ html { scroll-behavior: smooth; }
 .shop-app .shop-filter { box-shadow: none; border-bottom: 1px solid var(--syn-border-default); }
 .shop-app .shop-filter:last-child { border-bottom: 0; }
 .shop-filters__head { border-bottom: 1px solid var(--syn-border-default); }
+
+/* Top-right: Create, notifications and the account menu. */
+.shop-topbar__end { display: flex; align-items: center; justify-self: end; gap: var(--syn-space-16); }
+.shop-create { border-color: var(--syn-border-default); }
+.shop-create .syn-icon { color: var(--syn-action-brand); }
+.shop-topbar__icon { display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 0; border-radius: var(--syn-radius-full); background: none; color: var(--syn-text-secondary); cursor: pointer; }
+.shop-topbar__icon:hover { background: var(--syn-surface-muted); color: var(--syn-text-primary); }
+.shop-topbar__icon:focus-visible, .shop-account__trigger:focus-visible, .shop-account button:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
+.shop-account { position: relative; }
+.shop-account__trigger { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: var(--syn-radius-full); background: var(--syn-surface-muted); color: var(--syn-text-primary); font: var(--syn-type-text-body-xs); cursor: pointer; }
+.shop-account__trigger:hover, .shop-account__trigger[aria-expanded="true"] { background: var(--syn-border-default); }
+.shop-account__menu { position: absolute; top: calc(100% + 8px); right: 0; z-index: 5; display: flex; flex-direction: column; width: 320px; padding: var(--syn-space-12); border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-widget); background: var(--syn-surface-default); box-shadow: var(--syn-shadow-float); }
+.shop-account__menu > * + * { border-top: 1px solid var(--syn-border-default); }
+.shop-account__card { display: flex; flex-direction: column; margin-bottom: var(--syn-space-12); border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-element); }
+.shop-account__menu > .shop-account__card + * { border-top: 0; }
+.shop-account__who { display: flex; align-items: center; gap: var(--syn-space-12); padding: var(--syn-space-12); border-bottom: 1px solid var(--syn-border-default); }
+.shop-account__who strong { font: var(--syn-type-titles-title-4); }
+.shop-account__photo { display: grid; flex: none; place-items: center; width: 56px; height: 56px; border-radius: var(--syn-radius-element); background: var(--syn-surface-muted); color: var(--syn-text-primary); font: var(--syn-type-text-body-m); }
+.shop-account__org { padding: var(--syn-space-12); color: var(--syn-text-secondary); font: var(--syn-type-text-body-xs-2); }
+.shop-account__row { display: flex; align-items: center; gap: var(--syn-space-16); width: 100%; padding: var(--syn-space-12) var(--syn-space-4); border-right: 0; border-bottom: 0; border-left: 0; background: none; color: var(--syn-text-primary); font: var(--syn-type-text-body-s-2); text-align: left; cursor: pointer; }
+.shop-account__row:hover .shop-account__tile, .shop-account__row:hover .shop-account__more { background: var(--syn-border-default); }
+.shop-account__row > span:nth-child(2) { flex: 1; }
+.shop-account__tile, .shop-account__more { display: grid; flex: none; place-items: center; width: 32px; height: 32px; border-radius: var(--syn-radius-element); background: var(--syn-surface-muted); color: var(--syn-text-primary); }
+.shop-account__more { width: 24px; }
+.shop-account__langs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--syn-space-8); padding: var(--syn-space-12) 0; }
+.shop-account__lang { display: flex; align-items: center; gap: var(--syn-space-8); height: var(--syn-size-control-sm); padding: 0 var(--syn-space-8); border: 1px solid transparent; border-radius: var(--syn-radius-element); background: none; color: var(--syn-text-primary); font: var(--syn-type-text-body-s); cursor: pointer; }
+.shop-account__lang:hover { background: var(--syn-surface-muted); }
+.shop-account__lang.is-on { border-color: var(--syn-border-strong); }
+.shop-flag { flex: none; width: 24px; height: 16px; border-radius: 2px; }
+@media (max-width: 760px) {
+  .shop-topbar__end { gap: var(--syn-space-8); }
+  .shop-create { padding-inline: var(--syn-space-8); }
+  .shop-create__label { display: none; }
+  .shop-account__menu { position: fixed; top: 64px; right: var(--syn-space-16); width: min(320px, calc(100vw - 80px)); }
+}

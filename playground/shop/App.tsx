@@ -1,6 +1,6 @@
-import { Avatar, Button, Icon, Notification, Tooltip, type IconName } from '../../src';
+import { Button, Icon, Notification, Tooltip, type IconName } from '../../src';
 import { cx } from '../../src/utils';
-import { CURRENT_USER } from './data';
+import { TopbarActions } from './UserMenu';
 import { CartDrawer } from './CartDrawer';
 import { LineIcon } from './parts';
 import { AdminPage } from './pages/AdminPage';
@@ -70,10 +70,7 @@ export function App() {
         <header className="shop-topbar">
           <span className="shop-topbar__crumb">{crumbs[route.name]}</span>
           <span className="shop-topbar__brand" aria-label="SAM">SAM</span>
-          <span className="shop-topbar__user">
-            <Avatar size={32} />
-            <span><strong>{CURRENT_USER.name}</strong><span>{CURRENT_USER.company}</span></span>
-          </span>
+          <TopbarActions />
         </header>
         <main className="shop-content">
           <Page route={route} />
