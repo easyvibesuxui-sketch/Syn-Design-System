@@ -26,6 +26,20 @@ export function ProductArt({ src, type, alt, size = 'md', className }: {
   );
 }
 
+const lineIcons = {
+  cart: <><path d="M4 5h2l2 10h9l2-7H7" /><circle cx="10" cy="19" r="1" /><circle cx="17" cy="19" r="1" /></>,
+  bag: <><path d="M5 8h14l-1 12H6L5 8Z" /><path d="M8 8V6a4 4 0 0 1 8 0v2" /></>,
+};
+
+/** Cart and shopping-bag glyphs from the SAM Shop prototype, drawn like Syn's 20px line icons. Syn's icon set has neither. */
+export function LineIcon({ name, size = 20, className }: { name: keyof typeof lineIcons; size?: number; className?: string }) {
+  return (
+    <svg className={cx('shop-line-icon', className)} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      {lineIcons[name]}
+    </svg>
+  );
+}
+
 const chipIcon: Partial<Record<string, IconName>> = { Bluetooth: 'bloetooth', 'NB-IoT': 'find-globe', GPS: 'gps-location-default', GNSS: 'gps-location-default', Video: 'video-1' };
 
 /** Connectivity chips from the syniotec.com product tiles: small white boxes with an icon or a short label. */
@@ -88,8 +102,8 @@ export function ShopHeader({ title, lead, back, extra }: { title: string; lead: 
           ? <LinkButton href={routeHref({ name: 'shop' })} iconStart="back">Back to Shop</LinkButton>
           : <LinkButton href={routeHref({ name: 'orders' })} iconStart="history">My orders</LinkButton>}
         {extra}
-        <Button size="sm" iconStart="inventory" onClick={() => setCartOpen(true)} aria-label={cartQty ? `Cart, ${plural(cartQty, 'item')}` : 'Cart'}>
-          Cart{cartQty > 0 && <span className="shop-count" aria-hidden>{cartQty}</span>}
+        <Button size="sm" className="shop-cart-button" onClick={() => setCartOpen(true)} aria-label={cartQty ? `Cart, ${plural(cartQty, 'item')}` : 'Cart'}>
+          <LineIcon name="cart" size={16} />Cart{cartQty > 0 && <span className="shop-count" aria-hidden>{cartQty}</span>}
         </Button>
       </>}
     />
@@ -168,8 +182,8 @@ export function InfoNote({ children, tone = 'info' }: { children: ReactNode; ton
  * Drawers follow the Syn record drawer: the 64px header carries context (an icon and a label, or a status and an
  * id) and the title with its description is the first row of the body, not squeezed into the header.
  */
-export function DrawerContext({ icon, children }: { icon: IconName; children: ReactNode }) {
-  return <span className="shop-drawer-context"><Icon name={icon} size={16} />{children}</span>;
+export function DrawerContext({ icon, children }: { icon: IconName | 'cart'; children: ReactNode }) {
+  return <span className="shop-drawer-context">{icon === 'cart' ? <LineIcon name="cart" size={16} /> : <Icon name={icon} size={16} />}{children}</span>;
 }
 
 export function DrawerTitle({ title, lead, end }: { title: ReactNode; lead?: ReactNode; end?: ReactNode }) {

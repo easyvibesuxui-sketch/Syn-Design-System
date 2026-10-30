@@ -20,7 +20,7 @@ export function CartDrawer() {
       label="Your cart"
       width={480}
       closeLabel="Close cart"
-      headerStart={<DrawerContext icon="inventory">Syniotec Shop</DrawerContext>}
+      headerStart={<DrawerContext icon="cart">Syniotec Shop</DrawerContext>}
       footer={cart.length ? <Button size="md" fullWidth iconEnd="arrow" onClick={() => to('checkout')}>Continue to order</Button> : undefined}
     >
       <DrawerTitle title="Your cart" lead={cartQty ? plural(cartQty, 'item') : 'No products added yet'} />

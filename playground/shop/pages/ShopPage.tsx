@@ -1,5 +1,5 @@
-import { useMemo, useState, type ReactNode } from 'react';
-import { Button, Checkbox, Drawer, EmptyState, Icon, IconButton, Segmented, Select, Table, Tag, TextField } from '../../../src';
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { Button, Checkbox, Drawer, EmptyState, Icon, IconButton, Segmented, Select, Table, Tag, TextField, type IconName } from '../../../src';
 import { cx } from '../../../src/utils';
 import {
   CURRENT_USER, FEATURED_ORDER, POWER_OPTIONS, canOrder, hasPrice, money, plural, priceLabel, suitableFor, suitableTerms,
@@ -7,7 +7,7 @@ import {
 } from '../data';
 import { PriceRequestDialog } from '../PriceRequest';
 import { QuickOrder } from '../QuickOrder';
-import { AvailabilityBadge, Chips, DrawerContext, DrawerTitle, LinkButton, OrderStatusBadge, ProductArt, QuantityStepper, ShopHeader } from '../parts';
+import { AvailabilityBadge, Chips, DrawerContext, DrawerTitle, ProductArt, QuantityStepper, ShopHeader } from '../parts';
 import { routeHref, useShop } from '../store';
 
 type Sort = 'featured' | 'name' | 'price-asc' | 'price-desc';
@@ -200,24 +200,62 @@ function CompareDrawer({ ids, open, onClose, onRemove, onRequest }: {
 }
 
 /** The buyer's latest order, one click from being ordered again. Most B2B orders repeat an earlier one. */
+/** The buyer's latest order as one compact line with Order again, in the corner of the finder. */
 function LastOrder() {
   const { orders, reorder } = useShop();
   const last = orders.find((o) => o.orderedBy === CURRENT_USER.name);
   if (!last) return null;
-  const count = last.items.reduce((n, i) => n + i.qty, 0);
   return (
-    <section className="shop-panel shop-last" aria-labelledby="last-title">
-      <div className="shop-panel__head">
-        <h2 id="last-title" className="shop-panel__title">Your last order</h2>
-        <OrderStatusBadge status={last.status} />
+    <div className="shop-last-mini">
+      <span className="shop-last-mini__text">
+        Last order <a href={routeHref({ name: 'orders', id: last.id })}>{last.id}</a> · {last.items.map((i) => `${i.qty} × ${i.name}`).join(', ')} · {money(last.total)}
+      </span>
+      <Button size="xs" variant="secondary" iconStart="refresh" onClick={() => reorder(last)}>Order again</Button>
+    </div>
+  );
+}
+
+/** Icons for the Suitable-for values, chosen from Syn's icon set by keyword. Only the picture is chosen; the text stays as written. */
+const termIcons: Array<[RegExp, IconName]> = [
+  [/cab|driver/i, 'person'], [/vehicle|car|truck|tractor/i, 'truck'], [/trailer/i, 'nav-transportation'],
+  [/container/i, 'inventory'], [/pump|generator/i, 'charged'], [/lifting/i, 'up-icon'], [/chain/i, 'attachment'],
+  [/attachment/i, 'attach'], [/tool/i, 'maintenance'], [/machin|equipment/i, 'equipment'],
+];
+const termIcon = (t: string): IconName => termIcons.find(([re]) => re.test(t))?.[1] ?? 'categories';
+
+/**
+ * Airbnb-style category bar: one scrolling row of icon-over-label items, muted until hovered, the selected one
+ * black with a 2px underline, and round arrow buttons when the row overflows.
+ */
+function TermBar({ terms, selected, onToggle }: { terms: string[]; selected: string[]; onToggle: (t: string) => void }) {
+  const row = useRef<HTMLDivElement>(null);
+  const [edges, setEdges] = useState({ start: true, end: true });
+  const measure = useCallback(() => {
+    const el = row.current;
+    if (el) setEdges({ start: el.scrollLeft <= 1, end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 1 });
+  }, []);
+  useEffect(() => {
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [measure, terms]);
+  const scroll = (dir: 1 | -1) => row.current?.scrollBy({ left: dir * row.current.clientWidth * 0.8, behavior: 'smooth' });
+  return (
+    <div className="shop-termbar">
+      {!edges.start && <IconButton icon="back" label="Scroll back" size="sm" variant="outline" className="shop-termbar__arrow shop-termbar__arrow--start" onClick={() => scroll(-1)} />}
+      <div ref={row} className="shop-termbar__row" role="group" aria-label="Suitable for" onScroll={measure}>
+        {terms.map((t) => {
+          const on = selected.includes(t);
+          return (
+            <button key={t} type="button" className={cx('shop-termbar__item', on && 'is-on')} aria-pressed={on} onClick={() => onToggle(t)}>
+              <Icon name={termIcon(t)} size={24} />
+              <span>{t}</span>
+            </button>
+          );
+        })}
       </div>
-      <p className="shop-last__items">{last.items.map((i) => `${i.qty} × ${i.name}`).join(', ')}</p>
-      <p className="shop-muted">{last.id} · {last.date} · {plural(count, 'item')} · {money(last.total)}</p>
-      <div className="shop-row">
-        <Button size="sm" iconStart="refresh" onClick={() => reorder(last)}>Order again</Button>
-        <LinkButton href={routeHref({ name: 'orders', id: last.id })}>View order</LinkButton>
-      </div>
-    </section>
+      {!edges.end && <IconButton icon="next" label="Scroll forward" size="sm" variant="outline" className="shop-termbar__arrow shop-termbar__arrow--end" onClick={() => scroll(1)} />}
+    </div>
   );
 }
 
@@ -276,27 +314,13 @@ export function ShopPage() {
         extra={<Button size="sm" variant="secondary" iconStart="list" onClick={() => setQuick(true)}>Order by SKU</Button>}
       />
 
-      <div className="shop-start">
-        <section className="shop-panel shop-finder" aria-labelledby="finder-title">
-          <div className="shop-panel__head">
-            <h2 id="finder-title" className="shop-panel__title">What do you want to track?</h2>
-            {filters.use.length > 0 && <Button size="xs" variant="text" onClick={() => set('use')([])}>Show all</Button>}
-          </div>
-          <p className="shop-muted">Pick what you want to equip. The options are the “Suitable for” values of the products.</p>
-          <div className="shop-finder__terms" role="group" aria-label="Suitable for">
-            {terms.map((t) => {
-              const on = filters.use.includes(t);
-              const n = active.filter((p) => suitableTerms(p).includes(t)).length;
-              return (
-                <button key={t} type="button" className={cx('shop-finder__term', on && 'is-on')} aria-pressed={on} onClick={() => toggleUse(t)}>
-                  {t}<span className="shop-finder__term-count">{n}</span>
-                </button>
-              );
-            })}
-          </div>
-        </section>
-        <LastOrder />
-      </div>
+      <section className="shop-panel shop-finder" aria-labelledby="finder-title">
+        <div className="shop-panel__head">
+          <h2 id="finder-title" className="shop-panel__title">What do you want to track?</h2>
+          <LastOrder />
+        </div>
+        <TermBar terms={terms} selected={filters.use} onToggle={toggleUse} />
+      </section>
 
       <ol className="shop-steps" aria-label="How ordering works">
         {steps.map(([title, text], i) => (

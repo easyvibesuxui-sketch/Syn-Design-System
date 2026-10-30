@@ -472,3 +472,66 @@ html { scroll-behavior: smooth; }
 .shop-gallery { border: 1px solid var(--syn-border-default); background: var(--syn-surface-default); }
 .shop-gallery > .shop-art { background: var(--syn-surface-muted); }
 .shop-card__media { border-bottom: 1px solid var(--syn-border-default); background: var(--syn-surface-default); }
+
+/* ===== Shell alignment and type (design review) ===== */
+/* Bar and content share the edges: 32px after the rail (88px from the page edge) on the left, 16px on the right. */
+.shop-topbar { padding: 0 var(--syn-space-16) 0 var(--syn-space-32); }
+.shop-content { max-width: none; margin: 0; padding: var(--syn-space-24) var(--syn-space-16) var(--syn-space-64) var(--syn-space-32); }
+/* Page label: ABC Favorit Expanded Medium 16 (Titles/Title 3). */
+.shop-topbar__crumb { font: var(--syn-type-titles-title-3); }
+/* SAM wordmark: ABC Favorit Expanded Medium 36. */
+.shop-topbar__brand { color: var(--syn-text-primary); font-family: var(--syn-font-family-title); font-size: 36px; font-weight: var(--syn-font-weight-medium); line-height: 40px; letter-spacing: 0; }
+.shop-cart-button .shop-line-icon { margin-right: var(--syn-space-8); vertical-align: -3px; }
+.shop-rail__item .shop-line-icon { display: block; }
+
+/* How ordering works: outlined numbers, centred against their two lines. */
+.shop-steps li { align-items: center; }
+.shop-steps__n { width: 32px; height: 32px; border: 1px solid var(--syn-border-strong); background: transparent; color: var(--syn-text-primary); font: var(--syn-type-text-body-s); line-height: 1; }
+
+/* Finder: Airbnb-style category bar. */
+.shop-finder { gap: var(--syn-space-16); }
+.shop-termbar { position: relative; }
+.shop-termbar__row { display: flex; gap: var(--syn-space-32); overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; }
+.shop-termbar__row::-webkit-scrollbar { display: none; }
+.shop-termbar__item {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--syn-space-8);
+  max-width: 128px;
+  padding: var(--syn-space-4) 0 var(--syn-space-12);
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--syn-text-secondary);
+  font: var(--syn-type-text-body-xs);
+  text-align: center;
+  cursor: pointer;
+  opacity: 0.72;
+  transition: opacity var(--syn-duration-fast), border-color var(--syn-duration-fast);
+}
+.shop-termbar__item:hover { border-bottom-color: var(--syn-border-default); opacity: 1; }
+.shop-termbar__item.is-on { border-bottom-color: var(--syn-border-strong); color: var(--syn-text-primary); opacity: 1; }
+.shop-termbar__item:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; border-radius: var(--syn-radius-xs); }
+.shop-termbar__arrow { position: absolute; top: 12px; z-index: 1; background: var(--syn-surface-default); box-shadow: var(--syn-shadow-default); }
+.shop-termbar__arrow--start { left: 0; }
+.shop-termbar__arrow--end { right: 0; }
+.shop-termbar:has(.shop-termbar__arrow--start)::before, .shop-termbar:has(.shop-termbar__arrow--end)::after { content: ''; position: absolute; top: 0; bottom: 0; width: 64px; pointer-events: none; }
+.shop-termbar:has(.shop-termbar__arrow--start)::before { left: 0; background: linear-gradient(90deg, var(--syn-surface-default) 40%, transparent); }
+.shop-termbar:has(.shop-termbar__arrow--end)::after { right: 0; background: linear-gradient(270deg, var(--syn-surface-default) 40%, transparent); }
+
+/* Last order: one line in the finder's top-right corner. */
+.shop-last-mini { display: flex; align-items: center; gap: var(--syn-space-12); min-width: 0; color: var(--syn-text-secondary); font: var(--syn-type-text-body-xs-2); }
+.shop-last-mini__text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.shop-last-mini a { color: var(--syn-text-primary); font-weight: var(--syn-font-weight-medium); }
+
+@media (max-width: 760px) {
+  .shop-topbar { padding: 0 var(--syn-space-16); }
+  .shop-topbar__brand { display: none; }
+  .shop-content { padding: var(--syn-space-16) var(--syn-space-16) var(--syn-space-48); }
+  .shop-finder .shop-panel__head { flex-direction: column; align-items: flex-start; }
+  .shop-last-mini { flex-wrap: wrap; }
+  .shop-last-mini__text { white-space: normal; }
+}
+.shop-termbar__item { max-width: none; white-space: nowrap; }

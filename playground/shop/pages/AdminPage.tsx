@@ -170,7 +170,7 @@ function OrderDrawer({ order, onClose }: { order: Order | null; onClose: () => v
       width={1024}
       headerStart={order && <>
         <OrderStatusBadge status={order.status} />
-        <DrawerContext icon="inventory">{order.id}</DrawerContext>
+        <DrawerContext icon="cart">{order.id}</DrawerContext>
       </>}
       footer={<>
         <Button variant="text" onClick={onClose}>Discard</Button>

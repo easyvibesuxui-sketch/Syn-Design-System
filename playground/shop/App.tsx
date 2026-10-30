@@ -2,6 +2,7 @@ import { Avatar, Button, Icon, Notification, Tooltip, type IconName } from '../.
 import { cx } from '../../src/utils';
 import { CURRENT_USER } from './data';
 import { CartDrawer } from './CartDrawer';
+import { LineIcon } from './parts';
 import { AdminPage } from './pages/AdminPage';
 import { CheckoutPage } from './pages/CheckoutPage';
 import { ConfirmationPage } from './pages/ConfirmationPage';
@@ -22,15 +23,15 @@ const crumbs: Record<Route['name'], string> = {
 function Rail({ route }: { route: Route }) {
   const { notify } = useShop();
   const outside = (label: string) => () => notify(label, `${label} is outside this Shop prototype.`, 'info');
-  const item = (icon: IconName, label: string, opts: { href?: string; active?: boolean } = {}) => (
+  const item = (icon: IconName | 'bag', label: string, opts: { href?: string; active?: boolean } = {}) => (
     <Tooltip key={label} content={label} placement="right">
       {opts.href ? (
         <a href={opts.href} className={cx('shop-rail__item', opts.active && 'is-active')} aria-label={label} aria-current={opts.active ? 'page' : undefined}>
-          <Icon name={icon} size={20} />
+          {icon === 'bag' ? <LineIcon name="bag" /> : <Icon name={icon} size={20} />}
         </a>
       ) : (
         <button type="button" className="shop-rail__item" aria-label={label} onClick={outside(label)}>
-          <Icon name={icon} size={20} />
+          {icon === 'bag' ? <LineIcon name="bag" /> : <Icon name={icon} size={20} />}
         </button>
       )}
     </Tooltip>
@@ -42,7 +43,7 @@ function Rail({ route }: { route: Route }) {
       {item('kanban', 'Dashboard')}
       {item('truck', 'Equipment')}
       {item('calendar', 'Bookings')}
-      {item('inventory', 'Shop', { href: routeHref({ name: 'shop' }), active: route.name !== 'admin' })}
+      {item('bag', 'Shop', { href: routeHref({ name: 'shop' }), active: route.name !== 'admin' })}
       <span className="shop-rail__spacer" />
       {item('settings', 'Shop Admin', { href: routeHref({ name: 'admin', tab: 'overview' }), active: route.name === 'admin' })}
     </nav>
@@ -68,7 +69,7 @@ export function App() {
       <div className="shop-workspace">
         <header className="shop-topbar">
           <span className="shop-topbar__crumb">{crumbs[route.name]}</span>
-          <span className="shop-topbar__brand" aria-hidden>SYNIOTEC</span>
+          <span className="shop-topbar__brand" aria-label="SAM">SAM</span>
           <span className="shop-topbar__user">
             <Avatar size={32} />
             <span><strong>{CURRENT_USER.name}</strong><span>{CURRENT_USER.company}</span></span>
