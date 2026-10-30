@@ -733,3 +733,8 @@ html { scroll-behavior: smooth; }
 /* Page descriptions follow the label rule: Montserrat in Silver Chalice. The back link sits above the title. */
 .shop-page-head__lead { color: var(--syn-text-muted); }
 .shop-page-head > div > .shop-back { margin-bottom: var(--syn-space-8); }
+/* Create in the top bar: tight 12px before the icon, 16px after the label. */
+.shop-topbar .shop-create { gap: var(--syn-space-8); padding-left: var(--syn-space-12); padding-right: var(--syn-space-16); }
+@media (max-width: 760px) { .shop-topbar .shop-create { padding-inline: var(--syn-space-8); } }
+/* SAM wordmark in Silver Chalice. */
+.shop-topbar__brand { color: var(--syn-text-muted); }
