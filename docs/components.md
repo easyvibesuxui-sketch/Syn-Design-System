@@ -179,6 +179,24 @@ Figma's 16px *Close small* button in the top-right corner while typing. `variant
 (2px Silver Chalice, the comment editor); both turn 2px Eerie Black on focus. Disabled is Cultured with a Gray X
 border. No resize handle, as in Figma.
 
+## QuantityField
+
+Figma: *Quantity field type 2*, *Quantity Field Label*, *Quantity Field Type 2 Error*, with the − and + moved inside
+the field. One box (`size` `lg` 56 · `md` 48 · `sm` 36, 8px corners) holds a square − button, the centred number and a
+square + button (32px, 24px at `sm`; 1px Eerie Black border, Cultured on hover). Borders follow the text field;
+`error` is Snow with a Vermilion border and the message 2px below; disabled is Cultured with a Gray X border.
+`showLabel` puts the Regular 16 Jet label 16px above. `min`, `max`, `step`, `value`/`defaultValue` (a number or
+null), `onChange`, `placeholder` ("Quantity"), `prefix`/`suffix` ("kg"), `onRemove` (at the minimum the − becomes
+a trash button on Smoke). `role="spinbutton"`; Up and Down step the value.
+
+## Skeleton
+
+Loading placeholder in the Material Skeleton manner, in Syn colours: `variant` `text` (a line at 60% of the font
+height), `circular` (40px), `rectangular` (120px high), plus the Figma input skeletons `field` (56 / 48 / 36 with a
+Smoke bar) and `textbox` (64 / 56 / 48) by `size`. `animation` `pulse` (default, 1.5s fade to 40%), `wave` (a light
+band sweeps across) or `false`; motion stops under reduced motion. `width`/`height` override the size. 8px corners,
+circles stay round. It is hidden from screen readers: set `aria-busy` on the region that is loading.
+
 ## Checklist and ChecklistItem
 
 A checklist row on Smoke with 8px corners: 20px checkbox and Regular 14 text, `assignee` bottom left, `due` bottom

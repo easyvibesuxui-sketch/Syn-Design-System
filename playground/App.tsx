@@ -1,13 +1,13 @@
 import { useState, type ReactNode } from 'react';
 import {
   Accordion, Button, Checkbox, Dialog, Grid, GridItem, Icon, IconButton, NewTab, Notification, Radio, RadioGroup, Select,
-  Slider, StatusBadge, StatusChip, Switch, Tabs, TextArea, TextField, Tooltip, Tag, FileItem, ProgressBar, iconData, iconNames, tokens,
+  Slider, StatusBadge, StatusChip, Switch, Tabs, TextArea, TextField, Tooltip, Tag, QuantityField, Skeleton, FileItem, ProgressBar, iconData, iconNames, tokens,
 } from '../src';
 import { RecordDrawer } from './RecordDrawer';
 
 const sections = [
   ['colors', 'Colour'], ['typography', 'Typography'], ['spacing', 'Spacing & shape'], ['grid', 'Grid'], ['icons', 'Icons'],
-  ['buttons', 'Buttons'], ['inputs', 'Text fields'], ['select', 'Select'], ['choices', 'Checkbox & radio'],
+  ['buttons', 'Buttons'], ['inputs', 'Text fields'], ['quantity', 'Quantity & skeleton'], ['select', 'Select'], ['choices', 'Checkbox & radio'],
   ['switch', 'Switch'], ['tabs', 'Tabs'], ['tags', 'Tags & files'], ['status', 'Status'], ['notifications', 'Notifications'],
   ['tooltip', 'Tooltip'], ['accordion', 'Accordion'], ['slider', 'Slider'], ['dialog', 'Dialog'], ['drawer', 'Drawer'],
 ] as const;
@@ -204,6 +204,34 @@ export function App() {
             <TextArea label="Additional information" hideLabel={false} size="sm" defaultValue="Text area" maxLength={20} showCount />
             <TextArea label="Additional information" hideLabel={false} labelPosition="outside" placeholder="Helper text" maxLength={20} showCount />
             <TextArea label="Additional information" hideLabel={false} disabled maxLength={20} showCount />
+          </div>
+        </Section>
+
+        <Section id="quantity" title="Quantity & skeleton" lead="Figma &quot;Quantity field type 2&quot; with the − and + inside the field (56 / 48 / 36, 8px corners); errors draw the Vermilion border. At the minimum with onRemove the − becomes a bin. Skeleton: Material-style text, circle and rectangle in Syn colours, plus the Figma field and text box skeletons; pulse or wave.">
+          <div className="pg-grid">
+            <QuantityField label="Quantity" showLabel />
+            <QuantityField label="Quantity" showLabel defaultValue={12} suffix="kg" />
+            <QuantityField label="Quantity" showLabel defaultValue={1} min={1} onRemove={() => {}} />
+            <QuantityField label="Quantity" showLabel defaultValue={0} error="Enter at least 1" />
+            <QuantityField label="Quantity" size="md" defaultValue={3} prefix="Pref" suffix="Suff" />
+            <QuantityField label="Quantity" size="sm" defaultValue={2} error="Only 1 left in stock" />
+            <QuantityField label="Quantity" showLabel disabled />
+          </div>
+          <div className="pg-grid" style={{ marginTop: 24 }}>
+            <div style={{ display: 'grid', gap: 8 }}>
+              <Skeleton variant="text" width="60%" />
+              <Skeleton variant="text" />
+              <Skeleton variant="text" width="80%" />
+            </div>
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+              <Skeleton variant="circular" />
+              <div style={{ flex: 1, display: 'grid', gap: 4 }}><Skeleton variant="text" width="50%" /><Skeleton variant="text" width="30%" /></div>
+            </div>
+            <Skeleton variant="rectangular" animation="wave" />
+            <Skeleton variant="field" />
+            <Skeleton variant="field" size="md" animation="wave" />
+            <Skeleton variant="field" size="sm" />
+            <Skeleton variant="textbox" />
           </div>
         </Section>
 

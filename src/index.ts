@@ -32,3 +32,5 @@ export { Segmented, type SegmentedProps, type SegmentedOption } from './componen
 export { TextArea, type TextAreaProps } from './components/TextArea';
 export { Checklist, ChecklistItem, type ChecklistProps, type ChecklistItemProps } from './components/Checklist';
 export { Comment, CommentReply, CommentEditor, type CommentProps, type CommentReplyProps, type CommentEditorProps } from './components/Comment';
+export { QuantityField, type QuantityFieldProps } from './components/QuantityField';
+export { Skeleton, type SkeletonProps } from './components/Skeleton';

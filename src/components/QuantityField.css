@@ -1,0 +1,85 @@
+/* Figma "Quantity field type 2" with the steppers moved inside: one field (56 / 48 / 36, 8px corners) holding
+   a − button, the centred number and a + button. Border states follow the text field: Cultured, Eerie Black on
+   hover, 2px when focused; error is Snow with a Vermilion border; disabled is Cultured with a Gray X border. */
+.syn-quantity {
+  --q-h: 56px;
+  --q-pad: var(--syn-space-12);
+  --q-btn: 32px;
+  --q-value: var(--syn-type-text-body-m-2);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+}
+.syn-quantity--md { --q-h: 48px; --q-pad: var(--syn-space-8); --q-value: var(--syn-type-text-body-s-2); }
+.syn-quantity--sm { --q-h: 36px; --q-pad: var(--syn-space-6); --q-btn: 24px; --q-value: var(--syn-type-text-body-xs-2); }
+
+/* "Quantity Field Label": Regular 16 Jet, 16px above the field. */
+.syn-quantity__label { margin-bottom: var(--syn-space-16); color: var(--syn-color-secondary-jet); font: var(--syn-type-text-body-m-2); }
+
+.syn-quantity__box {
+  display: flex;
+  align-items: center;
+  gap: var(--syn-space-8);
+  box-sizing: border-box;
+  height: var(--q-h);
+  padding: 0 var(--q-pad);
+  border-radius: var(--syn-radius-element);
+  background: var(--syn-color-white-white);
+  box-shadow: inset 0 0 0 1px var(--syn-color-grey-cultured);
+  transition: box-shadow var(--syn-duration-fast);
+}
+.syn-quantity__box:hover { box-shadow: inset 0 0 0 1px var(--syn-color-black-eerie-black); }
+.syn-quantity__box:focus-within { box-shadow: inset 0 0 0 2px var(--syn-color-black-eerie-black); }
+
+.syn-quantity__value { display: flex; flex: 1; align-items: baseline; justify-content: center; gap: var(--syn-space-6); min-width: 0; }
+.syn-quantity__input {
+  min-width: 1ch;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--syn-color-black-eerie-black);
+  font: var(--q-value);
+  text-align: center;
+}
+.syn-quantity__input::placeholder { color: var(--syn-color-secondary-silver-chalince); opacity: 1; }
+.syn-quantity__affix { flex: none; color: var(--syn-color-secondary-silver-chalince); font: var(--q-value); }
+
+/* Steppers: square, 8px corners, 1px Eerie Black border, white; Cultured on hover. At the minimum with
+   onRemove the − becomes a trash button on Smoke without a border. */
+.syn-quantity__step {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--q-btn);
+  height: var(--q-btn);
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--syn-color-black-eerie-black);
+  border-radius: var(--syn-radius-element);
+  background: var(--syn-color-white-white);
+  color: var(--syn-color-black-eerie-black);
+  cursor: pointer;
+  transition: background-color var(--syn-duration-fast);
+}
+.syn-quantity__step:hover:not(:disabled) { background: var(--syn-color-grey-cultured); }
+.syn-quantity__step:focus-visible { outline: 1px solid var(--syn-color-black-eerie-black); outline-offset: 2px; }
+.syn-quantity__step:disabled { border-color: var(--syn-color-disabled-gray-x); color: var(--syn-color-disabled-gray-x); cursor: not-allowed; }
+.syn-quantity__step.is-remove { border-color: transparent; background: var(--syn-color-light-smoke); }
+.syn-quantity__step.is-remove:hover:not(:disabled) { background: var(--syn-color-grey-cultured); }
+
+.syn-quantity.is-invalid .syn-quantity__box,
+.syn-quantity.is-invalid .syn-quantity__box:hover { background: var(--syn-color-light-snow); box-shadow: inset 0 0 0 1px var(--syn-color-error-vermilion); }
+.syn-quantity.is-invalid .syn-quantity__box:focus-within { box-shadow: inset 0 0 0 2px var(--syn-color-error-vermilion); }
+
+.syn-quantity.is-disabled .syn-quantity__box,
+.syn-quantity.is-disabled .syn-quantity__box:hover { background: var(--syn-color-grey-cultured); box-shadow: inset 0 0 0 1px var(--syn-color-disabled-gray-x); }
+.syn-quantity.is-disabled.is-invalid .syn-quantity__box { box-shadow: inset 0 0 0 1px var(--syn-color-error-vermilion); }
+.syn-quantity.is-disabled .syn-quantity__step { background: transparent; }
+.syn-quantity.is-disabled .syn-quantity__input,
+.syn-quantity.is-disabled .syn-quantity__input::placeholder,
+.syn-quantity.is-disabled .syn-quantity__affix { color: var(--syn-color-disabled-gray-x); cursor: not-allowed; }
