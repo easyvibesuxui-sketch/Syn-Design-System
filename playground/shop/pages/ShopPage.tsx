@@ -10,6 +10,7 @@ import { QuickOrder } from '../QuickOrder';
 import { AvailabilityBadge, Chips, ProductArt, QuantityStepper, ShopHeader } from '../parts';
 import { routeHref, useShop } from '../store';
 import { TermIcon } from '../termIcons';
+import { t } from '../i18n';
 
 type Sort = 'featured' | 'name' | 'price-asc' | 'price-desc';
 type View = 'grid' | 'table';
@@ -56,12 +57,12 @@ function sortProducts(list: Product[], sort: Sort) {
 function BuyControls({ product: p, onRequest, compact }: { product: Product; onRequest: (p: Product) => void; compact?: boolean }) {
   const { addToCart } = useShop();
   const [qty, setQty] = useState(1);
-  if (p.availability === 'Temporarily unavailable') return <Button size="sm" disabled>Unavailable</Button>;
-  if (!canOrder(p)) return <Button size="sm" variant="secondary" iconStart="mail" onClick={() => onRequest(p)}>Request price</Button>;
+  if (p.availability === 'Temporarily unavailable') return <Button size="sm" disabled>{t("Unavailable")}</Button>;
+  if (!canOrder(p)) return <Button size="sm" variant="secondary" iconStart="mail" onClick={() => onRequest(p)}>{t("Request price")}</Button>;
   return (
     <div className={cx('shop-buy-controls', compact && 'is-compact')}>
       <QuantityStepper size="xs" label={p.name} value={qty} onChange={setQty} />
-      <Button size="sm" iconStart="plus" onClick={() => { addToCart(p, qty); setQty(1); }}>Add</Button>
+      <Button size="sm" iconStart="plus" onClick={() => { addToCart(p, qty); setQty(1); }}>{t("Add")}</Button>
     </div>
   );
 }
@@ -74,29 +75,29 @@ function CardBuy({ product: p, onRequest }: { product: Product; onRequest: (p: P
   if (p.availability === 'Temporarily unavailable') return null;
   if (!canOrder(p)) {
     return (
-      <Tooltip content="Request a price" placement="left">
-        <button type="button" className="shop-card__fab" aria-label={`Request a price for ${p.name}`} onClick={() => onRequest(p)}><Icon name="mail" size={20} /></button>
+      <Tooltip content={t("Request a price")} placement="left">
+        <button type="button" className="shop-card__fab" aria-label={t("Request a price for {0}", [p.name])} onClick={() => onRequest(p)}><Icon name="mail" size={20} /></button>
       </Tooltip>
     );
   }
   if (!inCart) {
     return (
-      <Tooltip content="Add to cart" placement="left">
-        <button type="button" className="shop-card__fab" aria-label={`Add ${p.name} to cart`} onClick={() => addToCart(p, 1)}><Icon name="plus" size={20} /></button>
+      <Tooltip content={t("Add to cart")} placement="left">
+        <button type="button" className="shop-card__fab" aria-label={t("Add {0} to cart", [p.name])} onClick={() => addToCart(p, 1)}><Icon name="plus" size={20} /></button>
       </Tooltip>
     );
   }
   const last = inCart === 1;
   return (
-    <div className="shop-card__stepper" role="group" aria-label={`${p.name} in your cart`}>
+    <div className="shop-card__stepper" role="group" aria-label={t("{0} in your cart", [p.name])}>
       <IconButton
         icon={last ? 'trash' : 'minus'}
-        label={last ? `Remove ${p.name} from cart` : `Decrease ${p.name}`}
+        label={last ? t("Remove {0} from cart", [p.name]) : t("Decrease {0}", [p.name])}
         size="sm"
         onClick={() => (last ? removeFromCart(p.id) : setQty(p.id, inCart - 1))}
       />
       <output aria-live="polite">{inCart}</output>
-      <IconButton icon="plus" label={`Increase ${p.name}`} size="sm" disabled={inCart >= 999} onClick={() => setQty(p.id, inCart + 1)} />
+      <IconButton icon="plus" label={t("Increase {0}", [p.name])} size="sm" disabled={inCart >= 999} onClick={() => setQty(p.id, inCart + 1)} />
     </div>
   );
 }
@@ -114,24 +115,24 @@ function ProductCard({ product: p, onRequest }: { product: Product; onRequest: (
         </a>
         <span className="shop-card__stock">
           <AvailabilityBadge availability={p.availability} />
-          {p.badge && <span className="shop-card__flag">{p.badge}</span>}
+          {p.badge && <span className="shop-card__flag">{t(p.badge)}</span>}
         </span>
         <div className="shop-card__quick"><CardBuy product={p} onRequest={onRequest} /></div>
       </div>
       <div className="shop-card__body">
-        <span className="shop-card__kind">{p.category === 'Hardware' ? 'Hardware' : 'Tag'}</span>
+        <span className="shop-card__kind">{p.category === 'Hardware' ? t("Hardware") : t("Tag")}</span>
         <h3 className="shop-card__name"><a href={href}>{p.name}</a></h3>
-        <p className="shop-card__short">{p.short}</p>
+        <p className="shop-card__short">{t(p.short)}</p>
         <dl className="shop-card__facts">
-          {p.power && <div><dt>Power</dt><dd>{p.power}{p.ip ? ` · ${p.ip}` : ''}</dd></div>}
-          {forText && !repeats && <div><dt>For</dt><dd>{forText}</dd></div>}
+          {p.power && <div><dt>{t("Power")}</dt><dd>{t(p.power)}{p.ip ? ` · ${p.ip}` : ''}</dd></div>}
+          {forText && !repeats && <div><dt>{t("For")}</dt><dd>{t(forText)}</dd></div>}
         </dl>
         <Chips items={p.connectivity ?? []} />
       </div>
       <div className="shop-card__foot">
         <div className="shop-card__price">
           <span className="shop-price">{priceLabel(p)}</span>
-          <span className="shop-tax">{hasPrice(p) ? 'per item, excl. VAT' : 'quoted for your quantity'}</span>
+          <span className="shop-tax">{hasPrice(p) ? t("per item, excl. VAT") : t("quoted for your quantity")}</span>
         </div>
       </div>
     </article>
@@ -153,17 +154,17 @@ function SortMenu({ value, onChange }: { value: Sort; onChange: (s: Sort) => voi
   const current = sortOptions.find((o) => o.value === value) ?? sortOptions[0];
   return (
     <div className="shop-sort" ref={root}>
-      <button type="button" className="shop-sort__button" aria-expanded={open} aria-label={`Sort: ${current.label}`} onClick={() => setOpen(!open)}>
+      <button type="button" className="shop-sort__button" aria-expanded={open} aria-label={t("Sort: {0}", [t(current.label)])} onClick={() => setOpen(!open)}>
         <Icon name="sort" size={16} />
-        <span>Sort</span>
+        <span>{t("Sort")}</span>
         <Icon name="down" size={16} className="shop-sort__chevron" />
       </button>
       {open && (
-        <ul className="shop-sort__menu" aria-label="Sort by">
+        <ul className="shop-sort__menu" aria-label={t("Sort by")}>
           {sortOptions.map((o) => (
             <li key={o.value}>
               <button type="button" aria-pressed={o.value === value} onClick={() => { onChange(o.value as Sort); setOpen(false); }}>
-                {o.label}{o.value === value && <Icon name="check" size={16} />}
+                {t(o.label)}{o.value === value && <Icon name="check" size={16} />}
               </button>
             </li>
           ))}
@@ -190,10 +191,10 @@ function OrderIcon() {
 const viewHints: Record<View, string> = { grid: 'Grid view', table: 'List view' };
 function ViewSwitch({ value, onChange }: { value: View; onChange: (v: View) => void }) {
   return (
-    <div className="shop-view" role="radiogroup" aria-label="View">
+    <div className="shop-view" role="radiogroup" aria-label={t("View")}>
       {(['grid', 'table'] as View[]).map((v) => (
-        <Tooltip key={v} content={viewHints[v]} placement="bottom">
-          <button type="button" role="radio" aria-checked={value === v} aria-label={viewHints[v]} className={cx('shop-view__option', value === v && 'is-on')} onClick={() => onChange(v)}>
+        <Tooltip key={v} content={t(viewHints[v])} placement="bottom">
+          <button type="button" role="radio" aria-checked={value === v} aria-label={t(viewHints[v])} className={cx('shop-view__option', value === v && 'is-on')} onClick={() => onChange(v)}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="square" strokeLinejoin="miter" aria-hidden>
               {viewIcons[v].map((d) => <path key={d} d={d} />)}
             </svg>
@@ -228,7 +229,7 @@ function FilterGroup<T extends string>({ title, options, selected, onChange, cou
       </legend>
       <div id={bodyId} className="shop-filter__body" hidden={!open}>
       <div className="shop-filter__row">
-        <Checkbox label="All" checked={!selected.length} onChange={() => onChange([])} />
+        <Checkbox label={t("All")} checked={!selected.length} onChange={() => onChange([])} />
         <span className="shop-filter__count">{total}</span>
       </div>
       {shown.map((o) => {
@@ -237,7 +238,7 @@ function FilterGroup<T extends string>({ title, options, selected, onChange, cou
         return (
           <div key={o} className="shop-filter__row">
             <Checkbox
-              label={label ? label(o) : o}
+              label={t(label ? label(o) : o)}
               checked={on}
               disabled={!n && !on}
               onChange={() => onChange(on ? selected.filter((x) => x !== o) : [...selected, o])}
@@ -248,7 +249,7 @@ function FilterGroup<T extends string>({ title, options, selected, onChange, cou
       })}
       {limit && options.length > limit && (
         <Button size="xs" variant="text" className="shop-filter__more" aria-expanded={all} onClick={() => setAll(!all)}>
-          {all ? 'Show fewer' : `Show all ${options.length}`}
+          {all ? t("Show fewer") : t("Show all {0}", [options.length])}
         </Button>
       )}
       </div>
@@ -265,26 +266,32 @@ function FilterGroup<T extends string>({ title, options, selected, onChange, cou
  * A line never starts with “&” or “/”: they stay with the word before them.
  */
 function termLines(term: string, max = 3, fit = 13): string[] {
-  const words = term.split(' ');
+  // Break points: spaces, and soft hyphens (U+00AD) inside German compounds, shown as "-" when a line ends there.
+  const tokens: Array<{ text: string; soft: boolean }> = [];
+  for (const word of term.split(' ')) {
+    const parts = word.split('\u00AD');
+    parts.forEach((text, i) => tokens.push({ text, soft: i < parts.length - 1 }));
+  }
+  const line = (from: number, to: number) => tokens.slice(from, to).reduce((out, tok, i) => out + (i && !tokens[from + i - 1].soft ? ' ' : '') + tok.text, '') + (tokens[to - 1].soft ? '-' : '');
   const options: string[][] = [];
   const walk = (from: number, lines: string[]) => {
-    if (from === words.length) { options.push(lines); return; }
+    if (from === tokens.length) { options.push(lines); return; }
     if (lines.length === max) return;
-    for (let to = from + 1; to <= words.length; to++) {
-      if (to < words.length && /^[&/]$/.test(words[to])) continue;
-      walk(to, [...lines, words.slice(from, to).join(' ')]);
+    for (let to = from + 1; to <= tokens.length; to++) {
+      if (to < tokens.length && /^[&/]$/.test(tokens[to].text)) continue;
+      walk(to, [...lines, line(from, to)]);
     }
   };
   walk(0, []);
   const width = (lines: string[]) => Math.max(...lines.map((l) => l.length));
   const fitting = options.filter((o) => width(o) <= fit).sort((a, b) => a.length - b.length || width(a) - width(b));
-  return fitting[0] ?? options.sort((a, b) => width(a) - width(b))[0] ?? [term];
+  return fitting[0] ?? options.sort((a, b) => width(a) - width(b) || a.length - b.length)[0] ?? [term];
 }
 
 function TermLabel({ term }: { term: string }) {
   return (
     <span className="shop-termbar__label">
-      {termLines(term).map((line, i) => <span key={line}>{i > 0 && ' '}{line}</span>)}
+      {termLines(t(term)).map((line, i) => <span key={line}>{i > 0 && ' '}{line}</span>)}
     </span>
   );
 }
@@ -306,23 +313,23 @@ function TermBar({ terms, selected, onToggle, onAll }: { terms: string[]; select
   const scroll = (dir: 1 | -1) => row.current?.scrollBy({ left: dir * row.current.clientWidth * 0.8, behavior: 'smooth' });
   return (
     <div className="shop-termbar">
-      {!edges.start && <IconButton icon="back" label="Scroll back" size="sm" variant="outline" className="shop-termbar__arrow shop-termbar__arrow--start" onClick={() => scroll(-1)} />}
-      <div ref={row} className="shop-termbar__row" role="group" aria-label="Suitable for" onScroll={measure}>
+      {!edges.start && <IconButton icon="back" label={t("Scroll back")} size="sm" variant="outline" className="shop-termbar__arrow shop-termbar__arrow--start" onClick={() => scroll(-1)} />}
+      <div ref={row} className="shop-termbar__row" role="group" aria-label={t("Suitable for")} onScroll={measure}>
         <button type="button" className={cx('shop-termbar__item', !selected.length && 'is-on')} aria-pressed={!selected.length} onClick={onAll}>
           <TermIcon term={null} />
           <TermLabel term="All" />
         </button>
-        {terms.map((t) => {
-          const on = selected.includes(t);
+        {terms.map((term) => {
+          const on = selected.includes(term);
           return (
-            <button key={t} type="button" className={cx('shop-termbar__item', on && 'is-on')} aria-pressed={on} onClick={() => onToggle(t)}>
-              <TermIcon term={t} />
-              <TermLabel term={t} />
+            <button key={term} type="button" className={cx('shop-termbar__item', on && 'is-on')} aria-pressed={on} onClick={() => onToggle(term)}>
+              <TermIcon term={term} />
+              <TermLabel term={term} />
             </button>
           );
         })}
       </div>
-      {!edges.end && <IconButton icon="next" label="Scroll forward" size="sm" variant="outline" className="shop-termbar__arrow shop-termbar__arrow--end" onClick={() => scroll(1)} />}
+      {!edges.end && <IconButton icon="next" label={t("Scroll forward")} size="sm" variant="outline" className="shop-termbar__arrow shop-termbar__arrow--end" onClick={() => scroll(1)} />}
     </div>
   );
 }
@@ -375,47 +382,47 @@ export function ShopPage() {
   return (
     <>
       <ShopHeader
-        title="Shop"
-        lead="Order Syniotec hardware and passive tags directly from your platform."
-        extra={<Button size="sm" variant="secondary" className="shop-sku-button" onClick={() => setQuick(true)}><OrderIcon />Order by SKU</Button>}
+        title={t("Shop")}
+        lead={t("Order Syniotec hardware and passive tags directly from your platform.")}
+        extra={<Button size="sm" variant="secondary" className="shop-sku-button" onClick={() => setQuick(true)}><OrderIcon />{t("Order by SKU")}</Button>}
       />
 
       <section className="shop-panel shop-finder" aria-labelledby="finder-title">
         <div className="shop-panel__head">
-          <h2 id="finder-title" className="shop-panel__title">What do you want to track?</h2>
+          <h2 id="finder-title" className="shop-panel__title">{t("What do you want to track?")}</h2>
         </div>
         <TermBar terms={terms} selected={filters.use} onToggle={toggleUse} onAll={() => set('use')([])} />
       </section>
 
-      <ol className="shop-steps" aria-label="How ordering works">
+      <ol className="shop-steps" aria-label={t("How ordering works")}>
         {steps.map(([title, text], i) => (
           <li key={title}>
             <span className="shop-steps__n">{i + 1}</span>
-            <span className="shop-steps__text"><strong>{title}</strong><span>{text}</span></span>
+            <span className="shop-steps__text"><strong>{t(title)}</strong><span>{t(text)}</span></span>
           </li>
         ))}
       </ol>
 
       <div className="shop-catalog">
-        <aside className={cx('shop-filters', filtersOpen && 'is-open')} aria-label="Filters">
+        <aside className={cx('shop-filters', filtersOpen && 'is-open')} aria-label={t("Filters")}>
           <div className="shop-filters__head">
-            <h2 className="shop-panel__title">Filters{applied.length ? ` · ${applied.length}` : ''}</h2>
-            {applied.length > 0 && <Button size="xs" variant="secondary" className="shop-filters__clear" onClick={clearAll}>Clear all</Button>}
+            <h2 className="shop-panel__title">{t("Filters")}{applied.length ? ` · ${applied.length}` : ''}</h2>
+            {applied.length > 0 && <Button size="xs" variant="secondary" className="shop-filters__clear" onClick={clearAll}>{t("Clear all")}</Button>}
             {/* On narrow screens the filters fold away so the results stay near the top. */}
-            <Button size="xs" variant="secondary" className="shop-filters__toggle" aria-expanded={filtersOpen} onClick={() => setFiltersOpen(!filtersOpen)}>{filtersOpen ? 'Hide' : 'Show'}</Button>
+            <Button size="xs" variant="secondary" className="shop-filters__toggle" aria-expanded={filtersOpen} onClick={() => setFiltersOpen(!filtersOpen)}>{filtersOpen ? t("Hide") : t("Show")}</Button>
           </div>
-          <FilterGroup<Category> defaultOpen title="Category" options={['Hardware', 'Tags']} selected={filters.category} onChange={set('category')} counts={(o) => countWith('category', o)} total={countAll('category')} label={(o) => (o === 'Hardware' ? 'Active telematics' : 'Passive tags')} />
-          <FilterGroup<string> title="Suitable for" options={terms} selected={filters.use} onChange={set('use')} counts={(o) => countWith('use', o)} total={countAll('use')} limit={6} />
-          <FilterGroup<Power> title="Power source" options={POWER_OPTIONS} selected={filters.power} onChange={set('power')} counts={(o) => countWith('power', o)} total={countAll('power')} />
-          <FilterGroup<string> title="Connectivity" options={CONNECTIVITY} selected={filters.connectivity} onChange={set('connectivity')} counts={(o) => countWith('connectivity', o)} total={countAll('connectivity')} />
-          <FilterGroup<Availability> title="Availability" options={['Available', 'Available on request']} selected={filters.availability} onChange={set('availability')} counts={(o) => countWith('availability', o)} total={countAll('availability')} />
+          <FilterGroup<Category> defaultOpen title={t("Category")} options={['Hardware', 'Tags']} selected={filters.category} onChange={set('category')} counts={(o) => countWith('category', o)} total={countAll('category')} label={(o) => (o === 'Hardware' ? 'Active telematics' : 'Passive tags')} />
+          <FilterGroup<string> title={t("Suitable for")} options={terms} selected={filters.use} onChange={set('use')} counts={(o) => countWith('use', o)} total={countAll('use')} limit={6} />
+          <FilterGroup<Power> title={t("Power source")} options={POWER_OPTIONS} selected={filters.power} onChange={set('power')} counts={(o) => countWith('power', o)} total={countAll('power')} />
+          <FilterGroup<string> title={t("Connectivity")} options={CONNECTIVITY} selected={filters.connectivity} onChange={set('connectivity')} counts={(o) => countWith('connectivity', o)} total={countAll('connectivity')} />
+          <FilterGroup<Availability> title={t("Availability")} options={['Available', 'Available on request']} selected={filters.availability} onChange={set('availability')} counts={(o) => countWith('availability', o)} total={countAll('availability')} />
         </aside>
 
         <section className="shop-results" aria-labelledby="results-title">
           <div className="shop-results__bar">
             <TextField
               className="shop-results__search"
-              label="Search by name, SKU or connectivity"
+              label={t("Search by name, SKU or connectivity")}
               hideLabel
               size="sm"
               iconStart="search"
@@ -431,13 +438,13 @@ export function ShopPage() {
           </div>
           {applied.length > 0 && (
             <div className="shop-results__meta">
-              {applied.map(([label, remove]) => <Tag key={label} variant="soft" onRemove={remove} removeLabel={`Remove filter ${label}`}>{label}</Tag>)}
+              {applied.map(([label, remove]) => <Tag key={label} variant="soft" onRemove={remove} removeLabel={t("Remove filter {0}", [t(label)])}>{t(label)}</Tag>)}
             </div>
           )}
 
           {!list.length && (
-            <EmptyState icon="search" action={<Button size="sm" variant="secondary" onClick={clearAll}>Clear filters</Button>}>
-              No products found. Try a different search or fewer filters.
+            <EmptyState icon="search" action={<Button size="sm" variant="secondary" onClick={clearAll}>{t("Clear filters")}</Button>}>
+              {t("No products found. Try a different search or fewer filters.")}
             </EmptyState>
           )}
 
@@ -449,25 +456,25 @@ export function ShopPage() {
 
           {list.length > 0 && view === 'table' && (
             <Table
-              caption="Products"
+              caption={t("Products")}
               className="shop-table shop-product-table"
               rows={list}
               rowKey={(p) => p.id}
               columns={[
                 {
-                  key: 'name', header: 'Product', width: '26%', render: (p) => (
+                  key: 'name', header: t("Product"), width: '26%', render: (p) => (
                     <a className="shop-product-cell" href={routeHref({ name: 'product', id: p.id })}>
                       <ProductArt src={p.image} type={p.type} alt="" size="xs" />
-                      <span className="shop-cell"><strong>{p.name}</strong><span>SKU · {p.id}</span></span>
+                      <span className="shop-cell"><strong>{p.name}</strong><span>{t("SKU ·")} {p.id}</span></span>
                     </a>
                   ),
                 },
-                { key: 'use', header: 'Suitable for', render: (p) => suitableFor(p) ?? '—' },
-                { key: 'power', header: 'Power', render: (p) => p.power ?? '—' },
-                { key: 'conn', header: 'Connectivity', render: (p) => p.connectivity?.join(', ') || '—' },
-                { key: 'availability', header: 'Availability', render: (p) => <AvailabilityBadge availability={p.availability} /> },
-                { key: 'price', header: 'Price', align: 'end', render: (p) => <strong>{priceLabel(p)}</strong> },
-                { key: 'buy', header: 'Order', render: (p) => <BuyControls product={p} onRequest={setRequesting} compact /> },
+                { key: 'use', header: t("Suitable for"), render: (p) => t(suitableFor(p) ?? '—') },
+                { key: 'power', header: t("Power"), render: (p) => (p.power ? t(p.power) : '—') },
+                { key: 'conn', header: t("Connectivity"), render: (p) => p.connectivity?.join(', ') || '—' },
+                { key: 'availability', header: t("Availability"), render: (p) => <AvailabilityBadge availability={p.availability} /> },
+                { key: 'price', header: t("Price"), align: 'end', render: (p) => <strong>{priceLabel(p)}</strong> },
+                { key: 'buy', header: t("Order"), render: (p) => <BuyControls product={p} onRequest={setRequesting} compact /> },
               ]}
             />
           )}
@@ -476,13 +483,13 @@ export function ShopPage() {
 
       <aside className="shop-context">
         <div>
-          <strong>Strengthening the construction industry with IoT solutions</strong>
-          <p className="shop-muted">Syniotec combines manufacturer-independent telematics with software designed for construction. Devices appear in the platform after installation and commissioning.</p>
+          <strong>{t("Strengthening the construction industry with IoT solutions")}</strong>
+          <p className="shop-muted">{t("Syniotec combines manufacturer-independent telematics with software designed for construction. Devices appear in the platform after installation and commissioning.")}</p>
         </div>
         <ul className="shop-context__points">
-          <li>Platform integration</li>
-          <li>Equipment tracking</li>
-          <li>Digital equipment profiles</li>
+          <li>{t("Platform integration")}</li>
+          <li>{t("Equipment tracking")}</li>
+          <li>{t("Digital equipment profiles")}</li>
         </ul>
       </aside>
 

@@ -323,18 +323,9 @@ html { scroll-behavior: smooth; }
 
 /* Shop Admin: the prototype's side navigation next to the content. */
 .shop-admin { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: var(--syn-space-16); align-items: start; }
-.shop-admin__nav { position: sticky; top: 72px; display: flex; flex-direction: column; gap: var(--syn-space-2); padding: var(--syn-space-8); border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-widget); background: var(--syn-surface-default); }
-.shop-admin__nav .shop-eyebrow { padding: var(--syn-space-6) var(--syn-space-8); }
-.shop-admin__nav a { display: flex; align-items: center; gap: var(--syn-space-8); height: var(--syn-size-control-sm); padding: 0 var(--syn-space-8); border-radius: var(--syn-radius-element); color: var(--syn-text-secondary); font: var(--syn-type-text-body-s); text-decoration: none; }
-.shop-admin__nav a:hover { background: var(--syn-surface-muted); color: var(--syn-text-primary); }
-.shop-admin__nav a.is-active { background: var(--syn-surface-inverse); color: var(--syn-color-white-white); }
-.shop-admin__nav a:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
 .shop-admin__main { min-width: 0; }
 @media (max-width: 760px) {
   .shop-admin { grid-template-columns: minmax(0, 1fr); }
-  .shop-admin__nav { position: static; flex-direction: row; overflow-x: auto; }
-  .shop-admin__nav .shop-eyebrow { display: none; }
-  .shop-admin__nav a { flex: none; }
 }
 
 /* Shared pieces kept from the earlier passes. */
@@ -787,3 +778,13 @@ html { scroll-behavior: smooth; }
 .shop-account__langs[data-lang="de"] .shop-account__lang-thumb { transform: translateX(calc(100% + var(--syn-space-8))); }
 @media (prefers-reduced-motion: reduce) { .shop-account__lang-thumb { transition: none; } }
 .shop-account__lang-thumb { z-index: 2; }
+
+/* Cards: three per row again (two under 1100px, one under 640px), with the 4:3 photo that suits the narrower card. */
+.shop-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--syn-space-16); }
+.shop-card__media .shop-art { aspect-ratio: 4 / 3; }
+@media (max-width: 1100px) { .shop-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .shop-cards { grid-template-columns: minmax(0, 1fr); } }
+
+/* Shop Admin: the library Tabs above the section, full width. */
+.shop-admin { grid-template-columns: minmax(0, 1fr); }
+.shop-admin__tabs { margin-bottom: var(--syn-space-4); }

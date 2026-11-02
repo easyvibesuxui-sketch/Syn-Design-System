@@ -5,6 +5,7 @@ import tagQr from './assets/tag-qr.webp';
 import toolTags from './assets/tool-tags.webp';
 import chainTag from './assets/chain-tag.webp';
 import tagCollage from './assets/tag-collage.webp';
+import { getLang, t } from './i18n';
 
 export { tagCollage };
 
@@ -331,12 +332,14 @@ export const seedOrders: Order[] = [
   },
 ];
 
-const euro = new Intl.NumberFormat('en-IE', { style: 'currency', currency: 'EUR' });
-export const money = (n: number) => euro.format(Number(n) || 0);
+// Prices follow the Shop language: €688.00 in English, 688,00 € in German.
+const euro = { en: new Intl.NumberFormat('en-IE', { style: 'currency', currency: 'EUR' }), de: new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }) };
+export const money = (n: number) => euro[getLang()].format(Number(n) || 0);
 export const hasPrice = (p: Pick<Product, 'price'>) => Number(p.price) > 0;
-export const priceLabel = (p: Pick<Product, 'price'>) => (hasPrice(p) ? money(p.price) : 'Price on request');
+export const priceLabel = (p: Pick<Product, 'price'>) => (hasPrice(p) ? money(p.price) : t('Price on request'));
 export const canOrder = (p: Product) => p.active && p.availability !== 'Temporarily unavailable' && hasPrice(p);
-export const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
+/** "3 items" / "3 Artikel": the German dictionary has an entry for the singular and for the English plural (word + s). */
+export const plural = (n: number, word: string) => `${n} ${t(n === 1 ? word : `${word}s`)}`;
 
 export function stamp(now = new Date()) {
   const two = (n: number) => String(n).padStart(2, '0');

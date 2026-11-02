@@ -9,6 +9,7 @@ import tagsArt from './assets/device-tags.svg';
 import toolArt from './assets/device-tool.svg';
 import chainArt from './assets/device-chain.svg';
 import qrArt from './assets/device-qr.svg';
+import { t } from './i18n';
 
 const illustrations: Record<ArtType, string> = { hardware: hardwareArt, dot: dotArt, tags: tagsArt, tool: toolArt, chain: chainArt, qr: qrArt };
 
@@ -46,7 +47,7 @@ const chipIcon: Partial<Record<string, IconName>> = { Bluetooth: 'bloetooth', 'N
 export function Chips({ items }: { items: string[] }) {
   if (!items.length) return null;
   return (
-    <ul className="shop-chips" aria-label="Connectivity">
+    <ul className="shop-chips" aria-label={t("Connectivity")}>
       {items.map((c) => {
         const icon = chipIcon[c];
         return (
@@ -66,14 +67,14 @@ const availabilityTone: Record<Availability, StatusTone> = {
   'Temporarily unavailable': 'error',
 };
 export function AvailabilityBadge({ availability }: { availability: Availability }) {
-  return <StatusBadge tone={availabilityTone[availability]}>{availability}</StatusBadge>;
+  return <StatusBadge tone={availabilityTone[availability]}>{t(availability)}</StatusBadge>;
 }
 
 const orderTone: Record<OrderStatus, StatusTone> = {
   Submitted: 'neutral', Confirmed: 'info', Processing: 'progress', Shipped: 'info', Completed: 'success', Cancelled: 'error',
 };
 export function OrderStatusBadge({ status }: { status: OrderStatus }) {
-  return <StatusBadge tone={orderTone[status]}>{status}</StatusBadge>;
+  return <StatusBadge tone={orderTone[status]}>{t(status)}</StatusBadge>;
 }
 
 /** Minus, the quantity and plus. Syn has no number stepper yet, so it is built from two outline IconButtons. */
@@ -81,10 +82,10 @@ export function QuantityStepper({ value, onChange, label, size = 'sm' }: {
   value: number; onChange: (qty: number) => void; label: string; size?: 'xs' | 'sm';
 }) {
   return (
-    <div className={cx('shop-stepper', `shop-stepper--${size}`)} role="group" aria-label={`${label} quantity`}>
-      <IconButton icon="minus" label={`Decrease ${label}`} size={size} variant="outline" disabled={value <= 1} onClick={() => onChange(value - 1)} />
+    <div className={cx('shop-stepper', `shop-stepper--${size}`)} role="group" aria-label={t("{0} quantity", [label])}>
+      <IconButton icon="minus" label={t("Decrease {0}", [label])} size={size} variant="outline" disabled={value <= 1} onClick={() => onChange(value - 1)} />
       <output className="shop-stepper__value" aria-live="polite">{value}</output>
-      <IconButton icon="plus" label={`Increase ${label}`} size={size} variant="outline" disabled={value >= 999} onClick={() => onChange(value + 1)} />
+      <IconButton icon="plus" label={t("Increase {0}", [label])} size={size} variant="outline" disabled={value >= 999} onClick={() => onChange(value + 1)} />
     </div>
   );
 }
@@ -98,15 +99,15 @@ export function ShopHeader({ title, lead, back, extra }: {
   return (
     <PageHeader
       // The landing page's title already says Shop, as does the top bar; the eyebrow only adds context on other pages.
-      eyebrow={title === 'Shop' || back ? undefined : 'Syniotec Shop'}
+      eyebrow={title === 'Shop' || back ? undefined : t("Syniotec Shop")}
       before={back && <BackLink href={back.href} onClick={back.onClick}>{back.label}</BackLink>}
       title={title}
       lead={lead}
       actions={<>
-        {!back && <LinkButton href={routeHref({ name: 'orders' })} iconStart="history" variant="text">My orders</LinkButton>}
+        {!back && <LinkButton href={routeHref({ name: 'orders' })} iconStart="history" variant="text">{t("My orders")}</LinkButton>}
         {extra}
-        <Button size="sm" className="shop-cart-button" onClick={() => setCartOpen(true)} aria-label={cartQty ? `Cart, ${plural(cartQty, 'item')}` : 'Cart'}>
-          <LineIcon name="cart" size={16} />Cart{cartQty > 0 && <span className="shop-count" aria-hidden>{cartQty}</span>}
+        <Button size="sm" className="shop-cart-button" onClick={() => setCartOpen(true)} aria-label={cartQty ? t("Cart, {0}", [plural(cartQty, 'item')]) : t("Cart")}>
+          <LineIcon name="cart" size={16} />{t("Cart")}{cartQty > 0 && <span className="shop-count" aria-hidden>{cartQty}</span>}
         </Button>
       </>}
     />
@@ -161,7 +162,7 @@ export function SpecList({ rows, empty }: { rows: Array<[string, ReactNode]>; em
   return (
     <dl className="shop-specs">
       {rows.map(([k, v], i) => (
-        <div key={`${k}-${i}`} className="shop-specs__row"><dt>{k}</dt><dd>{v}</dd></div>
+        <div key={`${k}-${i}`} className="shop-specs__row"><dt>{t(k)}</dt><dd>{typeof v === 'string' ? t(v) : v}</dd></div>
       ))}
     </dl>
   );
@@ -171,10 +172,10 @@ export function SpecList({ rows, empty }: { rows: Array<[string, ReactNode]>; em
 export function Summary({ total, subtotal = true }: { total: number; subtotal?: boolean }) {
   return (
     <dl className="shop-summary">
-      {subtotal && <div><dt>Subtotal</dt><dd>{money(total)}</dd></div>}
-      <div><dt>VAT</dt><dd>Excluded</dd></div>
-      {subtotal && <div><dt>Delivery</dt><dd>Confirmed separately</dd></div>}
-      <div className="shop-summary__total"><dt>Total</dt><dd>{money(total)}</dd></div>
+      {subtotal && <div><dt>{t("Subtotal")}</dt><dd>{money(total)}</dd></div>}
+      <div><dt>{t("VAT")}</dt><dd>{t("Excluded")}</dd></div>
+      {subtotal && <div><dt>{t("Delivery")}</dt><dd>{t("Confirmed separately")}</dd></div>}
+      <div className="shop-summary__total"><dt>{t("Total")}</dt><dd>{money(total)}</dd></div>
     </dl>
   );
 }

@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { NotificationTone } from '../../src';
 import { CURRENT_USER, canOrder, defaultProducts, plural, seedOrders, stamp, type CartLine, type Order, type PriceRequest, type Product } from './data';
+import { t } from './i18n';
 
 export type AdminTab = 'overview' | 'products' | 'orders';
 export type Route =
@@ -92,7 +93,7 @@ function useShopState() {
     setToasts([{ id, tone, title, message, action }]);
     window.setTimeout(() => dismiss(id), action ? 6000 : 4000);
   }, [dismiss]);
-  const viewCart = useMemo(() => ({ label: 'View cart', run: () => setCartOpen(true) }), []);
+  const viewCart = useMemo(() => ({ label: t("View cart"), run: () => setCartOpen(true) }), []);
 
   // Cart lines only count while their product is still active and orderable.
   const lines = useMemo(
@@ -121,10 +122,10 @@ function useShopState() {
 
   const addToCart = useCallback((p: Product, qty = 1) => {
     if (!addLines([{ product: p, qty }])) {
-      notify(`${p.name} can’t be ordered right now`, 'It is unavailable or has no price yet. Request a price instead.', 'warning');
+      notify(t("{0} can’t be ordered right now", [p.name]), t("It is unavailable or has no price yet. Request a price instead."), 'warning');
       return;
     }
-    notify(`${qty} × ${p.name} added to your cart`, 'Prices are excl. VAT. You can change quantities before sending the order.', 'success', viewCart);
+    notify(t("{0} × {1} added to your cart", [qty, p.name]), t("Prices are excl. VAT. You can change quantities before sending the order."), 'success', viewCart);
   }, [addLines, notify, viewCart]);
 
   /** Order again: puts an earlier order's products back in the cart at today's prices. */
@@ -134,12 +135,12 @@ function useShopState() {
     const added = addLines(items);
     const skipped = order.items.length - added;
     if (!added) {
-      notify('Nothing could be added', `None of the products from ${order.id} can be ordered right now.`, 'warning');
+      notify(t("Nothing could be added"), t("None of the products from {0} can be ordered right now.", [order.id]), 'warning');
       return;
     }
     notify(
-      `${plural(added, 'product')} from ${order.id} added to your cart`,
-      skipped ? `${plural(skipped, 'product')} can’t be ordered right now and ${skipped === 1 ? 'was' : 'were'} left out. Prices are today’s.` : 'Same quantities as last time, at today’s prices.',
+      t("{0} from {1} added to your cart", [plural(added, 'product'), order.id]),
+      skipped ? t("{0} can’t be ordered right now and {1} left out. Prices are today’s.", [plural(skipped, 'product'), skipped === 1 ? 'was' : 'were']) : t("Same quantities as last time, at today’s prices."),
       skipped ? 'warning' : 'success',
       viewCart,
     );
@@ -148,7 +149,7 @@ function useShopState() {
   const requestPrice = useCallback((p: Product, qty: number, note: string) => {
     const now = stamp();
     setRequests((list) => [{ id: `PR-${now.year}-${String(list.length + 31).padStart(4, '0')}`, productId: p.id, productName: p.name, qty, note, date: now.both, requestedBy: CURRENT_USER.name }, ...list]);
-    notify('Price request sent', `Syniotec will reply with a price for ${qty} × ${p.name} by email.`);
+    notify(t("Price request sent"), t("Syniotec will reply with a price for {0} × {1} by email.", [qty, p.name]));
   }, [notify, setRequests]);
 
   const setQty = useCallback((productId: string, qty: number) => {

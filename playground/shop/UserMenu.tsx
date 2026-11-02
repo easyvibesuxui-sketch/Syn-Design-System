@@ -3,6 +3,7 @@ import { Button, Icon } from '../../src';
 import { cx } from '../../src/utils';
 import { CURRENT_USER } from './data';
 import { useShop } from './store';
+import { setLang, t, useLang, type Lang } from './i18n';
 
 /*
  * Top-right corner of the platform bar: Create, notifications and the account menu. Bell and log-out come from
@@ -40,8 +41,6 @@ function Flag({ country }: { country: 'gb' | 'de' }) {
   );
 }
 
-type Lang = 'en' | 'de';
-
 const initials = CURRENT_USER.name.split(' ').map((w) => `${w[0]}.`).join('');
 
 export function TopbarActions() {
@@ -49,7 +48,7 @@ export function TopbarActions() {
   const [open, setOpen] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
-  const outside = (label: string) => notify(label, `${label} is outside this Shop prototype.`, 'info');
+  const outside = (label: string) => notify(label, t("{0} is outside this Shop prototype.", [label]), 'info');
 
   useEffect(() => {
     if (!open) return;
@@ -62,31 +61,24 @@ export function TopbarActions() {
   }, [open]);
 
   const choose = (action: () => void) => () => { setOpen(false); action(); };
-  const [lang, setLang] = useState<Lang>(() => {
-    try { return localStorage.getItem('syn-shop-v3:lang') === 'de' ? 'de' : 'en'; } catch { return 'en'; }
-  });
-  // The switch stays open so the move is visible; the texts themselves are English only in this prototype.
-  const pickLang = (l: Lang) => {
-    if (l === lang) return;
-    setLang(l);
-    try { localStorage.setItem('syn-shop-v3:lang', l); } catch { /* storage blocked: keep the choice in memory */ }
-    if (l === 'de') notify('Language set to Deutsch', 'The Shop prototype’s texts are still in English.', 'info');
-  };
+  const lang = useLang();
+  // The switch stays open so the move is visible; every text follows the new language.
+  const pickLang = (l: Lang) => setLang(l);
 
   return (
     <div className="shop-topbar__end">
-      <Button size="sm" variant="secondary" iconStart="plus-in-circle" className="shop-create" aria-label="Create" onClick={() => outside('Create')}>
-        <span className="shop-create__label">Create</span>
+      <Button size="sm" variant="secondary" iconStart="plus-in-circle" className="shop-create" aria-label={t("Create")} onClick={() => outside('Create')}>
+        <span className="shop-create__label">{t("Create")}</span>
       </Button>
-      <button type="button" className="shop-topbar__icon" aria-label="Notifications" onClick={() => notify('No new notifications', 'You’re all caught up.', 'info')}>
+      <button type="button" className="shop-topbar__icon" aria-label={t("Notifications")} onClick={() => notify(t("No new notifications"), t("You’re all caught up."), 'info')}>
         <TablerIcon name="bell" size={24} />
       </button>
       <div className="shop-account" ref={root}>
-        <button ref={trigger} type="button" className="shop-account__trigger" aria-label={`Account: ${CURRENT_USER.name}`} aria-haspopup="true" aria-expanded={open} onClick={() => setOpen(!open)}>
+        <button ref={trigger} type="button" className="shop-account__trigger" aria-label={t("Account: {0}", [CURRENT_USER.name])} aria-haspopup="true" aria-expanded={open} onClick={() => setOpen(!open)}>
           {initials}
         </button>
         {open && (
-          <div className="shop-account__menu" role="dialog" aria-label="Account">
+          <div className="shop-account__menu" role="dialog" aria-label={t("Account")}>
             <div className="shop-account__card">
               <div className="shop-account__who">
                 <span className="shop-account__photo" aria-hidden>{initials}</span>
@@ -96,21 +88,21 @@ export function TopbarActions() {
             </div>
             <button type="button" className="shop-account__row" onClick={choose(() => outside('Profile'))}>
               <span className="shop-account__tile"><Icon name="settings" size={20} /></span>
-              <span>Profile</span>
+              <span>{t("Profile")}</span>
               <span className="shop-account__more"><Icon name="next" size={16} /></span>
             </button>
-            <div className="shop-account__langs" role="radiogroup" aria-label="Language" data-lang={lang}>
+            <div className="shop-account__langs" role="radiogroup" aria-label={t("Language")} data-lang={lang}>
               {/* The outline is one element that slides under whichever language is chosen. */}
               <span className="shop-account__lang-thumb" aria-hidden />
               {(['en', 'de'] as Lang[]).map((l) => (
                 <button key={l} type="button" role="radio" aria-checked={lang === l} className={cx('shop-account__lang', lang === l && 'is-on')} onClick={() => pickLang(l)}>
-                  <Flag country={l === 'en' ? 'gb' : 'de'} />{l === 'en' ? 'English' : 'Deutsch'}
+                  <Flag country={l === 'en' ? 'gb' : 'de'} />{l === 'en' ? t("English") : t("Deutsch")}
                 </button>
               ))}
             </div>
             <button type="button" className="shop-account__row" onClick={choose(() => outside('Log out'))}>
               <span className="shop-account__tile"><TablerIcon name="logout" /></span>
-              <span>Log out</span>
+              <span>{t("Log out")}</span>
             </button>
           </div>
         )}

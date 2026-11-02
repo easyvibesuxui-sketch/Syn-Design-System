@@ -4,6 +4,7 @@ import { cx } from '../../src/utils';
 import { canOrder, money, plural, type Product } from './data';
 import { DrawerIntro, DrawerLabel } from './parts';
 import { useShop } from './store';
+import { t } from './i18n';
 
 interface Parsed {
   line: string;
@@ -38,7 +39,7 @@ export function QuickOrder({ open, onClose }: { open: boolean; onClose: () => vo
 
   const add = () => {
     const added = addLines(ok.map((r) => ({ product: r.product!, qty: r.qty })));
-    notify(`${plural(added, 'product')} added to your cart`, rows.length > ok.length ? `${plural(rows.length - ok.length, 'line')} could not be added; check them in Quick order.` : 'You can change quantities in the cart.', rows.length > ok.length ? 'warning' : 'success');
+    notify(t("{0} added to your cart", [plural(added, 'product')]), rows.length > ok.length ? t("{0} could not be added; check them in Quick order.", [plural(rows.length - ok.length, 'line')]) : t("You can change quantities in the cart."), rows.length > ok.length ? 'warning' : 'success');
     setText(rows.filter((r) => r.problem).map((r) => r.line).join('\n'));
     onClose();
     setCartOpen(true);
@@ -46,44 +47,45 @@ export function QuickOrder({ open, onClose }: { open: boolean; onClose: () => vo
 
   return (
     <Drawer
+      closeLabel={t('Close')}
       open={open}
       onClose={onClose}
-      label="Quick order"
+      label={t("Quick order")}
       width={560}
-      headerStart={<DrawerLabel>Quick order</DrawerLabel>}
+      headerStart={<DrawerLabel>{t("Quick order")}</DrawerLabel>}
       footer={<>
-        <Button variant="text" onClick={onClose}>Cancel</Button>
-        <Button size="md" disabled={!ok.length} onClick={add}>{ok.length ? `Add ${plural(ok.length, 'product')} to cart` : 'Add to cart'}</Button>
+        <Button variant="text" onClick={onClose}>{t("Cancel")}</Button>
+        <Button size="md" disabled={!ok.length} onClick={add}>{ok.length ? t("Add {0} to cart", [plural(ok.length, 'product')]) : t("Add to cart")}</Button>
       </>}
     >
       {/* The header already names the drawer, so the body opens with what to do. */}
-      <DrawerIntro>Know the SKUs? Paste them here and add everything to the cart at once.</DrawerIntro>
+      <DrawerIntro>{t("Know the SKUs? Paste them here and add everything to the cart at once.")}</DrawerIntro>
       <div className="shop-drawer-body shop-quick-form">
         <TextArea
-          label="Products and quantities"
+          label={t("Products and quantities")}
           hideLabel={false}
           labelPosition="outside"
-          hint="One product per line: SKU or name, then the quantity. You can paste a column from Excel."
-          placeholder={'DOT 10\nTAG-S 15\nQR-Sticker 40'}
+          hint={t("One product per line: SKU or name, then the quantity. You can paste a column from Excel.")}
+          placeholder={t("DOT 10\nTAG-S 15\nQR-Sticker 40")}
           rows={6}
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
         {rows.length > 0 && (
-          <ul className="shop-quick" aria-label="Recognised lines">
+          <ul className="shop-quick" aria-label={t("Recognised lines")}>
             {rows.map((r, i) => (
               <li key={`${r.line}-${i}`} className={cx(r.problem && 'is-problem')}>
                 <Icon name={r.problem ? 'warning' : 'check'} size={16} />
                 <span className="shop-cell">
                   <strong>{r.product ? r.product.name : r.line}</strong>
-                  <span>{r.problem ? `${r.problem}${r.product ? '' : ` · “${r.line}”`}` : `${r.qty} × ${money(r.product!.price)}`}</span>
+                  <span>{r.problem ? `${t(r.problem)}${r.product ? '' : ` · “${r.line}”`}` : `${r.qty} × ${money(r.product!.price)}`}</span>
                 </span>
                 {!r.problem && <strong>{money(r.qty * r.product!.price)}</strong>}
               </li>
             ))}
           </ul>
         )}
-        {ok.length > 0 && <p className="shop-quick__total"><span>Subtotal excl. VAT</span><strong>{money(total)}</strong></p>}
+        {ok.length > 0 && <p className="shop-quick__total"><span>{t("Subtotal excl. VAT")}</span><strong>{money(total)}</strong></p>}
       </div>
     </Drawer>
   );
