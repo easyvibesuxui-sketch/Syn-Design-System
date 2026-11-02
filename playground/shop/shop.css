@@ -722,8 +722,7 @@ html { scroll-behavior: smooth; }
 .syn-drawer-row.shop-drawer-heading--flush { border-bottom: 0; }
 .shop-drawer-heading--flush .shop-drawer-heading__lead { margin-top: 0; }
 /* Quick order: the intro and the field's helper text share the description style, Montserrat 12 in Silver Chalice. */
-.shop-drawer-heading--flush .shop-drawer-heading__lead,
-.shop-quick-form .syn-field-messages p.syn-field-messages__hint { color: var(--syn-text-muted); font: var(--syn-type-text-body-xs-2); }
+.shop-drawer-heading--flush .shop-drawer-heading__lead { color: var(--syn-text-muted); font: var(--syn-type-text-body-xs-2); }
 
 /* My orders: the whole row opens the order's drawer. */
 .shop-rows-open tbody tr { cursor: pointer; transition: background-color var(--syn-duration-fast); }
@@ -779,3 +778,12 @@ html { scroll-behavior: smooth; }
 .shop-sort__menu button { min-height: 40px; height: auto; padding: var(--syn-space-10) var(--syn-space-12); border-radius: 0; color: var(--syn-text-secondary); font: var(--syn-type-text-body-s-2); }
 .shop-sort__menu button:hover, .shop-sort__menu button:focus-visible { background: var(--syn-surface-highlight); color: var(--syn-text-primary); outline: none; }
 .shop-sort__menu button[aria-pressed="true"] { color: var(--syn-text-primary); font: var(--syn-type-text-body-s); }
+
+/* Inputs, following the library and the Shop's label rule:
+   - field hints read like descriptions: 12px Montserrat in Silver Chalice (errors keep their red);
+   - read-only fields use the library's locked fill so they don't look editable. */
+.shop-app .syn-field-messages p.syn-field-messages__hint { color: var(--syn-text-muted); font: var(--syn-type-text-body-xs-2); }
+.shop-app .syn-field:has(input[readonly]) .syn-field__box { background: var(--syn-surface-muted); }
+.shop-app .syn-field:has(input[readonly]) .syn-field__input { color: var(--syn-text-secondary); cursor: default; }
+/* Labels for controls that aren't text fields (Quantity): the same 12px ABC Favorit Medium as an outside field label. */
+.shop-field-label { color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }

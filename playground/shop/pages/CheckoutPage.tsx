@@ -142,9 +142,9 @@ export function CheckoutPage() {
               </Grid>
             )}
             <Grid gap={16}>
-              <GridItem span={12}>{field('reference', 'PO / Reference number (optional)', { placeholder: 'PO / Reference number (optional), e.g. SITE-NORD-042', hint: 'Printed on the invoice so your accounting can match it' })}</GridItem>
+              <GridItem span={12}>{field('reference', 'PO / Reference number (optional)', { hint: 'For example SITE-NORD-042. Printed on the invoice so your accounting can match it.' })}</GridItem>
               <GridItem span={12}>
-                <TextArea label="Comment (optional)" hideLabel={false} hint="For example a contact on site or delivery hours" placeholder="Add delivery or order instructions" value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} rows={3} />
+                <TextArea label="Comment (optional)" hideLabel={false} labelPosition="outside" hint="For example a contact on site or delivery hours" placeholder="Add delivery or order instructions" value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} rows={3} />
               </GridItem>
             </Grid>
           </Section>

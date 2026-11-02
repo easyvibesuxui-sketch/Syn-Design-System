@@ -116,8 +116,8 @@ export function ProductEditor({ open, productId, onClose }: { open: boolean; pro
               <Select label="Default illustration" hideLabel={false} size="md" value={form.type} onChange={(v) => set('type', v as ArtType)} options={artOptions} />
             </GridItem>
             <GridItem span={12}><TextField label="Short description *" size="md" value={form.short} error={errors.short} onChange={(e) => set('short', e.target.value)} /></GridItem>
-            <GridItem span={12}><TextArea label="Description" hideLabel={false} rows={3} value={form.description} onChange={(e) => set('description', e.target.value)} /></GridItem>
-            <GridItem span={12}><TextArea label="Key benefits / feature lines" hideLabel={false} hint="One per line" rows={3} value={form.features} onChange={(e) => set('features', e.target.value)} /></GridItem>
+            <GridItem span={12}><TextArea label="Description" hideLabel={false} labelPosition="outside" rows={3} value={form.description} onChange={(e) => set('description', e.target.value)} /></GridItem>
+            <GridItem span={12}><TextArea label="Key benefits / feature lines" hideLabel={false} labelPosition="outside" hint="One per line" rows={3} value={form.features} onChange={(e) => set('features', e.target.value)} /></GridItem>
           </Grid>
         </Section>
 
@@ -161,7 +161,7 @@ export function ProductEditor({ open, productId, onClose }: { open: boolean; pro
         </Section>
 
         <Section title="Documents">
-          <TextArea label="Document names" hideLabel={false} hint="One per line" rows={3} value={form.docs} onChange={(e) => set('docs', e.target.value)} />
+          <TextArea label="Document names" hideLabel={false} labelPosition="outside" hint="One per line" rows={3} value={form.docs} onChange={(e) => set('docs', e.target.value)} />
         </Section>
       </div>
 

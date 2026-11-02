@@ -21,10 +21,10 @@ export function PriceRequestDialog({ product, onClose }: { product: Product | nu
       {product && (
         <div className="shop-stack shop-price-request">
           <div className="shop-row shop-row--between">
-            <span className="shop-card-title">Quantity</span>
+            <span className="shop-field-label">Quantity</span>
             <QuantityStepper label={product.name} value={qty} onChange={setQty} />
           </div>
-          <TextArea label="Note for Syniotec" hideLabel={false} hint="Optional, e.g. delivery date or site" rows={3} value={note} onChange={(e) => setNote(e.target.value)} />
+          <TextArea label="Note for Syniotec" hideLabel={false} labelPosition="outside" hint="Optional, e.g. delivery date or site" rows={3} value={note} onChange={(e) => setNote(e.target.value)} />
         </div>
       )}
     </Dialog>

@@ -92,7 +92,7 @@ export function ProductPage({ id }: { id: string }) {
           {unavailable ? (
             <Button size="md" fullWidth disabled>Temporarily unavailable</Button>
           ) : canOrder(p) ? (<>
-            <span className="shop-card-title">Quantity</span>
+            <span className="shop-field-label">Quantity</span>
             <div className="shop-buy__row">
               <QuantityStepper label={p.name} value={qty} onChange={setQty} />
               <Button size="md" fullWidth iconStart="plus" onClick={() => addToCart(p, qty)}>

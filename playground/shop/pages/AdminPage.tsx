@@ -192,7 +192,7 @@ function OrderDrawer({ order, onClose }: { order: Order | null; onClose: () => v
           <div className="shop-stack">
             <Section title="Processing">
               <Select label="Status" hideLabel={false} size="md" value={status} onChange={(v) => setStatus(v as OrderStatus)} options={ORDER_STATUSES.map((s) => ({ value: s, label: s }))} />
-              <TextArea label="Internal note" hideLabel={false} hint="Not visible to customer" rows={4} value={note} onChange={(e) => setNote(e.target.value)} />
+              <TextArea label="Internal note" hideLabel={false} labelPosition="outside" hint="Not visible to customer" rows={4} value={note} onChange={(e) => setNote(e.target.value)} />
             </Section>
             <Section title="Status history">
               <ol className="shop-timeline">
