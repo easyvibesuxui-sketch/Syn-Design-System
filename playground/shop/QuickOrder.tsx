@@ -62,6 +62,7 @@ export function QuickOrder({ open, onClose }: { open: boolean; onClose: () => vo
         <TextArea
           label="Products and quantities"
           hideLabel={false}
+          labelPosition="outside"
           hint="One product per line: SKU or name, then the quantity. You can paste a column from Excel."
           placeholder={'DOT 10\nTAG-S 15\nQR-Sticker 40'}
           rows={6}
