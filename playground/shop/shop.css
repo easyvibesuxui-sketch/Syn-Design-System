@@ -545,7 +545,6 @@ html { scroll-behavior: smooth; }
 
 /* Top-right: Create, notifications and the account menu. */
 .shop-topbar__end { display: flex; align-items: center; justify-self: end; gap: var(--syn-space-16); }
-.shop-create { border-color: var(--syn-border-default); }
 .shop-create .syn-icon { color: var(--syn-action-brand); }
 .shop-topbar__icon { display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 0; border-radius: var(--syn-radius-full); background: none; color: var(--syn-text-secondary); cursor: pointer; }
 .shop-topbar__icon:hover { background: var(--syn-surface-muted); color: var(--syn-text-primary); }
@@ -610,16 +609,9 @@ html { scroll-behavior: smooth; }
    In the header, Cart is the primary action, Order by SKU secondary and My orders a plain link. */
 .shop-finder .shop-panel__title { font: var(--syn-type-titles-title-2); }
 .shop-steps__n { width: 24px; height: 24px; font: var(--syn-type-text-body-xs); }
-.shop-page-head__actions .syn-button--text { font: var(--syn-type-button-text-button-secondary-s); padding-inline: var(--syn-space-12); }
 
-/* Review round 2. Header actions share one 36px height and 8px radius: Cart is the filled primary, Order by SKU a light
-   outline that darkens on hover, My orders a plain link. */
-.shop-page-head__actions { align-items: center; gap: var(--syn-space-8); }
-.shop-page-head__actions .syn-button { height: var(--syn-size-control-sm); gap: var(--syn-space-8); padding-inline: var(--syn-space-16); border-radius: var(--syn-radius-element); font: var(--syn-type-button-text-button-secondary-s); transition: border-color var(--syn-duration-fast), background-color var(--syn-duration-fast); }
-.shop-page-head__actions .syn-button--secondary { border-color: var(--syn-border-default); }
-.shop-page-head__actions .syn-button--secondary:hover { border-color: var(--syn-border-strong); background: var(--syn-surface-default); }
-.shop-page-head__actions .syn-button--text { padding-inline: var(--syn-space-12); }
-.shop-page-head__actions .syn-button--text:hover { background: var(--syn-surface-default); }
+/* Header actions are plain library buttons (sm): Cart primary, Order by SKU secondary, My orders a text button. */
+.shop-page-head__actions { align-items: center; gap: var(--syn-space-16); }
 
 /* Steps: brand-red number in a light ring, black title, grey description; thin dividers between the steps. */
 .shop-steps li { align-items: center; gap: var(--syn-space-12); }
@@ -640,7 +632,6 @@ html { scroll-behavior: smooth; }
 .shop-card__stock .syn-status-badge { height: 24px; padding: 0 var(--syn-space-8); border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-full); background: var(--syn-surface-default); color: var(--syn-text-primary); font: var(--syn-type-text-body-xs-2); }
 .shop-card__badge { position: absolute; top: var(--syn-space-12); right: var(--syn-space-12); }
 .shop-card__quick { position: absolute; right: var(--syn-space-12); bottom: var(--syn-space-12); }
-.shop-card__quick .syn-button { border-radius: var(--syn-radius-element); }
 .shop-card__stepper { display: flex; align-items: center; gap: var(--syn-space-2); height: var(--syn-size-control-sm); padding: 0 var(--syn-space-2); border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-element); background: var(--syn-surface-default); box-shadow: var(--syn-shadow-default); }
 .shop-card__stepper output { min-width: 24px; text-align: center; font: var(--syn-type-text-body-s); font-variant-numeric: tabular-nums; }
 .shop-card__kind { color: var(--syn-text-secondary); font: var(--syn-type-titles-title-6); letter-spacing: 0.08em; text-transform: uppercase; }
