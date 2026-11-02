@@ -107,7 +107,7 @@ export function ShopHeader({ title, lead, back, extra }: {
         {!back && <LinkButton href={routeHref({ name: 'orders' })} iconStart="history" variant="text">{t("My orders")}</LinkButton>}
         {extra}
         <Button size="sm" className="shop-cart-button" onClick={() => setCartOpen(true)} aria-label={cartQty ? t("Cart, {0}", [plural(cartQty, 'item')]) : t("Cart")}>
-          <LineIcon name="cart" size={16} />{t("Cart")}{cartQty > 0 && <span className="shop-count" aria-hidden>{cartQty}</span>}
+          <LineIcon name="cart" size={16} /><span className="shop-cart-button__text">{t("Cart")}</span>{cartQty > 0 && <span className="shop-count" aria-hidden>{cartQty}</span>}
         </Button>
       </>}
     />
