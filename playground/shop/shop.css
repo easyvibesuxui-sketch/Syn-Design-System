@@ -770,3 +770,5 @@ html { scroll-behavior: smooth; }
 /* Most used tag: pill corners like the stock pill, on the Syn highlight surface (Misty Rose) with Dark Sienna text,
    so it reads as a highlight, not as a disabled control. */
 .shop-card__flag { border-radius: var(--syn-radius-full); padding: 0 var(--syn-space-10); background: var(--syn-surface-highlight); color: var(--syn-color-secondary-dark-sienna); font: var(--syn-type-text-body-xs); }
+/* Most used text: library black (Eerie Black), Medium. */
+.shop-card__flag { color: var(--syn-text-primary); font: var(--syn-type-text-body-xs); font-weight: var(--syn-font-weight-medium); }
