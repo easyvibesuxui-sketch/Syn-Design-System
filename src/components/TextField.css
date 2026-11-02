@@ -134,3 +134,28 @@
 
 /* Password: the bullets are spaced like Figma's dots. */
 .syn-field__input[type='password']:not(:placeholder-shown) { letter-spacing: 0.24em; }
+
+/* Figma "Search no Outline": white, no border in any state; focus draws a 1px Silver Chalice line under the
+   text instead of the ring; disabled is Cultured. */
+.syn-field--plain .syn-field__box,
+.syn-field--plain .syn-field__box:hover,
+.syn-field--plain .syn-field__box:focus-within { box-shadow: none; }
+.syn-field--plain .syn-field__stack { position: relative; }
+.syn-field--plain .syn-field__box:focus-within .syn-field__stack::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: calc(50% - 12px);
+  left: 0;
+  height: 1px;
+  background: var(--syn-color-secondary-silver-chalince);
+}
+.syn-field--plain.has-value .syn-field__box:focus-within .syn-field__stack::after { display: none; }
+.syn-field--plain.is-disabled .syn-field__box { box-shadow: none; }
+
+/* Figma "Waiting": label, text and icons Silver Chalice, the field read-only. */
+.syn-field.is-waiting .syn-field__label,
+.syn-field.is-waiting .syn-field__input,
+.syn-field.is-waiting .syn-field__affix,
+.syn-field.is-waiting .syn-password__eye { color: var(--syn-color-secondary-silver-chalince); }
+.syn-field.is-waiting .syn-field__box { cursor: progress; }

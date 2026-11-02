@@ -18,6 +18,13 @@ Figma: *Buttons → Buttons large* (`State × Size × Stile`).
 `IconButton` (Figma *Close button*): round ghost button, `size` `xs` 24 (default) · `sm` 36 · `md` 48 · `lg` 56,
 requires `label`. `variant="outline"` is the white square with a Cultured border used for row "more" buttons.
 
+## Size rule for fields
+
+Every field uses the TextField sizes: heights `lg` 56 · `md` 48 · `sm` 36 · `xs` 24; without a label the text is
+Regular 16 / 14 / 14 / 12; with the label inside it sits up at Regular 12 over Regular 14 (`lg`) or 10 over 12 (`md`,
+`sm`); an outside label is Regular 14 Jet (12 at `sm`/`xs`). Select, QuantityField, PasswordField, PhoneField and
+TextArea (64 / 56 / 48 high) follow it.
+
 ## TextField
 
 Figma: *Inputs → input large / Default size input / Small size input* and the icon and unit variants.
@@ -33,7 +40,9 @@ clear button: 24px Ghost circle with Figma's 12px Jet X, 1.5px lines), `clearVis
 only while the field has focus and a value; `always`: every state, as in *input large* and *multiple error*),
 `persistentLabel`, `showCount` with `maxLength` ("0/20"), `labelPosition` (`inside` default, or `outside`: Regular 14
 Jet above the box, 12 at `sm`/`xs`, 8px gap, and the box shows only the placeholder and value), `endAdornment` (a
-control after the clear button). The order at the end of the box is clear X, `suffix`, `endAdornment`, `iconEnd`, as
+control after the clear button), `variant` (`outline` default, or `plain`: Figma *Search no Outline*, no border in
+any state and a 1px Silver Chalice line under the text while focused), `waiting` (Figma *Waiting*: label and text
+Silver Chalice, read-only). The order at the end of the box is clear X, `suffix`, `endAdornment`, `iconEnd`, as
 in Figma. `iconEnd="info-button"` draws Figma's 24px grey info circle.
 
 ## PasswordField
@@ -205,7 +214,9 @@ square + button (32px, 24px at `sm`; 1px Eerie Black border, Cultured on hover).
 `error` is Snow with a Vermilion border and the message 2px below; disabled is Cultured with a Gray X border.
 `showLabel` puts the Regular 16 Jet label 16px above. `min`, `max`, `step`, `value`/`defaultValue` (a number or
 null), `onChange`, `placeholder` ("Quantity"), `prefix`/`suffix` ("kg"), `onRemove` (at the minimum the − becomes
-a trash button on Smoke). `role="spinbutton"`; Up and Down step the value.
+a trash button on Smoke). `role="spinbutton"`; Up and Down step the value. `variant="stepper"` is Figma *Quantity Field Type 1*: the number on
+the left and up/down arrows stacked at the right edge (lines Eerie Black and arrows Candy Apple on hover), with
+`onClear` for the X while typing.
 
 ## Skeleton
 

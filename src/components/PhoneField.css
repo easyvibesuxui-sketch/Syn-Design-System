@@ -8,8 +8,7 @@
 .syn-phone__number { margin-top: -1px; }
 .syn-phone__number .syn-field__box { border-top-left-radius: 0; border-top-right-radius: 0; }
 .syn-phone__country .syn-select__anchor:focus-within, .syn-phone__number .syn-field__box:focus-within { position: relative; z-index: 1; }
-/* Figma "Phone input def size": the number field uses a Regular 12 label over Regular 14 text at md. */
-.syn-phone--md .syn-phone__number { --field-label: var(--syn-type-text-body-xs-2); --field-value: var(--syn-type-text-body-s-2); }
+/* Sizes and type follow the text field (the input rule), so both boxes read alike at every size. */
 /* The phone icon is Jet, and the dialling code shows only once the number has focus or a value. */
 .syn-phone__number .syn-field__icon { color: var(--syn-color-secondary-jet); }
 .syn-phone__number.syn-field--floating:not(.has-value) .syn-field__box:not(:focus-within) .syn-field__affix--prefix { display: none; }

@@ -225,6 +225,9 @@ export function App() {
             <PhoneField size="sm" />
             <PhoneField labelPosition="outside" label="Phone" defaultCountry="GE" defaultValue="123 4548 657" />
             <PhoneField disabled defaultCountry="GE" />
+            <PasswordField label="Password" defaultValue="secret12" waiting />
+            <TextField label="Search" variant="plain" hideLabel iconStart="search" placeholder="By name or ID" onClear={() => {}} />
+            <TextField label="Search" variant="plain" hideLabel size="md" iconStart="search" defaultValue="By name or ID" onClear={() => {}} />
           </div>
         </Section>
 
@@ -237,6 +240,10 @@ export function App() {
             <QuantityField label="Quantity" size="md" defaultValue={3} prefix="Pref" suffix="Suff" />
             <QuantityField label="Quantity" size="sm" defaultValue={2} error="Only 1 left in stock" />
             <QuantityField label="Quantity" showLabel disabled />
+            <QuantityField label="Quantity" variant="stepper" placeholder="Helper text" onClear={() => {}} />
+            <QuantityField label="Quantity" variant="stepper" size="md" defaultValue={123} />
+            <QuantityField label="Quantity" variant="stepper" size="sm" defaultValue={4} error="Too many" />
+            <QuantityField label="Quantity" variant="stepper" disabled placeholder="Helper text" />
           </div>
           <div className="pg-grid" style={{ marginTop: 24 }}>
             <div style={{ display: 'grid', gap: 8 }}>

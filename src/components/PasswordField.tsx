@@ -16,7 +16,7 @@ export interface PasswordFieldProps extends Omit<TextFieldProps, 'type' | 'endAd
  * Hidden: Eerie Black eye; shown: Silver Chalice eye-closed. Label inside or outside, sizes lg / md / sm.
  */
 export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(function PasswordField(
-  { defaultVisible = false, showLabel = 'Show password', hideLabelText = 'Hide password', label = 'Password', placeholder, disabled, className, ...rest },
+  { defaultVisible = false, showLabel = 'Show password', hideLabelText = 'Hide password', label = 'Password', placeholder, disabled, waiting, className, ...rest },
   ref,
 ) {
   const [visible, setVisible] = useState(defaultVisible);
@@ -28,6 +28,7 @@ export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(fu
       type={visible ? 'text' : 'password'}
       autoComplete="current-password"
       disabled={disabled}
+      waiting={waiting}
       className={cx('syn-password', className)}
       endAdornment={
         <button
@@ -35,10 +36,10 @@ export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(fu
           className={cx('syn-password__eye', visible && 'is-visible')}
           aria-label={visible ? hideLabelText : showLabel}
           aria-pressed={visible}
-          disabled={disabled}
+          disabled={disabled || waiting}
           onClick={() => setVisible((v) => !v)}
         >
-          <Icon name={visible ? 'eye-closed' : 'eye'} size={20} />
+          <Icon name={visible || waiting ? 'eye-closed' : 'eye'} size={20} />
         </button>
       }
       {...rest}

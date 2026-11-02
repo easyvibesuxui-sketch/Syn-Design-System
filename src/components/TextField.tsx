@@ -51,12 +51,19 @@ export interface TextFieldProps extends Omit<InputHTMLAttributes<HTMLInputElemen
   labelPosition?: 'inside' | 'outside';
   /** A control after the clear button, e.g. the password eye. */
   endAdornment?: ReactNode;
+  /**
+   * outline (default) = the bordered field. plain = Figma "Search no Outline": no border in any state, a 1px
+   * Silver Chalice line under the text while focused, Cultured when disabled.
+   */
+  variant?: 'outline' | 'plain';
+  /** Figma "Waiting" (e.g. a password being filled in): label and text turn Silver Chalice and the field is read-only. */
+  waiting?: boolean;
 }
 
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function TextField(
   {
     label, size = 'lg', hideLabel = false, placeholder, hint, error, iconStart, iconEnd, prefix, suffix, onClear, showCount,
-    persistentLabel = false, clearVisibility = 'typing', labelPosition = 'inside', endAdornment,
+    persistentLabel = false, clearVisibility = 'typing', labelPosition = 'inside', endAdornment, variant = 'outline', waiting = false,
     id, className, disabled, value, defaultValue, onChange, maxLength, ...rest
   },
   ref,
@@ -79,6 +86,8 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function T
         `syn-field--${size}`,
         noLabel ? 'syn-field--no-label' : persistentLabel ? 'syn-field--fixed-label' : 'syn-field--floating',
         outside && 'syn-field--outside',
+        variant === 'plain' && 'syn-field--plain',
+        waiting && 'is-waiting',
         hasValue && 'has-value',
         invalid && 'is-invalid',
         disabled && 'is-disabled',
@@ -97,6 +106,8 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function T
             className="syn-field__input"
             placeholder={placeholder ?? label}
             disabled={disabled}
+            readOnly={waiting || rest.readOnly}
+            aria-busy={waiting || undefined}
             value={value}
             defaultValue={value === undefined ? defaultValue : undefined}
             maxLength={maxLength}

@@ -1,4 +1,5 @@
-/* Figma "Quantity field type 2" with the steppers moved inside: one field (56 / 48 / 36, 8px corners) holding
+/* Sizes and type follow the text field (the input rule): 56 / 48 / 36, Regular 16 / 14 / 14 numbers.
+   Figma "Quantity field type 2" with the steppers moved inside: one field (56 / 48 / 36, 8px corners) holding
    a − button, the centred number and a + button. Border states follow the text field: Cultured, Eerie Black on
    hover, 2px when focused; error is Snow with a Vermilion border; disabled is Cultured with a Gray X border. */
 .syn-quantity {
@@ -12,7 +13,7 @@
   max-width: 100%;
 }
 .syn-quantity--md { --q-h: 48px; --q-pad: var(--syn-space-8); --q-value: var(--syn-type-text-body-s-2); }
-.syn-quantity--sm { --q-h: 36px; --q-pad: var(--syn-space-6); --q-btn: 24px; --q-value: var(--syn-type-text-body-xs-2); }
+.syn-quantity--sm { --q-h: 36px; --q-pad: var(--syn-space-6); --q-btn: 24px; --q-value: var(--syn-type-text-body-s-2); }
 
 /* "Quantity Field Label": Regular 16 Jet, 16px above the field. */
 .syn-quantity__label { margin-bottom: var(--syn-space-16); color: var(--syn-color-secondary-jet); font: var(--syn-type-text-body-m-2); }
@@ -83,3 +84,36 @@
 .syn-quantity.is-disabled .syn-quantity__input,
 .syn-quantity.is-disabled .syn-quantity__input::placeholder,
 .syn-quantity.is-disabled .syn-quantity__affix { color: var(--syn-color-disabled-gray-x); cursor: not-allowed; }
+
+/* Figma "Quantity Field Type 1" (variant="stepper"): the number on the left (padding 16) and two stacked
+   arrow buttons flush right, split by Cultured lines; on hover the lines turn Eerie Black and the arrows
+   Candy Apple. The clear X shows while typing. */
+.syn-quantity--stepper { --q-arrow: 28px; }
+.syn-quantity--stepper.syn-quantity--md { --q-arrow: 24px; }
+.syn-quantity--stepper.syn-quantity--sm { --q-arrow: 24px; }
+.syn-quantity--stepper .syn-quantity__box { overflow: hidden; padding: 0 0 0 var(--syn-space-16); }
+.syn-quantity--stepper.syn-quantity--sm .syn-quantity__box { padding-left: var(--syn-space-8); }
+.syn-quantity--stepper .syn-quantity__value { justify-content: flex-start; }
+.syn-quantity--stepper .syn-quantity__input { flex: 1; width: 100%; text-align: left; }
+.syn-quantity__box:focus-within .syn-field__clear--typing { display: inline-flex; }
+.syn-quantity__arrows { display: flex; flex: none; flex-direction: column; align-self: stretch; width: var(--q-arrow); }
+.syn-quantity__arrow {
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-left: 1px solid var(--syn-color-grey-cultured);
+  background: transparent;
+  color: var(--syn-color-black-eerie-black);
+  cursor: pointer;
+  transition: color var(--syn-duration-fast), border-color var(--syn-duration-fast);
+}
+.syn-quantity__arrow + .syn-quantity__arrow { border-top: 1px solid var(--syn-color-grey-cultured); }
+.syn-quantity--stepper .syn-quantity__box:hover .syn-quantity__arrow,
+.syn-quantity--stepper .syn-quantity__box:focus-within .syn-quantity__arrow { border-color: var(--syn-color-black-eerie-black); color: var(--syn-color-primary-candy-apple); }
+.syn-quantity__arrow:disabled,
+.syn-quantity--stepper .syn-quantity__box:hover .syn-quantity__arrow:disabled { color: var(--syn-color-disabled-gray-x); cursor: not-allowed; }
+.syn-quantity--stepper.is-disabled .syn-quantity__arrow { border-color: var(--syn-color-disabled-gray-x); }
