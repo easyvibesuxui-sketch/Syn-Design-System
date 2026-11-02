@@ -178,11 +178,11 @@ const viewIcons: Record<View, string[]> = {
   grid: ['M4 4h6v6h-6z', 'M14 4h6v6h-6z', 'M4 14h6v6h-6z', 'M14 14h6v6h-6z'],
   table: ['M9 6l11 0', 'M9 12l11 0', 'M9 18l11 0', 'M5 6l0 .01', 'M5 12l0 .01', 'M5 18l0 .01'],
 };
-/** Order form for “Order by SKU” (Tabler clipboard-list, MIT): a list of items to order. */
+/** Order slip for “Order by SKU” (Tabler receipt, MIT): reads as an order, not as a contact or a menu. */
 function OrderIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="square" strokeLinejoin="miter" aria-hidden>
-      {['M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2', 'M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z', 'M9 12l.01 0', 'M13 12l2 0', 'M9 16l.01 0', 'M13 16l2 0'].map((d) => <path key={d} d={d} />)}
+      <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2m4 -14h6m-6 4h6m-2 4h2" />
     </svg>
   );
 }
