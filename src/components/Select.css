@@ -88,3 +88,15 @@
 .syn-select__option.is-active { background: var(--syn-surface-highlight); color: var(--syn-text-primary); }
 .syn-select__option[aria-selected='true'] { color: var(--syn-text-primary); font: var(--syn-type-text-body-m); }
 .syn-select__option[aria-disabled='true'] { color: var(--syn-text-disabled); cursor: not-allowed; }
+
+/* Options line up with the field above: same left padding as the field's text, and at md/sm/xs the same smaller type
+   (only lg keeps 16px options). The list scrolls with a thin Silver Chalice bar instead of the system one. */
+.syn-select__option { padding: var(--syn-space-10) var(--syn-space-12) var(--syn-space-10) var(--field-pad-left, var(--syn-space-8)); }
+.syn-field--md .syn-select__option, .syn-field--sm .syn-select__option { min-height: 40px; font: var(--syn-type-text-body-s-2); }
+.syn-field--md .syn-select__option[aria-selected='true'], .syn-field--sm .syn-select__option[aria-selected='true'] { font: var(--syn-type-text-body-s); }
+.syn-field--xs .syn-select__option { min-height: 32px; font: var(--syn-type-text-body-xs-2); }
+.syn-field--xs .syn-select__option[aria-selected='true'] { font: var(--syn-type-text-body-xs); }
+.syn-select__list { scrollbar-width: thin; scrollbar-color: var(--syn-border-muted) transparent; }
+.syn-select__list::-webkit-scrollbar { width: 6px; }
+.syn-select__list::-webkit-scrollbar-thumb { border-radius: var(--syn-radius-full); background: var(--syn-border-muted); }
+.syn-select__list::-webkit-scrollbar-track { background: transparent; }
