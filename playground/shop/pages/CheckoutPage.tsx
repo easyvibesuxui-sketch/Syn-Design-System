@@ -136,7 +136,9 @@ export function CheckoutPage() {
                 <GridItem span={12}>{field('billingAddress', 'Billing address *')}</GridItem>
                 <GridItem span={6}>{field('billingZip', 'ZIP / Postal code *')}</GridItem>
                 <GridItem span={6}>{field('billingCity', 'City *')}</GridItem>
-                <GridItem span={12}>{field('billingCountry', 'Country *')}</GridItem>
+                <GridItem span={12}>
+                  <Select label="Country *" hideLabel={false} size="md" value={form.billingCountry} onChange={(billingCountry) => setForm({ ...form, billingCountry })} options={COUNTRIES.map((c) => ({ value: c, label: c }))} />
+                </GridItem>
               </Grid>
             )}
             <Grid gap={16}>

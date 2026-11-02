@@ -772,3 +772,10 @@ html { scroll-behavior: smooth; }
 .shop-card__flag { border-radius: var(--syn-radius-full); padding: 0 var(--syn-space-10); background: var(--syn-surface-highlight); color: var(--syn-color-secondary-dark-sienna); font: var(--syn-type-text-body-xs); }
 /* Most used text: library black (Eerie Black), Medium. */
 .shop-card__flag { color: var(--syn-text-primary); font: var(--syn-type-text-body-xs); font-weight: var(--syn-font-weight-medium); }
+
+/* Sort menu uses the library's dropdown list: 14px options at the field's padding, Misty Rose hover, check on the
+   chosen one, 8px corners and the float shadow. */
+.shop-sort__menu { padding: var(--syn-space-4) 0; }
+.shop-sort__menu button { min-height: 40px; height: auto; padding: var(--syn-space-10) var(--syn-space-12); border-radius: 0; color: var(--syn-text-secondary); font: var(--syn-type-text-body-s-2); }
+.shop-sort__menu button:hover, .shop-sort__menu button:focus-visible { background: var(--syn-surface-highlight); color: var(--syn-text-primary); outline: none; }
+.shop-sort__menu button[aria-pressed="true"] { color: var(--syn-text-primary); font: var(--syn-type-text-body-s); }
