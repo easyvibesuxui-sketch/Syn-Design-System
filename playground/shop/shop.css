@@ -784,3 +784,13 @@ html { scroll-behavior: smooth; }
 /* Shop Admin: the library Tabs above the section, full width. */
 .shop-admin { grid-template-columns: minmax(0, 1fr); }
 .shop-admin__tabs { margin-bottom: var(--syn-space-4); }
+
+/* Product images are always shown whole and centred: the image is placed inside its frame's padding (--art-t / --art-x
+   / --art-b) with object-fit: scale-down: large images shrink to fit, small ones keep their own size (never blurred), none is cropped. On cards and in the gallery the top
+   padding keeps the image clear of the stock / Most used badges and the + button that sit over the photo. */
+.shop-art { --art-t: var(--syn-space-12); --art-x: var(--syn-space-12); --art-b: var(--syn-space-12); position: relative; }
+.shop-art img { position: absolute; top: var(--art-t); left: var(--art-x); width: calc(100% - 2 * var(--art-x)); height: calc(100% - var(--art-t) - var(--art-b)); max-width: none; max-height: none; object-fit: scale-down; object-position: center; }
+.shop-art--xs { --art-t: var(--syn-space-4); --art-x: var(--syn-space-4); --art-b: var(--syn-space-4); }
+.shop-card__media .shop-art { --art-t: 84px; --art-x: var(--syn-space-24); --art-b: var(--syn-space-20); }
+.shop-card__media .shop-art img, .shop-art--lg img, .shop-art--xs img { max-width: none; max-height: none; }
+.shop-gallery > .shop-art { --art-t: 64px; --art-x: var(--syn-space-32); --art-b: var(--syn-space-32); }
