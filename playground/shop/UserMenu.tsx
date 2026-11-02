@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button, Icon } from '../../src';
+import { cx } from '../../src/utils';
 import { CURRENT_USER } from './data';
 import { useShop } from './store';
 
@@ -39,6 +40,8 @@ function Flag({ country }: { country: 'gb' | 'de' }) {
   );
 }
 
+type Lang = 'en' | 'de';
+
 const initials = CURRENT_USER.name.split(' ').map((w) => `${w[0]}.`).join('');
 
 export function TopbarActions() {
@@ -59,6 +62,16 @@ export function TopbarActions() {
   }, [open]);
 
   const choose = (action: () => void) => () => { setOpen(false); action(); };
+  const [lang, setLang] = useState<Lang>(() => {
+    try { return localStorage.getItem('syn-shop-v3:lang') === 'de' ? 'de' : 'en'; } catch { return 'en'; }
+  });
+  // The switch stays open so the move is visible; the texts themselves are English only in this prototype.
+  const pickLang = (l: Lang) => {
+    if (l === lang) return;
+    setLang(l);
+    try { localStorage.setItem('syn-shop-v3:lang', l); } catch { /* storage blocked: keep the choice in memory */ }
+    if (l === 'de') notify('Language set to Deutsch', 'The Shop prototype’s texts are still in English.', 'info');
+  };
 
   return (
     <div className="shop-topbar__end">
@@ -86,11 +99,14 @@ export function TopbarActions() {
               <span>Profile</span>
               <span className="shop-account__more"><Icon name="next" size={16} /></span>
             </button>
-            <div className="shop-account__langs" role="group" aria-label="Language">
-              <button type="button" className="shop-account__lang is-on" aria-pressed="true"><Flag country="gb" />English</button>
-              <button type="button" className="shop-account__lang" aria-pressed="false" onClick={choose(() => notify('Deutsch is coming soon', 'This Shop prototype is in English only for now.', 'info'))}>
-                <Flag country="de" />Deutsch
-              </button>
+            <div className="shop-account__langs" role="radiogroup" aria-label="Language" data-lang={lang}>
+              {/* The outline is one element that slides under whichever language is chosen. */}
+              <span className="shop-account__lang-thumb" aria-hidden />
+              {(['en', 'de'] as Lang[]).map((l) => (
+                <button key={l} type="button" role="radio" aria-checked={lang === l} className={cx('shop-account__lang', lang === l && 'is-on')} onClick={() => pickLang(l)}>
+                  <Flag country={l === 'en' ? 'gb' : 'de'} />{l === 'en' ? 'English' : 'Deutsch'}
+                </button>
+              ))}
             </div>
             <button type="button" className="shop-account__row" onClick={choose(() => outside('Log out'))}>
               <span className="shop-account__tile"><TablerIcon name="logout" /></span>

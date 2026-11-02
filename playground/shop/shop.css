@@ -778,3 +778,12 @@ html { scroll-behavior: smooth; }
 .shop-app .syn-field:has(input[readonly]) .syn-field__input { color: var(--syn-text-secondary); cursor: default; }
 /* Labels for controls that aren't text fields (Quantity): the same 12px ABC Favorit Medium as an outside field label. */
 .shop-field-label { color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
+
+/* Language switch: one outline (the thumb) slides from English to Deutsch and back; the options themselves stay flat. */
+.shop-account__langs { position: relative; }
+.shop-account__lang { position: relative; z-index: 1; }
+.shop-account__lang.is-on { border-color: transparent; }
+.shop-account__lang-thumb { position: absolute; top: var(--syn-space-12); left: 0; width: calc(50% - var(--syn-space-4)); height: var(--syn-size-control-sm); border: 1px solid var(--syn-border-strong); border-radius: var(--syn-radius-element); pointer-events: none; transition: transform var(--syn-duration-base) ease; }
+.shop-account__langs[data-lang="de"] .shop-account__lang-thumb { transform: translateX(calc(100% + var(--syn-space-8))); }
+@media (prefers-reduced-motion: reduce) { .shop-account__lang-thumb { transition: none; } }
+.shop-account__lang-thumb { z-index: 2; }
