@@ -764,3 +764,6 @@ html { scroll-behavior: smooth; }
 /* Most used, calmer: white round badge with a light outline and a black outline star, like the + button. */
 .shop-card__flag { border-color: var(--syn-border-default); background: var(--syn-surface-default); color: var(--syn-text-primary); box-shadow: var(--syn-shadow-default); }
 .shop-card__flag .syn-icon { color: var(--syn-text-primary); }
+/* Most used is a label, not a control: a small grey tag under the stock pill, no outline, shadow or pointer. */
+.shop-card__stock { flex-direction: column; align-items: flex-start; gap: var(--syn-space-6); }
+.shop-card__flag { width: auto; height: 24px; padding: 0 var(--syn-space-8); border: 0; border-radius: var(--syn-radius-xs); background: var(--syn-surface-muted); color: var(--syn-text-primary); box-shadow: none; font: var(--syn-type-text-body-xs-2); }
