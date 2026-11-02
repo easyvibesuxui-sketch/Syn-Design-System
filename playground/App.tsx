@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import {
   Accordion, Button, Checkbox, Dialog, Grid, GridItem, Icon, IconButton, NewTab, Notification, Radio, RadioGroup, Select,
-  Slider, StatusBadge, StatusChip, Switch, Tabs, TextArea, TextField, Tooltip, Tag, QuantityField, Skeleton, FileItem, ProgressBar, iconData, iconNames, tokens,
+  Slider, StatusBadge, StatusChip, Switch, Tabs, TextArea, TextField, Tooltip, Tag, QuantityField, Skeleton, PasswordField, PhoneField, FileItem, ProgressBar, iconData, iconNames, tokens,
 } from '../src';
 import { RecordDrawer } from './RecordDrawer';
 
@@ -204,6 +204,27 @@ export function App() {
             <TextArea label="Additional information" hideLabel={false} size="sm" defaultValue="Text area" maxLength={20} showCount />
             <TextArea label="Additional information" hideLabel={false} labelPosition="outside" placeholder="Helper text" maxLength={20} showCount />
             <TextArea label="Additional information" hideLabel={false} disabled maxLength={20} showCount />
+          </div>
+          <h3 className="pg-sub">Label outside, by size</h3>
+          <div className="pg-grid">
+            <TextField label="First name" labelPosition="outside" placeholder="E.G. John Doe" onClear={() => {}} />
+            <TextField label="First name" labelPosition="outside" size="md" iconStart="person" placeholder="E.G. John Doe" />
+            <TextField label="First name" labelPosition="outside" size="sm" defaultValue="John Doe" onClear={() => {}} />
+            <TextField label="First name" labelPosition="outside" error="Dummy text error message" />
+            <TextArea label="Additional information" hideLabel={false} labelPosition="outside" size="md" placeholder="Helper text" maxLength={20} showCount />
+            <TextArea label="Additional information" hideLabel={false} labelPosition="outside" size="sm" placeholder="Helper text" />
+            <TextField label="Price" prefix="$" iconEnd="info-button" onClear={() => {}} />
+          </div>
+          <h3 className="pg-sub">Password and phone</h3>
+          <div className="pg-grid">
+            <PasswordField label="Password" placeholder="Minimum 8 characters" onClear={() => {}} />
+            <PasswordField label="Password" size="md" defaultValue="secret12" />
+            <PasswordField label="Password" size="sm" labelPosition="outside" defaultValue="secret12" defaultVisible />
+            <PasswordField label="Password" prefix="$" disabled />
+            <PhoneField defaultCountry="GE" onClear={() => {}} />
+            <PhoneField size="sm" />
+            <PhoneField labelPosition="outside" label="Phone" defaultCountry="GE" defaultValue="123 4548 657" />
+            <PhoneField disabled defaultCountry="GE" />
           </div>
         </Section>
 

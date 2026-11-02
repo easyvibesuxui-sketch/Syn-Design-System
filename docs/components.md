@@ -23,15 +23,32 @@ requires `label`. `variant="outline"` is the white square with a Cultured border
 Figma: *Inputs → input large / Default size input / Small size input* and the icon and unit variants.
 States Default, Hover, Focused, Typing, Filled, Disabled and error are all CSS states of one component.
 
-Two kinds: with the label inside (the default: the label is the placeholder until the field has focus or a
-value, then moves up; `persistentLabel` keeps it above in every state, as in Figma *input large*) and without a label (`hideLabel`: only the placeholder and value show; the label is still read by
+Three kinds: with the label inside (the default: while empty the label itself sits where the text goes, in
+Silver Chalice, then moves up on focus and the `placeholder` shows below it; `persistentLabel` keeps it above in every state, as in Figma *input large*) and without a label (`hideLabel`: only the placeholder and value show; the label is still read by
 screen readers). `size` `lg` 56 · `md` 48 · `sm` 36 · `xs` 24; `xs` is always without a label.
 
 Props: `label` (required), `hideLabel`, `size`, `hint`, `error` (string or string[] for the
 "multiple error" variant), `iconStart`, `iconEnd`, `prefix`, `suffix` ("$", "kg"), `onClear` (adds the
 clear button: 24px Ghost circle with Figma's 12px Jet X, 1.5px lines), `clearVisibility` (`typing`, the default:
 only while the field has focus and a value; `always`: every state, as in *input large* and *multiple error*),
-`persistentLabel`, `showCount` with `maxLength` ("0/20").
+`persistentLabel`, `showCount` with `maxLength` ("0/20"), `labelPosition` (`inside` default, or `outside`: Regular 14
+Jet above the box, 12 at `sm`/`xs`, 8px gap, and the box shows only the placeholder and value), `endAdornment` (a
+control after the clear button). The order at the end of the box is clear X, `suffix`, `endAdornment`, `iconEnd`, as
+in Figma. `iconEnd="info-button"` draws Figma's 24px grey info circle.
+
+## PasswordField
+
+Figma: *Password large / Medium / Small*. A TextField with an eye button after the clear X: Eerie Black `eye` while
+hidden, Silver Chalice `eye-closed` once shown (`aria-pressed`). Every TextField prop works: `size`, `labelPosition`,
+`prefix`, `error`, `disabled`; `defaultVisible` starts it shown.
+
+## PhoneField
+
+Figma: *Phone input def size / Small*. A Country/Region `Select` joined to a Phone Number field: one seam, 8px outer
+corners. Options read "(+995) Georgia"; the chosen dialling code shows before the number once it has focus or a value,
+and the phone icon ends the field. `countries` (default list starting with Georgia), `country`/`defaultCountry`,
+`onCountryChange`, `size` (`md` 48 default, `sm` 36, `lg` 56), `labelPosition` (`outside` puts `label` above the
+pair), plus the number field's TextField props. A searchable country list comes with the search dropdown.
 
 ## Select
 
@@ -172,7 +189,8 @@ default it is screen-reader only, for the comment and checklist editors):
 - `labelPosition="inside"` (default): the label sits in the box, Regular 14 Eerie Black while empty, then Regular 12
   (Candy Apple when focused, Silver Chalice when filled) over Regular 14 text. `size` `lg` 64 · `md` 56 · `sm` 48
   (Small: Medium 10 over 12). The border turns Silver Chalice once filled.
-- `labelPosition="outside"`: the label (ABC Favorit Expanded Medium 12) above a 48px box.
+- `labelPosition="outside"`: Regular 14 Jet label above the box (12 at `sm`), 8px gap; the box takes the same
+  64 / 56 / 48 heights by `size`.
 
 `showCount` with `maxLength` adds "0/20" (Regular 10 Silver Chalice) under the box, right-aligned. `onClear` adds
 Figma's 16px *Close small* button in the top-right corner while typing. `variant` `default` (1px Cultured) or `strong`
@@ -224,7 +242,7 @@ right). `min`, `max`, `step`, `format`.
 
 ## Icon
 
-All 164 icons from *Icons → Main icons*, at their native Figma size (most 20 x 20; file formats 24 x 30).
+All 164 icons from *Icons → Main icons* plus the input icons *Info button* and *phone*, at their native Figma size (most 20 x 20; file formats 24 x 30).
 `<Icon name="search" />`; `size` scales the longer side. Single-ink icons draw in `currentColor`, multicolour
 ones keep their colours (`iconData[name].multicolor`). Pass `title` to make an icon meaningful to screen
 readers, otherwise it is hidden. `iconNames` lists them all; `iconAliases` maps the earlier names

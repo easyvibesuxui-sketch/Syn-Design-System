@@ -1,5 +1,6 @@
 import { forwardRef, useId, useState, type InputHTMLAttributes, type ReactNode } from 'react';
 import { Icon, type IconName } from './Icon';
+import { getIcon } from '../icons/icon-data';
 import { IconButton } from './IconButton';
 import { FieldMessages } from './FieldMessages';
 import { cx, type ControlSize } from '../utils';
@@ -43,12 +44,19 @@ export interface TextFieldProps extends Omit<InputHTMLAttributes<HTMLInputElemen
   clearVisibility?: 'typing' | 'always';
   /** Shows "count/maxLength" under the field. Needs maxLength. */
   showCount?: boolean;
+  /**
+   * inside (default) = the Figma inputs: the label sits in the box. outside = the label sits above the box
+   * (Regular 14 Jet, 12 at sm and xs) and the box shows only the placeholder, then the value.
+   */
+  labelPosition?: 'inside' | 'outside';
+  /** A control after the clear button, e.g. the password eye. */
+  endAdornment?: ReactNode;
 }
 
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function TextField(
   {
     label, size = 'lg', hideLabel = false, placeholder, hint, error, iconStart, iconEnd, prefix, suffix, onClear, showCount,
-    persistentLabel = false, clearVisibility = 'typing',
+    persistentLabel = false, clearVisibility = 'typing', labelPosition = 'inside', endAdornment,
     id, className, disabled, value, defaultValue, onChange, maxLength, ...rest
   },
   ref,
@@ -60,7 +68,9 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function T
   const [inner, setInner] = useState(String(defaultValue ?? ''));
   const current = value !== undefined ? String(value) : inner;
   const hasValue = current.length > 0;
-  const noLabel = hideLabel || size === 'xs';
+  const outside = labelPosition === 'outside' && !hideLabel;
+  const noLabel = hideLabel || size === 'xs' || outside;
+  const endIconSize = iconEnd && getIcon(iconEnd)?.width === 24 ? 24 : 20;
 
   return (
     <div
@@ -68,17 +78,19 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function T
         'syn-field',
         `syn-field--${size}`,
         noLabel ? 'syn-field--no-label' : persistentLabel ? 'syn-field--fixed-label' : 'syn-field--floating',
+        outside && 'syn-field--outside',
         hasValue && 'has-value',
         invalid && 'is-invalid',
         disabled && 'is-disabled',
         className,
       )}
     >
+      {outside && <label htmlFor={inputId} className="syn-field__outer-label">{label}</label>}
       <div className="syn-field__box">
         {iconStart && <Icon name={iconStart} size={20} className="syn-field__icon" />}
-        {prefix && <span className="syn-field__affix">{prefix}</span>}
+        {prefix && <span className="syn-field__affix syn-field__affix--prefix">{prefix}</span>}
         <div className="syn-field__stack">
-          <label htmlFor={inputId} className={noLabel ? 'syn-visually-hidden' : 'syn-field__label'}>{label}</label>
+          {!outside && <label htmlFor={inputId} className={noLabel ? 'syn-visually-hidden' : 'syn-field__label'}>{label}</label>}
           <input
             ref={ref}
             id={inputId}
@@ -97,7 +109,6 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function T
             {...rest}
           />
         </div>
-        {suffix && <span className="syn-field__affix">{suffix}</span>}
         {onClear && (clearVisibility === 'always' || (hasValue && !disabled)) && (
           <IconButton
             icon="close"
@@ -111,7 +122,9 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function T
             }}
           />
         )}
-        {iconEnd && <Icon name={iconEnd} size={20} className="syn-field__icon" />}
+        {suffix && <span className="syn-field__affix syn-field__affix--suffix">{suffix}</span>}
+        {endAdornment}
+        {iconEnd && <Icon name={iconEnd} size={endIconSize} className="syn-field__icon" />}
       </div>
       {(hint || invalid || (showCount && maxLength !== undefined)) && (
         <div className="syn-field__footer">

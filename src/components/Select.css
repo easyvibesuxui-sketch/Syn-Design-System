@@ -88,3 +88,8 @@
 .syn-select__option.is-active { background: var(--syn-surface-highlight); color: var(--syn-text-primary); }
 .syn-select__option[aria-selected='true'] { color: var(--syn-text-primary); font: var(--syn-type-text-body-m); }
 .syn-select__option[aria-disabled='true'] { color: var(--syn-text-disabled); cursor: not-allowed; }
+
+/* Label inside, as on the text field: while nothing is chosen and the list is closed only the placeholder
+   shows at the resting size; the label moves up once the list opens or a value is chosen. */
+.syn-select--label:not(.has-value):not(.is-open) .syn-field__label { display: none; }
+.syn-select--label:not(.has-value):not(.is-open) .syn-select__value { font: var(--field-rest); }

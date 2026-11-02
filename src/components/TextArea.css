@@ -112,3 +112,16 @@
 .syn-textarea--inside.is-disabled .syn-textarea__box { background: var(--syn-surface-muted); box-shadow: inset 0 0 0 1px var(--syn-border-disabled); cursor: not-allowed; }
 .syn-textarea--inside.is-disabled .syn-textarea__label { color: var(--syn-text-disabled); }
 .syn-textarea--inside.is-disabled .syn-textarea__input { background: transparent; }
+
+/* Label outside: Regular 14 Jet above the box (12 at sm), 8px gap (4 at sm), as on the text field; the box
+   takes the Text Box heights 64 / 56 / 48. */
+.syn-textarea--outside { gap: var(--syn-space-8); }
+.syn-textarea--outside .syn-textarea__label { color: var(--syn-color-secondary-jet); font: var(--syn-type-text-body-s-2); }
+.syn-textarea--outside .syn-textarea__input { min-height: 64px; }
+.syn-textarea--outside.syn-textarea--md .syn-textarea__input { min-height: 56px; }
+.syn-textarea--outside.syn-textarea--sm { gap: var(--syn-space-4); }
+.syn-textarea--outside.syn-textarea--sm .syn-textarea__label { font: var(--syn-type-text-body-xs-2); }
+.syn-textarea--outside.syn-textarea--sm .syn-textarea__input { min-height: 48px; padding: var(--syn-space-4) var(--syn-space-8); font: var(--syn-type-text-body-xs-2); }
+.syn-textarea--outside.is-disabled .syn-textarea__label { color: var(--syn-color-disabled-gray-x); }
+.syn-textarea--outside .syn-textarea__footer { margin-top: calc(var(--syn-space-2) - var(--syn-space-8)); }
+.syn-textarea--outside.syn-textarea--sm .syn-textarea__footer { margin-top: calc(var(--syn-space-2) - var(--syn-space-4)); }

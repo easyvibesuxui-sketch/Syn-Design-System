@@ -34,3 +34,5 @@ export { Checklist, ChecklistItem, type ChecklistProps, type ChecklistItemProps 
 export { Comment, CommentReply, CommentEditor, type CommentProps, type CommentReplyProps, type CommentEditorProps } from './components/Comment';
 export { QuantityField, type QuantityFieldProps } from './components/QuantityField';
 export { Skeleton, type SkeletonProps } from './components/Skeleton';
+export { PasswordField, type PasswordFieldProps } from './components/PasswordField';
+export { PhoneField, defaultPhoneCountries, type PhoneFieldProps, type PhoneCountry } from './components/PhoneField';
