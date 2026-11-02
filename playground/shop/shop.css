@@ -767,3 +767,6 @@ html { scroll-behavior: smooth; }
 /* Most used is a label, not a control: a small grey tag under the stock pill, no outline, shadow or pointer. */
 .shop-card__stock { flex-direction: column; align-items: flex-start; gap: var(--syn-space-6); }
 .shop-card__flag { width: auto; height: 24px; padding: 0 var(--syn-space-8); border: 0; border-radius: var(--syn-radius-xs); background: var(--syn-surface-muted); color: var(--syn-text-primary); box-shadow: none; font: var(--syn-type-text-body-xs-2); }
+/* Most used tag: pill corners like the stock pill, on the Syn highlight surface (Misty Rose) with Dark Sienna text,
+   so it reads as a highlight, not as a disabled control. */
+.shop-card__flag { border-radius: var(--syn-radius-full); padding: 0 var(--syn-space-10); background: var(--syn-surface-highlight); color: var(--syn-color-secondary-dark-sienna); font: var(--syn-type-text-body-xs); }
