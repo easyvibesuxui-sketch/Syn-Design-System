@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Button, Card, FileItem, Icon, Section, Tag } from '../../../src';
+import { Button, Card, FileItem, Icon, Section } from '../../../src';
 import { cx } from '../../../src/utils';
 import { canOrder, hasPrice, money, priceLabel } from '../data';
 import { PriceRequestDialog } from '../PriceRequest';
-import { AvailabilityBadge, BackLink, Chips, InfoNote, ProductArt, QuantityStepper, ShopHeader, SpecList } from '../parts';
+import { AvailabilityBadge, Chips, InfoNote, ProductArt, QuantityStepper, ShopHeader, SpecList } from '../parts';
 import { routeHref, useShop } from '../store';
 
 export function ProductPage({ id }: { id: string }) {
@@ -16,8 +16,7 @@ export function ProductPage({ id }: { id: string }) {
   if (!p) {
     return (
       <>
-        <ShopHeader title="Product not found" lead="This product is no longer in the catalogue. It may have been renamed or removed." />
-        <BackLink href={routeHref({ name: 'shop' })}>Back to products</BackLink>
+        <ShopHeader title="Product not found" lead="This product is no longer in the catalogue. It may have been renamed or removed." back={{ href: routeHref({ name: 'shop' }), label: 'Shop' }} />
       </>
     );
   }
@@ -28,13 +27,12 @@ export function ProductPage({ id }: { id: string }) {
 
   return (
     <>
-      <ShopHeader title="Product details" lead="Review product information, specifications and ordering options." />
-      <BackLink href={routeHref({ name: 'shop' })}>Back to products</BackLink>
+      <ShopHeader title="Product details" lead="Review product information, specifications and ordering options." back={{ href: routeHref({ name: 'shop' }), label: 'Shop' }} />
 
       <div className="shop-detail">
         <div className="shop-detail__main">
           <Card className="shop-gallery">
-            {p.badge && <span className="shop-gallery__badge"><Tag color="var(--syn-action-brand)">{p.badge}</Tag></span>}
+            {p.badge && <span className="shop-gallery__badge"><span className="shop-card__flag">{p.badge}</span></span>}
             <ProductArt src={gallery[shown]} type={p.type} alt={`${p.name}, image ${shown + 1} of ${Math.max(gallery.length, 1)}`} size="lg" />
             {gallery.length > 1 && (
               <div className="shop-gallery__thumbs" role="group" aria-label="Product images">

@@ -92,14 +92,14 @@ export function QuantityStepper({ value, onChange, label, size = 'sm' }: {
 /** Shop module header: title and lead on the left; My orders / Order by SKU and the cart on the right. Inner pages pass
  * `back`, which puts the way back above the title on the left (navigation reads first) and leaves only the cart right. */
 export function ShopHeader({ title, lead, back, extra }: {
-  title: string; lead: string; back?: { href: string; label: string }; extra?: ReactNode;
+  title: string; lead: string; back?: { label: string; href?: string; onClick?: () => void }; extra?: ReactNode;
 }) {
   const { cartQty, setCartOpen } = useShop();
   return (
     <PageHeader
       // The landing page's title already says Shop, as does the top bar; the eyebrow only adds context on other pages.
       eyebrow={title === 'Shop' || back ? undefined : 'Syniotec Shop'}
-      before={back && <BackLink href={back.href}>{back.label}</BackLink>}
+      before={back && <BackLink href={back.href} onClick={back.onClick}>{back.label}</BackLink>}
       title={title}
       lead={lead}
       actions={<>
@@ -142,7 +142,11 @@ export function LinkButton({ href, iconStart, children, variant = 'secondary' }:
   );
 }
 
-export function BackLink({ href, children }: { href: string; children: ReactNode }) {
+/** The way back, top-left above a page title: a link, or a button when going back opens something (the cart). */
+export function BackLink({ href, onClick, children }: { href?: string; onClick?: () => void; children: ReactNode }) {
+  if (onClick) {
+    return <button type="button" className="shop-back" onClick={onClick}><Icon name="back" size={16} />{children}</button>;
+  }
   return (
     <a className="shop-back" href={href}>
       <Icon name="back" size={16} />

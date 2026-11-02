@@ -22,6 +22,8 @@ export function ConfirmationPage({ id }: { id: string }) {
     ['Delivery and invoice', 'You pay by invoice; nothing has been charged.'],
   ];
   return (
+    <>
+    <BackLink href={routeHref({ name: 'shop' })}>Shop</BackLink>
     <Card className="shop-confirmation">
       <span className="shop-confirmation__mark"><Icon name="check" size={32} /></span>
       <h1 className="shop-confirmation__title">Order submitted</h1>
@@ -35,5 +37,6 @@ export function ConfirmationPage({ id }: { id: string }) {
         <Button size="sm" onClick={() => go({ name: 'orders', id: o.id })}>View order</Button>
       </div>
     </Card>
+    </>
   );
 }

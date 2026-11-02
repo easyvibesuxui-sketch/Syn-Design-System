@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
-import { Button, Card, Checkbox, Grid, GridItem, Icon, Section, Select, TextArea, TextField } from '../../../src';
+import { Button, Card, Checkbox, Grid, GridItem, Section, Select, TextArea, TextField } from '../../../src';
 import { COUNTRIES, CURRENT_USER, money, plural, stamp, type Order } from '../data';
-import { BackLink, ProductArt, ShopHeader, Summary } from '../parts';
+import { ProductArt, ShopHeader, Summary } from '../parts';
 import { routeHref, useShop } from '../store';
 
 const initial = {
@@ -54,8 +54,7 @@ export function CheckoutPage() {
   if (!cart.length) {
     return (
       <>
-        <ShopHeader title="Your cart is empty" lead="Add products to your cart, then come back here to send the order." />
-        <BackLink href={routeHref({ name: 'shop' })}>Back to products</BackLink>
+        <ShopHeader title="Your cart is empty" lead="Add products to your cart, then come back here to send the order." back={{ href: routeHref({ name: 'shop' }), label: 'Shop' }} />
       </>
     );
   }
@@ -103,8 +102,7 @@ export function CheckoutPage() {
 
   return (
     <>
-      <ShopHeader title="Submit order" lead="Review your contact, delivery and billing information before sending the order to Syniotec." />
-      <button type="button" className="shop-back" onClick={() => setCartOpen(true)}><Icon name="back" size={16} />Back to cart</button>
+      <ShopHeader title="Submit order" lead="Review your contact, delivery and billing information before sending the order to Syniotec." back={{ href: routeHref({ name: 'shop' }), label: 'Shop' }} />
 
       <form className="shop-checkout" onSubmit={submit} noValidate>
         <div className="shop-checkout__main">
