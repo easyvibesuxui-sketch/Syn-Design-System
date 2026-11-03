@@ -12,6 +12,8 @@ export interface NewTabProps {
   error?: string;
   addLabel?: string;
   placeholder?: string;
+  /** Opens in Figma "Tap" (the name field is showing) instead of "Add new". */
+  defaultEditing?: boolean;
   /** Called with the typed name on Enter. */
   onCreate?: (name: string) => void;
   onSelect?: () => void;
@@ -62,17 +64,20 @@ function TrashGlyph() {
  * Place it after Tabs, for example in the Tabs `end` slot.
  */
 export function NewTab({
-  name, selected, error, addLabel = 'Add new', placeholder = 'Give name', onCreate, onSelect, onRemove,
+  name, selected, error, addLabel = 'Add new', placeholder = 'Give name', defaultEditing = false, onCreate, onSelect, onRemove,
   removeLabel = 'Remove tab', cancelLabel = 'Cancel', className,
 }: NewTabProps) {
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState(defaultEditing);
+  const mounted = useRef(false);
   const [draft, setDraft] = useState('');
   const input = useRef<HTMLInputElement>(null);
   const messageId = `syn-new-tab-${useId()}`;
   const showField = !name && (editing || Boolean(error));
 
   useEffect(() => {
-    if (editing) input.current?.focus();
+    // Focus the field when the user opens it, not when it starts open.
+    if (editing && mounted.current) input.current?.focus();
+    mounted.current = true;
   }, [editing]);
 
   const cancel = () => {

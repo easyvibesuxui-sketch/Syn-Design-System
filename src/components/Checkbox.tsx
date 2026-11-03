@@ -17,10 +17,10 @@ export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement
   errorStyle?: ChoiceErrorStyle;
 }
 
-/** Check paths exported from Figma, positioned in the box as drawn there. */
+/** Check paths exported from Figma; cx/cy is the centre of the drawn tick inside its viewBox. */
 const CHECK = {
-  20: { x: 3, y: 4, w: 14, h: 12, d: 'M0.68 5.19L5.5 9.77L12.87 0.62' },
-  24: { x: 4, y: 3, w: 17, h: 14, d: 'M0.7 6.4L6.57 12.19L15.57 0.61' },
+  20: { w: 14, h: 12, cx: 6.775, cy: 5.195, d: 'M0.68 5.19L5.5 9.77L12.87 0.62' },
+  24: { w: 17, h: 14, cx: 8.135, cy: 6.4, d: 'M0.7 6.4L6.57 12.19L15.57 0.61' },
 } as const;
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
@@ -30,8 +30,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
   const autoId = useId();
   const inputId = id ?? `syn-checkbox-${autoId}`;
   const check = CHECK[size];
-  // The round box has no Figma check position, so the mark is centred in the circle.
-  const at = shape === 'round' ? { left: (size - check.w) / 2, top: (size - check.h) / 2 } : { left: check.x, top: check.y };
+  // The tick is centred in the box on both axes (offsets are from the outer edge; the CSS margin cancels the border).
+  const at = { left: size / 2 - check.cx, top: size / 2 - check.cy };
 
   return (
     <div className={cx('syn-choice', `syn-choice--${size}`, `syn-choice--${shape}`, error && 'is-invalid', disabled && 'is-disabled', className)}>

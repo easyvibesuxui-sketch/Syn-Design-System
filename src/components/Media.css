@@ -57,6 +57,23 @@ a.syn-file__name:hover { text-decoration: underline; }
 }
 .syn-empty__text { margin: 0; color: var(--syn-text-muted); font: var(--syn-type-titles-title-4); }
 
+/* Figma "List is empty": the 45 x 36 Empty List icon, 20px gaps, ABC Favorit Expanded Medium 16/20 Jet
+   title and a Montserrat Medium 14/18 Silver Chalice hint, centred in the list area. */
+.syn-empty--general { gap: var(--syn-space-20); min-height: 200px; border: 0; text-align: center; }
+.syn-empty__title { margin: 0; color: var(--syn-color-secondary-jet); font: var(--syn-type-titles-title-3); }
+.syn-empty--general .syn-empty__text { font: var(--syn-type-text-body-s); }
+
+/* Person and crew: a Cultured panel with a white 1px border, 12px corners, 32px top and bottom padding,
+   the icon 12px above an ABC Favorit Expanded Medium 10 Silver Chalice label (Figma "No … yet"). */
+.syn-empty--person, .syn-empty--crew {
+  gap: var(--syn-space-12);
+  min-height: 128px;
+  padding: var(--syn-space-32) var(--syn-space-16);
+  border-color: var(--syn-color-white-white);
+  background: var(--syn-color-grey-cultured);
+}
+.syn-empty--person .syn-empty__text, .syn-empty--crew .syn-empty__text { font: var(--syn-type-titles-title-6); }
+
 /* Progress: "1/3" Medium 12, muted percentage, 4px Dodger Blue bar on a Cultured track. */
 .syn-progress { display: flex; align-items: center; gap: var(--syn-space-12); }
 .syn-progress__label { color: var(--syn-text-primary); font: var(--syn-type-titles-title-6); }

@@ -13,9 +13,42 @@
   white-space: nowrap;
   transition: opacity var(--syn-duration-fast), background-color var(--syn-duration-fast), color var(--syn-duration-fast);
 }
-.syn-button:focus-visible {
-  outline: 1px solid var(--syn-border-strong);
-  outline-offset: 2px;
+/* Figma "Focus" = the clicked state, also used for keyboard focus: the fill pulls in 4px from the sides
+   (4px top and bottom at 56 and 48, 2px at 36 and 24) and a 1px ring in the button's colour stays on the
+   outer edge. The gap shows --syn-button-gap (the page colour, white by default). */
+.syn-button {
+  --btn-ring: var(--syn-color-black-eerie-black);
+  --btn-gap: var(--syn-button-gap, var(--syn-color-white-white));
+  --btn-gap-x: 3px;
+  --btn-gap-y: 3px;
+}
+.syn-button--sm, .syn-button--xs { --btn-gap-y: 1px; }
+.syn-button--accent { --btn-ring: var(--syn-color-secondary-amber); }
+.syn-button--brand { --btn-ring: var(--syn-color-primary-candy-apple); }
+.syn-button:active:not(:disabled),
+.syn-button:focus-visible,
+.syn-button.is-pressed {
+  outline: 1px solid var(--btn-ring);
+  outline-offset: -1px;
+  box-shadow:
+    inset var(--btn-gap-x) 0 0 0 var(--btn-gap),
+    inset calc(var(--btn-gap-x) * -1) 0 0 0 var(--btn-gap),
+    inset 0 var(--btn-gap-y) 0 0 var(--btn-gap),
+    inset 0 calc(var(--btn-gap-y) * -1) 0 0 var(--btn-gap);
+}
+/* Outline: the inner box keeps its own 1px Eerie Black border inside the gap. */
+.syn-button--secondary:active:not(:disabled),
+.syn-button--secondary:focus-visible,
+.syn-button--secondary.is-pressed {
+  box-shadow:
+    inset var(--btn-gap-x) 0 0 0 var(--btn-gap),
+    inset calc(var(--btn-gap-x) * -1) 0 0 0 var(--btn-gap),
+    inset 0 var(--btn-gap-y) 0 0 var(--btn-gap),
+    inset 0 calc(var(--btn-gap-y) * -1) 0 0 var(--btn-gap),
+    inset calc(var(--btn-gap-x) + 1px) 0 0 0 var(--btn-ring),
+    inset calc(var(--btn-gap-x) * -1 - 1px) 0 0 0 var(--btn-ring),
+    inset 0 calc(var(--btn-gap-y) + 1px) 0 0 var(--btn-ring),
+    inset 0 calc(var(--btn-gap-y) * -1 - 1px) 0 0 var(--btn-ring);
 }
 .syn-button:disabled { cursor: not-allowed; }
 
@@ -26,13 +59,18 @@
 .syn-button--pill { border-radius: var(--syn-radius-full); }
 .syn-button--full { width: 100%; gap: var(--syn-space-16); }
 
-/* Filled styles fade to 74% on hover, as in every Figma "Hover" variant. */
+/* Filled styles fade to 74% on hover, as in every Figma "Hover" variant; the primary label turns Silver Chalice. */
 .syn-button--primary { background: var(--syn-action-primary); color: var(--syn-action-primary-text); }
 .syn-button--accent { background: var(--syn-action-accent); color: var(--syn-color-light-snow); }
 .syn-button--brand { background: var(--syn-action-brand); color: var(--syn-color-light-snow); }
 .syn-button--primary:hover:not(:disabled),
 .syn-button--accent:hover:not(:disabled),
-.syn-button--brand:hover:not(:disabled) { opacity: var(--syn-opacity-hover); }
+.syn-button--brand:hover:not(:disabled),
+.syn-button--primary.is-hover,
+.syn-button--accent.is-hover,
+.syn-button--brand.is-hover { opacity: var(--syn-opacity-hover); }
+.syn-button--primary:hover:not(:disabled):not(:active):not(.is-pressed),
+.syn-button--primary.is-hover { color: var(--syn-color-secondary-silver-chalince); }
 .syn-button--primary:disabled,
 .syn-button--accent:disabled,
 .syn-button--brand:disabled { background: var(--syn-action-disabled); color: var(--syn-color-light-snow); }
@@ -42,7 +80,8 @@
   border-color: var(--syn-border-strong);
   color: var(--syn-text-primary);
 }
-.syn-button--secondary:hover:not(:disabled) { background: var(--syn-surface-muted); }
+.syn-button--secondary:hover:not(:disabled),
+.syn-button--secondary.is-hover { background: var(--syn-surface-muted); }
 .syn-button--secondary:disabled { border-color: var(--syn-border-disabled); color: var(--syn-text-disabled); }
 
 .syn-button--text {
@@ -53,7 +92,11 @@
   font: var(--syn-type-text-body-s-2);
   border-radius: var(--syn-radius-element);
 }
-.syn-button--text:hover:not(:disabled) .syn-button__label { text-decoration: underline; text-underline-offset: 4px; }
+.syn-button--text:hover:not(:disabled) .syn-button__label,
+.syn-button--text.is-hover .syn-button__label { text-decoration: underline; text-underline-offset: 4px; }
+/* Text buttons have no ring in Figma; keyboard focus keeps a 1px outline 2px out, pressing dims the label. */
+.syn-button--text:active:not(:disabled), .syn-button--text.is-pressed { outline: 0; box-shadow: none; opacity: var(--syn-opacity-hover); }
+.syn-button--text:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; box-shadow: none; }
 .syn-button--text:disabled { color: var(--syn-text-disabled); }
 
 .syn-button.is-loading { cursor: progress; }

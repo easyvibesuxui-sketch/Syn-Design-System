@@ -313,8 +313,8 @@ export function App() {
           </Row>
         </Section>
 
-        <Section id="switch" title="Switch" lead="Figma &quot;Small toggle&quot; (size 20, 32 x 20) and &quot;Default size toggle&quot; (size 24, 48 x 24) and &quot;Big toggle&quot; (size 32, 48 x 32). &quot;Toggle with Text and icon&quot; (indicator) shows On or a check in the track. On is Dark Sienna; off is Silver Chalice with a Gray X border. Press stretches the thumb.">
-          {([20, 24, 32] as const).map((size) => (
+        <Section id="switch" title="Switch" lead="Figma &quot;Small toggle&quot; (size 20, 32 x 20) and &quot;Default size toggle&quot; (size 24, 48 x 24) only. &quot;Toggle with Text and icon&quot; (indicator) shows On or a check in the track. On is Dark Sienna; off is Silver Chalice with a Gray X border. Press stretches the thumb.">
+          {([20, 24] as const).map((size) => (
             <Row key={size} label={`size ${size}`}>
               <Switch size={size} label="On" defaultChecked />
               <Switch size={size} label="Loading" loading defaultChecked />

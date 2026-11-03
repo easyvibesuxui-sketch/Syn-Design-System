@@ -91,20 +91,56 @@ export function FileItem({ name, meta, icon = 'file-formats-pdf', variant = 'pla
   );
 }
 
+export type EmptyStateVariant = 'inline' | 'general' | 'person' | 'crew';
+
 export interface EmptyStateProps {
+  /**
+   * inline (default) = "Nothing assigned" in a section. general = Figma "List is empty" for a whole list or
+   * table (Empty List icon, title, hint). person / crew = the Cultured "No … yet" panel with the person or
+   * crew icon (Figma notification-centre empty panel).
+   */
+  variant?: EmptyStateVariant;
+  /** Overrides the variant's icon. */
   icon?: IconName;
-  children: ReactNode;
+  /** general only: the bold line ("List is empty"); children are then the hint under it. */
+  title?: ReactNode;
+  children?: ReactNode;
   /** A button or link under the message. */
   action?: ReactNode;
   className?: string;
 }
 
-/** "Nothing assigned": a muted 32px icon over a Medium 14 message in a bordered 12px box. */
-export function EmptyState({ icon = 'empty-state', children, action, className }: EmptyStateProps) {
+const EMPTY_ICON: Record<EmptyStateVariant, IconName> = {
+  inline: 'empty-state',
+  general: 'empty-list',
+  person: 'nav-person',
+  crew: 'nav-crew',
+};
+const EMPTY_TEXT: Record<EmptyStateVariant, string> = {
+  inline: 'Nothing assigned',
+  general: 'Start adding items',
+  person: 'No people yet',
+  crew: 'No crew yet',
+};
+
+/** Empty states: inline "Nothing assigned", the general "List is empty", and the person and crew panels. */
+export function EmptyState({ variant = 'inline', icon, title, children, action, className }: EmptyStateProps) {
+  const glyph = icon ?? EMPTY_ICON[variant];
+  const text = children ?? EMPTY_TEXT[variant];
+  if (variant === 'general') {
+    return (
+      <div className={cx('syn-empty', 'syn-empty--general', className)}>
+        <Icon name={glyph} size={glyph === 'empty-list' ? 45 : 36} />
+        <p className="syn-empty__title">{title ?? 'List is empty'}</p>
+        {text && <p className="syn-empty__text">{text}</p>}
+        {action}
+      </div>
+    );
+  }
   return (
-    <div className={cx('syn-empty', className)}>
-      <Icon name={icon} size={32} />
-      <p className="syn-empty__text">{children}</p>
+    <div className={cx('syn-empty', `syn-empty--${variant}`, className)}>
+      <Icon name={glyph} size={32} />
+      <p className="syn-empty__text">{text}</p>
       {action}
     </div>
   );

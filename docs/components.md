@@ -18,6 +18,8 @@ Figma: *Buttons → Buttons large* (`State × Size × Stile`).
 `IconButton` (Figma *Close button*): round ghost button, `size` `xs` 24 (default) · `sm` 36 · `md` 48 · `lg` 56,
 requires `label`. `variant="outline"` is the white square with a Cultured border used for row "more" buttons.
 
+States (Figma *Buttons large*): hover fades filled styles to 74% (the primary label turns Silver Chalice; outline turns Cultured); pressed = Figma *Focus*, also used for keyboard focus: the fill pulls in 4px (2px top and bottom at 36 and 24) and a 1px ring in the button's colour stays on the edge, the gap showing `--syn-button-gap` (white). `state="hover" | "pressed"` shows a state for docs.
+
 ## Size rule for fields
 
 Every field uses the TextField sizes: heights `lg` 56 · `md` 48 · `sm` 36 · `xs` 24; without a label the text is
@@ -80,8 +82,8 @@ red asterisk; `errorStyle` picks the Figma "error 1" dark bubble (`tooltip`) or 
 
 ## Switch
 
-Figma: *Small toggle* (`size={20}`, 32 x 20), *Default size toggle* (`size={24}`, 48 x 24, the default) and
-*Big toggle* (`size={32}`, 48 x 32). `indicator` is *Toggle with Text and icon*: "On" (`indicatorText`) in the
+Figma: *Small toggle* (`size={20}`, 32 x 20) and *Default size toggle* (`size={24}`, 48 x 24, the default);
+only these two heights. `indicator` is *Toggle with Text and icon*: "On" (`indicatorText`) in the
 track when on, a white check when off (sizes 20 and 24).
 `role="switch"` on a native checkbox. Track and thumb sit at the Figma x positions for on and off; pressing
 stretches the thumb (24 / 28px). `loading` spins a ring in the thumb. `error` with `errorStyle`
@@ -97,11 +99,15 @@ or `md` ("Default size", 36px, Medium 14). Items take `iconStart`/`iconEnd`
 (`'arrow-left'`, `'arrow-right'` or any `IconName`), `disabled` and `content` (renders a `tabpanel`). Arrow
 keys, Home and End move selection. `end` holds extra content such as `NewTab`.
 
+Tabs are at least 142px wide at BIG and 126px at Default size with the text left-aligned 16px in (Figma padding 10/1/10/8). Default text is Silver Chalice at BIG and Eerie Black at Default size; the arrows are Eerie Black except on the active (Snow) and disabled (Gray X) tab. Three plain tabs side by side are the Figma *Tab switcher*. Radius 8 by the system rule (Figma draws 2).
+
 ## NewTab
 
 Figma: *New Tab*. Default "Add new" with a plus-circle; Hover and Tap (typing a name) on Smoke; Filled and
 Selected (Candy Apple underline) with a trash button; Error with a red underline and message. 220 x 48,
 ABC Favorit Expanded Medium 12/15. `name`, `selected`, `error`, `onCreate`, `onSelect`, `onRemove`.
+
+Two types: *clickable* (no `name`: "Add new" opens the name field, `defaultEditing` starts there) and *tab switcher* (created tabs with `name`, `onSelect` and `selected`, ended by a clickable NewTab).
 
 ## Tooltip
 
@@ -141,6 +147,8 @@ Figma: *Session Time out* (Banners page). Built on native `<dialog>` (focus trap
 footer padding 20/24 for a 320 x 48 action; 60% Silver Chalice backdrop. `title`, `description`, `icon`, `actions`,
 `onClose`.
 
+Figma *Rectangle border*: 2px of clear space around the panel, then a 1px Cultured outline following its corners.
+
 ## Drawer and DrawerRow
 
 From the record drawer reference. Native `<dialog>` from the right edge (focus trap, Escape, backdrop click),
@@ -178,6 +186,8 @@ round close; Eerie Black border on hover, Cultured fill when pressed, `disabled`
 - `ProgressBar`: "1/3" `label`, the percentage and a 4px Dodger Blue bar; `role="progressbar"` with `title` as its name.
   `variant="line"` is Figma *Loader line*: a bare 8px Amber bar with 8px corners.
 
+`EmptyState` `variant`: `general` (Figma *List is empty*: 45 x 36 Empty List icon, Medium 16/20 Jet title, Medium 14/18 Silver Chalice hint, 20px gaps), `person` and `crew` (Cultured panel, white border, 12px corners, 32px padding, icon over a Medium 10 Silver Chalice label), `inline` (default, "Nothing assigned"). `title` for the general heading.
+
 ## Table and Value
 
 The "Resources" table: `columns` (`key`, `header`, `render`, `align`, `width`), `rows`, `rowKey`, `rowActions`
@@ -186,10 +196,14 @@ White 12px box, 24px muted header, 32px rows split by 2px Cultured lines; a hove
 Black outline (Figma data sheet "cell"). It scrolls sideways under 560px.
 `Value` prints a number with a muted unit (`<Value unit="Meter">12</Value>`), `muted` greys the number too.
 
+`striped` gives zebra rows: every second row Cultured with 8px corners, no 2px row lines.
+
 ## Segmented
 
 Pill switcher between views ("Comments" / "Activity"): 24px pills at least 128px wide, the current one Eerie Black.
 `role="tablist"`; Left/Right move. `options`, `value`, `onChange`, `label`.
+
+The Eerie Black pill slides and resizes to the chosen option (`syn-duration-base`), the labels cross-fade; no motion under reduced motion.
 
 ## TextArea
 
@@ -232,12 +246,14 @@ A checklist row on Smoke with 8px corners: 20px checkbox and Regular 14 text, `a
 right, `actions` top right, `extra` under it (people tags). `editing` swaps the text for a `TextArea` and frames the
 row with a 1px Eerie Black border.
 
+States: default, hover (Cultured row), done (checked: Silver Chalice text, struck through), editing, error (`error` with `editing`: Vermilion frame and message), disabled (`disabled`).
+
 ## Comment, CommentReply and CommentEditor
 
 `Comment`: 24px avatar, `author` (ABC Favorit Expanded Medium 12), `date`, muted `time`, header `actions`; the text
 in a white 8px bubble (`active` gives it an Eerie Black border), `footer` (attachment tags, a pill "Reply" button),
 `editor` in place of the bubble, and `replies`. Replies (`CommentReply`, with `end` for "12 Replies") hang off a 1px
-Silver Chalice thread line. `CommentEditor`: a strong `TextArea` with a text "Discard" and a 96 x 36 Amber "Save".
+dashed Silver Chalice thread line (4px dashes, 4px gaps). `CommentEditor`: a strong `TextArea` with a text "Discard" and a 96 x 36 Amber "Save".
 
 ## Grid and GridItem
 
@@ -251,9 +267,11 @@ track, Candy Apple fill, a 32px white thumb with Figma's double arrow (darkens o
 above and Light 12 Silver Chalice labels under the track (the minimum on the left, the value on the
 right). `min`, `max`, `step`, `format`.
 
+States (Figma *Slider button*): hover = Eerie Black ring; while moving (dragging) = Cultured thumb, Eerie Black ring and the pause glyph, cursor grabbing; disabled = Gray X ring. `state="hover" | "moving"` shows a state for docs.
+
 ## Icon
 
-All 164 icons from *Icons → Main icons* plus the input icons *Info button* and *phone*, at their native Figma size (most 20 x 20; file formats 24 x 30).
+All 164 icons from *Icons → Main icons* plus the input icons *Info button* and *phone* and the *Empty List Icon* (`empty-list`, 45 x 36), at their native Figma size (most 20 x 20; file formats 24 x 30).
 `<Icon name="search" />`; `size` scales the longer side. Single-ink icons draw in `currentColor`, multicolour
 ones keep their colours (`iconData[name].multicolor`). Pass `title` to make an icon meaningful to screen
 readers, otherwise it is hidden. `iconNames` lists them all; `iconAliases` maps the earlier names

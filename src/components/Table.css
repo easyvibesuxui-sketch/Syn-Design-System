@@ -19,6 +19,11 @@
 }
 /* Figma data sheet "cell": a hovered row gets a 1px Eerie Black outline. */
 .syn-table tbody tr:hover { outline: 1px solid var(--syn-border-strong); outline-offset: -1px; }
+.syn-table--striped tbody td { border-top: 0; }
+.syn-table--striped tbody tr:nth-child(even) td { background: var(--syn-color-grey-cultured); }
+.syn-table--striped tbody tr:nth-child(even) td:first-child { border-radius: var(--syn-radius-element) 0 0 var(--syn-radius-element); }
+.syn-table--striped tbody tr:nth-child(even) td:last-child { border-radius: 0 var(--syn-radius-element) var(--syn-radius-element) 0; }
+.syn-table--striped tfoot td { border-top: 2px solid var(--syn-border-default); }
 .syn-table th.syn-table__actions, .syn-table td.syn-table__actions { width: 48px; text-align: right; }
 .syn-table tfoot td { height: 40px; text-align: right; }
 
