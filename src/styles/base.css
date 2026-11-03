@@ -9,6 +9,10 @@
 /* Small Medium text (Text/Caption 1, Montserrat Medium 10px) renders thin with antialiased smoothing: it takes the
    default smoothing and a hairline stroke so it reads at the weight Figma shows, on every OS. */
 :root { --syn-text-crisp-stroke: 0.2px; }
+
+/* A play triangle's visual weight sits left of its box: it is always drawn 1px to the right to look centred. */
+:root { --syn-play-offset: 1px; }
+.syn-icon[data-icon='play'] { translate: var(--syn-play-offset) 0; }
 .syn-text-crisp {
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;

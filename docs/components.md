@@ -287,6 +287,11 @@ in an app use the `.syn-title-text` class, on the text itself rather than on a r
 Text/Caption 1 (Montserrat Medium 10px) renders thin with antialiased smoothing, so it takes the default smoothing and
 a 0.2px stroke in its own colour (`--syn-text-crisp-stroke`, `.syn-text-crisp`). Use it on any Caption 1 text.
 
+## Play icon
+
+The `play` triangle is always drawn 1px to the right (`--syn-play-offset`) so it looks centred in its button or circle.
+The `Icon` component applies it (every icon carries `data-icon`); a play glyph drawn another way takes the same offset.
+
 ## Icon
 
 All 164 icons from *Icons → Main icons* plus the input icons *Info button* and *phone*, at their native Figma size (most 20 x 20; file formats 24 x 30).
