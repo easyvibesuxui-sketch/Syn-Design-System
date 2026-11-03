@@ -1,0 +1,99 @@
+/* Figma "Equipment Map" and its controls (Design system library, Map page). */
+.syn-map {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  border: 4px solid var(--syn-color-white-white);
+  border-radius: var(--syn-radius-widget);
+  background: var(--syn-surface-muted);
+}
+.syn-map__canvas { position: absolute; inset: 0; z-index: 0; overflow: hidden; border-radius: calc(var(--syn-radius-widget) - 4px); }
+.syn-map__canvas > * { width: 100%; height: 100%; }
+.syn-map__canvas > img { display: block; object-fit: cover; }
+
+/* "Close map": Eerie Black, 36px, Smoke Medium 14/18 with the 20px x-in-circle. */
+.syn-map__close {
+  position: absolute;
+  top: var(--syn-space-16);
+  right: var(--syn-space-16);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--syn-space-6);
+  height: var(--syn-size-control-sm);
+  padding: 0 var(--syn-space-16);
+  border: 0;
+  border-radius: var(--syn-radius-element);
+  background: var(--syn-action-primary);
+  color: var(--syn-surface-subtle);
+  font: var(--syn-type-button-text-button-secondary-m);
+  cursor: pointer;
+  transition: opacity var(--syn-duration-fast);
+}
+.syn-map__close:hover { opacity: var(--syn-opacity-hover); }
+.syn-map__close:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
+
+/* Control column: pb 24, pl 20, pr 16, pt 32, 16px apart, 50px top-left corner, a faint dark gradient. */
+.syn-map-controls {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--syn-space-16);
+  padding: var(--syn-space-32) var(--syn-space-16) var(--syn-space-24) var(--syn-space-20);
+  border-radius: 50px 0 2px 0;
+  background-image: linear-gradient(138.9deg, rgb(21 21 21 / 0.004) 58.3%, rgb(21 21 21 / 0.2) 266.6%);
+}
+
+.syn-map-control {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--syn-size-control-sm);
+  height: var(--syn-size-control-sm);
+  padding: var(--syn-space-8);
+  border: 1px solid transparent;
+  border-radius: var(--syn-radius-element);
+  background: var(--syn-color-white-white);
+  color: var(--syn-text-primary);
+  cursor: pointer;
+  transition: background-color var(--syn-duration-fast), border-color var(--syn-duration-fast);
+}
+.syn-map-control:hover:not(:disabled),
+.syn-map-control[aria-pressed='true']:hover { border-color: var(--syn-border-strong); background: var(--syn-surface-muted); }
+.syn-map-control:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
+.syn-map-control:disabled { color: var(--syn-text-disabled); cursor: not-allowed; }
+.syn-map-street { padding: var(--syn-space-4); }
+.syn-map-zoom { display: flex; flex-direction: column; gap: var(--syn-space-8); }
+
+.syn-map-layer {
+  position: relative;
+  flex: none;
+  width: var(--syn-size-control-sm);
+  height: var(--syn-size-control-sm);
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--syn-color-white-white);
+  border-radius: var(--syn-radius-element);
+  background: var(--syn-surface-muted);
+  cursor: pointer;
+}
+.syn-map-layer--map { border-color: var(--syn-border-strong); }
+.syn-map-layer img { display: block; width: 100%; height: 100%; border-radius: calc(var(--syn-radius-element) - 1px); object-fit: cover; }
+.syn-map-layer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--syn-color-secondary-silver-chalince);
+  opacity: 0;
+  transition: opacity var(--syn-duration-fast);
+}
+.syn-map-layer:hover::after { opacity: 0.4; }
+.syn-map-layer:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }

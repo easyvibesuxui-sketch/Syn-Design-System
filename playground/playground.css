@@ -117,3 +117,8 @@ html { scroll-behavior: smooth; scroll-padding-top: 24px; }
   .rd-tile-row .rd-photos { margin: var(--syn-space-12) 0 0; }
 }
 .rd-add-file { border: 1px dashed var(--syn-border-muted); color: var(--syn-color-secondary-silver-chalince); }
+
+.pg-map { display: flex; flex-direction: column; gap: 16px; }
+.pg-map .syn-map { height: 420px; }
+.pg-map__parts { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 16px; padding: 16px; border-radius: 12px; background: #151515; }
+.pg-map__reopen { align-self: flex-start; }

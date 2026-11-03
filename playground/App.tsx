@@ -4,12 +4,13 @@ import {
   Slider, StatusBadge, StatusChip, Switch, Tabs, TextArea, TextField, Tooltip, Tag, QuantityField, Skeleton, PasswordField, PhoneField, FileItem, ProgressBar, iconData, iconNames, tokens,
 } from '../src';
 import { RecordDrawer } from './RecordDrawer';
+import { MapDemo } from './MapDemo';
 
 const sections = [
   ['colors', 'Colour'], ['typography', 'Typography'], ['spacing', 'Spacing & shape'], ['grid', 'Grid'], ['icons', 'Icons'],
   ['buttons', 'Buttons'], ['inputs', 'Text fields'], ['quantity', 'Quantity & skeleton'], ['select', 'Select'], ['choices', 'Checkbox & radio'],
   ['switch', 'Switch'], ['tabs', 'Tabs'], ['tags', 'Tags & files'], ['status', 'Status'], ['notifications', 'Notifications'],
-  ['tooltip', 'Tooltip'], ['accordion', 'Accordion'], ['slider', 'Slider'], ['dialog', 'Dialog'], ['drawer', 'Drawer'],
+  ['tooltip', 'Tooltip'], ['accordion', 'Accordion'], ['slider', 'Slider'], ['dialog', 'Dialog'], ['drawer', 'Drawer'], ['map', 'Map'],
 ] as const;
 
 function Section({ id, title, lead, children }: { id: string; title: string; lead?: string; children: ReactNode }) {
@@ -449,6 +450,10 @@ export function App() {
         <Section id="drawer" title="Drawer" lead="The full record drawer from the reference, built only from Syn components: header with status and actions; title, properties, collaborators and tags rows; Details with the equipment empty state and the Protocol (damage cards, photos, attachments); Custom fields; Checklist with progress; Resources with the cost table; Comments and Activity with threaded replies; and the Discard / Update footer.">
           <Button onClick={() => setDrawer(true)}>Open drawer</Button>
           <RecordDrawer open={drawer} onClose={() => setDrawer(false)} />
+        </Section>
+
+        <Section id="map" title="Map" lead="Figma &quot;Equipment Map&quot;: the map in a 4px white frame with 12px corners, &quot;Close map&quot; top right, and the control column bottom right (street view, the 36px layer switch, zoom in and out). Controls are 36px white squares; hover is Cultured with a 1px Eerie Black border. Map Button toggles expand and minimize.">
+          <MapDemo />
         </Section>
       </main>
     </div>

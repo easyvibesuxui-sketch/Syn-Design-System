@@ -36,3 +36,7 @@ export { QuantityField, type QuantityFieldProps } from './components/QuantityFie
 export { Skeleton, type SkeletonProps } from './components/Skeleton';
 export { PasswordField, type PasswordFieldProps } from './components/PasswordField';
 export { PhoneField, defaultPhoneCountries, type PhoneFieldProps, type PhoneCountry } from './components/PhoneField';
+export {
+  MapView, MapControls, MapControl, MapZoomControls, MapExpandButton, MapLayerSwitch, MapStreetViewButton,
+  type MapViewProps, type MapControlProps, type MapZoomControlsProps, type MapExpandButtonProps, type MapLayerSwitchProps, type MapLayer,
+} from './components/Map';

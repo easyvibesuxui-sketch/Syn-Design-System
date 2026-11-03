@@ -251,6 +251,21 @@ track, Candy Apple fill, a 32px white thumb with Figma's double arrow (darkens o
 above and Light 12 Silver Chalice labels under the track (the minimum on the left, the value on the
 right). `min`, `max`, `step`, `format`.
 
+## Map
+
+Figma: *Equipment Map*, *Map Button*, *Zoom in* and the layer switch (Design system library, Map page). Library-agnostic:
+the map itself (Leaflet, Google Maps, an image) goes in as children and fills the frame.
+- `MapView`: 4px white border, 12px corners, Cultured while loading; `label` names the region; `onClose` adds
+  *Close map* top right (Eerie Black, 36px, Smoke Medium 14/18, 20px `x-in-circle`); `controls` takes the column below.
+- `MapControls`: the bottom-right column (pt 32, pr 16, pb 24, pl 20, 16px apart) on a faint dark corner gradient with a
+  50px top-left corner.
+- `MapControl`: a 36px white square, 8px corners, 20px Eerie Black glyph; hover Cultured with a 1px Eerie Black border.
+  `MapZoomControls` (`onZoomIn`, `onZoomOut`, `canZoomIn`, `canZoomOut`) stacks Zoom in and Zoom out 8px apart;
+  `MapExpandButton` (`expanded`) is *Map Button* Default / Minimize; `MapStreetViewButton` is the Amber figure.
+- `MapLayerSwitch`: a 36px thumbnail of the layer you switch to (`value` is the current `map` or `satellite`):
+  Satellite with a white border, Map with an Eerie Black one; hover lays Silver Chalice at 40% over it.
+  `satelliteSrc` / `mapSrc` replace the Figma thumbnails.
+
 ## Icon
 
 All 164 icons from *Icons → Main icons* plus the input icons *Info button* and *phone*, at their native Figma size (most 20 x 20; file formats 24 x 30).
