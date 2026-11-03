@@ -37,6 +37,8 @@ export function MapDemo() {
         <MapZoomControls onZoomIn={() => undefined} onZoomOut={() => undefined} />
         <MapLayerSwitch value="map" onChange={() => undefined} />
         <MapLayerSwitch value="satellite" onChange={() => undefined} />
+        <MapLayerSwitch value="map" size="lg" onChange={() => undefined} />
+        <MapLayerSwitch value="satellite" size="lg" onChange={() => undefined} />
       </div>
     </div>
   );

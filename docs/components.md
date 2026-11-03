@@ -264,7 +264,9 @@ the map itself (Leaflet, Google Maps, an image) goes in as children and fills th
   `MapExpandButton` (`expanded`) is *Map Button* Default / Minimize; `MapStreetViewButton` is the Amber figure.
 - `MapLayerSwitch`: a 36px thumbnail of the layer you switch to (`value` is the current `map` or `satellite`):
   Satellite with a white border, Map with an Eerie Black one; hover lays Silver Chalice at 40% over it.
-  `satelliteSrc` / `mapSrc` replace the Figma thumbnails.
+  `satelliteSrc` / `mapSrc` replace the Figma thumbnails. `size="lg"` is the 56px switch of the map widget (SAM Overview):
+  Eerie Black border and the layer name ("Satellite" / "MAP") in Caption 1 white on a grey gradient.
+- `MapView variant="widget"`: the map card frame, 2px Cultured with 8px corners; controls are placed by the page.
 
 ## Icon
 

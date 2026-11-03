@@ -3,6 +3,8 @@ import { Icon, type IconName } from './Icon';
 import { cx } from '../utils';
 import satelliteThumb from '../assets/map/layer-satellite.png';
 import mapThumb from '../assets/map/layer-map.png';
+import satelliteThumbLg from '../assets/map/layer-satellite-lg.png';
+import mapThumbLg from '../assets/map/layer-map-lg.png';
 import streetViewFigure from '../assets/map/street-view.png';
 import './Map.css';
 
@@ -65,6 +67,11 @@ export interface MapLayerSwitchProps {
   /** The layer the map shows now. The switch previews the other one. */
   value: MapLayer;
   onChange: (layer: MapLayer) => void;
+  /**
+   * sm = the 36px switch of the full map; lg = the 56px switch of the map widget (SAM Overview), with the
+   * layer name ("Satellite" / "MAP") on a grey gradient at the bottom.
+   */
+  size?: 'sm' | 'lg';
   /** Thumbnails; the Figma ones are used by default. */
   satelliteSrc?: string;
   mapSrc?: string;
@@ -75,17 +82,20 @@ export interface MapLayerSwitchProps {
  * Figma layer switch: a 36px thumbnail of the layer you switch to. Satellite has a white border, Map an
  * Eerie Black one; hover lays Silver Chalice at 40% over it.
  */
-export function MapLayerSwitch({ value, onChange, satelliteSrc = satelliteThumb, mapSrc = mapThumb, className }: MapLayerSwitchProps) {
+export function MapLayerSwitch({ value, onChange, size = 'sm', satelliteSrc, mapSrc, className }: MapLayerSwitchProps) {
   const next: MapLayer = value === 'map' ? 'satellite' : 'map';
+  const lg = size === 'lg';
+  const src = next === 'satellite' ? satelliteSrc ?? (lg ? satelliteThumbLg : satelliteThumb) : mapSrc ?? (lg ? mapThumbLg : mapThumb);
   return (
     <button
       type="button"
-      className={cx('syn-map-layer', `syn-map-layer--${next}`, className)}
+      className={cx('syn-map-layer', `syn-map-layer--${next}`, lg && 'syn-map-layer--lg', className)}
       aria-label={next === 'satellite' ? 'Show satellite view' : 'Show map view'}
       title={next === 'satellite' ? 'Satellite' : 'Map'}
       onClick={() => onChange(next)}
     >
-      <img src={next === 'satellite' ? satelliteSrc : mapSrc} alt="" />
+      <img src={src} alt="" />
+      {lg && <span className="syn-map-layer__label" aria-hidden>{next === 'satellite' ? 'Satellite' : 'MAP'}</span>}
     </button>
   );
 }
@@ -114,6 +124,8 @@ export interface MapViewProps {
   closeLabel?: string;
   /** Accessible name of the map region. */
   label: string;
+  /** page = Figma "Equipment Map" (4px white frame, 12px corners); widget = the map card (2px Cultured, 8px corners). */
+  variant?: 'page' | 'widget';
   className?: string;
 }
 
@@ -121,9 +133,9 @@ export interface MapViewProps {
  * Figma "Equipment Map": the map in a frame with a 4px white border and 12px corners, a "Close map" button
  * top right and the controls bottom right.
  */
-export function MapView({ children, controls, onClose, closeLabel = 'Close map', label, className }: MapViewProps) {
+export function MapView({ children, controls, onClose, closeLabel = 'Close map', label, variant = 'page', className }: MapViewProps) {
   return (
-    <div role="region" aria-label={label} className={cx('syn-map', className)}>
+    <div role="region" aria-label={label} className={cx('syn-map', variant === 'widget' && 'syn-map--widget', className)}>
       <div className="syn-map__canvas">{children}</div>
       {onClose && (
         <button type="button" className="syn-map__close" onClick={onClose}>

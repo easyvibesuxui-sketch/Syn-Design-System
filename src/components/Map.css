@@ -9,6 +9,8 @@
   border-radius: var(--syn-radius-widget);
   background: var(--syn-surface-muted);
 }
+.syn-map--widget { border: 2px solid var(--syn-border-default); border-radius: var(--syn-radius-element); }
+.syn-map--widget .syn-map__canvas { border-radius: calc(var(--syn-radius-element) - 2px); }
 .syn-map__canvas { position: absolute; inset: 0; z-index: 0; overflow: hidden; border-radius: calc(var(--syn-radius-widget) - 4px); }
 .syn-map__canvas > * { width: 100%; height: 100%; }
 .syn-map__canvas > img { display: block; object-fit: cover; }
@@ -97,3 +99,19 @@
 }
 .syn-map-layer:hover::after { opacity: 0.4; }
 .syn-map-layer:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
+
+/* Map widget switch (SAM Overview): 56px, Eerie Black border, the layer name on a grey gradient. */
+.syn-map-layer--lg { width: var(--syn-size-control-lg); height: var(--syn-size-control-lg); border-color: var(--syn-border-strong); }
+.syn-map-layer__label {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: var(--syn-space-4) var(--syn-space-2);
+  border-radius: inherit;
+  background: linear-gradient(to bottom, rgb(196 196 196 / 0.2) 44.4%, rgb(128 128 128 / 0.73) 65%, #5e5e5e);
+  color: var(--syn-color-white-white);
+  font: var(--syn-type-text-caption-1);
+}
