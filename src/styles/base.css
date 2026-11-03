@@ -6,6 +6,15 @@
 :root { --syn-title-offset: 1px; }
 .syn-title-text { position: relative; top: var(--syn-title-offset); }
 
+/* Small Medium text (Text/Caption 1, Montserrat Medium 10px) renders thin with antialiased smoothing: it takes the
+   default smoothing and a hairline stroke so it reads at the weight Figma shows, on every OS. */
+:root { --syn-text-crisp-stroke: 0.2px; }
+.syn-text-crisp {
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+  -webkit-text-stroke: var(--syn-text-crisp-stroke) currentColor;
+}
+
 .syn-root,
 .syn-root *,
 .syn-root *::before,

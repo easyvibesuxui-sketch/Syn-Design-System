@@ -251,7 +251,12 @@ track, Candy Apple fill, a 32px white thumb with Figma's double arrow (darkens o
 above and Light 12 Silver Chalice labels under the track (the minimum on the left, the value on the
 right). `min`, `max`, `step`, `format`.
 
-## Map
+## ColorDot
+
+Figma *Color Dot Default*: the colour marker for status, crew, project and operator. `variant="ring"` (default) is a
+16px white circle with a 1px Silver Chalice border around a 12px dot in `color` (any CSS colour or token);
+`variant="plain"` is the dot alone (10px by default, the tag cards). `label` names it for screen readers.
+
 
 Figma: *Equipment Map*, *Map Button*, *Zoom in* and the layer switch (Design system library, Map page). Library-agnostic:
 the map itself (Leaflet, Google Maps, an image) goes in as children and fills the frame.
@@ -276,6 +281,11 @@ the map itself (Leaflet, Google Maps, an image) goes in as children and fills th
 ABC Favorit Expanded sits high in its line box, so every title-font text (Titles 1–6, Display 2) is drawn 1px lower
 (`--syn-title-offset`, `position: relative`), which leaves layout untouched. Components apply it to their title text;
 in an app use the `.syn-title-text` class, on the text itself rather than on a row that also holds an icon or dot.
+
+## Small text
+
+Text/Caption 1 (Montserrat Medium 10px) renders thin with antialiased smoothing, so it takes the default smoothing and
+a 0.2px stroke in its own colour (`--syn-text-crisp-stroke`, `.syn-text-crisp`). Use it on any Caption 1 text.
 
 ## Icon
 

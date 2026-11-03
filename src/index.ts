@@ -40,3 +40,4 @@ export {
   MapView, MapControls, MapControl, MapZoomControls, MapExpandButton, MapLayerSwitch, MapStreetViewButton, MapEmptyState,
   type MapViewProps, type MapEmptyStateProps, type MapControlProps, type MapZoomControlsProps, type MapExpandButtonProps, type MapLayerSwitchProps, type MapLayer,
 } from './components/Map';
+export { ColorDot, type ColorDotProps } from './components/ColorDot';

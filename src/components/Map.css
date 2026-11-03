@@ -114,6 +114,9 @@
   background: linear-gradient(to bottom, rgb(196 196 196 / 0.2) 44.4%, rgb(128 128 128 / 0.73) 65%, #5e5e5e);
   color: var(--syn-color-white-white);
   font: var(--syn-type-text-caption-1);
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+  -webkit-text-stroke: var(--syn-text-crisp-stroke) currentColor;
 }
 
 /* "No tracker": Cultured with 8px bottom corners, the glyph 41px over the title, the description 21px under it. */
