@@ -186,7 +186,7 @@ round close; Eerie Black border on hover, Cultured fill when pressed, `disabled`
 - `ProgressBar`: "1/3" `label`, the percentage and a 4px Dodger Blue bar; `role="progressbar"` with `title` as its name.
   `variant="line"` is Figma *Loader line*: a bare 8px Amber bar with 8px corners.
 
-`EmptyState` `variant`: `general` (Cultured area, the 48px Empty List icon 12px over "The list is empty" in ABC Favorit Expanded Medium 12/15 Silver Chalice; with `title`, the Figma *List is empty* / *Start adding Tags* layout: Medium 16/20 Jet title, Medium 14/18 hint, 20px gaps), `person` and `crew` (Cultured panel, white border, 12px corners, 32px padding, icon over a Medium 10 Silver Chalice label), `inline` (default, "Nothing assigned").
+`EmptyState` `variant`: `general` (Cultured area, the 66 x 54 empty-state icon 16px over "The list is empty" in ABC Favorit Expanded Medium 14/20 Silver Chalice; with `title`, the Figma *List is empty* / *Start adding Tags* layout: Medium 16/20 Jet title, Medium 14/18 hint, 20px gaps), `person` and `crew` (Cultured panel, white border, 12px corners, 32px padding, icon over a Medium 10 Silver Chalice label), `inline` (default, "Nothing assigned").
 
 ## Table and Value
 
@@ -293,7 +293,7 @@ the map itself (Leaflet, Google Maps, an image) goes in as children and fills th
 
 ## Icon
 
-All 164 icons from *Icons → Main icons* plus the input icons *Info button* and *phone* and the *Empty List Icon* (`empty-list`, 45 x 36), at their native Figma size (most 20 x 20; file formats 24 x 30).
+All 164 icons from *Icons → Main icons* plus the input icons *Info button* and *phone* and the empty-state icon (`empty-list`, 66 x 54), at their native Figma size (most 20 x 20; file formats 24 x 30).
 `<Icon name="search" />`; `size` scales the longer side. Single-ink icons draw in `currentColor`, multicolour
 ones keep their colours (`iconData[name].multicolor`). Pass `title` to make an icon meaningful to screen
 readers, otherwise it is hidden. `iconNames` lists them all; `iconAliases` maps the earlier names

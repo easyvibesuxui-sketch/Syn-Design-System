@@ -130,7 +130,7 @@ export function EmptyState({ variant = 'inline', icon, title, children, action, 
   if (variant === 'general') {
     return (
       <div className={cx('syn-empty', 'syn-empty--general', title !== undefined && 'has-title', className)}>
-        <Icon name={glyph} size={48} />
+        <Icon name={glyph} size={glyph === 'empty-list' ? 66 : 48} />
         {title !== undefined && <p className="syn-empty__title">{title}</p>}
         {text && <p className="syn-empty__text">{text}</p>}
         {action}
