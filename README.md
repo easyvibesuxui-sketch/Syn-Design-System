@@ -62,7 +62,8 @@ tokens, so a theme is a set of semantic overrides. See [docs/foundations.md](doc
 `Tooltip` · `Notification` · `StatusChip` · `StatusBadge` · `Accordion` · `Dialog` · `Drawer` / `DrawerRow` ·
 `Section` / `Card` / `Property` · `Tag` · `Grid` / `GridItem` · `Table` / `Value` · `Segmented` · `TextArea` ·
 `Checklist` / `ChecklistItem` · `Comment` / `CommentReply` / `CommentEditor` · `Avatar` · `Thumbnail` · `FileItem` ·
-`EmptyState` · `ProgressBar` · `Slider` · `Icon`
+`EmptyState` · `ProgressBar` · `Slider` · `MapView` / `MapControls` / `MapControl` / `MapZoomControls` / `MapExpandButton` /
+`MapLayerSwitch` / `MapStreetViewButton` · `Icon`
 
 The full record drawer from the design reference is assembled in `playground/RecordDrawer.tsx`.
 
@@ -74,6 +75,6 @@ Props, Figma mappings and accessibility notes are in [docs/components.md](docs/c
 ## What is not covered yet
 
 The Figma file also has date and time pickers, calendar, upload, data sheet, drawer navigation, rating and
-voting and map pages. They are not in this first version; the tokens
+voting pages. They are not in this first version; the tokens
 already cover what they need. Known gaps and the decisions taken while extracting are listed in
 [docs/extraction-notes.md](docs/extraction-notes.md).

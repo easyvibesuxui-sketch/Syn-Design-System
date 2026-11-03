@@ -263,11 +263,28 @@ The 12-column grid: 24px gutter by default (`gap` takes 8–32), `GridItem` `spa
 ## Slider
 
 Figma: *Slider 1*, *Slider button*, *Slider button with text*. Native range input: 2px Silver Chalice
-track, Candy Apple fill, a 32px white thumb with Figma's double arrow (darkens on hover), the label
+track, Candy Apple fill, a 32px Snow thumb with a Silver Chalice ring and Figma's double arrow, the label
 above and Light 12 Silver Chalice labels under the track (the minimum on the left, the value on the
 right). `min`, `max`, `step`, `format`.
 
 States (Figma *Slider button*): hover = Eerie Black ring; while moving (dragging) = Cultured thumb, Eerie Black ring and the pause glyph, cursor grabbing; disabled = Gray X ring. `state="hover" | "moving"` shows a state for docs.
+
+## Map
+
+Figma: *Equipment Map*, *Map Button*, *Zoom in* and the layer switch (Design system library, Map page). Library-agnostic:
+the map itself (Leaflet, Google Maps, an image) goes in as children and fills the frame.
+- `MapView`: 4px white border, 12px corners, Cultured while loading; `label` names the region; `onClose` adds
+  *Close map* top right (Eerie Black, 36px, Smoke Medium 14/18, 20px `x-in-circle`); `controls` takes the column below.
+- `MapControls`: the bottom-right column (pt 32, pr 16, pb 24, pl 20, 16px apart) on a faint dark corner gradient with a
+  50px top-left corner.
+- `MapControl`: a 36px white square, 8px corners, 20px Eerie Black glyph; hover Cultured with a 1px Eerie Black border.
+  `MapZoomControls` (`onZoomIn`, `onZoomOut`, `canZoomIn`, `canZoomOut`) stacks Zoom in and Zoom out 8px apart;
+  `MapExpandButton` (`expanded`) is *Map Button* Default / Minimize; `MapStreetViewButton` is the Amber figure.
+- `MapLayerSwitch`: a 36px thumbnail of the layer you switch to (`value` is the current `map` or `satellite`):
+  Satellite with a white border, Map with an Eerie Black one; hover lays Silver Chalice at 40% over it.
+  `satelliteSrc` / `mapSrc` replace the Figma thumbnails. `size="lg"` is the 56px switch of the map widget (SAM Overview):
+  Eerie Black border and the layer name ("Satellite" / "MAP") in Caption 1 white on a grey gradient.
+- `MapView variant="widget"`: the map card frame, 2px Cultured with 8px corners; controls are placed by the page.
 
 ## Icon
 
