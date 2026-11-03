@@ -1,6 +1,11 @@
 /* Montserrat is open (OFL); the playground self-hosts it via @fontsource/montserrat.
    ABC Favorit Expanded is commercial: self-host it under that family name and
    --syn-font-family-title picks it up; otherwise titles fall back to Montserrat. */
+/* ABC Favorit Expanded sits high in its line box: every title-font text (Titles 1-6, Display 2, the highlighted
+   button styles) is drawn 1px lower so it reads as centred. Layout is unchanged. */
+:root { --syn-title-offset: 1px; }
+.syn-title-text { position: relative; top: var(--syn-title-offset); }
+
 .syn-root,
 .syn-root *,
 .syn-root *::before,

@@ -11,7 +11,7 @@
   background: var(--syn-surface-default);
 }
 .syn-section:not(.is-open) .syn-section__header { border-radius: var(--syn-radius-widget); }
-.syn-section__title { flex: 1; min-width: 0; margin: 0; color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
+.syn-section__title { position: relative; top: var(--syn-title-offset); flex: 1; min-width: 0; margin: 0; color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
 .syn-section__actions { display: flex; align-items: center; gap: var(--syn-space-8); }
 .syn-section__toggle {
   display: inline-flex;
@@ -61,7 +61,7 @@
   box-shadow: var(--syn-shadow-default);
 }
 .syn-card__header { display: flex; align-items: center; justify-content: space-between; gap: var(--syn-space-16); min-height: var(--syn-size-control-xs); }
-.syn-card__title { margin: 0; color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
+.syn-card__title { position: relative; top: var(--syn-title-offset); margin: 0; color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
 .syn-card__actions { display: flex; align-items: center; gap: var(--syn-space-8); }
 
 /* Property: 12px label (icon gap 6) over the value, 8px apart. */

@@ -115,7 +115,7 @@
 @keyframes syn-switch-spin { to { transform: rotate(360deg); } }
 
 /* Off / on words beside the toggle (record drawer custom fields): ABC Favorit Expanded Medium 12. */
-.syn-switch__state { color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
+.syn-switch__state { position: relative; top: var(--syn-title-offset); color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
 
 /* Indicator: "On" (Light 12, or 10 at size 20) on the left of the on track; a white check on the right of the off track. */
 .syn-switch__track { display: flex; align-items: center; }

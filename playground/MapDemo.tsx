@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MapControls, MapExpandButton, MapLayerSwitch, MapStreetViewButton, MapView, MapZoomControls, type MapLayer } from '../src';
+import { Card, MapEmptyState, MapControls, MapExpandButton, MapLayerSwitch, MapStreetViewButton, MapView, MapZoomControls, type MapLayer } from '../src';
 import sample from './assets/map-sample.png';
 
 /** Figma "Equipment Map" with its controls, on a static map image (any map library can fill the frame). */
@@ -32,6 +32,7 @@ export function MapDemo() {
       ) : (
         <button type="button" className="pg-map__reopen" onClick={() => setOpen(true)}>Open map</button>
       )}
+      <Card title="Current Location" className="pg-map__empty"><MapEmptyState /></Card>
       <div className="pg-map__parts">
         <MapExpandButton expanded={expanded} onClick={() => setExpanded(!expanded)} />
         <MapZoomControls onZoomIn={() => undefined} onZoomOut={() => undefined} />

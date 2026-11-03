@@ -266,7 +266,16 @@ the map itself (Leaflet, Google Maps, an image) goes in as children and fills th
   Satellite with a white border, Map with an Eerie Black one; hover lays Silver Chalice at 40% over it.
   `satelliteSrc` / `mapSrc` replace the Figma thumbnails. `size="lg"` is the 56px switch of the map widget (SAM Overview):
   Eerie Black border and the layer name ("Satellite" / "MAP") in Caption 1 white on a grey gradient.
+- `MapEmptyState`: the "No tracker" view. On Cultured, the 56px gps-off glyph over `title` ("No Tracker attached to this
+  equipment", ABC Favorit Expanded Medium 16) and `description` ("No data can be provided", Montserrat Medium 16), all
+  Silver Chalice and centred; it fills its container.
 - `MapView variant="widget"`: the map card frame, 2px Cultured with 8px corners; controls are placed by the page.
+
+## Title offset
+
+ABC Favorit Expanded sits high in its line box, so every title-font text (Titles 1–6, Display 2) is drawn 1px lower
+(`--syn-title-offset`, `position: relative`), which leaves layout untouched. Components apply it to their title text;
+in an app use the `.syn-title-text` class, on the text itself rather than on a row that also holds an icon or dot.
 
 ## Icon
 

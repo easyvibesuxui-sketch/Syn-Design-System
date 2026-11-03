@@ -37,7 +37,7 @@
   padding: 0 var(--syn-space-56);
   border-bottom: 1px solid var(--syn-color-grey-cultured);
 }
-.syn-dialog__title { margin: 0; color: var(--syn-color-black-eerie-black); font: var(--syn-type-titles-title-4); text-align: center; }
+.syn-dialog__title { position: relative; top: var(--syn-title-offset); margin: 0; color: var(--syn-color-black-eerie-black); font: var(--syn-type-titles-title-4); text-align: center; }
 .syn-dialog__close {
   position: absolute;
   top: 16px;
