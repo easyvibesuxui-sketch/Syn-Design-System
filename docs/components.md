@@ -186,7 +186,7 @@ round close; Eerie Black border on hover, Cultured fill when pressed, `disabled`
 - `ProgressBar`: "1/3" `label`, the percentage and a 4px Dodger Blue bar; `role="progressbar"` with `title` as its name.
   `variant="line"` is Figma *Loader line*: a bare 8px Amber bar with 8px corners.
 
-`EmptyState` `variant`: `general` (Figma *List is empty*: 45 x 36 Empty List icon, Medium 16/20 Jet title, Medium 14/18 Silver Chalice hint, 20px gaps), `person` and `crew` (Cultured panel, white border, 12px corners, 32px padding, icon over a Medium 10 Silver Chalice label), `inline` (default, "Nothing assigned"). `title` for the general heading.
+`EmptyState` `variant`: `general` (Cultured area, the 48px Empty List icon 12px over "The list is empty" in ABC Favorit Expanded Medium 12/15 Silver Chalice; with `title`, the Figma *List is empty* / *Start adding Tags* layout: Medium 16/20 Jet title, Medium 14/18 hint, 20px gaps), `person` and `crew` (Cultured panel, white border, 12px corners, 32px padding, icon over a Medium 10 Silver Chalice label), `inline` (default, "Nothing assigned").
 
 ## Table and Value
 

@@ -57,11 +57,14 @@ a.syn-file__name:hover { text-decoration: underline; }
 }
 .syn-empty__text { margin: 0; color: var(--syn-text-muted); font: var(--syn-type-titles-title-4); }
 
-/* Figma "List is empty": the 45 x 36 Empty List icon, 20px gaps, ABC Favorit Expanded Medium 16/20 Jet
-   title and a Montserrat Medium 14/18 Silver Chalice hint, centred in the list area. */
-.syn-empty--general { gap: var(--syn-space-20); min-height: 200px; border: 0; text-align: center; }
+/* General: the 48px Empty List icon 12px over "The list is empty" in ABC Favorit Expanded Medium 12/15 Silver
+   Chalice, centred on Cultured. With a title (Figma "List is empty" / "Start adding Tags"): Medium 16/20 Jet
+   title, Medium 14/18 hint, 20px gaps. */
+.syn-empty--general { gap: var(--syn-space-12); min-height: 176px; border: 0; background: var(--syn-color-grey-cultured); text-align: center; }
+.syn-empty--general .syn-empty__text { color: var(--syn-color-secondary-silver-chalince); font: var(--syn-type-titles-title-5); }
 .syn-empty__title { margin: 0; color: var(--syn-color-secondary-jet); font: var(--syn-type-titles-title-3); }
-.syn-empty--general .syn-empty__text { font: var(--syn-type-text-body-s); }
+.syn-empty--general.has-title { gap: var(--syn-space-20); }
+.syn-empty--general.has-title .syn-empty__text { font: var(--syn-type-text-body-s); }
 
 /* Person and crew: a Cultured panel with a white 1px border, 12px corners, 32px top and bottom padding,
    the icon 12px above an ABC Favorit Expanded Medium 10 Silver Chalice label (Figma "No … yet"). */

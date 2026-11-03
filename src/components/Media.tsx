@@ -95,14 +95,14 @@ export type EmptyStateVariant = 'inline' | 'general' | 'person' | 'crew';
 
 export interface EmptyStateProps {
   /**
-   * inline (default) = "Nothing assigned" in a section. general = Figma "List is empty" for a whole list or
-   * table (Empty List icon, title, hint). person / crew = the Cultured "No … yet" panel with the person or
+   * inline (default) = "Nothing assigned" in a section. general = the Figma general empty state for a whole
+   * list or table: the Empty List icon over "The list is empty" on Cultured. person / crew = the Cultured "No … yet" panel with the person or
    * crew icon (Figma notification-centre empty panel).
    */
   variant?: EmptyStateVariant;
   /** Overrides the variant's icon. */
   icon?: IconName;
-  /** general only: the bold line ("List is empty"); children are then the hint under it. */
+  /** general only: an optional Jet heading over the message (Figma "List is empty" / "Start adding Tags"). */
   title?: ReactNode;
   children?: ReactNode;
   /** A button or link under the message. */
@@ -118,7 +118,7 @@ const EMPTY_ICON: Record<EmptyStateVariant, IconName> = {
 };
 const EMPTY_TEXT: Record<EmptyStateVariant, string> = {
   inline: 'Nothing assigned',
-  general: 'Start adding items',
+  general: 'The list is empty',
   person: 'No people yet',
   crew: 'No crew yet',
 };
@@ -129,9 +129,9 @@ export function EmptyState({ variant = 'inline', icon, title, children, action, 
   const text = children ?? EMPTY_TEXT[variant];
   if (variant === 'general') {
     return (
-      <div className={cx('syn-empty', 'syn-empty--general', className)}>
-        <Icon name={glyph} size={glyph === 'empty-list' ? 45 : 36} />
-        <p className="syn-empty__title">{title ?? 'List is empty'}</p>
+      <div className={cx('syn-empty', 'syn-empty--general', title !== undefined && 'has-title', className)}>
+        <Icon name={glyph} size={48} />
+        {title !== undefined && <p className="syn-empty__title">{title}</p>}
         {text && <p className="syn-empty__text">{text}</p>}
         {action}
       </div>
