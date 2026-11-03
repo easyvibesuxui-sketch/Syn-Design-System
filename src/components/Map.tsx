@@ -63,6 +63,35 @@ export function MapExpandButton({ expanded, expandLabel = 'Expand map', collapse
 
 export type MapLayer = 'map' | 'satellite';
 
+/** A map detail the user can turn on over the base layer (Terrain, Traffic, Transit…). */
+export interface MapOverlayOption {
+  id: string;
+  label: string;
+  /** Thumbnail; the defaults below have drawn ones. */
+  src?: string;
+}
+
+const svg = (body: string) => `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 32 32">${body}</svg>`)}`;
+
+/** Terrain, Traffic and Transit with small drawn thumbnails in Syn colours. */
+export const defaultMapOverlays: MapOverlayOption[] = [
+  {
+    id: 'terrain',
+    label: 'Terrain',
+    src: svg('<rect width="32" height="32" fill="#eef1e8"/><path d="M0 22c5-6 8-9 12-9s6 4 10 4 6-3 10-6v21H0z" fill="#c9d8b8"/><path d="M0 27c6-4 10-6 15-5s9 3 17-2v12H0z" fill="#a9c294"/><path d="M4 18c4-3 7-5 10-4M18 12c3-2 6-3 10-2" stroke="#fff" stroke-width=".8" fill="none"/>'),
+  },
+  {
+    id: 'traffic',
+    label: 'Traffic',
+    src: svg('<rect width="32" height="32" fill="#f1f1f1"/><path d="M-2 22 34 10M10 -2l6 36" stroke="#fff" stroke-width="5"/><path d="M-2 22 14 16.7" stroke="#71c562" stroke-width="2.4"/><path d="M14 16.7 34 10" stroke="#ec0808" stroke-width="2.4"/><path d="M10 -2l3 18" stroke="#fe7d00" stroke-width="2.4"/><path d="M13 16l3 18" stroke="#71c562" stroke-width="2.4"/>'),
+  },
+  {
+    id: 'transit',
+    label: 'Transit',
+    src: svg('<rect width="32" height="32" fill="#f1f1f1"/><path d="M-2 8 34 26M6 34 22 -2" stroke="#fff" stroke-width="4"/><path d="M-2 20h12l8-8h16" stroke="#459af7" stroke-width="2" fill="none"/><rect x="19" y="18" width="9" height="9" rx="2" fill="#459af7"/><path d="M21.5 20.5h4v3h-4zM22 25l-1 1.2M25 25l1 1.2" stroke="#fff" stroke-width=".8" fill="none"/>'),
+  },
+];
+
 export interface MapLayerSwitchProps {
   /** The layer the map shows now. The switch previews the other one. */
   value: MapLayer;
@@ -75,21 +104,37 @@ export interface MapLayerSwitchProps {
   /** Thumbnails; the Figma ones are used by default. */
   satelliteSrc?: string;
   mapSrc?: string;
+  /**
+   * Map details shown in a panel beside the switch while it is hovered or focused (pass
+   * `defaultMapOverlays` for Terrain, Traffic and Transit). Clicking the switch itself still swaps the layer.
+   */
+  overlays?: MapOverlayOption[];
+  /** Ids of the details that are on. */
+  activeOverlays?: string[];
+  onOverlayToggle?: (id: string, on: boolean) => void;
+  /** Which side the panel opens to. left (default) suits controls on the right edge of the map. */
+  panelSide?: 'left' | 'right';
+  /** Accessible name of the details group. */
+  overlaysLabel?: string;
   className?: string;
 }
 
 /**
  * Figma layer switch: a 36px thumbnail of the layer you switch to. Satellite has a white border, Map an
- * Eerie Black one; hover lays Silver Chalice at 40% over it.
+ * Eerie Black one; hover lays Silver Chalice at 40% over it. With `overlays`, hovering or focusing it opens
+ * a white panel of map details (Terrain, Traffic, Transit) that toggle on and off.
  */
-export function MapLayerSwitch({ value, onChange, size = 'sm', satelliteSrc, mapSrc, className }: MapLayerSwitchProps) {
+export function MapLayerSwitch({
+  value, onChange, size = 'sm', satelliteSrc, mapSrc, overlays, activeOverlays = [], onOverlayToggle, panelSide = 'left',
+  overlaysLabel = 'Map details', className,
+}: MapLayerSwitchProps) {
   const next: MapLayer = value === 'map' ? 'satellite' : 'map';
   const lg = size === 'lg';
   const src = next === 'satellite' ? satelliteSrc ?? (lg ? satelliteThumbLg : satelliteThumb) : mapSrc ?? (lg ? mapThumbLg : mapThumb);
-  return (
+  const button = (
     <button
       type="button"
-      className={cx('syn-map-layer', `syn-map-layer--${next}`, lg && 'syn-map-layer--lg', className)}
+      className={cx('syn-map-layer', `syn-map-layer--${next}`, lg && 'syn-map-layer--lg', !overlays && className)}
       aria-label={next === 'satellite' ? 'Show satellite view' : 'Show map view'}
       title={next === 'satellite' ? 'Satellite' : 'Map'}
       onClick={() => onChange(next)}
@@ -97,6 +142,31 @@ export function MapLayerSwitch({ value, onChange, size = 'sm', satelliteSrc, map
       <img src={src} alt="" />
       {lg && <span className="syn-map-layer__label" aria-hidden>{next === 'satellite' ? 'Satellite' : 'MAP'}</span>}
     </button>
+  );
+  if (!overlays || overlays.length === 0) return button;
+  return (
+    <div className={cx('syn-map-layers', `syn-map-layers--${panelSide}`, lg && 'syn-map-layers--lg', className)}>
+      {button}
+      <div className="syn-map-layers__panel">
+        <div role="group" aria-label={overlaysLabel} className="syn-map-layers__card">
+          {overlays.map((o) => {
+            const on = activeOverlays.includes(o.id);
+            return (
+              <button
+                key={o.id}
+                type="button"
+                className={cx('syn-map-layers__option', on && 'is-on')}
+                aria-pressed={on}
+                onClick={() => onOverlayToggle?.(o.id, !on)}
+              >
+                <span className="syn-map-layers__thumb">{o.src && <img src={o.src} alt="" />}</span>
+                <span className="syn-map-layers__label">{o.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
   );
 }
 

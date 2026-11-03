@@ -115,3 +115,62 @@
   color: var(--syn-color-white-white);
   font: var(--syn-type-text-caption-1);
 }
+
+/* Layer details panel: opens beside the switch while it is hovered or focused. A white card with 8px
+   corners and the float shadow holds 32px thumbnails over Regular 10 labels; a detail that is on gets an
+   Eerie Black ring and an Eerie Black Medium label. The padding on the inner side bridges the gap so the
+   pointer can travel from the switch to the card. */
+.syn-map-layers { position: relative; display: inline-flex; flex: none; }
+.syn-map-layers__panel {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-50%);
+  transition: opacity var(--syn-duration-fast), transform var(--syn-duration-fast), visibility 0s linear var(--syn-duration-fast);
+}
+.syn-map-layers--left .syn-map-layers__panel { right: 100%; padding-right: var(--syn-space-8); transform: translate(4px, -50%); }
+.syn-map-layers--right .syn-map-layers__panel { left: 100%; padding-left: var(--syn-space-8); transform: translate(-4px, -50%); }
+.syn-map-layers:hover .syn-map-layers__panel,
+.syn-map-layers:focus-within .syn-map-layers__panel { visibility: visible; opacity: 1; transform: translate(0, -50%); transition-delay: 0s; }
+.syn-map-layers__card {
+  display: flex;
+  gap: var(--syn-space-4);
+  padding: var(--syn-space-4);
+  border-radius: var(--syn-radius-element);
+  background: var(--syn-color-white-white);
+  box-shadow: var(--syn-shadow-float);
+}
+.syn-map-layers__option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--syn-space-2);
+  width: 48px;
+  margin: 0;
+  padding: var(--syn-space-2) 0;
+  border: 0;
+  border-radius: var(--syn-radius-element);
+  background: transparent;
+  color: var(--syn-color-secondary-jet);
+  font: var(--syn-type-text-caption-2);
+  cursor: pointer;
+}
+.syn-map-layers__thumb {
+  display: block;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  border: 1px solid var(--syn-border-default);
+  border-radius: var(--syn-radius-element);
+  background: var(--syn-surface-muted);
+  transition: border-color var(--syn-duration-fast), box-shadow var(--syn-duration-fast);
+}
+.syn-map-layers__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.syn-map-layers__option:hover .syn-map-layers__thumb { border-color: var(--syn-border-strong); }
+.syn-map-layers__option.is-on { color: var(--syn-color-black-eerie-black); font-weight: 500; }
+.syn-map-layers__option.is-on .syn-map-layers__thumb { border-color: var(--syn-border-strong); box-shadow: 0 0 0 1px var(--syn-border-strong); }
+.syn-map-layers__option:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 1px; }
+.syn-map-layers--lg .syn-map-layers__card { padding: var(--syn-space-6) var(--syn-space-4); }
+@media (prefers-reduced-motion: reduce) { .syn-map-layers__panel { transition: none; } }

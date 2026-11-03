@@ -285,6 +285,11 @@ the map itself (Leaflet, Google Maps, an image) goes in as children and fills th
   `satelliteSrc` / `mapSrc` replace the Figma thumbnails. `size="lg"` is the 56px switch of the map widget (SAM Overview):
   Eerie Black border and the layer name ("Satellite" / "MAP") in Caption 1 white on a grey gradient.
 - `MapView variant="widget"`: the map card frame, 2px Cultured with 8px corners; controls are placed by the page.
+- Layer details: give `MapLayerSwitch` `overlays` (`defaultMapOverlays` = Terrain, Traffic, Transit, or your own
+  `{ id, label, src }`), `activeOverlays` and `onOverlayToggle`. Hovering or focusing the switch opens a white card
+  beside it (`panelSide` `left` by default, `right`): 32px thumbnails over Regular 10 labels; a detail that is on gets an
+  Eerie Black ring and label. Clicking the switch itself still swaps Map and Satellite. Not in Figma: built from the
+  reference screenshot.
 
 ## Icon
 
