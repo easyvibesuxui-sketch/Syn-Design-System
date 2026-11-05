@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { Button, DrawerRow, Icon, IconButton, StatusBadge, type IconName, type StatusTone } from '../../src';
+import { DrawerRow, Icon, IconButton, StatusBadge, Tooltip, type IconName, type StatusTone } from '../../src';
 import { cx } from '../../src/utils';
 import { money, plural, type ArtType, type Availability, type OrderStatus } from './data';
 import { routeHref, useShop } from './store';
@@ -106,9 +106,13 @@ export function ShopHeader({ title, lead, back, extra }: {
       actions={<>
         {!back && <LinkButton href={routeHref({ name: 'orders' })} iconStart="history" variant="text">{t("My orders")}</LinkButton>}
         {extra}
-        <Button size="sm" className="shop-cart-button" onClick={() => setCartOpen(true)} aria-label={cartQty ? t("Cart, {0}", [plural(cartQty, 'item')]) : t("Cart")}>
-          <LineIcon name="cart" size={16} /><span className="shop-cart-button__text">{t("Cart")}</span>{cartQty > 0 && <span className="shop-count" aria-hidden>{cartQty}</span>}
-        </Button>
+        {/* Icon-only cart: the count sits in a badge on the top-right corner, as in most shop headers. */}
+        <Tooltip content={t("Cart")} placement="bottom">
+          <button type="button" className="shop-cart-button" onClick={() => setCartOpen(true)} aria-label={cartQty ? t("Cart, {0}", [plural(cartQty, 'item')]) : t("Cart")}>
+            <LineIcon name="cart" size={20} />
+            {cartQty > 0 && <span className="shop-count" aria-hidden>{cartQty > 99 ? '99+' : cartQty}</span>}
+          </button>
+        </Tooltip>
       </>}
     />
   );

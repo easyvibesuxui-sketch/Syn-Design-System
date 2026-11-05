@@ -454,7 +454,6 @@ html { scroll-behavior: smooth; }
 .shop-topbar__crumb { font: var(--syn-type-titles-title-3); }
 /* SAM wordmark: ABC Favorit Expanded Medium 36. */
 .shop-topbar__brand { color: var(--syn-text-primary); font-family: var(--syn-font-family-title); font-size: 36px; font-weight: var(--syn-font-weight-medium); line-height: 40px; letter-spacing: 0; }
-.shop-cart-button .shop-line-icon { margin-right: var(--syn-space-8); vertical-align: -3px; }
 .shop-rail__item .shop-line-icon { display: block; }
 
 /* How ordering works: outlined numbers, centred against their two lines. */
@@ -795,11 +794,11 @@ html { scroll-behavior: smooth; }
 .shop-card__media .shop-art img, .shop-art--lg img, .shop-art--xs img { max-width: none; max-height: none; }
 .shop-gallery > .shop-art { --art-t: 64px; --art-x: var(--syn-space-32); --art-b: var(--syn-space-32); }
 
-/* Cart button: icon and label start on the left, 6px apart; the item count is a round badge pinned to the right edge. */
-.shop-cart-button { justify-content: flex-start; min-width: 140px; padding-inline: var(--syn-space-16) var(--syn-space-10); }
-.shop-cart-button .syn-button__label { display: flex; flex: 1; align-items: center; gap: var(--syn-space-6); }
-.shop-cart-button .shop-line-icon { margin-right: 0; vertical-align: 0; flex: none; }
-.shop-cart-button .shop-count { flex: none; width: 20px; min-width: 20px; margin-left: auto; padding: 0; }
-.shop-cart-button:not(:has(.shop-count)) { padding-inline-end: var(--syn-space-16); }
-/* At least 12px between the label and the count, whatever the language. */
-.shop-cart-button__text { margin-right: var(--syn-space-6); }
+/* Cart: a 36px black icon button (the header's main action); the count is a 20px red badge over its top-right corner,
+ * ringed in the page colour so it reads apart from the button. */
+.shop-cart-button { position: relative; display: inline-grid; flex: none; place-items: center; width: var(--syn-size-control-sm); height: var(--syn-size-control-sm); padding: 0; border: 0; border-radius: var(--syn-radius-element); background: var(--syn-action-primary); color: var(--syn-action-primary-text); cursor: pointer; transition: background-color var(--syn-duration-fast); }
+/* Hover lightens the button, not the badge. */
+.shop-cart-button:hover { background: var(--syn-color-secondary-jet); }
+.shop-cart-button:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
+.shop-cart-button .shop-line-icon { margin: 0; vertical-align: 0; }
+.shop-cart-button .shop-count { position: absolute; top: -8px; right: -8px; box-sizing: border-box; min-width: 20px; height: 20px; margin: 0; padding: 0 var(--syn-space-4); box-shadow: 0 0 0 2px var(--syn-surface-muted); line-height: 20px; }
