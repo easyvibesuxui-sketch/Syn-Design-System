@@ -274,7 +274,9 @@ export function OptionList({
       </div>
       {actions && (
         <div className="syn-options__footer">
-          {actions.secondaryLabel ? <Button variant="text" onClick={actions.onSecondary}>{actions.secondaryLabel}</Button> : <span />}
+          {actions.secondaryLabel
+            ? <Button variant="text" onClick={actions.onSecondary ?? (multiple ? () => onValuesChange?.([]) : undefined)}>{actions.secondaryLabel}</Button>
+            : <span />}
           {actions.actionLabel && <Button variant="accent" size="sm" className="syn-options__action" onClick={actions.onAction}>{actions.actionLabel}</Button>}
         </div>
       )}
@@ -342,7 +344,11 @@ export interface SelectProps {
   removeTagLabel?: (label: string) => string;
   /** List options: two columns, a footer with actions, the empty message, the scroll height. */
   columns?: 1 | 2;
-  listActions?: OptionListActions;
+  /**
+   * The list footer. With `multiple` there is one by default: "Clear" (empties the choice) and "Apply" (closes
+   * the list); pass labels or handlers to change them, or `null` for no footer.
+   */
+  listActions?: OptionListActions | null;
   emptyTitle?: ReactNode;
   emptyHint?: ReactNode;
   maxListHeight?: number;
@@ -605,7 +611,12 @@ export function Select({
             values={chosen}
             onValuesChange={setChosen}
             columns={columns}
-            actions={listActions && {
+            actions={listActions === null ? undefined : multiple ? {
+              secondaryLabel: listActions?.secondaryLabel ?? 'Clear',
+              onSecondary: () => { setChosen([]); listActions?.onSecondary?.(); },
+              actionLabel: listActions?.actionLabel ?? 'Apply',
+              onAction: () => { listActions?.onAction?.(); close(); },
+            } : listActions && {
               ...listActions,
               onAction: () => { listActions.onAction?.(); close(); },
             }}

@@ -75,7 +75,7 @@ Figma: *Dropdown* page (873:776). `Select` is the field, `OptionList` the list (
   *Barrell*: 48 / 40 / 36px rows, indented 16 and 32, inner rows on Smoke).
 - List: white, 1px Cultured border, 8px corners, 2px padding, 48px Regular 16 Jet rows. Hover Misty Rose; selected
   Misty Rose in Medium 16 (or a ticked 24px checkbox with a Silver Chalice border). Rows with helper text, media or
-  prefix / suffix hover Snow, chosen one white with a 1px Silver Chalice border. Disabled Smoke + Gray X. `columns={2}`, `listActions` / `actions` (56px footer: Medium 16 text button, 160 x 36 Amber action),
+  prefix / suffix hover Snow, chosen one white with a 1px Silver Chalice border. Disabled Smoke + Gray X. With `multiple` a Clear / Apply footer by default (`listActions` relabels, `null` removes). `columns={2}`, `listActions` / `actions` (56px footer: Medium 16 text button, 160 x 36 Amber action),
   `emptyTitle` / `emptyHint` (Figma *Empty*: "Cant find anything" / "Try different keywords", 120px glyph), `maxListHeight` / `maxHeight` (320px, thin Eerie Black scroll bar).
 - Keys: Up / Down (the active row scrolls into view), Home / End, Right opens a group, Left closes it, Enter / Space choose or
   tick, Escape closes from anywhere inside. Standard: letters jump to a matching option. Multiple: Backspace in an empty
