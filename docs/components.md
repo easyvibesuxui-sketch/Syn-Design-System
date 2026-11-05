@@ -156,7 +156,8 @@ margin. `DrawerRow` is a full-width row with a Cultured hairline: `label` with a
 `Section` is the large widget ("Details", "Custom fields", "Checklist"): a 36px white header over a Smoke body,
 Cultured borders, 12px corners; `collapsible` adds the chevron (`defaultOpen`, or `open`/`onOpenChange`),
 `actions` adds header buttons. `Card` is the white inner widget ("Main Loss") with 12px corners and a soft
-shadow. `Property` puts a 12px label (optional 12px `icon`) over its value; `variant="tile"` draws it in a Smoke
+shadow. Rule: a card's "open" chevron (an `IconButton` with `className="syn-card__open"`) shows only while
+the card is hovered or has focus inside; on touch screens it always shows. `Property` puts a 12px label (optional 12px `icon`) over its value; `variant="tile"` draws it in a Smoke
 box with 8px corners.
 
 ## Tag
