@@ -801,4 +801,4 @@ html { scroll-behavior: smooth; }
 .shop-cart-button:hover { background: var(--syn-surface-muted); }
 .shop-cart-button:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
 .shop-cart-button .shop-line-icon { margin: 0; vertical-align: 0; }
-.shop-cart-button .shop-count { position: absolute; top: -9px; right: -9px; /* 8px past the outer edge, counting the 1px border */ box-sizing: border-box; min-width: 20px; height: 20px; margin: 0; padding: 0 var(--syn-space-4); box-shadow: 0 0 0 2px var(--syn-surface-muted); line-height: 20px; }
+.shop-cart-button .shop-count { position: absolute; top: -7px; right: -7px; /* 6px past the outer edge, counting the 1px border */ box-sizing: border-box; min-width: 16px; height: 16px; margin: 0; padding: 0 3px; /* two digits still fit the 16px circle */ box-shadow: 0 0 0 2px var(--syn-surface-muted); font-size: 10px; line-height: 16px; }
