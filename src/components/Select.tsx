@@ -109,9 +109,9 @@ export interface OptionListProps {
   columns?: 1 | 2;
   /** The footer with a text button and the Amber action (Figma "Buttons"). */
   actions?: OptionListActions;
-  /** Figma "Select List Nothing Found": shown when there are no options. */
-  emptyTitle?: string;
-  emptyHint?: string;
+  /** Figma "Empty": shown when there are no options. Default "Cant find anything" / "Try different keywords". */
+  emptyTitle?: ReactNode;
+  emptyHint?: ReactNode;
   /** Open groups; uncontrolled with defaultExpanded. */
   expanded?: string[];
   defaultExpanded?: string[];
@@ -119,7 +119,7 @@ export interface OptionListProps {
   /** The row the keyboard is on (driven by Select). */
   activeValue?: string;
   onActiveChange?: (value: string) => void;
-  /** Taller lists scroll with a thin Eerie Black bar. Default 312px (six rows). */
+  /** Taller lists scroll with a thin Eerie Black bar. Default 320px (six rows). */
   maxHeight?: number;
   id?: string;
   className?: string;
@@ -133,8 +133,8 @@ export interface OptionListProps {
  */
 export function OptionList({
   options, label, multiple, value, onSelect, values = [], onValuesChange, columns = 1, actions,
-  emptyTitle = 'Nothing Found', emptyHint = 'Try different Keyword', expanded, defaultExpanded = [], onExpandedChange,
-  activeValue, onActiveChange, maxHeight = 312, id, className, style,
+  emptyTitle, emptyHint, expanded, defaultExpanded = [], onExpandedChange,
+  activeValue, onActiveChange, maxHeight = 320, id, className, style,
 }: OptionListProps) {
   const autoId = useId();
   const listId = id ?? `syn-options-${autoId}`;
@@ -166,8 +166,11 @@ export function OptionList({
       <div className="syn-options__scroll" style={{ maxHeight }}>
         {rows.length === 0 ? (
           <div className="syn-options__empty" role="status">
-            <Icon name="search" size={30} />
-            <p>{emptyTitle}<br />{emptyHint}</p>
+            <p>{emptyTitle ?? <><b>Cant find</b> anything</>}</p>
+            <div className="syn-options__empty-row">
+              <p>{emptyHint ?? <>Try <b>different keywords</b></>}</p>
+              <Icon name="search-empty" size={120} />
+            </div>
           </div>
         ) : (
           <ul id={listId} role="listbox" aria-label={label} aria-multiselectable={multiple || undefined} className="syn-options__list">
@@ -187,7 +190,8 @@ export function OptionList({
                   aria-expanded={group ? isOpen : undefined}
                   aria-level={tree ? level + 1 : undefined}
                   className={cx('syn-option', `syn-option--l${Math.min(level, 2)}`, group && 'is-group', isOpen && 'is-open',
-                    option.value === activeValue && 'is-active', state !== 'off' && 'is-selected', option.disabled && 'is-disabled', option.description && 'has-description')}
+                    option.value === activeValue && 'is-active', state !== 'off' && 'is-selected', option.disabled && 'is-disabled', option.description && 'has-description',
+                    (option.description || option.prefix !== undefined || option.suffix !== undefined || media) && !group && !tree && 'is-plain-hover', tree && 'in-tree')}
                   onMouseEnter={() => !option.disabled && onActiveChange?.(option.value)}
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={() => {
@@ -294,8 +298,8 @@ export interface SelectProps {
   /** List options: two columns, a footer with actions, the empty message, the scroll height. */
   columns?: 1 | 2;
   listActions?: OptionListActions;
-  emptyTitle?: string;
-  emptyHint?: string;
+  emptyTitle?: ReactNode;
+  emptyHint?: ReactNode;
   maxListHeight?: number;
   /** Groups open when the list opens. */
   defaultExpanded?: string[];

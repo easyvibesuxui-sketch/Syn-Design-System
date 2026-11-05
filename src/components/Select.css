@@ -52,18 +52,16 @@
 .syn-select.is-open .syn-select__clear,
 .syn-select__anchor:focus-within .syn-select__clear { opacity: 1; }
 .syn-select__clear:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
+/* Figma "Close Button": Ghost at rest, Smoke on hover, Eerie Black with a white X while pressed. */
+.syn-select__clear:hover { background: var(--syn-color-light-smoke); }
+.syn-select__clear:active { background: var(--syn-color-black-eerie-black); color: var(--syn-color-white-white); }
 .syn-field--xs .syn-select__clear-slot, .syn-field--xs .syn-select__clear { width: 16px; height: 16px; }
 .syn-field--xs .syn-select__clear { right: calc(16px + var(--syn-space-12)); }
 .syn-select.is-disabled .syn-select__trigger { cursor: not-allowed; }
-/* Figma Standard "Disabled" looks like Selected: white, Cultured border, Eerie Black value and chevron. */
-.syn-select:not(.syn-select--search).is-disabled .syn-field__box,
-.syn-select:not(.syn-select--search).is-disabled .syn-field__box:hover { background: var(--syn-color-white-white); box-shadow: inset 0 0 0 1px var(--syn-color-grey-cultured); }
-.syn-select:not(.syn-select--search).is-disabled .syn-select__value { color: var(--syn-color-black-eerie-black); }
-.syn-select:not(.syn-select--search).is-disabled .syn-select__value.is-placeholder { color: var(--syn-text-muted); }
-.syn-select:not(.syn-select--search).is-disabled .syn-field__icon { color: var(--syn-color-black-eerie-black); }
-/* Search and Multiple "Disabled": Cultured fill, Gray X border and text, a Gray X chevron circle with a Cultured glyph. */
-.syn-select--search.is-disabled .syn-field__label { color: var(--syn-color-disabled-gray-x); }
-.syn-select--search.is-disabled .syn-select__chevron { background: var(--syn-color-disabled-gray-x); color: var(--syn-color-grey-cultured); }
+/* Disabled (Figma components, every type): Cultured fill, Gray X border and text, a Gray X chevron circle with a Cultured glyph. */
+.syn-select.is-disabled .syn-select__value,
+.syn-select.is-disabled .syn-field__label { color: var(--syn-color-disabled-gray-x); }
+.syn-select.is-disabled .syn-select__chevron { background: var(--syn-color-disabled-gray-x); color: var(--syn-color-grey-cultured); }
 
 /* Label inside, as on the text field: while nothing is chosen and the list is closed only the placeholder
    shows at the resting size; the label moves up once the list opens or a value is chosen. */
@@ -120,9 +118,12 @@
 .syn-options__list { display: flex; flex-direction: column; gap: var(--syn-space-2); margin: 0; padding: 0; list-style: none; }
 .syn-options--2col .syn-options__list { display: grid; grid-template-columns: repeat(2, minmax(214px, 1fr)); gap: var(--syn-space-2) var(--syn-space-16); }
 
-/* Rows. Level 1: 48px, Regular 16 Jet. Level 2: 40px, indented 16. Level 3: 36px, Regular 14, indented 32.
-   Hover: Snow with a 1px Cultured border. Selected: Snow, Eerie Black text (single) or a checked box.
-   Open group's children sit on Smoke. Disabled: Smoke, Gray X. */
+/* Rows (Figma "Select list", "Multi Select list", "List in lists"). Level 1: 48px, Regular 16 Jet. Level 2: 40px,
+   indented 16, on Smoke. Level 3: 36px, Regular 14, indented 32.
+   Hover: Misty Rose, Eerie Black text. Selected: Misty Rose and Medium 16 (a ticked box in a checkbox list).
+   Rows with helper text, an icon or image, or a prefix and suffix hover Snow; chosen one: white with a 1px
+   Silver Chalice border. In groups: a chosen option is Snow and Medium; the open group under the keyboard has
+   the Silver Chalice border. Disabled: Smoke, Gray X. */
 .syn-option {
   display: flex;
   align-items: center;
@@ -140,12 +141,15 @@
 }
 .syn-option--l1 { min-height: 40px; margin-left: var(--syn-space-16); padding-block: var(--syn-space-8); background: var(--syn-color-light-smoke); }
 .syn-option--l2 { min-height: 36px; margin-left: var(--syn-space-32); padding-block: var(--syn-space-8); background: var(--syn-color-light-smoke); font: var(--syn-type-text-body-s-2); }
-.syn-option.is-group { background: var(--syn-color-light-snow); }
-.syn-option.is-active, .syn-option:hover { background: var(--syn-color-light-snow); box-shadow: inset 0 0 0 1px var(--syn-color-grey-cultured); color: var(--syn-color-black-eerie-black); }
-.syn-option.is-selected { background: var(--syn-color-light-snow); color: var(--syn-color-black-eerie-black); }
-.syn-options:not(:has(.syn-option__check)) .syn-option.is-selected:not(.is-group) { box-shadow: inset 0 0 0 1px var(--syn-color-secondary-silver-chalince); }
-.syn-option.is-group.is-open.is-active { box-shadow: inset 0 0 0 1px var(--syn-color-secondary-silver-chalince); }
-.syn-option.is-disabled, .syn-option.is-disabled:hover { background: var(--syn-color-light-smoke); box-shadow: none; color: var(--syn-color-disabled-gray-x); cursor: not-allowed; }
+.syn-option.is-active, .syn-option:hover { background: var(--syn-color-light-misty-rose); color: var(--syn-color-black-eerie-black); }
+.syn-option.is-selected { background: var(--syn-color-light-misty-rose); color: var(--syn-color-black-eerie-black); }
+.syn-options:not(:has(.syn-option__check)) .syn-option.is-selected { font-weight: 500; }
+.syn-option.is-plain-hover.is-active, .syn-option.is-plain-hover:hover { background: var(--syn-color-light-snow); }
+.syn-option.is-plain-hover.is-selected { background: var(--syn-color-light-snow); }
+.syn-options:not(:has(.syn-option__check)) .syn-option.is-plain-hover.is-selected:not(.has-description) { background: var(--syn-color-white-white); box-shadow: inset 0 0 0 1px var(--syn-color-secondary-silver-chalince); font-weight: 400; }
+.syn-option.in-tree.is-selected:not(.is-group) { background: var(--syn-color-light-snow); }
+.syn-option.is-group.is-open.is-active { background: var(--syn-color-light-snow); box-shadow: inset 0 0 0 1px var(--syn-color-secondary-silver-chalince); font-weight: 500; }
+.syn-option.is-disabled, .syn-option.is-disabled:hover { background: var(--syn-color-light-smoke); box-shadow: none; color: var(--syn-color-disabled-gray-x); font-weight: 400; cursor: not-allowed; }
 .syn-option.has-description { padding-block: var(--syn-space-4); }
 
 .syn-option__text { display: flex; flex: 1; flex-direction: column; gap: 3px; min-width: 0; }
@@ -158,7 +162,10 @@
 .syn-option__media { display: block; flex: none; width: 24px; height: 24px; border-radius: var(--syn-radius-xs); background: var(--syn-color-secondary-silver-chalince); object-fit: cover; }
 
 /* Group chevron: the 24px dropdown circle, down while closed and up once open. */
-.syn-option__chevron { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: var(--syn-radius-full); color: var(--syn-color-black-eerie-black); }
+.syn-option__chevron { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: var(--syn-radius-full); background: var(--syn-color-white-white); color: var(--syn-color-black-eerie-black); transition: background-color var(--syn-duration-fast); }
+.syn-option:hover .syn-option__chevron, .syn-option.is-active .syn-option__chevron { background: var(--syn-color-grey-cultured); }
+.syn-option.is-open .syn-option__chevron { background: transparent; }
+.syn-option.is-disabled .syn-option__chevron { background: var(--syn-color-disabled-gray-x); color: var(--syn-color-grey-cultured); }
 
 /* The dropdown checkbox: 24px, 1px Silver Chalice border, 2px corners; on = Eerie Black with a Snow tick. */
 .syn-option__check {
@@ -193,9 +200,13 @@
 .syn-options__footer .syn-button { font: var(--syn-type-button-text-button-secondary-large); }
 .syn-options__action { min-width: 160px; }
 
-/* Nothing Found: a 30px Cultured search glyph beside two Regular 16 Silver Chalice lines. */
-.syn-options__empty { display: flex; align-items: flex-start; gap: var(--syn-space-16); padding: var(--syn-space-16) var(--syn-space-8) var(--syn-space-8); color: var(--syn-color-grey-cultured); }
+/* Figma "Empty": "Cant find anything" over "Try different keywords", Regular 16 in Eerie Black with the soft
+   words in Silver Chalice, and the 120px Cultured search glyph on the right. Padding 16/16/40, 12px gap. */
+.syn-options__empty { display: flex; flex-direction: column; gap: var(--syn-space-12); padding: var(--syn-space-16) var(--syn-space-16) var(--syn-space-40); }
 .syn-options__empty p { margin: 0; color: var(--syn-color-secondary-silver-chalince); font: var(--syn-type-text-body-m-2); }
+.syn-options__empty b { color: var(--syn-color-black-eerie-black); font-weight: 400; }
+.syn-options__empty-row { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--syn-space-16); }
+.syn-options__empty-row .syn-icon, .syn-options__empty-row svg { flex: none; color: var(--syn-color-grey-cultured); }
 
 /* Panel with free content (filters). */
 .syn-options--panel .syn-options__body { display: flex; flex-direction: column; gap: var(--syn-space-16); padding: var(--syn-space-16) var(--syn-space-8) 0; }

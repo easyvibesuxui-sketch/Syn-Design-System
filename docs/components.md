@@ -65,18 +65,17 @@ pair), plus the number field's TextField props. A searchable country list comes 
 
 Figma: *Dropdown* page (873:776). `Select` is the field, `OptionList` the list (also usable alone),
 `DropdownPanel` a list box with free content (the Location / Radius filter).
-- Standard: a button field; Disabled looks like Selected (white, Cultured border, Eerie Black), as in Figma.
+- Standard: a button field. Disabled in every type: Cultured, Gray X border and text, Gray X chevron circle.
 - `multiple`: several values (`values`, `onValuesChange`, `defaultValues`). Without `searchable` the values sit under
   the field as 36px chips (Figma *Filed several Selected*; `showTags`).
 - `searchable`: Figma *Type Search*. Typing filters (groups with a match open); the label floats like TextField's,
-  Candy Apple on focus, Silver Chalice with a Silver Chalice border once filled; X clears the typed text. Disabled is
-  Cultured with Gray X. With `multiple`: *Type Multiple*, the first value plus a "+2" counter in a 32px white circle.
+  Candy Apple on focus, Silver Chalice with a Silver Chalice border once filled; X clears the typed text. With `multiple`: *Type Multiple*, the first value plus a "+2" counter in a 32px white circle.
 - Options: `description` (helper text), `icon`, `image`, `swatch`, `prefix`, `suffix`, `disabled`, `children` (Figma
   *Barrell*: 48 / 40 / 36px rows, indented 16 and 32, inner rows on Smoke).
-- List: white, 1px Cultured border, 8px corners, 2px padding, 48px Regular 16 Jet rows. Hover Snow + 1px Cultured;
-  selected Snow + Eerie Black (1px Silver Chalice, or a ticked 24px checkbox with a Silver Chalice border). Disabled
-  Smoke + Gray X. `columns={2}`, `listActions` / `actions` (56px footer: Medium 16 text button, 160 x 36 Amber action),
-  `emptyTitle` / `emptyHint` ("Nothing Found"), `maxListHeight` / `maxHeight` (312px, thin Eerie Black scroll bar).
+- List: white, 1px Cultured border, 8px corners, 2px padding, 48px Regular 16 Jet rows. Hover Misty Rose; selected
+  Misty Rose in Medium 16 (or a ticked 24px checkbox with a Silver Chalice border). Rows with helper text, media or
+  prefix / suffix hover Snow, chosen one white with a 1px Silver Chalice border. Disabled Smoke + Gray X. `columns={2}`, `listActions` / `actions` (56px footer: Medium 16 text button, 160 x 36 Amber action),
+  `emptyTitle` / `emptyHint` (Figma *Empty*: "Cant find anything" / "Try different keywords", 120px glyph), `maxListHeight` / `maxHeight` (320px, thin Eerie Black scroll bar).
 - Keys: Up / Down, Home / End, Right opens a group, Left closes it, Enter / Space choose or tick, Escape closes.
 
 ## Checkbox, Radio, RadioGroup
