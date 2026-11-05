@@ -77,7 +77,9 @@ Figma: *Dropdown* page (873:776). `Select` is the field, `OptionList` the list (
   Misty Rose in Medium 16 (or a ticked 24px checkbox with a Silver Chalice border). Rows with helper text, media or
   prefix / suffix hover Snow, chosen one white with a 1px Silver Chalice border. Disabled Smoke + Gray X. `columns={2}`, `listActions` / `actions` (56px footer: Medium 16 text button, 160 x 36 Amber action),
   `emptyTitle` / `emptyHint` (Figma *Empty*: "Cant find anything" / "Try different keywords", 120px glyph), `maxListHeight` / `maxHeight` (320px, thin Eerie Black scroll bar).
-- Keys: Up / Down, Home / End, Right opens a group, Left closes it, Enter / Space choose or tick, Escape closes.
+- Keys: Up / Down (the active row scrolls into view), Home / End, Right opens a group, Left closes it, Enter / Space choose or
+  tick, Escape closes from anywhere inside. Standard: letters jump to a matching option. Multiple: Backspace in an empty
+  search removes the last value. A standalone `OptionList` is focusable and uses the same keys.
 
 ## Checkbox, Radio, RadioGroup
 

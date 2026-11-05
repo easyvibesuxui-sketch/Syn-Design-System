@@ -144,6 +144,18 @@ export function OptionList({
   const tree = options.some((o) => o.children?.length);
   const chosen = new Set(values);
 
+  // Standalone (no Select driving it): the list takes focus and the arrow keys itself.
+  const standalone = onActiveChange === undefined;
+  const [ownActive, setOwnActive] = useState<string | undefined>(undefined);
+  const current = standalone ? ownActive : activeValue;
+  const setCurrent = (v: string | undefined) => (standalone ? setOwnActive(v) : v !== undefined && onActiveChange?.(v));
+  const scrollRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!current) return;
+    const el = scrollRef.current?.querySelector<HTMLElement>(`[data-value="${CSS.escape(current)}"]`);
+    el?.scrollIntoView({ block: 'nearest' });
+  }, [current]);
+
   const toggleGroup = (v: string) => {
     const next = open.has(v) ? [...open].filter((x) => x !== v) : [...open, v];
     if (expanded === undefined) setInnerExpanded(next);
@@ -161,9 +173,29 @@ export function OptionList({
     return on === 0 ? 'off' : on === leaves.length ? 'on' : 'mixed';
   };
 
+  const enabledRows = rows.filter((r) => !r.option.disabled);
+  const onListKey = (e: KeyboardEvent<HTMLUListElement>) => {
+    if (!standalone) return;
+    const pos = enabledRows.findIndex((r) => r.option.value === current);
+    const row = enabledRows[pos];
+    const go = (i: number) => { e.preventDefault(); setCurrent(enabledRows[Math.max(0, Math.min(enabledRows.length - 1, i))]?.option.value); };
+    if (e.key === 'ArrowDown') go(pos + 1);
+    else if (e.key === 'ArrowUp') go(pos < 0 ? 0 : pos - 1);
+    else if (e.key === 'Home') go(0);
+    else if (e.key === 'End') go(enabledRows.length - 1);
+    else if (e.key === 'ArrowRight' && row?.group && !row.expanded) { e.preventDefault(); toggleGroup(row.option.value); }
+    else if (e.key === 'ArrowLeft' && row?.group && row.expanded) { e.preventDefault(); toggleGroup(row.option.value); }
+    else if ((e.key === 'Enter' || e.key === ' ') && row) {
+      e.preventDefault();
+      if (row.group && (!multiple || e.key === 'Enter')) toggleGroup(row.option.value);
+      else if (multiple) toggleValues(row.option);
+      else onSelect?.(row.option.value);
+    }
+  };
+
   return (
     <div className={cx('syn-options', columns === 2 && 'syn-options--2col', className)} style={style}>
-      <div className="syn-options__scroll" style={{ maxHeight }}>
+      <div ref={scrollRef} className="syn-options__scroll" style={{ maxHeight }}>
         {rows.length === 0 ? (
           <div className="syn-options__empty" role="status">
             <p>{emptyTitle ?? <><b>Cant find</b> anything</>}</p>
@@ -173,7 +205,17 @@ export function OptionList({
             </div>
           </div>
         ) : (
-          <ul id={listId} role="listbox" aria-label={label} aria-multiselectable={multiple || undefined} className="syn-options__list">
+          <ul
+            id={listId}
+            role="listbox"
+            aria-label={label}
+            aria-multiselectable={multiple || undefined}
+            aria-activedescendant={standalone && current ? `${listId}-${current}` : undefined}
+            tabIndex={standalone ? 0 : undefined}
+            className="syn-options__list"
+            onKeyDown={onListKey}
+            onFocus={() => standalone && !current && setCurrent(enabledRows.find((r) => (multiple ? chosen.has(r.option.value) : r.option.value === value))?.option.value ?? enabledRows[0]?.option.value)}
+          >
             {rows.map(({ option, level, group, expanded: isOpen }) => {
               const state = multiple ? stateOf(option) : option.value === value ? 'on' : 'off';
               const media = option.image ? <img className="syn-option__media" src={option.image} alt="" />
@@ -183,6 +225,7 @@ export function OptionList({
                 <li
                   key={option.value}
                   id={`${listId}-${option.value}`}
+                  data-value={option.value}
                   role="option"
                   aria-selected={state === 'on'}
                   aria-checked={multiple ? (state === 'mixed' ? 'mixed' : state === 'on') : undefined}
@@ -190,9 +233,9 @@ export function OptionList({
                   aria-expanded={group ? isOpen : undefined}
                   aria-level={tree ? level + 1 : undefined}
                   className={cx('syn-option', `syn-option--l${Math.min(level, 2)}`, group && 'is-group', isOpen && 'is-open',
-                    option.value === activeValue && 'is-active', state !== 'off' && 'is-selected', option.disabled && 'is-disabled', option.description && 'has-description',
+                    option.value === current && 'is-active', state !== 'off' && 'is-selected', option.disabled && 'is-disabled', option.description && 'has-description',
                     (option.description || option.prefix !== undefined || option.suffix !== undefined || media) && !group && !tree && 'is-plain-hover', tree && 'in-tree')}
-                  onMouseEnter={() => !option.disabled && onActiveChange?.(option.value)}
+                  onMouseEnter={() => !option.disabled && setCurrent(option.value)}
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={() => {
                     if (option.disabled) return;
@@ -402,7 +445,30 @@ export function Select({
     } else choose(row.option.value);
   };
 
+  // Typeahead (standard type): letters jump to the next option that starts with them.
+  const typed = useRef({ text: '', at: 0 });
+  const typeahead = (key: string) => {
+    const now = Date.now();
+    typed.current = { text: (now - typed.current.at < 600 ? typed.current.text : '') + key.toLowerCase(), at: now };
+    const t = typed.current.text;
+    const pos = rows.findIndex((r) => r.option.value === active);
+    const order = [...rows.slice(pos + 1), ...rows.slice(0, pos + 1)];
+    const hit = (t.length > 1 ? rows : order).find((r) => r.option.label.toLowerCase().startsWith(t));
+    if (hit) setActive(hit.option.value);
+  };
+
   const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
+    if (!searchable && e.key.length === 1 && e.key !== ' ' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      e.preventDefault();
+      if (!open) openList();
+      typeahead(e.key);
+      return;
+    }
+    if (searchable && multiple && e.key === 'Backspace' && query === '' && chosen.length > 0) {
+      e.preventDefault();
+      setChosen(chosen.slice(0, -1));
+      return;
+    }
     if (!open) {
       if (['ArrowDown', 'ArrowUp', 'Enter'].includes(e.key) || (e.key === ' ' && !searchable)) {
         e.preventDefault();
@@ -449,6 +515,14 @@ export function Select({
   return (
     <div
       ref={root}
+      onKeyDown={(e) => {
+        // Escape from anywhere inside (a footer button, a chip) closes the list and returns to the field.
+        if (e.key === 'Escape' && open && e.target !== input.current && (e.target as HTMLElement).getAttribute('role') !== 'combobox') {
+          e.preventDefault();
+          close();
+          (input.current ?? root.current?.querySelector<HTMLElement>('[role="combobox"]'))?.focus();
+        }
+      }}
       className={cx(
         'syn-field', 'syn-select', `syn-field--${size}`, labelInside ? 'syn-select--label' : 'syn-field--no-label',
         searchable && 'syn-select--search', searchable && labelInside && 'syn-field--floating', outside && 'syn-field--outside', multiple && 'syn-select--multiple',
@@ -479,6 +553,7 @@ export function Select({
                 value={open ? query : shownLabel ?? ''}
                 placeholder={open ? shownLabel ?? placeholder : placeholder}
                 onFocus={() => !open && openList()}
+                onMouseDown={() => !open && openList()}
                 onChange={(e) => {
                   setQuery(e.target.value);
                   if (!open) setOpen(true);
