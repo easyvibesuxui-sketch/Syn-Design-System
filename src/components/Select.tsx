@@ -275,6 +275,8 @@ export interface SelectProps {
    * false: the label sits inside the field above the value, like TextField. xs always hides it.
    */
   hideLabel?: boolean;
+  /** outside: the label sits above the field (Regular 14 Jet, 8px gap; 12 and 4px at sm and xs), as on TextField. */
+  labelPosition?: 'inside' | 'outside';
   iconStart?: IconName;
   hint?: string;
   error?: string | string[];
@@ -312,7 +314,7 @@ export interface SelectProps {
  * list variants (icons, prefix and suffix, helper text, groups). Follows the WAI-ARIA combobox pattern.
  */
 export function Select({
-  label, options, value, defaultValue, onChange, placeholder, size = 'lg', hideLabel = true, iconStart, hint, error, disabled,
+  label, options, value, defaultValue, onChange, placeholder, size = 'lg', hideLabel = true, labelPosition = 'inside', iconStart, hint, error, disabled,
   onClear, clearLabel = 'Clear', searchable = false, multiple = false, values, defaultValues = [], onValuesChange, showTags,
   removeTagLabel = (l) => `Remove ${l}`, columns = 1, listActions, emptyTitle, emptyHint, maxListHeight, defaultExpanded = [], id, className,
 }: SelectProps) {
@@ -336,7 +338,8 @@ export function Select({
   const chosenOptions = chosen.map((v) => findOption(options, v)).filter((o): o is SelectOption => Boolean(o));
   const shownLabel = multiple ? chosenOptions[0]?.label : selectedOption?.label;
   const hasValue = multiple ? chosenOptions.length > 0 : Boolean(selectedOption);
-  const labelInside = (!hideLabel || searchable) && size !== 'xs';
+  const outside = labelPosition === 'outside';
+  const labelInside = !outside && (!hideLabel || searchable) && size !== 'xs';
   const clearable = Boolean(onClear) && hasValue && !disabled;
 
   const q = query.trim().toLowerCase();
@@ -448,12 +451,14 @@ export function Select({
       ref={root}
       className={cx(
         'syn-field', 'syn-select', `syn-field--${size}`, labelInside ? 'syn-select--label' : 'syn-field--no-label',
-        searchable && 'syn-select--search syn-field--floating', multiple && 'syn-select--multiple',
+        searchable && 'syn-select--search', searchable && labelInside && 'syn-field--floating', outside && 'syn-field--outside', multiple && 'syn-select--multiple',
         (searchable ? Boolean(query) || (hasValue && !open) : hasValue) && 'has-value', clearable && 'is-clearable',
         invalid && 'is-invalid', disabled && 'is-disabled', open && 'is-open', className,
       )}
     >
-      {!labelInside && <span id={`${baseId}-label`} className="syn-visually-hidden">{label}</span>}
+      {!labelInside && (outside
+        ? <label id={`${baseId}-label`} htmlFor={baseId} className="syn-field__outer-label">{label}</label>
+        : <span id={`${baseId}-label`} className="syn-visually-hidden">{label}</span>)}
       {/* The list is placed from this wrapper, so it opens 2px under the field whatever sits below it. */}
       <div className="syn-select__anchor">
         {searchable ? (

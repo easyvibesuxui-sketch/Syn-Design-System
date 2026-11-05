@@ -65,6 +65,7 @@ pair), plus the number field's TextField props. A searchable country list comes 
 
 Figma: *Dropdown* page (873:776). `Select` is the field, `OptionList` the list (also usable alone),
 `DropdownPanel` a list box with free content (the Location / Radius filter).
+- `labelPosition="outside"`: the label above the field (Regular 14 Jet, 8px; 12 / 4px at sm and xs), as on TextField.
 - Standard: a button field. Disabled in every type: Cultured, Gray X border and text, Gray X chevron circle.
 - `multiple`: several values (`values`, `onValuesChange`, `defaultValues`). Without `searchable` the values sit under
   the field as 36px chips (Figma *Filed several Selected*; `showTags`).
