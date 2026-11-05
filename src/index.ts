@@ -8,7 +8,7 @@ export { Icon, type IconProps } from './components/Icon';
 export { Button, type ButtonProps, type ButtonVariant, type ButtonSize } from './components/Button';
 export { IconButton, CloseGlyph, type IconButtonProps } from './components/IconButton';
 export { TextField, type TextFieldProps, type FieldSize } from './components/TextField';
-export { Select, type SelectProps, type SelectOption } from './components/Select';
+export { Select, OptionList, DropdownPanel, type SelectProps, type SelectOption, type OptionListProps, type OptionListActions, type DropdownPanelProps } from './components/Select';
 export { Checkbox, type CheckboxProps, type ChoiceSize, type CheckboxShape } from './components/Checkbox';
 export { FieldMessages, ChoiceMessage, ErrorIcon, type FieldMessagesProps, type ChoiceMessageProps, type ChoiceErrorStyle } from './components/FieldMessages';
 export { Radio, RadioGroup, type RadioProps, type RadioGroupProps } from './components/Radio';

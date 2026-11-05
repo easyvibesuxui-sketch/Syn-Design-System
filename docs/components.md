@@ -63,13 +63,21 @@ pair), plus the number field's TextField props. A searchable country list comes 
 
 ## Select
 
-Figma: *Dropdown* and *Select list*. A select-only combobox (WAI-ARIA pattern): Up/Down/Home/End move,
-Enter/Space choose, Escape closes. Options hover in Misty Rose. Props: `label`, `options`
-(`{ value, label, disabled? }`), `value`/`defaultValue`, `onChange`, `placeholder`, `size` (`xs`–`lg`),
-`hideLabel` (default `true`: only the value shows, as in Figma; `false` puts the label inside), `iconStart`,
-`hint`, `error`, `disabled`, `onClear` (Figma's 24px round clear X left of the chevron, shown on hover,
-focus and open while a value is selected). The list opens 2px under the field. The chevron sits in a
-24px circle: white at rest, Cultured on hover, Eerie Black with a white glyph when focused or open.
+Figma: *Dropdown* page (873:776). `Select` is the field, `OptionList` the list (also usable alone),
+`DropdownPanel` a list box with free content (the Location / Radius filter).
+- Standard: a button field; Disabled looks like Selected (white, Cultured border, Eerie Black), as in Figma.
+- `multiple`: several values (`values`, `onValuesChange`, `defaultValues`). Without `searchable` the values sit under
+  the field as 36px chips (Figma *Filed several Selected*; `showTags`).
+- `searchable`: Figma *Type Search*. Typing filters (groups with a match open); the label floats like TextField's,
+  Candy Apple on focus, Silver Chalice with a Silver Chalice border once filled; X clears the typed text. Disabled is
+  Cultured with Gray X. With `multiple`: *Type Multiple*, the first value plus a "+2" counter in a 32px white circle.
+- Options: `description` (helper text), `icon`, `image`, `swatch`, `prefix`, `suffix`, `disabled`, `children` (Figma
+  *Barrell*: 48 / 40 / 36px rows, indented 16 and 32, inner rows on Smoke).
+- List: white, 1px Cultured border, 8px corners, 2px padding, 48px Regular 16 Jet rows. Hover Snow + 1px Cultured;
+  selected Snow + Eerie Black (1px Silver Chalice, or a ticked 24px checkbox with a Silver Chalice border). Disabled
+  Smoke + Gray X. `columns={2}`, `listActions` / `actions` (56px footer: Medium 16 text button, 160 x 36 Amber action),
+  `emptyTitle` / `emptyHint` ("Nothing Found"), `maxListHeight` / `maxHeight` (312px, thin Eerie Black scroll bar).
+- Keys: Up / Down, Home / End, Right opens a group, Left closes it, Enter / Space choose or tick, Escape closes.
 
 ## Checkbox, Radio, RadioGroup
 

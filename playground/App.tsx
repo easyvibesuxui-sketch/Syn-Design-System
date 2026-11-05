@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import {
-  Accordion, Button, Checkbox, Dialog, Grid, GridItem, Icon, IconButton, NewTab, Notification, Radio, RadioGroup, Select,
+  Accordion, Button, Checkbox, Dialog, DropdownPanel, Grid, OptionList, GridItem, Icon, IconButton, NewTab, Notification, Radio, RadioGroup, Select,
   Slider, StatusBadge, StatusChip, Switch, Tabs, TextArea, TextField, Tooltip, Tag, QuantityField, Skeleton, PasswordField, PhoneField, FileItem, ProgressBar, iconData, iconNames, tokens,
 } from '../src';
 import { RecordDrawer } from './RecordDrawer';
@@ -36,7 +36,15 @@ const palette = Object.entries(tokens.primitive.color);
 const semanticGroups = Object.entries(tokens.semantic.color) as Array<[string, Record<string, string>]>;
 const typeScale = Object.entries(tokens.semantic.typography) as Array<[string, { fontFamily: string; fontWeight: number; fontSize: string; lineHeight: string }]>;
 
+const PEOPLE = ['John Doe', 'Jane Smith', 'Max Mustermann', 'Erika Mustermann', 'Tina Müller', 'Nino Beridze'].map((label, i) => ({ value: `p${i}`, label }));
+const GROUPS = [0, 1, 2].map((i) => ({
+  value: `g${i}`,
+  label: 'Option group',
+  children: [1, 2, 3].map((k) => ({ value: `g${i}-${k}`, label: `Option ${k}`, children: k === 2 ? [{ value: `g${i}-2-a`, label: 'Option 7' }, { value: `g${i}-2-b`, label: 'Option 8' }] : undefined })),
+}));
+
 export function App() {
+  const [groupValues, setGroupValues] = useState<string[]>(['g0-2-a']);
   const [tab, setTab] = useState('overview');
   const [extraTabs, setExtraTabs] = useState<string[]>(['General']);
   const [extraSelected, setExtraSelected] = useState<string>();
@@ -273,7 +281,22 @@ export function App() {
             <Select label="Status" size="sm" defaultValue="done" options={[{ value: 'open', label: 'Open' }, { value: 'done', label: 'Finished' }]} />
             <Select label="Rows" size="xs" defaultValue="10" options={[{ value: '10', label: '10 rows' }, { value: '25', label: '25 rows' }]} />
             <Select label="Region" error="Pick a region" options={[{ value: 'eu', label: 'Europe' }]} />
-            <Select label="Locked" disabled options={[{ value: 'x', label: 'X' }]} />
+            <Select label="Locked" disabled defaultValue="x" options={[{ value: 'x', label: 'Option 1' }]} />
+            <Select label="Choose" placeholder="John Doe" searchable options={PEOPLE} />
+            <Select label="Choose" placeholder="John Doe" searchable multiple defaultValues={['p0', 'p1', 'p2']} options={PEOPLE}
+              listActions={{ secondaryLabel: 'Clear', actionLabel: 'Apply' }} />
+            <Select label="Crew" multiple defaultValues={['p3', 'p4']} options={PEOPLE} />
+            <Select label="Equipment" options={GROUPS} defaultExpanded={['g0']} />
+          </div>
+          <p className="pg-sub">Lists (OptionList) and the filter panel</p>
+          <div className="pg-grid">
+            <OptionList label="Categories" multiple defaultExpanded={['g0', 'g0-2']} options={GROUPS} values={groupValues} onValuesChange={setGroupValues} />
+            <OptionList label="Units" options={[1, 2, 3].map((i) => ({ value: `u${i}`, label: 'Option', prefix: '$', suffix: 'kg', description: 'Helper text' }))} />
+            <OptionList label="Empty" options={[]} actions={{ secondaryLabel: 'Button Text', actionLabel: 'Action' }} />
+            <DropdownPanel actions={{ secondaryLabel: 'Clear', actionLabel: 'Save' }}>
+              <TextField label="Location" iconStart="pin" size="md" />
+              <Slider label="Radius" defaultValue={20} format={(v) => `${v} km`} />
+            </DropdownPanel>
           </div>
         </Section>
 
