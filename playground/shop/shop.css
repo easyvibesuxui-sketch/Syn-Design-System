@@ -794,11 +794,11 @@ html { scroll-behavior: smooth; }
 .shop-card__media .shop-art img, .shop-art--lg img, .shop-art--xs img { max-width: none; max-height: none; }
 .shop-gallery > .shop-art { --art-t: 64px; --art-x: var(--syn-space-32); --art-b: var(--syn-space-32); }
 
-/* Cart: a 36px black icon button (the header's main action); the count is a 20px red badge over its top-right corner,
- * ringed in the page colour so it reads apart from the button. */
-.shop-cart-button { position: relative; display: inline-grid; flex: none; place-items: center; width: var(--syn-size-control-sm); height: var(--syn-size-control-sm); padding: 0; border: 0; border-radius: var(--syn-radius-element); background: var(--syn-action-primary); color: var(--syn-action-primary-text); cursor: pointer; transition: background-color var(--syn-duration-fast); }
-/* Hover lightens the button, not the badge. */
-.shop-cart-button:hover { background: var(--syn-color-secondary-jet); }
+/* Cart: a 36px outlined icon button styled like the library's secondary button (Order by SKU); the count is a 20px red
+ * badge over its top-right corner, ringed in the page colour so it reads apart from the outline. */
+.shop-cart-button { position: relative; display: inline-grid; flex: none; place-items: center; box-sizing: border-box; width: var(--syn-size-control-sm); height: var(--syn-size-control-sm); padding: 0; border: 1px solid var(--syn-border-strong); border-radius: var(--syn-radius-element); background: var(--syn-surface-default); color: var(--syn-text-primary); cursor: pointer; transition: background-color var(--syn-duration-fast); }
+/* Hover fills the button as the secondary button does; the badge stays as it is. */
+.shop-cart-button:hover { background: var(--syn-surface-muted); }
 .shop-cart-button:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
 .shop-cart-button .shop-line-icon { margin: 0; vertical-align: 0; }
-.shop-cart-button .shop-count { position: absolute; top: -8px; right: -8px; box-sizing: border-box; min-width: 20px; height: 20px; margin: 0; padding: 0 var(--syn-space-4); box-shadow: 0 0 0 2px var(--syn-surface-muted); line-height: 20px; }
+.shop-cart-button .shop-count { position: absolute; top: -9px; right: -9px; /* 8px past the outer edge, counting the 1px border */ box-sizing: border-box; min-width: 20px; height: 20px; margin: 0; padding: 0 var(--syn-space-4); box-shadow: 0 0 0 2px var(--syn-surface-muted); line-height: 20px; }
