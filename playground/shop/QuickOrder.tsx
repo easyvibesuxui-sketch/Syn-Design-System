@@ -55,7 +55,7 @@ export function QuickOrder({ open, onClose }: { open: boolean; onClose: () => vo
       headerStart={<DrawerLabel>{t("Quick order")}</DrawerLabel>}
       footer={<>
         <Button variant="text" onClick={onClose}>{t("Cancel")}</Button>
-        <Button size="md" disabled={!ok.length} onClick={add}>{ok.length ? t("Add {0} to cart", [plural(ok.length, 'product')]) : t("Add to cart")}</Button>
+        <Button size="sm" disabled={!ok.length} onClick={add}>{ok.length ? t("Add {0} to cart", [plural(ok.length, 'product')]) : t("Add to cart")}</Button>
       </>}
     >
       {/* The header already names the drawer, so the body opens with what to do. */}

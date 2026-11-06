@@ -802,3 +802,6 @@ html { scroll-behavior: smooth; }
 .shop-cart-button:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
 .shop-cart-button .shop-line-icon { margin: 0; vertical-align: 0; }
 .shop-cart-button .shop-count { position: absolute; top: -7px; right: -7px; /* 6px past the outer edge, counting the 1px border */ box-sizing: border-box; min-width: 16px; height: 16px; margin: 0; padding: 0 3px; /* two digits still fit the 16px circle */ box-shadow: 0 0 0 2px var(--syn-surface-muted); font-size: 10px; line-height: 16px; }
+
+/* Drawer footers: 36px buttons (library sm). The text action (Cancel, Close…) gets the same 36px height so both line up. */
+.syn-drawer__footer .syn-button--text { box-sizing: border-box; height: var(--syn-size-control-sm); padding-block: 0; }

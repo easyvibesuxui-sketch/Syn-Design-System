@@ -176,7 +176,7 @@ function OrderDrawer({ order, onClose }: { order: Order | null; onClose: () => v
       </>}
       footer={<>
         <Button variant="text" onClick={onClose}>{t("Discard")}</Button>
-        <Button size="md" onClick={save}>{t("Save changes")}</Button>
+        <Button size="sm" onClick={save}>{t("Save changes")}</Button>
       </>}
     >
       {order && <DrawerTitle title={order.org} lead={t("Submitted {0} · {1} by {2}{3}", [order.date, order.time, order.contactName || order.orderedBy, order.reference ? ` · ${order.reference}` : ''])} />}

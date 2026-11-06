@@ -98,7 +98,7 @@ export function ProductEditor({ open, productId, onClose }: { open: boolean; pro
         {existing ? <Button variant="text" iconStart="trash" onClick={() => setConfirmDelete(true)}>{t("Delete")}</Button> : <span />}
         <span className="shop-drawer-actions">
           <Button variant="text" onClick={onClose}>{t("Cancel")}</Button>
-          <Button size="md" onClick={save}>{t("Save product")}</Button>
+          <Button size="sm" onClick={save}>{t("Save product")}</Button>
         </span>
       </>}
     >

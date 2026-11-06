@@ -103,7 +103,7 @@ function MyOrderDrawer({ order: o, onClose }: { order: Order | null; onClose: ()
       headerStart={o && <><OrderStatusBadge status={o.status} /><DrawerContext icon="cart">{o.id}</DrawerContext></>}
       footer={o && <>
         <Button variant="text" onClick={onClose}>{t("Close")}</Button>
-        <Button size="md" iconStart="refresh" onClick={() => { reorder(o); onClose(); }}>{t("Order again")}</Button>
+        <Button size="sm" iconStart="refresh" onClick={() => { reorder(o); onClose(); }}>{t("Order again")}</Button>
       </>}
     >
       {o && <DrawerTitle title={t("Order {0}", [o.id])} lead={t("Submitted {0} · {1} by {2}{3}", [o.date, o.time, o.orderedBy, o.reference ? ` · ${o.reference}` : ''])} />}

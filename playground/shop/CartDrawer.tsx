@@ -22,7 +22,7 @@ export function CartDrawer() {
       width={480}
       closeLabel={t("Close cart")}
       headerStart={<DrawerLabel>{t("Your cart")}</DrawerLabel>}
-      footer={cart.length ? <Button size="md" fullWidth iconEnd="arrow" onClick={() => to('checkout')}>{t("Continue to order")}</Button> : undefined}
+      footer={cart.length ? <Button size="sm" fullWidth iconEnd="arrow" onClick={() => to('checkout')}>{t("Continue to order")}</Button> : undefined}
     >
       <DrawerIntro>{cartQty ? t("{0} · prices excl. VAT", [plural(cartQty, 'item')]) : t("No products added yet")}</DrawerIntro>
       {cart.length ? (
