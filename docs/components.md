@@ -73,7 +73,11 @@ Figma: *Dropdown* page (873:776). `Select` is the field, `OptionList` the list (
   Candy Apple on focus, Silver Chalice with a Silver Chalice border once filled; X clears the typed text. With `multiple`: *Type Multiple*, the first value plus a "+2" counter in a 32px white circle.
 - Options: `description` (helper text), `icon`, `image`, `swatch`, `prefix`, `suffix`, `disabled`, `children` (Figma
   *Barrell*: 48 / 40 / 36px rows, indented 16 and 32, inner rows on Smoke).
-- List: white, 1px Cultured border, 8px corners, 2px padding, 48px Regular 16 Jet rows. Hover Misty Rose; selected
+- Open list (Figma *Focused*, Frame 3): 2px under the field, left-aligned, 362px wide (never narrower than the field;
+  480 with two columns; 16px clear of a narrow screen's edge), no shadow. The open field has a 2px Eerie Black border
+  inside, so it stays 288 x 56 (the Input draws its focus border outside, as in Figma). Opened with the mouse every
+  row is white; from the keyboard the chosen or first row is highlighted.
+- List: white, 1px Cultured border inside, 8px corners, 2px padding, 358 x 48 Regular 16 Jet rows. Hover Misty Rose; selected
   Misty Rose in Medium 16 (or a ticked 24px checkbox with a Silver Chalice border). Rows with helper text, media or
   prefix / suffix hover Snow, chosen one white with a 1px Silver Chalice border. Disabled Smoke + Gray X. With `multiple` a Clear / Apply footer by default (`listActions` relabels, `null` removes). `columns={2}`, `listActions` / `actions` (56px footer: Medium 16 text button, 160 x 36 Amber action),
   `emptyTitle` / `emptyHint` (Figma *Empty*: "Cant find anything" / "Try different keywords", 120px glyph), `maxListHeight` / `maxHeight` (320px, thin Eerie Black scroll bar).

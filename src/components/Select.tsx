@@ -413,11 +413,14 @@ export function Select({
     setOpen(false);
     setQuery('');
   };
-  const openList = () => {
+  // Opened with the mouse, every row is white as in Figma (the chosen one shows as selected); from the
+  // keyboard the chosen row, or the first one, is highlighted so arrows and Enter work at once.
+  const openList = (fromKeyboard = false) => {
     if (disabled) return;
     setOpen(true);
     const current = multiple ? chosen[0] : selected;
-    setActive(rows.some((r) => r.option.value === current) ? current : rows[0]?.option.value);
+    const known = rows.some((r) => r.option.value === current);
+    setActive(fromKeyboard ? (known ? current : rows[0]?.option.value) : known ? current : undefined);
   };
   const choose = (v: string) => {
     if (value === undefined) setInner(v);
@@ -466,7 +469,7 @@ export function Select({
   const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
     if (!searchable && e.key.length === 1 && e.key !== ' ' && !e.ctrlKey && !e.metaKey && !e.altKey) {
       e.preventDefault();
-      if (!open) openList();
+      if (!open) openList(true);
       typeahead(e.key);
       return;
     }
@@ -478,7 +481,7 @@ export function Select({
     if (!open) {
       if (['ArrowDown', 'ArrowUp', 'Enter'].includes(e.key) || (e.key === ' ' && !searchable)) {
         e.preventDefault();
-        openList();
+        openList(true);
       }
       return;
     }
@@ -579,7 +582,7 @@ export function Select({
             className="syn-field__box syn-select__trigger"
             {...comboProps}
             aria-labelledby={`${baseId}-label ${baseId}`}
-            onClick={() => (open ? close() : openList())}
+            onClick={(e) => (open ? close() : openList(e.detail === 0))}
           >
             {iconStart && <Icon name={iconStart} size={20} className="syn-field__icon" />}
             <span className="syn-field__stack">

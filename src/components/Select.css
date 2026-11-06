@@ -1,7 +1,10 @@
 .syn-select__anchor { position: relative; }
 .syn-select__trigger { width: 100%; margin: 0; border: 0; gap: var(--syn-space-6); text-align: left; cursor: pointer; font: inherit; }
 .syn-select__trigger:focus-visible { outline: none; }
-.syn-select.is-open .syn-select__trigger { box-shadow: 0 0 0 2px var(--syn-border-strong); }
+/* Figma Dropdown "Focused": the 2px Eerie Black border sits inside the field (it stays 288 x 56), unlike the
+   Input, whose focus border is drawn outside. */
+.syn-select:not(.is-invalid) .syn-field__box:focus-within,
+.syn-select.is-open:not(.is-invalid) .syn-select__trigger { box-shadow: inset 0 0 0 2px var(--syn-color-black-eerie-black); }
 .syn-select__value { flex: none; min-width: 0; overflow: hidden; color: var(--syn-text-primary); font: var(--syn-type-text-body-m-2); white-space: nowrap; text-overflow: ellipsis; }
 .syn-field--md .syn-select__value, .syn-field--sm .syn-select__value { font: var(--syn-type-text-body-s-2); }
 .syn-field--xs .syn-select__value { font: var(--syn-type-text-body-xs-2); }
@@ -94,8 +97,11 @@
 .syn-field--sm .syn-select__count, .syn-field--xs .syn-select__count { min-width: 24px; height: 24px; font: var(--syn-type-text-body-xs-2); }
 .syn-select__tags { display: flex; flex-wrap: wrap; gap: var(--syn-space-8); margin-top: var(--syn-space-8); }
 
-/* The list under a field: 2px below it, as wide as the field (wider for two columns), above the page. */
-.syn-select__list { position: absolute; top: calc(100% + var(--syn-space-2)); left: 0; z-index: 20; min-width: 100%; box-shadow: var(--syn-shadow-float); }
+/* The list under a field (Figma "Frame 3"): 2px below it, left-aligned, 362px wide (wider than the 288px
+   field, and never narrower than the field), no shadow: only the 1px Cultured border. On a narrow screen
+   it keeps 16px clear of the edge. */
+.syn-select__list { position: absolute; top: calc(100% + var(--syn-space-2)); left: 0; z-index: 20; width: max(100%, min(362px, calc(100vw - 32px))); }
+.syn-select__list.syn-options--2col { width: max(100%, min(480px, calc(100vw - 32px))); }
 
 /* Figma list: white, 1px Cultured border, 8px corners, 2px padding, rows 2px apart. */
 .syn-options {
@@ -103,9 +109,10 @@
   flex-direction: column;
   box-sizing: border-box;
   overflow: hidden;
-  border: 1px solid var(--syn-color-grey-cultured);
   border-radius: var(--syn-radius-element);
   background: var(--syn-color-white-white);
+  /* Figma draws the 1px border inside the box, so it takes no room: rows are 358 in a 362 list. */
+  box-shadow: inset 0 0 0 1px var(--syn-color-grey-cultured);
 }
 .syn-options__scroll {
   overflow-y: auto;
