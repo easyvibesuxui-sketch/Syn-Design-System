@@ -1,11 +1,12 @@
 import { forwardRef, type ButtonHTMLAttributes } from 'react';
 import { Icon, type IconName } from './Icon';
+import { useButtonTip, type ButtonTipProps } from './Tooltip';
 import { cx, type ControlSize } from '../utils';
 import './IconButton.css';
 
-export interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface IconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title'>, ButtonTipProps {
   icon: IconName;
-  /** Required: icon-only buttons need an accessible name. */
+  /** Required: icon-only buttons need an accessible name. It is also the tooltip unless `tooltip` says otherwise. */
   label: string;
   /** xs 24px (Figma input "Close button"), sm 36px, md 48px, lg 56px. The glyph is 16px, or 20px from md up; the xs close X is Figma's "Close Button" glyph (CloseGlyph). */
   size?: ControlSize;
@@ -22,14 +23,19 @@ export function CloseGlyph({ className }: { className?: string }) {
   );
 }
 
-/** Round ghost button. Figma: "Close button" and "chevron in dropdown". */
+/**
+ * Round ghost button. Figma: "Close button" and "chevron in dropdown". It has no native `title`: the
+ * built-in Syn tooltip shows the label on hover and keyboard focus (see `useButtonTip`).
+ */
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  { icon, label, size = 'xs', variant = 'ghost', className, type = 'button', ...rest },
+  { icon, label, size = 'xs', variant = 'ghost', className, type = 'button', tooltip, tooltipPlacement, tooltipTone, onKeyDown, onMouseLeave, onBlur, onMouseEnter, onFocus, 'aria-describedby': describedBy, ...rest },
   ref,
 ) {
+  const { tip, tipProps, tipClass } = useButtonTip(label, { tooltip, tooltipPlacement, tooltipTone }, { onKeyDown, onMouseLeave, onBlur, onMouseEnter, onFocus, 'aria-describedby': describedBy });
   return (
-    <button ref={ref} type={type} aria-label={label} title={label} className={cx('syn-icon-button', `syn-icon-button--${size}`, variant === 'outline' && 'syn-icon-button--outline', className)} {...rest}>
+    <button ref={ref} type={type} aria-label={label} className={cx('syn-icon-button', `syn-icon-button--${size}`, variant === 'outline' && 'syn-icon-button--outline', tipClass, className)} {...rest} {...tipProps}>
       {size === 'xs' && icon === 'close' ? <CloseGlyph /> : <Icon name={icon} size={size === 'xs' || size === 'sm' ? 16 : 20} />}
+      {tip}
     </button>
   );
 });

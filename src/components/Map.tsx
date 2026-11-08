@@ -1,5 +1,6 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import { Icon, type IconName } from './Icon';
+import { useButtonTip, type ButtonTipProps } from './Tooltip';
 import { cx } from '../utils';
 import satelliteThumb from '../assets/map/layer-satellite.png';
 import mapThumb from '../assets/map/layer-map.png';
@@ -8,9 +9,9 @@ import mapThumbLg from '../assets/map/layer-map-lg.png';
 import streetViewFigure from '../assets/map/street-view.png';
 import './Map.css';
 
-export interface MapControlProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+export interface MapControlProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'title'>, ButtonTipProps {
   icon: IconName;
-  /** Required: map controls are icon-only. */
+  /** Required: map controls are icon-only. It is also the tooltip (left of the control by default). */
   label: string;
 }
 
@@ -18,10 +19,14 @@ export interface MapControlProps extends Omit<ButtonHTMLAttributes<HTMLButtonEle
  * Figma "Zoom in" / "Map Button": a 36px white square with 8px corners and a 20px Eerie Black glyph.
  * Hover is Cultured with a 1px Eerie Black border.
  */
-export function MapControl({ icon, label, className, type = 'button', ...rest }: MapControlProps) {
+export function MapControl({
+  icon, label, className, type = 'button', tooltip, tooltipPlacement = 'left', tooltipTone, onKeyDown, onMouseLeave, onBlur, onMouseEnter, onFocus, 'aria-describedby': describedBy, ...rest
+}: MapControlProps) {
+  const { tip, tipProps, tipClass } = useButtonTip(label, { tooltip, tooltipPlacement, tooltipTone }, { onKeyDown, onMouseLeave, onBlur, onMouseEnter, onFocus, 'aria-describedby': describedBy });
   return (
-    <button type={type} aria-label={label} title={label} className={cx('syn-map-control', className)} {...rest}>
+    <button type={type} aria-label={label} className={cx('syn-map-control', tipClass, className)} {...rest} {...tipProps}>
       <Icon name={icon} size={20} />
+      {tip}
     </button>
   );
 }
@@ -76,35 +81,46 @@ export interface MapLayerSwitchProps {
   satelliteSrc?: string;
   mapSrc?: string;
   className?: string;
+  /** The built-in tooltip ("Satellite" / "Map" by default, left of the switch). */
+  tooltip?: ButtonTipProps['tooltip'];
+  tooltipPlacement?: ButtonTipProps['tooltipPlacement'];
 }
 
 /**
  * Figma layer switch: a 36px thumbnail of the layer you switch to. Satellite has a white border, Map an
  * Eerie Black one; hover lays Silver Chalice at 40% over it.
  */
-export function MapLayerSwitch({ value, onChange, size = 'sm', satelliteSrc, mapSrc, className }: MapLayerSwitchProps) {
+export function MapLayerSwitch({ value, onChange, size = 'sm', satelliteSrc, mapSrc, className, tooltip, tooltipPlacement = 'left' }: MapLayerSwitchProps) {
   const next: MapLayer = value === 'map' ? 'satellite' : 'map';
   const lg = size === 'lg';
+  const label = next === 'satellite' ? 'Show satellite view' : 'Show map view';
+  // The large switch already prints the layer name, so it has no tooltip unless one is passed.
+  const { tip, tipProps, tipClass } = useButtonTip(label, { tooltip: tooltip ?? (lg ? false : next === 'satellite' ? 'Satellite' : 'Map'), tooltipPlacement }, {});
   const src = next === 'satellite' ? satelliteSrc ?? (lg ? satelliteThumbLg : satelliteThumb) : mapSrc ?? (lg ? mapThumbLg : mapThumb);
   return (
     <button
       type="button"
-      className={cx('syn-map-layer', `syn-map-layer--${next}`, lg && 'syn-map-layer--lg', className)}
-      aria-label={next === 'satellite' ? 'Show satellite view' : 'Show map view'}
-      title={next === 'satellite' ? 'Satellite' : 'Map'}
+      className={cx('syn-map-layer', `syn-map-layer--${next}`, lg && 'syn-map-layer--lg', tipClass, className)}
+      aria-label={label}
       onClick={() => onChange(next)}
+      {...tipProps}
     >
       <img src={src} alt="" />
       {lg && <span className="syn-map-layer__label" aria-hidden>{next === 'satellite' ? 'Satellite' : 'MAP'}</span>}
+      {tip}
     </button>
   );
 }
 
 /** Figma street view control: the Amber figure on a 36px white button. */
-export function MapStreetViewButton({ label = 'Street view', className, type = 'button', ...rest }: Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> & { label?: string }) {
+export function MapStreetViewButton({
+  label = 'Street view', className, type = 'button', tooltip, tooltipPlacement = 'left', tooltipTone, onKeyDown, onMouseLeave, onBlur, onMouseEnter, onFocus, 'aria-describedby': describedBy, ...rest
+}: Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'title'> & ButtonTipProps & { label?: string }) {
+  const { tip, tipProps, tipClass } = useButtonTip(label, { tooltip, tooltipPlacement, tooltipTone }, { onKeyDown, onMouseLeave, onBlur, onMouseEnter, onFocus, 'aria-describedby': describedBy });
   return (
-    <button type={type} aria-label={label} title={label} className={cx('syn-map-control syn-map-street', className)} {...rest}>
+    <button type={type} aria-label={label} className={cx('syn-map-control syn-map-street', tipClass, className)} {...rest} {...tipProps}>
       <img src={streetViewFigure} alt="" width={9} height={20} />
+      {tip}
     </button>
   );
 }

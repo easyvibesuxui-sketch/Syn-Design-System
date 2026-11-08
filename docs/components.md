@@ -17,6 +17,11 @@ Figma: *Buttons → Buttons large* (`State × Size × Stile`).
 
 `IconButton` (Figma *Close button*): round ghost button, `size` `xs` 24 (default) · `sm` 36 · `md` 48 · `lg` 56,
 requires `label`. `variant="outline"` is the white square with a Cultured border used for row "more" buttons.
+Rule: icon-only buttons never use the native `title`. `IconButton`, `MapControl`, `MapStreetViewButton` and
+`MapLayerSwitch` draw the Syn tooltip inside the button (`useButtonTip`): the `label` by default, shown on hover
+(pointer devices, after 150ms) and on keyboard focus, hidden by Escape. `tooltip` replaces the content (e.g. the
+label with a `<kbd>` shortcut, then wired with `aria-describedby`) or `false` removes it; `tooltipPlacement`
+top (default; map controls left), `tooltipTone` dark/light. Do not wrap these buttons in `Tooltip`.
 
 ## Size rule for fields
 
@@ -107,7 +112,8 @@ ABC Favorit Expanded Medium 12/15. `name`, `selected`, `error`, `onCreate`, `onS
 
 Figma: *Tooltip black*, *Tooltip grey label*. Opens on hover and focus, closes on Escape, wired with
 `aria-describedby`. `placement` top/bottom/left/right, `tone` `dark` (Jet) or `light` (Cultured with a
-border). As in Figma: 8px padding, Regular 14 and a 16x8 pointer; corners use the 8px element radius (Figma draws 2px).
+border). As in Figma: 8px padding, Regular 14 and a 16x8 pointer; corners use the 8px element radius (Figma draws 2px). For
+icon-only buttons use their built-in `tooltip` prop instead of wrapping them.
 
 ## Notification
 

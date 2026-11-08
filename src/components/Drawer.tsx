@@ -61,7 +61,7 @@ export function Drawer({
           <div className="syn-drawer__header-start">{headerStart}</div>
           <div className="syn-drawer__header-actions">
             {headerActions}
-            <IconButton icon="close" label={closeLabel} size="sm" onClick={onClose} />
+            <IconButton icon="close" label={closeLabel} size="sm" tooltipPlacement="bottom" onClick={onClose} />
           </div>
         </header>
         <div className="syn-drawer__body">{children}</div>

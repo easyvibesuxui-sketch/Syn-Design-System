@@ -15,7 +15,7 @@ export { Radio, RadioGroup, type RadioProps, type RadioGroupProps } from './comp
 export { Switch, type SwitchProps } from './components/Switch';
 export { Tabs, type TabsProps, type TabItem, type TabIcon } from './components/Tabs';
 export { NewTab, type NewTabProps } from './components/NewTab';
-export { Tooltip, type TooltipProps } from './components/Tooltip';
+export { Tooltip, useButtonTip, type ButtonTipProps, type TooltipPlacement, type TooltipProps } from './components/Tooltip';
 export { Notification, type NotificationProps, type NotificationTone } from './components/Notification';
 export { StatusChip, StatusBadge, type StatusChipProps, type StatusBadgeProps, type StatusTone } from './components/Status';
 export { Accordion, type AccordionProps, type AccordionItem } from './components/Accordion';

@@ -80,7 +80,6 @@
   width: var(--syn-size-control-sm);
   height: var(--syn-size-control-sm);
   padding: 0;
-  overflow: hidden;
   border: 1px solid var(--syn-color-white-white);
   border-radius: var(--syn-radius-element);
   background: var(--syn-surface-muted);
