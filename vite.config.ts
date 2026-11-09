@@ -16,8 +16,8 @@ export default defineConfig(({ command, mode }) => {
       build: {
         outDir: resolve(root, 'docs-site'),
         emptyOutDir: true,
-        // The style guide and the Syniotec Shop example built from Syn components.
-        rollupOptions: { input: { main: resolve(root, 'playground/index.html'), shop: resolve(root, 'playground/shop/index.html') } },
+        // The style guide. The Syniotec Shop example now lives in its own repository (SYN-Shop).
+        rollupOptions: { input: { main: resolve(root, 'playground/index.html') } },
       },
     };
   }
