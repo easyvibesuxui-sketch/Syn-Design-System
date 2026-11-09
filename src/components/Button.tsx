@@ -1,33 +1,40 @@
 import { forwardRef, type ButtonHTMLAttributes } from 'react';
 import { Icon, type IconName } from './Icon';
-import { cx } from '../utils';
+import { cx, type ControlSize } from '../utils';
 import './Button.css';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'accent' | 'brand' | 'text';
-export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ButtonSize = ControlSize;
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** primary = Eerie Black fill, secondary = outline, accent = Amber fill, brand = Candy Apple fill, text = no chrome. */
   variant?: ButtonVariant;
-  /** sm 36px, md 48px, lg 56px. */
+  /** xs 24px, sm 36px, md 48px, lg 56px. */
   size?: ButtonSize;
   iconStart?: IconName;
   iconEnd?: IconName;
   loading?: boolean;
   fullWidth?: boolean;
+  /** pill = fully round corners (the comment "Reply" button); default = 8px. */
+  shape?: 'default' | 'pill';
+  /**
+   * Shows a state without the pointer, for docs and screenshots: hover = Figma "Hover", pressed = Figma
+   * "Focus" (the clicked state). The real hover, click and keyboard-focus states work without it.
+   */
+  state?: 'hover' | 'pressed';
 }
 
-const iconSize: Record<ButtonSize, number> = { sm: 16, md: 20, lg: 20 };
+const iconSize: Record<ButtonSize, number> = { xs: 16, sm: 16, md: 20, lg: 20 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { variant = 'primary', size = 'lg', iconStart, iconEnd, loading = false, fullWidth = false, disabled, className, children, type = 'button', ...rest },
+  { variant = 'primary', size = 'lg', iconStart, iconEnd, loading = false, fullWidth = false, shape = 'default', state, disabled, className, children, type = 'button', ...rest },
   ref,
 ) {
   return (
     <button
       ref={ref}
       type={type}
-      className={cx('syn-button', `syn-button--${variant}`, `syn-button--${size}`, fullWidth && 'syn-button--full', loading && 'is-loading', className)}
+      className={cx('syn-button', `syn-button--${variant}`, `syn-button--${size}`, fullWidth && 'syn-button--full', shape === 'pill' && 'syn-button--pill', loading && 'is-loading', state && `is-${state}`, className)}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       {...rest}

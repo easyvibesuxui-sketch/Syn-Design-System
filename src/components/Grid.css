@@ -1,0 +1,10 @@
+/* 12 equal columns with the 24px gutter token. */
+.syn-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--syn-grid-columns), minmax(0, 1fr));
+  gap: var(--grid-gap, var(--syn-grid-gutter));
+}
+.syn-grid__item { grid-column: span var(--span, 12); min-width: 0; }
+@media (max-width: 640px) {
+  .syn-grid__item { grid-column: span var(--span-sm, 12); }
+}

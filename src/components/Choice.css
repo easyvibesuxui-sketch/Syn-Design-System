@@ -1,62 +1,74 @@
-/* Shared by Checkbox and Radio. */
-.syn-choice { display: inline-flex; flex-direction: column; gap: var(--syn-space-2); }
+/* Shared by Checkbox and Radio. Values from the Figma "Checkbox 20 px", "Checkbox 24 px" and radio group sets. */
+.syn-choice { display: inline-flex; flex-direction: column; align-items: flex-start; }
 .syn-choice__row {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: var(--syn-space-4);
+  gap: var(--syn-space-8);
   color: var(--syn-text-primary);
-  font: var(--syn-type-body-s-regular);
+  font: var(--syn-type-components-choice-label);
   cursor: pointer;
 }
 .syn-choice__input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: inherit; }
 
+/* 1.5px border drawn inside the box; square boxes have 2px corners, round ones are circles. */
 .syn-choice__box {
   position: relative;
-  display: inline-flex;
   flex: none;
-  align-items: center;
-  justify-content: center;
+  box-sizing: border-box;
   width: 20px;
   height: 20px;
-  border: 1.5px solid var(--syn-border-strong);
+  border: 1.5px solid var(--syn-color-black-eerie-black);
   border-radius: var(--syn-radius-xs);
-  background: var(--syn-surface-default);
-  color: var(--syn-color-white);
+  background: transparent;
+  color: var(--syn-color-white-white);
   transition: background-color var(--syn-duration-fast), border-color var(--syn-duration-fast);
 }
-.syn-choice--lg .syn-choice__box { width: 24px; height: 24px; }
-.syn-choice__box--radio { border-radius: var(--syn-radius-full); }
+.syn-choice--24 .syn-choice__box { width: 24px; height: 24px; }
+.syn-choice__box--radio,
+.syn-choice--round .syn-choice__box { border-radius: var(--syn-radius-full); }
+.syn-choice--round .syn-choice__mark { transform: scale(0.8); }
 
-.syn-choice__mark, .syn-choice__dash { display: none; width: 14px; height: 11px; fill: none; stroke: currentColor; stroke-width: 2; }
-.syn-choice__input:checked + .syn-choice__box--check,
-.syn-choice__input:indeterminate + .syn-choice__box--check { background: var(--syn-action-selected); }
+/* The check is positioned from the outer edge of the box, as in Figma. */
+.syn-choice__mark { position: absolute; display: none; margin: -1.5px 0 0 -1.5px; }
+
+.syn-choice__row:hover { color: var(--syn-color-secondary-jet); }
+.syn-choice__row:hover .syn-choice__box { border-color: var(--syn-color-secondary-jet); }
+
+.syn-choice__input:checked + .syn-choice__box--check { border-color: var(--syn-color-black-eerie-black); background: var(--syn-action-selected); }
 .syn-choice__input:checked + .syn-choice__box .syn-choice__mark { display: block; }
-.syn-choice__input:indeterminate + .syn-choice__box .syn-choice__dash { display: block; }
+.syn-choice__row:hover .syn-choice__input:checked + .syn-choice__box--check { border-color: var(--syn-color-secondary-jet); }
 
+/* Radio dot: 12px in the 20px circle, 16px in the 24px circle. */
 .syn-choice__box--radio::after {
   content: '';
-  width: 60%;
-  height: 60%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
   border-radius: var(--syn-radius-full);
-  background: var(--syn-action-primary);
-  transform: scale(0);
+  background: var(--syn-color-black-eerie-black);
+  transform: translate(-50%, -50%) scale(0);
   transition: transform var(--syn-duration-fast);
 }
-.syn-choice__input:checked + .syn-choice__box--radio::after { transform: scale(1); }
+.syn-choice--24 .syn-choice__box--radio::after { width: 16px; height: 16px; }
+.syn-choice__input:checked + .syn-choice__box--radio::after { transform: translate(-50%, -50%) scale(1); }
+.syn-choice__row:hover .syn-choice__box--radio::after { background: var(--syn-color-secondary-jet); }
 
-.syn-choice__row:hover .syn-choice__box { border-color: var(--syn-text-secondary); }
-.syn-choice__row:hover { color: var(--syn-text-secondary); }
-.syn-choice__input:focus-visible + .syn-choice__box { outline: 1px solid var(--syn-border-strong); outline-offset: 3px; }
+.syn-choice__input:focus-visible + .syn-choice__box { outline: 1px solid var(--syn-color-black-eerie-black); outline-offset: 2px; }
 
-.syn-choice.is-invalid .syn-choice__box { border-color: var(--syn-border-error); }
+/* Error: Eerie Black border with a Vermilion ring at 54% just inside it, and a red asterisk on the label. */
+.syn-choice.is-invalid .syn-choice__box { border-color: var(--syn-color-black-eerie-black); box-shadow: inset 0 0 0 1px rgba(236, 8, 8, 0.54); }
+.syn-choice.is-invalid .syn-choice__box--radio { border-width: 1px; }
+.syn-choice__required { color: var(--syn-color-error-vermilion); }
 
-.syn-choice.is-disabled .syn-choice__row { color: var(--syn-text-disabled); cursor: not-allowed; }
-.syn-choice.is-disabled .syn-choice__box { border-color: var(--syn-border-disabled); }
-.syn-choice.is-disabled .syn-choice__input:checked + .syn-choice__box--check { background: var(--syn-action-disabled); }
-.syn-choice.is-disabled .syn-choice__box--radio::after { background: var(--syn-action-disabled); }
+.syn-choice.is-disabled .syn-choice__row { color: var(--syn-color-disabled-gray-x); cursor: not-allowed; }
+.syn-choice.is-disabled .syn-choice__box { border-color: var(--syn-color-disabled-gray-x); }
+.syn-choice.is-disabled .syn-choice__input:checked + .syn-choice__box--check { background: var(--syn-color-disabled-gray-x); }
+.syn-choice.is-disabled .syn-choice__box--radio::after { background: var(--syn-color-disabled-gray-x); }
 
-.syn-radio-group { display: flex; flex-direction: column; gap: var(--syn-space-4); margin: 0; padding: 0; border: 0; min-width: 0; }
-.syn-radio-group__legend { margin-bottom: var(--syn-space-4); padding: 0; color: var(--syn-text-primary); font: var(--syn-type-title-8); }
-.syn-radio-group__options { display: flex; flex-direction: column; gap: var(--syn-space-6); }
-.syn-radio-group--inline .syn-radio-group__options { flex-direction: row; flex-wrap: wrap; gap: var(--syn-space-8); }
+.syn-radio-group { display: flex; flex-direction: column; align-items: flex-start; margin: 0; padding: 0; border: 0; min-width: 0; }
+.syn-radio-group__legend { margin-bottom: var(--syn-space-8); padding: 0; color: var(--syn-text-primary); font: var(--syn-type-titles-title-8); }
+.syn-radio-group__options { display: flex; flex-direction: column; gap: var(--syn-space-12); }
+.syn-radio-group--inline .syn-radio-group__options { flex-direction: row; flex-wrap: wrap; gap: var(--syn-space-24); }

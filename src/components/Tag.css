@@ -1,0 +1,87 @@
+/* 24px pills: padding 0 12 (0 8 0 12 with a remove button), text Medium 12, 8px gap. */
+.syn-tag {
+  --tag-bg: var(--syn-color-black-eerie-black);
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--syn-space-8);
+  height: var(--syn-size-control-xs);
+  margin: 0;
+  padding: 0 var(--syn-space-12);
+  border: 1px solid transparent;
+  border-radius: var(--syn-radius-full);
+  font: var(--syn-type-text-body-xs);
+  white-space: nowrap;
+}
+.syn-tag--solid { border-color: var(--tag-bg); background: var(--tag-bg); color: var(--syn-color-white-white); }
+.syn-tag--soft { border-color: var(--syn-border-default); background: var(--syn-surface-default); color: var(--syn-text-primary); font: var(--syn-type-text-body-xs-2); }
+.syn-tag--soft .syn-icon { color: var(--syn-color-secondary-silver-chalince); }
+.syn-tag.is-muted { color: var(--syn-text-muted); }
+button.syn-tag--soft { cursor: pointer; }
+button.syn-tag--soft:hover { border-color: var(--syn-border-muted); }
+.syn-tag--outline { border-color: var(--syn-border-muted); background: var(--syn-surface-default); color: var(--syn-text-primary); }
+.syn-tag--dashed {
+  min-width: 96px;
+  justify-content: center;
+  padding: 0 var(--syn-space-16);
+  border: 1px dashed var(--syn-border-muted);
+  background: var(--syn-surface-default);
+  color: var(--syn-text-muted);
+  font: var(--syn-type-text-body-xs-2);
+  cursor: pointer;
+}
+.syn-tag--dashed:hover { border-color: var(--syn-border-strong); color: var(--syn-text-primary); }
+.syn-tag:has(.syn-tag__remove) { padding-right: var(--syn-space-8); }
+.syn-tag--rounded { border-radius: var(--syn-radius-element); }
+
+.syn-tag__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--syn-radius-full);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.8;
+}
+.syn-tag__remove:hover { opacity: 1; }
+.syn-tag button:focus-visible, .syn-tag--dashed:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
+
+/* Figma "close button-tag": 36px, padding 0 8 0 16, Cultured border, Regular 14; the 24px round close turns
+   Cultured on hover. Hover: Eerie Black border. Pressed: Cultured fill. Disabled: Cultured fill, Gray X. */
+.syn-tag--chip {
+  height: var(--syn-size-control-sm);
+  padding: 0 var(--syn-space-8) 0 var(--syn-space-16);
+  border-color: var(--syn-border-default);
+  border-radius: var(--syn-radius-element);
+  background: var(--syn-surface-default);
+  color: var(--syn-text-primary);
+  font: var(--syn-type-text-body-s-2);
+  transition: border-color var(--syn-duration-fast), background-color var(--syn-duration-fast);
+}
+.syn-tag--chip:has(.syn-tag__remove), .syn-tag--chip.is-loading { padding-right: var(--syn-space-8); }
+.syn-tag--chip .syn-tag__remove { width: var(--syn-size-control-xs); height: var(--syn-size-control-xs); opacity: 1; transition: background-color var(--syn-duration-fast); }
+.syn-tag--chip:not(.is-disabled):not(.is-loading):hover { border-color: var(--syn-border-strong); }
+.syn-tag--chip .syn-tag__remove:hover { background: var(--syn-surface-muted); }
+.syn-tag--chip:not(.is-disabled):has(.syn-tag__remove:active) { border-color: var(--syn-border-strong); background: var(--syn-surface-muted); }
+.syn-tag--chip:has(.syn-tag__remove:active) .syn-tag__remove { background: var(--syn-surface-default); }
+.syn-tag--chip.is-disabled { border-color: var(--syn-border-disabled); background: var(--syn-surface-muted); color: var(--syn-text-disabled); }
+.syn-tag--chip.is-disabled .syn-tag__remove { cursor: not-allowed; }
+.syn-tag--chip.is-disabled .syn-tag__remove:hover { background: transparent; }
+.syn-tag.is-loading { color: var(--syn-text-disabled); }
+.syn-tag__spinner {
+  width: 14px;
+  height: 14px;
+  margin: 0 var(--syn-space-4);
+  box-sizing: border-box;
+  border: 1px solid var(--syn-surface-muted);
+  border-top-color: var(--syn-border-strong);
+  border-radius: var(--syn-radius-full);
+  animation: syn-tag-spin 0.8s linear infinite;
+}
+@keyframes syn-tag-spin { to { transform: rotate(360deg); } }
