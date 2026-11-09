@@ -71,6 +71,8 @@ Sizes are even numbers (2–24, then multiples of 8); elements have 8px corners 
 are 24 / 36 / 48 / 56 (`xs` · `sm` · `md` · `lg`); layouts use the 12-column grid.
 
 Props, Figma mappings and accessibility notes are in [docs/components.md](docs/components.md).
+Components are layered by atomic design (atoms, molecules, organisms, templates), checked by
+`npm run check:layers`: see [docs/atomic-design.md](docs/atomic-design.md).
 
 ## What is not covered yet
 

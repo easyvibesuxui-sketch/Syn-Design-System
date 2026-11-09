@@ -1,5 +1,7 @@
 # Components
 
+Each component's atomic layer (atom, molecule, organism, template) is listed in [atomic-design.md](atomic-design.md).
+
 Every component reads semantic tokens only, ships its own CSS, forwards native props, and is keyboard
 operable. Figma names are given so designers and developers can find each other's work.
 
