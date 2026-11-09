@@ -1,5 +1,6 @@
 import './styles/tokens.css';
 import './styles/base.css';
+import './styles/scrollbar.css';
 
 export { tokens, type SynTokens } from './tokens';
 export { iconNames, iconAliases, iconData, getIcon, type IconName, type IconGlyph } from './icons/icon-data';

@@ -108,6 +108,15 @@ Figma: *New Tab*. Default "Add new" with a plus-circle; Hover and Tap (typing a 
 Selected (Candy Apple underline) with a trash button; Error with a red underline and message. 220 x 48,
 ABC Favorit Expanded Medium 12/15. `name`, `selected`, `error`, `onCreate`, `onSelect`, `onRemove`.
 
+## Scroll
+
+Figma: *Scroll* (General Scroll, Scroll components). Global, in `styles/scrollbar.css`: every scrollable area, the page
+included, gets a 4px Cultured track with a Jet thumb (at least 48px), both with 8px corners on the outer side;
+hovering the bar widens it to 10px (Figma "Hovered"). The bar keeps a 10px gutter, drawn 4px wide with transparent
+borders, so content does not shift on hover. Firefox gets `scrollbar-width: thin` in the same colours. Tokens:
+`--syn-scrollbar-track`, `--syn-scrollbar-thumb`, `--syn-scrollbar-size`, `--syn-scrollbar-rest`. An area that must
+not show a bar (a tab row that scrolls sideways) sets `scrollbar-width: none`.
+
 ## Tooltip
 
 Figma: *Tooltip black*, *Tooltip grey label*. Opens on hover and focus, closes on Escape, wired with
