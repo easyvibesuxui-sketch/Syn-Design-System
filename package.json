@@ -30,9 +30,10 @@
     "icons": "node scripts/build-icons.mjs",
     "generate": "npm run tokens && npm run icons",
     "dev": "vite",
-    "build": "npm run generate && tsc -p tsconfig.build.json && vite build",
+    "build": "npm run check:layers && npm run generate && tsc -p tsconfig.build.json && vite build",
     "build:docs": "npm run generate && vite build --mode docs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check:layers": "node scripts/check-layers.mjs"
   },
   "peerDependencies": {
     "react": ">=18",

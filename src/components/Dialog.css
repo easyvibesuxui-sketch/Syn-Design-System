@@ -13,7 +13,8 @@
 /* Overlay: Silver Chalice at 60%. */
 .syn-dialog::backdrop { background: var(--syn-surface-overlay); }
 
-/* Smoke panel, 1px white border inside, radius 12, vertical stack with a 16px gap. */
+/* Smoke panel, 1px white border inside, radius 12, vertical stack with a 16px gap. Figma "Rectangle border":
+   2px of clear space around the panel, then a 1px Cultured outline that follows its corners. */
 .syn-dialog__panel {
   display: flex;
   flex-direction: column;
@@ -22,7 +23,8 @@
   border: 1px solid var(--syn-color-white-white);
   border-radius: var(--syn-radius-widget);
   background: var(--syn-color-light-smoke);
-  outline: none;
+  outline: 1px solid var(--syn-color-grey-cultured);
+  outline-offset: 2px;
   overflow: hidden;
 }
 

@@ -22,6 +22,8 @@ export interface TableProps<T> {
   footer?: ReactNode;
   /** Accessible name of the table. */
   caption: string;
+  /** Zebra stripes: every second row is Cultured and the 2px separators are dropped. */
+  striped?: boolean;
   className?: string;
 }
 
@@ -29,10 +31,10 @@ export interface TableProps<T> {
  * Data table from the record drawer ("Resources"): a white 12px box, 24px muted header row, 32px rows
  * split by 2px Cultured lines, and an optional footer.
  */
-export function Table<T>({ columns, rows, rowKey, rowActions, footer, caption, className }: TableProps<T>) {
+export function Table<T>({ columns, rows, rowKey, rowActions, footer, caption, striped, className }: TableProps<T>) {
   const span = columns.length + (rowActions ? 1 : 0);
   return (
-    <div className={cx('syn-table', className)}>
+    <div className={cx('syn-table', striped && 'syn-table--striped', className)}>
       <table>
         <caption className="syn-visually-hidden">{caption}</caption>
         <thead>

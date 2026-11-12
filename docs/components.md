@@ -1,5 +1,7 @@
 # Components
 
+Each component's atomic layer (atom, molecule, organism, template) is listed in [atomic-design.md](atomic-design.md).
+
 Every component reads semantic tokens only, ships its own CSS, forwards native props, and is keyboard
 operable. Figma names are given so designers and developers can find each other's work.
 
@@ -18,30 +20,72 @@ Figma: *Buttons → Buttons large* (`State × Size × Stile`).
 `IconButton` (Figma *Close button*): round ghost button, `size` `xs` 24 (default) · `sm` 36 · `md` 48 · `lg` 56,
 requires `label`. `variant="outline"` is the white square with a Cultured border used for row "more" buttons.
 
+States (Figma *Buttons large*): hover fades filled styles to 74% (the primary label turns Silver Chalice; outline turns Cultured); pressed = Figma *Focus*, also used for keyboard focus: the fill pulls in 4px (2px top and bottom at 36 and 24) and a 1px ring in the button's colour stays on the edge, the gap showing `--syn-button-gap` (white). `state="hover" | "pressed"` shows a state for docs.
+
+## Size rule for fields
+
+Every field uses the TextField sizes: heights `lg` 56 · `md` 48 · `sm` 36 · `xs` 24; without a label the text is
+Regular 16 / 14 / 14 / 12; with the label inside it sits up at Regular 12 over Regular 14 (`lg`) or 10 over 12 (`md`,
+`sm`); an outside label is Regular 14 Jet (12 at `sm`/`xs`). Select, QuantityField, PasswordField, PhoneField and
+TextArea (64 / 56 / 48 high) follow it.
+
 ## TextField
 
 Figma: *Inputs → input large / Default size input / Small size input* and the icon and unit variants.
 States Default, Hover, Focused, Typing, Filled, Disabled and error are all CSS states of one component.
 
-Two kinds: with the label inside (the default: the label is the placeholder until the field has focus or a
-value, then moves up; `persistentLabel` keeps it above in every state, as in Figma *input large*) and without a label (`hideLabel`: only the placeholder and value show; the label is still read by
+Three kinds: with the label inside (the default: while empty the label itself sits where the text goes, in
+Silver Chalice, then moves up on focus and the `placeholder` shows below it; `persistentLabel` keeps it above in every state, as in Figma *input large*) and without a label (`hideLabel`: only the placeholder and value show; the label is still read by
 screen readers). `size` `lg` 56 · `md` 48 · `sm` 36 · `xs` 24; `xs` is always without a label.
 
 Props: `label` (required), `hideLabel`, `size`, `hint`, `error` (string or string[] for the
 "multiple error" variant), `iconStart`, `iconEnd`, `prefix`, `suffix` ("$", "kg"), `onClear` (adds the
 clear button: 24px Ghost circle with Figma's 12px Jet X, 1.5px lines), `clearVisibility` (`typing`, the default:
 only while the field has focus and a value; `always`: every state, as in *input large* and *multiple error*),
-`persistentLabel`, `showCount` with `maxLength` ("0/20").
+`persistentLabel`, `showCount` with `maxLength` ("0/20"), `labelPosition` (`inside` default, or `outside`: Regular 14
+Jet above the box, 12 at `sm`/`xs`, 8px gap, and the box shows only the placeholder and value), `endAdornment` (a
+control after the clear button), `variant` (`outline` default, or `plain`: Figma *Search no Outline*, no border in
+any state and a 1px Silver Chalice line under the text while focused), `waiting` (Figma *Waiting*: label and text
+Silver Chalice, read-only). The order at the end of the box is clear X, `suffix`, `endAdornment`, `iconEnd`, as
+in Figma. `iconEnd="info-button"` draws Figma's 24px grey info circle.
+
+## PasswordField
+
+Figma: *Password large / Medium / Small*. A TextField with an eye button after the clear X: Eerie Black `eye` while
+hidden, Silver Chalice `eye-closed` once shown (`aria-pressed`). Every TextField prop works: `size`, `labelPosition`,
+`prefix`, `error`, `disabled`; `defaultVisible` starts it shown.
+
+## PhoneField
+
+Figma: *Phone input def size / Small*. A Country/Region `Select` joined to a Phone Number field: one seam, 8px outer
+corners. Options read "(+995) Georgia"; the chosen dialling code shows before the number once it has focus or a value,
+and the phone icon ends the field. `countries` (default list starting with Georgia), `country`/`defaultCountry`,
+`onCountryChange`, `size` (`md` 48 default, `sm` 36, `lg` 56), `labelPosition` (`outside` puts `label` above the
+pair), plus the number field's TextField props. A searchable country list comes with the search dropdown.
 
 ## Select
 
-Figma: *Dropdown* and *Select list*. A select-only combobox (WAI-ARIA pattern): Up/Down/Home/End move,
-Enter/Space choose, Escape closes. Options hover in Misty Rose. Props: `label`, `options`
-(`{ value, label, disabled? }`), `value`/`defaultValue`, `onChange`, `placeholder`, `size` (`xs`–`lg`),
-`hideLabel` (default `true`: only the value shows, as in Figma; `false` puts the label inside), `iconStart`,
-`hint`, `error`, `disabled`, `onClear` (Figma's 24px round clear X left of the chevron, shown on hover,
-focus and open while a value is selected). The list opens 2px under the field. The chevron sits in a
-24px circle: white at rest, Cultured on hover, Eerie Black with a white glyph when focused or open.
+Figma: *Dropdown* page (873:776). `Select` is the field, `OptionList` the list (also usable alone),
+`DropdownPanel` a list box with free content (the Location / Radius filter).
+- `labelPosition="outside"`: the label above the field (Regular 14 Jet, 8px; 12 / 4px at sm and xs), as on TextField.
+- Standard: a button field. Disabled in every type: Cultured, Gray X border and text, Gray X chevron circle.
+- `multiple`: several values (`values`, `onValuesChange`, `defaultValues`). Without `searchable` the values sit under
+  the field as 36px chips (Figma *Filed several Selected*; `showTags`).
+- `searchable`: Figma *Type Search*. Typing filters (groups with a match open); the label floats like TextField's,
+  Candy Apple on focus, Silver Chalice with a Silver Chalice border once filled; X clears the typed text. With `multiple`: *Type Multiple*, the first value plus a "+2" counter in a 32px white circle.
+- Options: `description` (helper text), `icon`, `image`, `swatch`, `prefix`, `suffix`, `disabled`, `children` (Figma
+  *Barrell*: 48 / 40 / 36px rows, indented 16 and 32, inner rows on Smoke).
+- Open list (Figma *Focused*, Frame 3): 2px under the field, left-aligned, 362px wide (never narrower than the field;
+  480 with two columns; 16px clear of a narrow screen's edge), no shadow. The open field has a 2px Eerie Black border
+  inside, so it stays 288 x 56 (the Input draws its focus border outside, as in Figma). Opened with the mouse every
+  row is white; from the keyboard the chosen or first row is highlighted.
+- List: white, 1px Cultured border inside, 8px corners, 2px padding, 358 x 48 Regular 16 Jet rows. Hover Misty Rose; selected
+  Misty Rose in Medium 16 (or a ticked 24px checkbox with a Silver Chalice border). Rows with helper text, media or
+  prefix / suffix hover Snow, chosen one white with a 1px Silver Chalice border. Disabled Smoke + Gray X. With `multiple` a Clear / Apply footer by default (`listActions` relabels, `null` removes). `columns={2}`, `listActions` / `actions` (56px footer: Medium 16 text button, 160 x 36 Amber action),
+  `emptyTitle` / `emptyHint` (Figma *Empty*: "Cant find anything" / "Try different keywords", 120px glyph), `maxListHeight` / `maxHeight` (320px, thin Eerie Black scroll bar).
+- Keys: Up / Down (the active row scrolls into view), Home / End, Right opens a group, Left closes it, Enter / Space choose or
+  tick, Escape closes from anywhere inside. Standard: letters jump to a matching option. Multiple: Backspace in an empty
+  search removes the last value. A standalone `OptionList` is focusable and uses the same keys.
 
 ## Checkbox, Radio, RadioGroup
 
@@ -54,8 +98,8 @@ red asterisk; `errorStyle` picks the Figma "error 1" dark bubble (`tooltip`) or 
 
 ## Switch
 
-Figma: *Small toggle* (`size={20}`, 32 x 20), *Default size toggle* (`size={24}`, 48 x 24, the default) and
-*Big toggle* (`size={32}`, 48 x 32). `indicator` is *Toggle with Text and icon*: "On" (`indicatorText`) in the
+Figma: *Small toggle* (`size={20}`, 32 x 20) and *Default size toggle* (`size={24}`, 48 x 24, the default);
+only these two heights. `indicator` is *Toggle with Text and icon*: "On" (`indicatorText`) in the
 track when on, a white check when off (sizes 20 and 24).
 `role="switch"` on a native checkbox. Track and thumb sit at the Figma x positions for on and off; pressing
 stretches the thumb (24 / 28px). `loading` spins a ring in the thumb. `error` with `errorStyle`
@@ -71,11 +115,15 @@ or `md` ("Default size", 36px, Medium 14). Items take `iconStart`/`iconEnd`
 (`'arrow-left'`, `'arrow-right'` or any `IconName`), `disabled` and `content` (renders a `tabpanel`). Arrow
 keys, Home and End move selection. `end` holds extra content such as `NewTab`.
 
+Tabs are at least 142px wide at BIG and 126px at Default size with the text left-aligned 16px in (Figma padding 10/1/10/8). Default text is Silver Chalice at BIG and Eerie Black at Default size; the arrows are Eerie Black except on the active (Snow) and disabled (Gray X) tab. Three plain tabs side by side are the Figma *Tab switcher*. Radius 8 by the system rule (Figma draws 2).
+
 ## NewTab
 
 Figma: *New Tab*. Default "Add new" with a plus-circle; Hover and Tap (typing a name) on Smoke; Filled and
 Selected (Candy Apple underline) with a trash button; Error with a red underline and message. 220 x 48,
 ABC Favorit Expanded Medium 12/15. `name`, `selected`, `error`, `onCreate`, `onSelect`, `onRemove`.
+
+Two types: *clickable* (no `name`: "Add new" opens the name field, `defaultEditing` starts there) and *tab switcher* (created tabs with `name`, `onSelect` and `selected`, ended by a clickable NewTab).
 
 ## Tooltip
 
@@ -115,6 +163,8 @@ Figma: *Session Time out* (Banners page). Built on native `<dialog>` (focus trap
 footer padding 20/24 for a 320 x 48 action; 60% Silver Chalice backdrop. `title`, `description`, `icon`, `actions`,
 `onClose`.
 
+Figma *Rectangle border*: 2px of clear space around the panel, then a 1px Cultured outline following its corners.
+
 ## Drawer and DrawerRow
 
 From the record drawer reference. Native `<dialog>` from the right edge (focus trap, Escape, backdrop click),
@@ -152,6 +202,8 @@ round close; Eerie Black border on hover, Cultured fill when pressed, `disabled`
 - `ProgressBar`: "1/3" `label`, the percentage and a 4px Dodger Blue bar; `role="progressbar"` with `title` as its name.
   `variant="line"` is Figma *Loader line*: a bare 8px Amber bar with 8px corners.
 
+`EmptyState` `variant`: `general` (Cultured area, the 66 x 54 empty-state icon 16px over "The list is empty" in ABC Favorit Expanded Medium 14/20 Silver Chalice; with `title`, the Figma *List is empty* / *Start adding Tags* layout: Medium 16/20 Jet title, Medium 14/18 hint, 20px gaps), `person` and `crew` (Cultured panel, white border, 12px corners, 32px padding, icon over a Medium 10 Silver Chalice label), `inline` (default, "Nothing assigned").
+
 ## Table and Value
 
 The "Resources" table: `columns` (`key`, `header`, `render`, `align`, `width`), `rows`, `rowKey`, `rowActions`
@@ -160,10 +212,14 @@ White 12px box, 24px muted header, 32px rows split by 2px Cultured lines; a hove
 Black outline (Figma data sheet "cell"). It scrolls sideways under 560px.
 `Value` prints a number with a muted unit (`<Value unit="Meter">12</Value>`), `muted` greys the number too.
 
+`striped` gives zebra rows: every second row Cultured with 8px corners, no 2px row lines.
+
 ## Segmented
 
 Pill switcher between views ("Comments" / "Activity"): 24px pills at least 128px wide, the current one Eerie Black.
 `role="tablist"`; Left/Right move. `options`, `value`, `onChange`, `label`.
+
+The Eerie Black pill slides and resizes to the chosen option (`syn-duration-base`), the labels cross-fade; no motion under reduced motion.
 
 ## TextArea
 
@@ -172,12 +228,33 @@ default it is screen-reader only, for the comment and checklist editors):
 - `labelPosition="inside"` (default): the label sits in the box, Regular 14 Eerie Black while empty, then Regular 12
   (Candy Apple when focused, Silver Chalice when filled) over Regular 14 text. `size` `lg` 64 · `md` 56 · `sm` 48
   (Small: Medium 10 over 12). The border turns Silver Chalice once filled.
-- `labelPosition="outside"`: the label (ABC Favorit Expanded Medium 12) above a 48px box.
+- `labelPosition="outside"`: Regular 14 Jet label above the box (12 at `sm`), 8px gap; the box takes the same
+  64 / 56 / 48 heights by `size`.
 
 `showCount` with `maxLength` adds "0/20" (Regular 10 Silver Chalice) under the box, right-aligned. `onClear` adds
 Figma's 16px *Close small* button in the top-right corner while typing. `variant` `default` (1px Cultured) or `strong`
 (2px Silver Chalice, the comment editor); both turn 2px Eerie Black on focus. Disabled is Cultured with a Gray X
 border. No resize handle, as in Figma.
+
+## QuantityField
+
+Figma: *Quantity field type 2*, *Quantity Field Label*, *Quantity Field Type 2 Error*, with the − and + moved inside
+the field. One box (`size` `lg` 56 · `md` 48 · `sm` 36, 8px corners) holds a square − button, the centred number and a
+square + button (32px, 24px at `sm`; 1px Eerie Black border, Cultured on hover). Borders follow the text field;
+`error` is Snow with a Vermilion border and the message 2px below; disabled is Cultured with a Gray X border.
+`showLabel` puts the Regular 16 Jet label 16px above. `min`, `max`, `step`, `value`/`defaultValue` (a number or
+null), `onChange`, `placeholder` ("Quantity"), `prefix`/`suffix` ("kg"), `onRemove` (at the minimum the − becomes
+a trash button on Smoke). `role="spinbutton"`; Up and Down step the value. `variant="stepper"` is Figma *Quantity Field Type 1*: the number on
+the left and up/down arrows stacked at the right edge (lines Eerie Black and arrows Candy Apple on hover), with
+`onClear` for the X while typing.
+
+## Skeleton
+
+Loading placeholder in the Material Skeleton manner, in Syn colours: `variant` `text` (a line at 60% of the font
+height), `circular` (40px), `rectangular` (120px high), plus the Figma input skeletons `field` (56 / 48 / 36 with a
+Smoke bar) and `textbox` (64 / 56 / 48) by `size`. `animation` `pulse` (default, 1.5s fade to 40%), `wave` (a light
+band sweeps across) or `false`; motion stops under reduced motion. `width`/`height` override the size. 8px corners,
+circles stay round. It is hidden from screen readers: set `aria-busy` on the region that is loading.
 
 ## Checklist and ChecklistItem
 
@@ -185,12 +262,14 @@ A checklist row on Smoke with 8px corners: 20px checkbox and Regular 14 text, `a
 right, `actions` top right, `extra` under it (people tags). `editing` swaps the text for a `TextArea` and frames the
 row with a 1px Eerie Black border.
 
+States: default, hover (Cultured row), done (checked: Silver Chalice text, struck through), editing, error (`error` with `editing`: Vermilion frame and message), disabled (`disabled`).
+
 ## Comment, CommentReply and CommentEditor
 
 `Comment`: 24px avatar, `author` (ABC Favorit Expanded Medium 12), `date`, muted `time`, header `actions`; the text
 in a white 8px bubble (`active` gives it an Eerie Black border), `footer` (attachment tags, a pill "Reply" button),
 `editor` in place of the bubble, and `replies`. Replies (`CommentReply`, with `end` for "12 Replies") hang off a 1px
-Silver Chalice thread line. `CommentEditor`: a strong `TextArea` with a text "Discard" and a 96 x 36 Amber "Save".
+dashed Silver Chalice thread line (4px dashes, 4px gaps). `CommentEditor`: a strong `TextArea` with a text "Discard" and a 96 x 36 Amber "Save".
 
 ## Grid and GridItem
 
@@ -200,13 +279,37 @@ The 12-column grid: 24px gutter by default (`gap` takes 8–32), `GridItem` `spa
 ## Slider
 
 Figma: *Slider 1*, *Slider button*, *Slider button with text*. Native range input: 2px Silver Chalice
-track, Candy Apple fill, a 32px white thumb with Figma's double arrow (darkens on hover), the label
+track, Candy Apple fill, a 32px Snow thumb with a Silver Chalice ring and Figma's double arrow, the label
 above and Light 12 Silver Chalice labels under the track (the minimum on the left, the value on the
 right). `min`, `max`, `step`, `format`.
 
+States (Figma *Slider button*): hover = Eerie Black ring; while moving (dragging) = Cultured thumb, Eerie Black ring and the pause glyph, cursor grabbing; disabled = Gray X ring. `state="hover" | "moving"` shows a state for docs.
+
+## Map
+
+Figma: *Equipment Map*, *Map Button*, *Zoom in* and the layer switch (Design system library, Map page). Library-agnostic:
+the map itself (Leaflet, Google Maps, an image) goes in as children and fills the frame.
+- `MapView`: 4px white border, 12px corners, Cultured while loading; `label` names the region; `onClose` adds
+  *Close map* top right (Eerie Black, 36px, Smoke Medium 14/18, 20px `x-in-circle`); `controls` takes the column below.
+- `MapControls`: the bottom-right column (pt 32, pr 16, pb 24, pl 20, 16px apart) on a faint dark corner gradient with a
+  50px top-left corner.
+- `MapControl`: a 36px white square, 8px corners, 20px Eerie Black glyph; hover Cultured with a 1px Eerie Black border.
+  `MapZoomControls` (`onZoomIn`, `onZoomOut`, `canZoomIn`, `canZoomOut`) stacks Zoom in and Zoom out 8px apart;
+  `MapExpandButton` (`expanded`) is *Map Button* Default / Minimize; `MapStreetViewButton` is the Amber figure.
+- `MapLayerSwitch`: a 36px thumbnail of the layer you switch to (`value` is the current `map` or `satellite`):
+  Satellite with a white border, Map with an Eerie Black one; hover lays Silver Chalice at 40% over it.
+  `satelliteSrc` / `mapSrc` replace the Figma thumbnails. `size="lg"` is the 56px switch of the map widget (SAM Overview):
+  Eerie Black border and the layer name ("Satellite" / "MAP") in Caption 1 white on a grey gradient.
+- `MapView variant="widget"`: the map card frame, 2px Cultured with 8px corners; controls are placed by the page.
+- Layer details: give `MapLayerSwitch` `overlays` (`defaultMapOverlays` = Terrain, Traffic, Transit, or your own
+  `{ id, label, src }`), `activeOverlays` and `onOverlayToggle`. Hovering or focusing the switch opens a white card
+  beside it (`panelSide` `left` by default, `right`): 32px thumbnails over Regular 10 labels; a detail that is on gets an
+  Eerie Black ring and label. Clicking the switch itself still swaps Map and Satellite. Not in Figma: built from the
+  reference screenshot.
+
 ## Icon
 
-All 164 icons from *Icons → Main icons*, at their native Figma size (most 20 x 20; file formats 24 x 30).
+All 164 icons from *Icons → Main icons* plus the input icons *Info button* and *phone* and the empty-state icon (`empty-list`, 66 x 54), at their native Figma size (most 20 x 20; file formats 24 x 30).
 `<Icon name="search" />`; `size` scales the longer side. Single-ink icons draw in `currentColor`, multicolour
 ones keep their colours (`iconData[name].multicolor`). Pass `title` to make an icon meaningful to screen
 readers, otherwise it is hidden. `iconNames` lists them all; `iconAliases` maps the earlier names

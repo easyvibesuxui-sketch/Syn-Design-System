@@ -1,15 +1,16 @@
 import { useState, type ReactNode } from 'react';
 import {
-  Accordion, Button, Checkbox, Dialog, Grid, GridItem, Icon, IconButton, NewTab, Notification, Radio, RadioGroup, Select,
-  Slider, StatusBadge, StatusChip, Switch, Tabs, TextArea, TextField, Tooltip, Tag, FileItem, ProgressBar, iconData, iconNames, tokens,
+  Accordion, Button, Checkbox, Dialog, DropdownPanel, Grid, OptionList, GridItem, Icon, IconButton, NewTab, Notification, Radio, RadioGroup, Select,
+  Slider, StatusBadge, StatusChip, Switch, Tabs, TextArea, TextField, Tooltip, Tag, QuantityField, Skeleton, PasswordField, PhoneField, FileItem, ProgressBar, iconData, iconNames, tokens,
 } from '../src';
 import { RecordDrawer } from './RecordDrawer';
+import { MapDemo } from './MapDemo';
 
 const sections = [
   ['colors', 'Colour'], ['typography', 'Typography'], ['spacing', 'Spacing & shape'], ['grid', 'Grid'], ['icons', 'Icons'],
-  ['buttons', 'Buttons'], ['inputs', 'Text fields'], ['select', 'Select'], ['choices', 'Checkbox & radio'],
+  ['buttons', 'Buttons'], ['inputs', 'Text fields'], ['quantity', 'Quantity & skeleton'], ['select', 'Select'], ['choices', 'Checkbox & radio'],
   ['switch', 'Switch'], ['tabs', 'Tabs'], ['tags', 'Tags & files'], ['status', 'Status'], ['notifications', 'Notifications'],
-  ['tooltip', 'Tooltip'], ['accordion', 'Accordion'], ['slider', 'Slider'], ['dialog', 'Dialog'], ['drawer', 'Drawer'],
+  ['tooltip', 'Tooltip'], ['accordion', 'Accordion'], ['slider', 'Slider'], ['dialog', 'Dialog'], ['drawer', 'Drawer'], ['map', 'Map'],
 ] as const;
 
 function Section({ id, title, lead, children }: { id: string; title: string; lead?: string; children: ReactNode }) {
@@ -35,7 +36,15 @@ const palette = Object.entries(tokens.primitive.color);
 const semanticGroups = Object.entries(tokens.semantic.color) as Array<[string, Record<string, string>]>;
 const typeScale = Object.entries(tokens.semantic.typography) as Array<[string, { fontFamily: string; fontWeight: number; fontSize: string; lineHeight: string }]>;
 
+const PEOPLE = ['John Doe', 'Jane Smith', 'Max Mustermann', 'Erika Mustermann', 'Tina Müller', 'Nino Beridze'].map((label, i) => ({ value: `p${i}`, label }));
+const GROUPS = [0, 1, 2].map((i) => ({
+  value: `g${i}`,
+  label: 'Option group',
+  children: [1, 2, 3].map((k) => ({ value: `g${i}-${k}`, label: `Option ${k}`, children: k === 2 ? [{ value: `g${i}-2-a`, label: 'Option 7' }, { value: `g${i}-2-b`, label: 'Option 8' }] : undefined })),
+}));
+
 export function App() {
+  const [groupValues, setGroupValues] = useState<string[]>(['g0-2-a']);
   const [tab, setTab] = useState('overview');
   const [extraTabs, setExtraTabs] = useState<string[]>(['General']);
   const [extraSelected, setExtraSelected] = useState<string>();
@@ -208,6 +217,62 @@ export function App() {
             <TextArea label="Additional information" hideLabel={false} labelPosition="outside" placeholder="Helper text" maxLength={20} showCount />
             <TextArea label="Additional information" hideLabel={false} disabled maxLength={20} showCount />
           </div>
+          <h3 className="pg-sub">Label outside, by size</h3>
+          <div className="pg-grid">
+            <TextField label="First name" labelPosition="outside" placeholder="E.G. John Doe" onClear={() => {}} />
+            <TextField label="First name" labelPosition="outside" size="md" iconStart="person" placeholder="E.G. John Doe" />
+            <TextField label="First name" labelPosition="outside" size="sm" defaultValue="John Doe" onClear={() => {}} />
+            <TextField label="First name" labelPosition="outside" error="Dummy text error message" />
+            <TextArea label="Additional information" hideLabel={false} labelPosition="outside" size="md" placeholder="Helper text" maxLength={20} showCount />
+            <TextArea label="Additional information" hideLabel={false} labelPosition="outside" size="sm" placeholder="Helper text" />
+            <TextField label="Price" prefix="$" iconEnd="info-button" onClear={() => {}} />
+          </div>
+          <h3 className="pg-sub">Password and phone</h3>
+          <div className="pg-grid">
+            <PasswordField label="Password" placeholder="Minimum 8 characters" onClear={() => {}} />
+            <PasswordField label="Password" size="md" defaultValue="secret12" />
+            <PasswordField label="Password" size="sm" labelPosition="outside" defaultValue="secret12" defaultVisible />
+            <PasswordField label="Password" prefix="$" disabled />
+            <PhoneField defaultCountry="GE" onClear={() => {}} />
+            <PhoneField size="sm" />
+            <PhoneField labelPosition="outside" label="Phone" defaultCountry="GE" defaultValue="123 4548 657" />
+            <PhoneField disabled defaultCountry="GE" />
+            <PasswordField label="Password" defaultValue="secret12" waiting />
+            <TextField label="Search" variant="plain" hideLabel iconStart="search" placeholder="By name or ID" onClear={() => {}} />
+            <TextField label="Search" variant="plain" hideLabel size="md" iconStart="search" defaultValue="By name or ID" onClear={() => {}} />
+          </div>
+        </Section>
+
+        <Section id="quantity" title="Quantity & skeleton" lead="Figma &quot;Quantity field type 2&quot; with the − and + inside the field (56 / 48 / 36, 8px corners); errors draw the Vermilion border. At the minimum with onRemove the − becomes a bin. Skeleton: Material-style text, circle and rectangle in Syn colours, plus the Figma field and text box skeletons; pulse or wave.">
+          <div className="pg-grid">
+            <QuantityField label="Quantity" showLabel />
+            <QuantityField label="Quantity" showLabel defaultValue={12} suffix="kg" />
+            <QuantityField label="Quantity" showLabel defaultValue={1} min={1} onRemove={() => {}} />
+            <QuantityField label="Quantity" showLabel defaultValue={0} error="Enter at least 1" />
+            <QuantityField label="Quantity" size="md" defaultValue={3} prefix="Pref" suffix="Suff" />
+            <QuantityField label="Quantity" size="sm" defaultValue={2} error="Only 1 left in stock" />
+            <QuantityField label="Quantity" showLabel disabled />
+            <QuantityField label="Quantity" variant="stepper" placeholder="Helper text" onClear={() => {}} />
+            <QuantityField label="Quantity" variant="stepper" size="md" defaultValue={123} />
+            <QuantityField label="Quantity" variant="stepper" size="sm" defaultValue={4} error="Too many" />
+            <QuantityField label="Quantity" variant="stepper" disabled placeholder="Helper text" />
+          </div>
+          <div className="pg-grid" style={{ marginTop: 24 }}>
+            <div style={{ display: 'grid', gap: 8 }}>
+              <Skeleton variant="text" width="60%" />
+              <Skeleton variant="text" />
+              <Skeleton variant="text" width="80%" />
+            </div>
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+              <Skeleton variant="circular" />
+              <div style={{ flex: 1, display: 'grid', gap: 4 }}><Skeleton variant="text" width="50%" /><Skeleton variant="text" width="30%" /></div>
+            </div>
+            <Skeleton variant="rectangular" animation="wave" />
+            <Skeleton variant="field" />
+            <Skeleton variant="field" size="md" animation="wave" />
+            <Skeleton variant="field" size="sm" />
+            <Skeleton variant="textbox" />
+          </div>
         </Section>
 
         <Section id="select" title="Select" lead="The list opens 2px under the field. By default only the value shows (as in Figma); hideLabel={false} puts the label inside, like the text field.">
@@ -219,7 +284,22 @@ export function App() {
             <Select label="Status" size="sm" defaultValue="done" options={[{ value: 'open', label: 'Open' }, { value: 'done', label: 'Finished' }]} />
             <Select label="Rows" size="xs" defaultValue="10" options={[{ value: '10', label: '10 rows' }, { value: '25', label: '25 rows' }]} />
             <Select label="Region" error="Pick a region" options={[{ value: 'eu', label: 'Europe' }]} />
-            <Select label="Locked" disabled options={[{ value: 'x', label: 'X' }]} />
+            <Select label="Locked" disabled defaultValue="x" options={[{ value: 'x', label: 'Option 1' }]} />
+            <Select label="Choose" placeholder="John Doe" searchable options={PEOPLE} />
+            <Select label="Choose" placeholder="John Doe" searchable multiple defaultValues={['p0', 'p1', 'p2']} options={PEOPLE}
+              listActions={{ secondaryLabel: 'Clear', actionLabel: 'Apply' }} />
+            <Select label="Crew" multiple defaultValues={['p3', 'p4']} options={PEOPLE} />
+            <Select label="Equipment" options={GROUPS} defaultExpanded={['g0']} />
+          </div>
+          <p className="pg-sub">Lists (OptionList) and the filter panel</p>
+          <div className="pg-grid">
+            <OptionList label="Categories" multiple defaultExpanded={['g0', 'g0-2']} options={GROUPS} values={groupValues} onValuesChange={setGroupValues} />
+            <OptionList label="Units" options={[1, 2, 3].map((i) => ({ value: `u${i}`, label: 'Option', prefix: '$', suffix: 'kg', description: 'Helper text' }))} />
+            <OptionList label="Empty" options={[]} actions={{ secondaryLabel: 'Button Text', actionLabel: 'Action' }} />
+            <DropdownPanel actions={{ secondaryLabel: 'Clear', actionLabel: 'Save' }}>
+              <TextField label="Location" iconStart="pin" size="md" />
+              <Slider label="Radius" defaultValue={20} format={(v) => `${v} km`} />
+            </DropdownPanel>
           </div>
         </Section>
 
@@ -260,8 +340,8 @@ export function App() {
           </Row>
         </Section>
 
-        <Section id="switch" title="Switch" lead="Figma &quot;Small toggle&quot; (size 20, 32 x 20) and &quot;Default size toggle&quot; (size 24, 48 x 24) and &quot;Big toggle&quot; (size 32, 48 x 32). &quot;Toggle with Text and icon&quot; (indicator) shows On or a check in the track. On is Dark Sienna; off is Silver Chalice with a Gray X border. Press stretches the thumb.">
-          {([20, 24, 32] as const).map((size) => (
+        <Section id="switch" title="Switch" lead="Figma &quot;Small toggle&quot; (size 20, 32 x 20) and &quot;Default size toggle&quot; (size 24, 48 x 24) only. &quot;Toggle with Text and icon&quot; (indicator) shows On or a check in the track. On is Dark Sienna; off is Silver Chalice with a Gray X border. Press stretches the thumb.">
+          {([20, 24] as const).map((size) => (
             <Row key={size} label={`size ${size}`}>
               <Switch size={size} label="On" defaultChecked />
               <Switch size={size} label="Loading" loading defaultChecked />
@@ -396,6 +476,10 @@ export function App() {
         <Section id="drawer" title="Drawer" lead="The full record drawer from the reference, built only from Syn components: header with status and actions; title, properties, collaborators and tags rows; Details with the equipment empty state and the Protocol (damage cards, photos, attachments); Custom fields; Checklist with progress; Resources with the cost table; Comments and Activity with threaded replies; and the Discard / Update footer.">
           <Button onClick={() => setDrawer(true)}>Open drawer</Button>
           <RecordDrawer open={drawer} onClose={() => setDrawer(false)} />
+        </Section>
+
+        <Section id="map" title="Map" lead="Figma &quot;Equipment Map&quot;: the map in a 4px white frame with 12px corners, &quot;Close map&quot; top right, and the control column bottom right (street view, the 36px layer switch, zoom in and out). Controls are 36px white squares; hover is Cultured with a 1px Eerie Black border. Map Button toggles expand and minimize.">
+          <MapDemo />
         </Section>
       </main>
     </div>

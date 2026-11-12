@@ -8,8 +8,8 @@ export interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>,
   /** Accessible name. Shown to the right of the toggle unless hideLabel is set. */
   label: ReactNode;
   hideLabel?: boolean;
-  /** Height in px: 20 = Figma "Small toggle" (32 x 20), 24 = "Default size toggle" (48 x 24), 32 = "Big toggle" (48 x 32). */
-  size?: 20 | 24 | 32;
+  /** Height in px: 20 = Figma "Small toggle" (32 x 20), 24 = "Default size toggle" (48 x 24, the default). */
+  size?: 20 | 24;
   /**
    * Figma "Toggle with Text and icon": "On" inside the track when on, a check when off. Sizes 20 and 24
    * (the control grows to 38 x 20 and 52 x 24).
@@ -35,7 +35,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
   const inputId = id ?? `syn-switch-${autoId}`;
   return (
     <div
-      className={cx('syn-switch', `syn-switch--${size}`, indicator && size !== 32 && 'syn-switch--indicator', error && 'is-invalid', disabled && 'is-disabled', loading && 'is-loading', className)}
+      className={cx('syn-switch', `syn-switch--${size}`, indicator && 'syn-switch--indicator', error && 'is-invalid', disabled && 'is-disabled', loading && 'is-loading', className)}
     >
       <label className="syn-switch__row" htmlFor={inputId}>
         {offLabel && <span className="syn-switch__state" aria-hidden>{offLabel}</span>}
@@ -53,7 +53,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
             {...rest}
           />
           <span className="syn-switch__track" aria-hidden>
-            {indicator && size !== 32 && (
+            {indicator && (
               <>
                 <span className="syn-switch__on-text">{indicatorText}</span>
                 <Icon name="check" size={size === 20 ? 12 : 14} className="syn-switch__check" />

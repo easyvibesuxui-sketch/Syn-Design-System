@@ -17,19 +17,24 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   fullWidth?: boolean;
   /** pill = fully round corners (the comment "Reply" button); default = 8px. */
   shape?: 'default' | 'pill';
+  /**
+   * Shows a state without the pointer, for docs and screenshots: hover = Figma "Hover", pressed = Figma
+   * "Focus" (the clicked state). The real hover, click and keyboard-focus states work without it.
+   */
+  state?: 'hover' | 'pressed';
 }
 
 const iconSize: Record<ButtonSize, number> = { xs: 16, sm: 16, md: 20, lg: 20 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { variant = 'primary', size = 'lg', iconStart, iconEnd, loading = false, fullWidth = false, shape = 'default', disabled, className, children, type = 'button', ...rest },
+  { variant = 'primary', size = 'lg', iconStart, iconEnd, loading = false, fullWidth = false, shape = 'default', state, disabled, className, children, type = 'button', ...rest },
   ref,
 ) {
   return (
     <button
       ref={ref}
       type={type}
-      className={cx('syn-button', `syn-button--${variant}`, `syn-button--${size}`, fullWidth && 'syn-button--full', shape === 'pill' && 'syn-button--pill', loading && 'is-loading', className)}
+      className={cx('syn-button', `syn-button--${variant}`, `syn-button--${size}`, fullWidth && 'syn-button--full', shape === 'pill' && 'syn-button--pill', loading && 'is-loading', state && `is-${state}`, className)}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       {...rest}

@@ -25,30 +25,36 @@ export interface ChecklistItemProps {
   actions?: ReactNode;
   /** Under the footer, e.g. the people Tags. */
   extra?: ReactNode;
+  /** The task cannot be changed: Gray X text and checkbox, no hover. */
+  disabled?: boolean;
+  /** While editing: a message under the text area (e.g. "Write the task first"). */
+  error?: string;
   className?: string;
 }
 
 /**
  * One task of a checklist: a 20px checkbox and Regular 14 text, the assignee and due date under it and a
- * more button on the right, on a Smoke row with 8px corners.
+ * more button on the right, on a Smoke row with 8px corners. States: default, hover (Cultured), done
+ * (checked: Silver Chalice, struck through), editing (1px Eerie Black frame), error and disabled.
  */
 export function ChecklistItem({
   children, checked, defaultChecked, onCheckedChange, label, editing, editValue, onEditChange, placeholder = 'Describe the task',
-  assignee, due, actions, extra, className,
+  assignee, due, actions, extra, disabled, error, className,
 }: ChecklistItemProps) {
   const name = label ?? (typeof children === 'string' ? children : 'Task');
   return (
-    <li className={cx('syn-checklist-item', editing && 'is-editing', className)}>
+    <li className={cx('syn-checklist-item', editing && 'is-editing', disabled && 'is-disabled', error && 'is-invalid', className)}>
       <div className="syn-checklist-item__main">
         <Checkbox
           label={editing ? name : children}
           className={cx('syn-checklist-item__check', editing && 'has-hidden-label')}
           checked={checked}
           defaultChecked={defaultChecked}
+          disabled={disabled}
           onChange={(e) => onCheckedChange?.(e.target.checked)}
         />
         {editing && (
-          <TextArea label={name} value={editValue} onChange={(e) => onEditChange?.(e.target.value)} placeholder={placeholder} className="syn-checklist-item__editor" />
+          <TextArea label={name} error={error} value={editValue} onChange={(e) => onEditChange?.(e.target.value)} placeholder={placeholder} className="syn-checklist-item__editor" />
         )}
         {actions && <div className="syn-checklist-item__actions">{actions}</div>}
       </div>

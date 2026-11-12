@@ -1,4 +1,4 @@
-/* Comment: 24px avatar column, 16px gap, content column; a 1px Silver Chalice line joins replies. */
+/* Comment: 24px avatar column, 16px gap, content column; a 1px dashed Silver Chalice line joins replies. */
 .syn-comment { display: grid; grid-template-columns: 24px minmax(0, 1fr); column-gap: var(--syn-space-16); }
 .syn-comment__head { display: flex; grid-column: 1 / -1; align-items: center; gap: var(--syn-space-12); min-width: 0; }
 .syn-comment__head .syn-avatar { margin-right: var(--syn-space-4); }
@@ -21,20 +21,26 @@
 .syn-comment__bubble.is-active { border-color: var(--syn-border-strong); }
 .syn-comment__footer { display: flex; flex-wrap: wrap; align-items: center; gap: var(--syn-space-8); }
 
-/* Thread line: from 4px under the avatar down the body, then one branch per reply to its avatar. */
+/* Thread line: from 4px under the avatar down the body, then one branch per reply to its avatar.
+   Dashed: 4px dashes with 4px gaps, drawn as gradients so the pattern is the same in every browser. */
+.syn-comment {
+  --thread-dash-v: repeating-linear-gradient(to bottom, var(--syn-border-muted) 0 4px, transparent 4px 8px);
+  --thread-dash-h: repeating-linear-gradient(to right, var(--syn-border-muted) 0 4px, transparent 4px 8px);
+}
 .syn-comment.has-replies .syn-comment__body::before {
   content: '';
   position: absolute;
   top: -8px;
   bottom: 0;
   left: -28px;
-  border-left: 1px solid var(--syn-border-muted);
+  width: 1px;
+  background: var(--thread-dash-v);
 }
 .syn-comment__replies { grid-column: 1 / -1; margin: 0 0 0 12px; padding: 0; list-style: none; }
 .syn-comment-reply { position: relative; display: flex; align-items: flex-start; gap: var(--syn-space-16); padding: var(--syn-space-16) 0 0 60px; }
-.syn-comment-reply::before { content: ''; position: absolute; top: 0; bottom: 0; left: 0; border-left: 1px solid var(--syn-border-muted); }
+.syn-comment-reply::before { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 1px; background: var(--thread-dash-v); }
 .syn-comment-reply:last-child::before { bottom: auto; height: 28px; }
-.syn-comment-reply::after { content: ''; position: absolute; top: 28px; left: 0; width: 52px; border-top: 1px solid var(--syn-border-muted); }
+.syn-comment-reply::after { content: ''; position: absolute; top: 28px; left: 0; width: 52px; height: 1px; background: var(--thread-dash-h); }
 .syn-comment-reply__content { flex: 1; min-width: 0; min-height: 24px; padding-top: var(--syn-space-4); color: var(--syn-text-primary); font: var(--syn-type-text-body-xs-2); overflow: hidden; text-overflow: ellipsis; }
 .syn-comment-reply__end { flex: none; }
 

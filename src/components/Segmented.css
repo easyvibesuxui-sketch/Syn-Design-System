@@ -1,6 +1,8 @@
 /* "Comments / Activity": 24px pills, 128px wide; the current one Eerie Black with white text. */
-.syn-segmented { display: inline-flex; gap: var(--syn-space-4); }
+.syn-segmented { position: relative; display: inline-flex; gap: var(--syn-space-4); }
 .syn-segmented__option {
+  position: relative;
+  z-index: 1;
   min-width: 128px;
   height: var(--syn-size-control-xs);
   margin: 0;
@@ -16,3 +18,22 @@
 .syn-segmented__option:hover { background: var(--syn-surface-muted); }
 .syn-segmented__option[aria-selected='true'] { background: var(--syn-surface-inverse); color: var(--syn-color-white-white); }
 .syn-segmented__option:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
+
+/* Switching animation: one Eerie Black pill behind the options slides and resizes to the chosen one,
+   while the labels cross-fade between Eerie Black and white. */
+.syn-segmented__thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--thumb-w);
+  height: 100%;
+  border-radius: var(--syn-radius-full);
+  background: var(--syn-surface-inverse);
+  transform: translateX(var(--thumb-x));
+  transition: transform var(--syn-duration-base) var(--syn-easing-standard, cubic-bezier(0.2, 0, 0, 1)), width var(--syn-duration-base) var(--syn-easing-standard, cubic-bezier(0.2, 0, 0, 1));
+}
+.syn-segmented.has-thumb .syn-segmented__option[aria-selected='true'] { background: transparent; }
+.syn-segmented.has-thumb .syn-segmented__option { transition: background-color var(--syn-duration-fast), color var(--syn-duration-base); }
+@media (prefers-reduced-motion: reduce) {
+  .syn-segmented__thumb, .syn-segmented.has-thumb .syn-segmented__option { transition: none; }
+}

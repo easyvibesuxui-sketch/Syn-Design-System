@@ -9,6 +9,17 @@
   border-radius: var(--syn-radius-element);
   background: var(--syn-surface-subtle);
 }
+.syn-checklist-item { transition: background-color var(--syn-duration-fast), border-color var(--syn-duration-fast); }
+.syn-checklist-item:not(.is-editing):not(.is-disabled):hover { background: var(--syn-color-grey-cultured); }
+/* Done: the checked task's text turns Silver Chalice and is struck through. */
+.syn-checklist-item:has(.syn-checklist-item__check .syn-choice__input:checked) .syn-checklist-item__check .syn-choice__label {
+  color: var(--syn-color-secondary-silver-chalince);
+  text-decoration: line-through;
+}
+.syn-checklist-item.is-disabled .syn-checklist-item__check .syn-choice__label { color: var(--syn-color-disabled-gray-x); }
+.syn-checklist-item.is-disabled .syn-checklist-item__footer,
+.syn-checklist-item.is-disabled .syn-checklist-item__actions { opacity: 0.5; pointer-events: none; }
+.syn-checklist-item.is-editing.is-invalid { border-color: var(--syn-color-error-vermilion); }
 .syn-checklist-item.is-editing { border-color: var(--syn-border-strong); background: var(--syn-surface-default); }
 .syn-checklist-item__main { display: flex; align-items: flex-start; gap: var(--syn-space-8); }
 .syn-checklist-item__check { flex: 1; min-width: 0; }

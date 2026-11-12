@@ -10,9 +10,9 @@ The Figma library stays the visual source. This repo turns it into something cod
 | Tokens | `tokens/syn.tokens.json` | Source of truth in [DTCG](https://design-tokens.github.io/community-group/format/) format: primitives, semantic aliases (one light theme, as in Figma) |
 | CSS variables | `src/styles/tokens.css` | Generated `--syn-*` custom properties and `.syn-text-*` type classes |
 | JS tokens | `src/tokens.ts` | Generated, resolved values for charts, canvas and tests |
-| Icons | `icons/syn-icons.json` → `src/icons/icon-data.ts` | All 164 Figma "Main icons" at native size; single-ink icons use `currentColor` |
+| Icons | `icons/syn-icons.json` → `src/icons/icon-data.ts` | All 164 Figma "Main icons" plus the input icons "Info button" and "phone" and the "Empty List Icon", at native size; single-ink icons use `currentColor` |
 | Components | `src/components` | 16 accessible React components built to the Figma specs |
-| Assets | `icons/svg`, `assets/file-formats`, `assets/default-images` | Figma SVG exports: 164 icons, 7 file-format badges, 5 default images |
+| Assets | `icons/svg`, `assets/file-formats`, `assets/default-images` | Figma SVG exports: 164 icons plus 2 input icons and the Empty List icon, 7 file-format badges, 5 default images |
 | Playground | `playground/` | Living style guide: every foundation, component and state |
 
 ## Getting started
@@ -62,7 +62,8 @@ tokens, so a theme is a set of semantic overrides. See [docs/foundations.md](doc
 `Tooltip` · `Notification` · `StatusChip` · `StatusBadge` · `Accordion` · `Dialog` · `Drawer` / `DrawerRow` ·
 `Section` / `Card` / `Property` · `Tag` · `Grid` / `GridItem` · `Table` / `Value` · `Segmented` · `TextArea` ·
 `Checklist` / `ChecklistItem` · `Comment` / `CommentReply` / `CommentEditor` · `Avatar` · `Thumbnail` · `FileItem` ·
-`EmptyState` · `ProgressBar` · `Slider` · `Icon`
+`EmptyState` · `ProgressBar` · `Slider` · `MapView` / `MapControls` / `MapControl` / `MapZoomControls` / `MapExpandButton` /
+`MapLayerSwitch` / `MapStreetViewButton` · `Icon`
 
 The full record drawer from the design reference is assembled in `playground/RecordDrawer.tsx`.
 
@@ -74,10 +75,12 @@ Sizes are even numbers (2–24, then multiples of 8); elements have 8px corners 
 are 24 / 36 / 48 / 56 (`xs` · `sm` · `md` · `lg`); layouts use the 12-column grid.
 
 Props, Figma mappings and accessibility notes are in [docs/components.md](docs/components.md).
+Components are layered by atomic design (atoms, molecules, organisms, templates), checked by
+`npm run check:layers`: see [docs/atomic-design.md](docs/atomic-design.md).
 
 ## What is not covered yet
 
 The Figma file also has date and time pickers, calendar, upload, data sheet, drawer navigation, rating and
-voting and map pages. They are not in this first version; the tokens
+voting pages. They are not in this first version; the tokens
 already cover what they need. Known gaps and the decisions taken while extracting are listed in
 [docs/extraction-notes.md](docs/extraction-notes.md).

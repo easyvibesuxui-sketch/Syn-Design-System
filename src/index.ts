@@ -8,7 +8,7 @@ export { Icon, type IconProps } from './components/Icon';
 export { Button, type ButtonProps, type ButtonVariant, type ButtonSize } from './components/Button';
 export { IconButton, CloseGlyph, type IconButtonProps } from './components/IconButton';
 export { TextField, type TextFieldProps, type FieldSize } from './components/TextField';
-export { Select, type SelectProps, type SelectOption } from './components/Select';
+export { Select, OptionList, DropdownPanel, type SelectProps, type SelectOption, type OptionListProps, type OptionListActions, type DropdownPanelProps } from './components/Select';
 export { Checkbox, type CheckboxProps, type ChoiceSize, type CheckboxShape } from './components/Checkbox';
 export { FieldMessages, ChoiceMessage, ErrorIcon, type FieldMessagesProps, type ChoiceMessageProps, type ChoiceErrorStyle } from './components/FieldMessages';
 export { Radio, RadioGroup, type RadioProps, type RadioGroupProps } from './components/Radio';
@@ -26,9 +26,17 @@ export { Section, Card, Property, type SectionProps, type CardProps, type Proper
 export { Tag, type TagProps } from './components/Tag';
 export { Grid, GridItem, type GridProps, type GridItemProps } from './components/Grid';
 export type { ControlSize } from './utils';
-export { Avatar, Thumbnail, FileItem, EmptyState, ProgressBar, type AvatarProps, type ThumbnailProps, type FileItemProps, type EmptyStateProps, type ProgressBarProps } from './components/Media';
+export { Avatar, Thumbnail, FileItem, EmptyState, ProgressBar, type AvatarProps, type ThumbnailProps, type FileItemProps, type EmptyStateProps, type EmptyStateVariant, type ProgressBarProps } from './components/Media';
 export { Table, Value, type TableProps, type TableColumn, type ValueProps } from './components/Table';
 export { Segmented, type SegmentedProps, type SegmentedOption } from './components/Segmented';
 export { TextArea, type TextAreaProps } from './components/TextArea';
 export { Checklist, ChecklistItem, type ChecklistProps, type ChecklistItemProps } from './components/Checklist';
 export { Comment, CommentReply, CommentEditor, type CommentProps, type CommentReplyProps, type CommentEditorProps } from './components/Comment';
+export { QuantityField, type QuantityFieldProps } from './components/QuantityField';
+export { Skeleton, type SkeletonProps } from './components/Skeleton';
+export { PasswordField, type PasswordFieldProps } from './components/PasswordField';
+export { PhoneField, defaultPhoneCountries, type PhoneFieldProps, type PhoneCountry } from './components/PhoneField';
+export {
+  MapView, MapControls, MapControl, MapZoomControls, MapExpandButton, MapLayerSwitch, MapStreetViewButton, defaultMapOverlays,
+  type MapViewProps, type MapControlProps, type MapZoomControlsProps, type MapExpandButtonProps, type MapLayerSwitchProps, type MapLayer, type MapOverlayOption,
+} from './components/Map';

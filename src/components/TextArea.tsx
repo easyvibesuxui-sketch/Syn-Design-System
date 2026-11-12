@@ -13,7 +13,7 @@ export interface TextAreaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaE
    * Regular 12 (Candy Apple when focused, Silver Chalice when filled) over the text. outside = above the box.
    */
   labelPosition?: 'inside' | 'outside';
-  /** Inside label only: lg 64px, md 56px, sm 48px minimum height (Figma Text Box Large, Medium, Small). */
+  /** lg 64px, md 56px, sm 48px minimum height (Figma Text Box Large, Medium, Small), with either label position. */
   size?: 'lg' | 'md' | 'sm';
   /** default = 1px Cultured border; strong = 2px Silver Chalice border (comment editor). Both turn Eerie Black on focus. */
   variant?: 'default' | 'strong';
@@ -68,7 +68,8 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function 
         'syn-textarea',
         `syn-textarea--${variant}`,
         inside && 'syn-textarea--inside',
-        inside && `syn-textarea--${size}`,
+        !hideLabel && `syn-textarea--${size}`,
+        !hideLabel && !inside && 'syn-textarea--outside',
         current.length > 0 && 'has-value',
         invalid && 'is-invalid',
         disabled && 'is-disabled',
