@@ -67,6 +67,10 @@ tokens, so a theme is a set of semantic overrides. See [docs/foundations.md](doc
 
 The full record drawer from the design reference is assembled in `playground/RecordDrawer.tsx`.
 
+The Syniotec Shop, a complete example app built with Syn components only (catalogue, product page, cart, checkout,
+my orders and Shop Admin), lives in its own repository: [SYN-Shop](https://github.com/easyvibesuxui-sketch/SYN-Shop),
+live at https://easyvibesuxui-sketch.github.io/SYN-Shop/.
+
 Sizes are even numbers (2–24, then multiples of 8); elements have 8px corners and widgets 12px; element heights
 are 24 / 36 / 48 / 56 (`xs` · `sm` · `md` · `lg`); layouts use the 12-column grid.
 

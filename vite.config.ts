@@ -9,7 +9,17 @@ const root = dirname(fileURLToPath(import.meta.url));
 // `vite build --mode docs` builds the playground as a static site.
 export default defineConfig(({ command, mode }) => {
   if (command === 'serve' || mode === 'docs') {
-    return { plugins: [react()], root: 'playground', base: './', build: { outDir: resolve(root, 'docs-site'), emptyOutDir: true } };
+    return {
+      plugins: [react()],
+      root: 'playground',
+      base: './',
+      build: {
+        outDir: resolve(root, 'docs-site'),
+        emptyOutDir: true,
+        // The style guide. The Syniotec Shop example now lives in its own repository (SYN-Shop).
+        rollupOptions: { input: { main: resolve(root, 'playground/index.html') } },
+      },
+    };
   }
   return {
     plugins: [react()],
