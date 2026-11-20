@@ -207,7 +207,8 @@ Black outline (Figma data sheet "cell"). It scrolls sideways under 560px.
 Pill switcher between views ("Comments" / "Activity"): 24px pills at least 128px wide, the current one Eerie Black.
 `role="tablist"`; Left/Right move. `options`, `value`, `onChange`, `label`.
 Rule: every switcher looks the same: white pills on a Cultured track (2px padding, round), the current pill Eerie
-Black. Only a page-level tab row whose pills sit on the grey page (the profile tabs) drops the track.
+Black. The track hugs its pills (`width: fit-content`), so a flex column or grid parent does not stretch it across
+the row; a layout that wants a full-width switcher sets `width: auto` (or `align-self: stretch`) on it. Only a page-level tab row whose pills sit on the grey page (the profile tabs) drops the track.
 
 ## TextArea
 

@@ -3,7 +3,8 @@
  * with 2px padding, so the white pills show on a white card; the current one Eerie Black with white text.
  * Rule: every switcher uses this look; only page-level tab rows (pills on the grey page) drop the track.
  */
-.syn-segmented { display: inline-flex; gap: var(--syn-space-2); padding: var(--syn-space-2); border-radius: var(--syn-radius-full); background: var(--syn-surface-muted); }
+/* The track hugs its pills: a flex column or grid parent must not stretch it across the row. */
+.syn-segmented { display: inline-flex; width: fit-content; gap: var(--syn-space-2); padding: var(--syn-space-2); border-radius: var(--syn-radius-full); background: var(--syn-surface-muted); }
 .syn-segmented__option {
   min-width: 128px;
   height: var(--syn-size-control-xs);
