@@ -1,5 +1,6 @@
 /* Resources table: white 12px box, 24px muted header, 32px rows split by 2px Cultured lines. */
-.syn-table { overflow-x: auto; border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-widget); background: var(--syn-surface-default); }
+/* Positioned so the visually hidden caption and "Actions" header stay inside the scroll box (else they widen the page). */
+.syn-table { position: relative; overflow-x: auto; border: 1px solid var(--syn-border-default); border-radius: var(--syn-radius-widget); background: var(--syn-surface-default); }
 .syn-table table { width: 100%; min-width: 560px; border-collapse: collapse; }
 .syn-table th {
   height: var(--syn-size-control-xs);
