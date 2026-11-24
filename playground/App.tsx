@@ -65,6 +65,9 @@ export function App() {
         <nav aria-label="Sections">
           {sections.map(([id, label]) => <a key={id} href={`#${id}`}>{label}</a>)}
         </nav>
+        <nav aria-label="Examples">
+          <a href="https://easyvibesuxui-sketch.github.io/SYN-Shop/">Example: Syniotec Shop</a>
+        </nav>
       </aside>
 
       <main className="pg-main">
