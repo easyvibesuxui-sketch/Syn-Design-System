@@ -102,6 +102,11 @@
    it keeps 16px clear of the edge. */
 .syn-select__list { position: absolute; top: calc(100% + var(--syn-space-2)); left: 0; z-index: 20; width: max(100%, min(362px, calc(100vw - 32px))); }
 .syn-select__list.syn-options--2col { width: max(100%, min(480px, calc(100vw - 32px))); }
+/* On a phone the field rarely starts 16px from the edge (it sits inside cards and forms), so the wider list would
+   run off the screen and scroll the page sideways: there it takes the field's own width. */
+@media (max-width: 600px) {
+  .syn-select__list, .syn-select__list.syn-options--2col { width: 100%; }
+}
 
 /* Figma list: white, 1px Cultured border, 8px corners, 2px padding, rows 2px apart. */
 .syn-options {
