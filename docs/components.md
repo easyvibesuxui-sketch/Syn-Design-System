@@ -309,7 +309,7 @@ the map itself (Leaflet, Google Maps, an image) goes in as children and fills th
 
 ## Icon
 
-All 164 icons from *Icons → Main icons* plus the input icons *Info button* and *phone* and the empty-state icon (`empty-list`, 66 x 54), at their native Figma size (most 20 x 20; file formats 24 x 30).
+All 164 icons from *Icons → Main icons* plus the input icons *Info button* and *phone*, the empty-state icon (`empty-list`, 66 x 54) and SAM's Shop navigation icon (`nav-shop`, a shopping bag), at their native size (most 20 x 20; file formats 24 x 30).
 `<Icon name="search" />`; `size` scales the longer side. Single-ink icons draw in `currentColor`, multicolour
 ones keep their colours (`iconData[name].multicolor`). Pass `title` to make an icon meaningful to screen
 readers, otherwise it is hidden. `iconNames` lists them all; `iconAliases` maps the earlier names
