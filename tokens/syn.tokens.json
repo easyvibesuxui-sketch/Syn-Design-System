@@ -3,77 +3,81 @@
   "primitive": {
     "color": {
       "$type": "color",
-      "candy-apple": {
+      "primary-candy-apple": {
         "$value": "#ff1900",
         "$description": "Figma: Primary/Candy Apple"
       },
-      "dark-sienna": {
+      "secondary-dark-sienna": {
         "$value": "#411817",
         "$description": "Figma: Secondary/Dark Sienna"
       },
-      "jet": {
+      "secondary-jet": {
         "$value": "#343434",
         "$description": "Figma: Secondary/Jet"
       },
-      "silver-chalice": {
+      "secondary-silver-chalince": {
         "$value": "#a7b0b3",
         "$description": "Figma: Secondary/Silver Chalince"
       },
-      "amber": {
+      "secondary-amber": {
         "$value": "#fe7d00",
         "$description": "Figma: Secondary/Amber"
       },
-      "dodger-blue": {
+      "secondary-dodger-blue": {
         "$value": "#459af7",
         "$description": "Figma: Secondary/Dodger Blue"
       },
-      "xanthous": {
+      "secondary-xanthous": {
         "$value": "#f4b642",
         "$description": "Figma: Secondary/Xanthous"
       },
-      "eerie-black": {
+      "black-eerie-black": {
         "$value": "#151515",
         "$description": "Figma: Black/Eerie Black"
       },
-      "cultured": {
+      "grey-cultured": {
         "$value": "#f1f1f1",
         "$description": "Figma: Grey/Cultured"
       },
-      "misty-rose": {
+      "light-misty-rose": {
         "$value": "#ffe7e5",
         "$description": "Figma: Light/Misty Rose"
       },
-      "snow": {
+      "light-snow": {
         "$value": "#fffcfc",
         "$description": "Figma: Light/Snow"
       },
-      "smoke": {
+      "light-smoke": {
         "$value": "#fbfbfb",
         "$description": "Figma: Light/Smoke"
       },
-      "vermilion": {
+      "error-vermilion": {
         "$value": "#ec0808",
         "$description": "Figma: Error/Vermilion"
       },
-      "honey": {
+      "pending-honey": {
         "$value": "#ffb30f",
         "$description": "Figma: Pending/Honey"
       },
-      "mantis": {
+      "success-mantis": {
         "$value": "#71c562",
         "$description": "Figma: Success/Mantis"
       },
-      "gray-x": {
+      "disabled-gray-x": {
         "$value": "#b9b9b9",
         "$description": "Figma: Disabled/Gray X"
       },
-      "white": {
+      "white-white": {
         "$value": "#ffffff",
         "$description": "Figma: White/White"
       },
-      "ghost": {
+      "unnamed-colors-ghost": {
         "$value": "#f1f5f8",
-        "$description": "Close-button fill used in Toast and Inputs (unnamed in Figma)"
+        "$description": "Not a Figma colour variable: the unnamed #f1f5f8 fill of the round close button."
+      },
+      "unnamed-colors-unnamed-red": {
+        "$value": "#ff2f00",
+        "$description": "Figma: Unnamed colors/Unnamed red. No component uses it yet."
       }
     },
     "font": {
@@ -82,6 +86,7 @@
         "title": {
           "$value": [
             "ABC Favorit Expanded",
+            "ABCFavorit Expanded",
             "Montserrat",
             "system-ui",
             "sans-serif"
@@ -126,6 +131,10 @@
       },
       "weight": {
         "$type": "fontWeight",
+        "light": {
+          "$value": 300,
+          "$description": "Figma Type Primitives has Font Weight/Light = 700 (a typo); the Light layers in Figma are 300."
+        },
         "regular": {
           "$value": 400
         },
@@ -142,76 +151,102 @@
     },
     "space": {
       "$type": "dimension",
+      "$description": "Even steps only: 2, 4, 6, 8, 10, 12, 16, 20, 24, then multiples of 8. Token names are the pixel value.",
       "0": {
         "$value": "0px"
       },
-      "1": {
+      "2": {
         "$value": "2px"
       },
-      "2": {
+      "4": {
         "$value": "4px"
       },
-      "3": {
+      "6": {
         "$value": "6px"
       },
-      "4": {
+      "8": {
         "$value": "8px"
       },
-      "5": {
+      "10": {
         "$value": "10px"
       },
-      "6": {
+      "12": {
         "$value": "12px"
       },
-      "7": {
+      "16": {
         "$value": "16px"
       },
-      "8": {
+      "20": {
+        "$value": "20px"
+      },
+      "24": {
         "$value": "24px"
       },
-      "9": {
+      "32": {
         "$value": "32px"
       },
-      "10": {
+      "40": {
+        "$value": "40px"
+      },
+      "48": {
         "$value": "48px"
+      },
+      "56": {
+        "$value": "56px"
+      },
+      "64": {
+        "$value": "64px"
+      },
+      "72": {
+        "$value": "72px"
+      },
+      "80": {
+        "$value": "80px"
+      },
+      "96": {
+        "$value": "96px"
       }
     },
     "radius": {
       "$type": "dimension",
       "xs": {
         "$value": "2px",
-        "$description": "Checkboxes, tabs, list rows, accordion"
+        "$description": "Square checkbox"
       },
-      "md": {
+      "element": {
         "$value": "8px",
-        "$description": "Buttons, inputs, dropdowns, dialogs"
+        "$description": "Every element: buttons, inputs, dropdowns, chips, tabs, tooltips"
       },
-      "lg": {
+      "widget": {
         "$value": "12px",
-        "$description": "Notifications and toasts"
+        "$description": "Large widgets and pages: sections, cards, dialogs, notifications"
+      },
+      "drawer": {
+        "$value": "48px",
+        "$description": "Drawer top-left corner"
       },
       "full": {
         "$value": "999px",
-        "$description": "Status chips, switches, round icon buttons"
+        "$description": "Round checkbox, radios, switches, pills, round icon buttons"
       }
     },
     "size": {
       "$type": "dimension",
+      "control-xs": {
+        "$value": "24px",
+        "$description": "Smallest element height"
+      },
       "control-sm": {
         "$value": "36px",
-        "$description": "Figma: Button size/Height Small"
+        "$description": "Small element height"
       },
       "control-md": {
         "$value": "48px",
-        "$description": "Figma: Button size/Height default"
+        "$description": "Medium element height"
       },
       "control-lg": {
         "$value": "56px",
-        "$description": "Figma: Button size/High Large"
-      },
-      "control-xs": {
-        "$value": "24px",
-        "$description": "Figma: Button size/mini button height"
+        "$description": "Large element height"
       },
       "icon-sm": {
         "$value": "16px"
@@ -223,6 +258,23 @@
         "$value": "24px"
       }
     },
+    "grid": {
+      "$description": "12-column layout grid",
+      "columns": {
+        "$type": "number",
+        "$value": 12
+      },
+      "gutter": {
+        "$type": "dimension",
+        "$value": "24px",
+        "$description": "Gap between columns"
+      },
+      "margin": {
+        "$type": "dimension",
+        "$value": "32px",
+        "$description": "Page and drawer side margin"
+      }
+    },
     "shadow": {
       "$type": "shadow",
       "float": {
@@ -232,6 +284,14 @@
       "knob": {
         "$value": "3px 3px 6px rgba(65, 24, 24, 0.10)",
         "$description": "Switch track and thumb"
+      },
+      "default": {
+        "$value": "1px 3px 6px rgba(21, 21, 21, 0.08)",
+        "$description": "Cards at rest (the \"Default\" shadow on the design system page)"
+      },
+      "hover": {
+        "$value": "1px 3px 6px rgba(21, 21, 21, 0.16)",
+        "$description": "Hovered cards (the \"Hover\" shadow on the design system page)"
       }
     },
     "opacity": {
@@ -239,9 +299,6 @@
       "hover": {
         "$value": 0.74,
         "$description": "Filled buttons fade to 74% on hover"
-      },
-      "overlay": {
-        "$value": 0.6
       }
     },
     "duration": {
@@ -259,54 +316,54 @@
       "$type": "color",
       "text": {
         "primary": {
-          "$value": "{primitive.color.eerie-black}"
+          "$value": "{primitive.color.black-eerie-black}"
         },
         "secondary": {
-          "$value": "{primitive.color.jet}"
+          "$value": "{primitive.color.secondary-jet}"
         },
         "muted": {
-          "$value": "{primitive.color.silver-chalice}",
+          "$value": "{primitive.color.secondary-silver-chalince}",
           "$description": "Placeholders, inactive tabs, units"
         },
         "disabled": {
-          "$value": "{primitive.color.gray-x}"
+          "$value": "{primitive.color.disabled-gray-x}"
         },
         "inverse": {
-          "$value": "{primitive.color.snow}"
+          "$value": "{primitive.color.light-snow}"
         },
         "brand": {
-          "$value": "{primitive.color.candy-apple}",
+          "$value": "{primitive.color.primary-candy-apple}",
           "$description": "Focused field labels"
         },
         "error": {
-          "$value": "{primitive.color.vermilion}"
+          "$value": "{primitive.color.error-vermilion}"
         }
       },
       "surface": {
         "default": {
-          "$value": "{primitive.color.white}"
+          "$value": "{primitive.color.white-white}"
         },
         "raised": {
-          "$value": "{primitive.color.snow}",
+          "$value": "{primitive.color.light-snow}",
           "$description": "Dialogs, error fields"
         },
         "subtle": {
-          "$value": "{primitive.color.smoke}",
+          "$value": "{primitive.color.light-smoke}",
           "$description": "Row and tab hover"
         },
         "muted": {
-          "$value": "{primitive.color.cultured}",
+          "$value": "{primitive.color.grey-cultured}",
           "$description": "Disabled fields, outline-button hover"
         },
         "highlight": {
-          "$value": "{primitive.color.misty-rose}",
+          "$value": "{primitive.color.light-misty-rose}",
           "$description": "Option hover, selected status row"
         },
         "inverse": {
-          "$value": "{primitive.color.eerie-black}"
+          "$value": "{primitive.color.black-eerie-black}"
         },
         "inverse-subtle": {
-          "$value": "{primitive.color.jet}"
+          "$value": "{primitive.color.secondary-jet}"
         },
         "overlay": {
           "$value": "rgba(167, 176, 179, 0.6)",
@@ -315,346 +372,343 @@
       },
       "border": {
         "default": {
-          "$value": "{primitive.color.cultured}"
+          "$value": "{primitive.color.grey-cultured}"
         },
         "strong": {
-          "$value": "{primitive.color.eerie-black}",
+          "$value": "{primitive.color.black-eerie-black}",
           "$description": "Hover and focus"
         },
         "muted": {
-          "$value": "{primitive.color.silver-chalice}",
+          "$value": "{primitive.color.secondary-silver-chalince}",
           "$description": "Dividers, slider track"
         },
         "disabled": {
-          "$value": "{primitive.color.gray-x}"
+          "$value": "{primitive.color.disabled-gray-x}"
         },
         "error": {
-          "$value": "{primitive.color.vermilion}"
+          "$value": "{primitive.color.error-vermilion}"
         }
       },
       "action": {
         "primary": {
-          "$value": "{primitive.color.eerie-black}"
+          "$value": "{primitive.color.black-eerie-black}"
         },
         "primary-text": {
-          "$value": "{primitive.color.cultured}"
+          "$value": "{primitive.color.grey-cultured}"
         },
         "brand": {
-          "$value": "{primitive.color.candy-apple}"
+          "$value": "{primitive.color.primary-candy-apple}"
         },
         "accent": {
-          "$value": "{primitive.color.amber}"
+          "$value": "{primitive.color.secondary-amber}"
         },
         "toggle": {
-          "$value": "{primitive.color.dark-sienna}",
+          "$value": "{primitive.color.secondary-dark-sienna}",
           "$description": "Switch on-state"
         },
         "selected": {
-          "$value": "{primitive.color.jet}",
+          "$value": "{primitive.color.secondary-jet}",
           "$description": "Checked checkbox fill"
         },
         "disabled": {
-          "$value": "{primitive.color.gray-x}"
+          "$value": "{primitive.color.disabled-gray-x}"
         },
         "ghost": {
           "$value": "rgba(241, 245, 248, 0.36)"
         },
         "ghost-hover": {
-          "$value": "{primitive.color.ghost}"
+          "$value": "{primitive.color.unnamed-colors-ghost}"
         }
       },
       "status": {
         "info": {
-          "$value": "{primitive.color.dodger-blue}"
+          "$value": "{primitive.color.secondary-dodger-blue}"
         },
         "success": {
-          "$value": "{primitive.color.mantis}"
+          "$value": "{primitive.color.success-mantis}"
         },
         "warning": {
-          "$value": "{primitive.color.honey}"
+          "$value": "{primitive.color.pending-honey}"
         },
         "error": {
-          "$value": "{primitive.color.vermilion}"
+          "$value": "{primitive.color.error-vermilion}"
         },
         "progress": {
-          "$value": "{primitive.color.amber}"
+          "$value": "{primitive.color.secondary-amber}"
         }
       }
     },
     "typography": {
       "$type": "typography",
-      "display-1": {
+      "titles-display-1": {
         "$value": {
           "fontFamily": "{primitive.font.family.body}",
           "fontWeight": 600,
           "fontSize": "28px",
           "lineHeight": "34px"
-        }
+        },
+        "$description": "Figma text style: Titles/Display 1"
       },
-      "display-2": {
+      "titles-display-2": {
         "$value": {
           "fontFamily": "{primitive.font.family.title}",
           "fontWeight": 500,
           "fontSize": "24px",
           "lineHeight": "32px"
-        }
+        },
+        "$description": "Figma text style: Titles/Display 2"
       },
-      "title-1": {
+      "titles-title-1": {
         "$value": {
           "fontFamily": "{primitive.font.family.title}",
           "fontWeight": 500,
           "fontSize": "20px",
           "lineHeight": "24px"
-        }
+        },
+        "$description": "Figma text style: Titles/Title 1"
       },
-      "title-2": {
+      "titles-title-2": {
         "$value": {
           "fontFamily": "{primitive.font.family.title}",
           "fontWeight": 500,
           "fontSize": "18px",
           "lineHeight": "22px"
-        }
+        },
+        "$description": "Figma text style: Titles/Title 2"
       },
-      "title-3": {
+      "titles-title-3": {
         "$value": {
           "fontFamily": "{primitive.font.family.title}",
           "fontWeight": 500,
           "fontSize": "16px",
           "lineHeight": "20px"
-        }
+        },
+        "$description": "Figma text style: Titles/Title 3"
       },
-      "title-4": {
+      "titles-title-4": {
         "$value": {
           "fontFamily": "{primitive.font.family.title}",
           "fontWeight": 500,
           "fontSize": "14px",
           "lineHeight": "20px"
-        }
+        },
+        "$description": "Figma text style: Titles/Title 4"
       },
-      "title-5": {
+      "titles-title-5": {
         "$value": {
           "fontFamily": "{primitive.font.family.title}",
           "fontWeight": 500,
           "fontSize": "12px",
           "lineHeight": "15px"
-        }
+        },
+        "$description": "Figma text style: Titles/Title 5"
       },
-      "title-6": {
+      "titles-title-6": {
         "$value": {
           "fontFamily": "{primitive.font.family.title}",
           "fontWeight": 500,
           "fontSize": "10px",
           "lineHeight": "15px"
-        }
+        },
+        "$description": "Figma text style: Titles/Title 6"
       },
-      "title-7": {
+      "titles-title-7": {
         "$value": {
           "fontFamily": "{primitive.font.family.body}",
           "fontWeight": 600,
           "fontSize": "18px",
           "lineHeight": "20px"
-        }
+        },
+        "$description": "Figma text style: Titles/Title 7"
       },
-      "title-8": {
+      "titles-title-8": {
         "$value": {
           "fontFamily": "{primitive.font.family.body}",
           "fontWeight": 600,
           "fontSize": "14px",
           "lineHeight": "20px"
-        }
+        },
+        "$description": "Figma text style: Titles/Title 8"
       },
-      "body-l": {
+      "text-body-l": {
         "$value": {
           "fontFamily": "{primitive.font.family.body}",
           "fontWeight": 500,
           "fontSize": "18px",
           "lineHeight": "22px"
-        }
+        },
+        "$description": "Figma text style: Text/Body L"
       },
-      "body-m": {
+      "text-body-m": {
         "$value": {
           "fontFamily": "{primitive.font.family.body}",
           "fontWeight": 500,
           "fontSize": "16px",
           "lineHeight": "1.4"
-        }
+        },
+        "$description": "Figma text style: Text/Body M"
       },
-      "body-m-regular": {
+      "text-body-m-2": {
         "$value": {
           "fontFamily": "{primitive.font.family.body}",
           "fontWeight": 400,
           "fontSize": "16px",
           "lineHeight": "1.4"
-        }
+        },
+        "$description": "Figma text style: Text/Body M 2"
       },
-      "body-s": {
+      "text-body-s": {
         "$value": {
           "fontFamily": "{primitive.font.family.body}",
           "fontWeight": 500,
           "fontSize": "14px",
           "lineHeight": "18px"
-        }
+        },
+        "$description": "Figma text style: Text/Body S"
       },
-      "body-s-regular": {
+      "text-body-s-2": {
         "$value": {
           "fontFamily": "{primitive.font.family.body}",
           "fontWeight": 400,
           "fontSize": "14px",
           "lineHeight": "18px"
-        }
+        },
+        "$description": "Figma text style: Text/Body S 2"
       },
-      "body-xs": {
+      "text-body-xs": {
         "$value": {
           "fontFamily": "{primitive.font.family.body}",
           "fontWeight": 500,
           "fontSize": "12px",
           "lineHeight": "1.4"
-        }
+        },
+        "$description": "Figma text style: Text/Body XS"
       },
-      "body-xs-regular": {
+      "text-body-xs-2": {
         "$value": {
           "fontFamily": "{primitive.font.family.body}",
           "fontWeight": 400,
           "fontSize": "12px",
           "lineHeight": "15px"
-        }
+        },
+        "$description": "Figma text style: Text/Body XS 2"
       },
-      "caption-1": {
+      "text-caption-1": {
         "$value": {
           "fontFamily": "{primitive.font.family.body}",
           "fontWeight": 500,
           "fontSize": "10px",
           "lineHeight": "1.4"
-        }
+        },
+        "$description": "Figma text style: Text/Caption 1"
       },
-      "caption-2": {
+      "text-caption-2": {
         "$value": {
           "fontFamily": "{primitive.font.family.body}",
           "fontWeight": 400,
           "fontSize": "10px",
           "lineHeight": "15px"
-        }
+        },
+        "$description": "Figma text style: Text/Caption 2"
       },
-      "button-highlight-l": {
+      "button-text-button-highlighted-large": {
         "$value": {
           "fontFamily": "{primitive.font.family.title}",
           "fontWeight": 500,
           "fontSize": "18px",
           "lineHeight": "1.4"
-        }
+        },
+        "$description": "Figma text style: Button's text/Button highlighted large"
       },
-      "button-highlight-m": {
+      "button-text-button-highlighted-medium": {
         "$value": {
           "fontFamily": "{primitive.font.family.title}",
           "fontWeight": 500,
           "fontSize": "16px",
           "lineHeight": "1.4"
-        }
+        },
+        "$description": "Figma text style: Button's text/Button highlighted Medium"
       },
-      "button-l": {
+      "button-text-button-secondary-large": {
         "$value": {
           "fontFamily": "{primitive.font.family.body}",
           "fontWeight": 500,
           "fontSize": "16px",
           "lineHeight": "1.4"
-        }
+        },
+        "$description": "Figma text style: Button's text/Button secondary Large"
       },
-      "button-m": {
+      "button-text-button-secondary-m": {
         "$value": {
           "fontFamily": "{primitive.font.family.body}",
           "fontWeight": 500,
           "fontSize": "14px",
           "lineHeight": "18px"
-        }
+        },
+        "$description": "Figma text style: Button's text/Button secondary M"
       },
-      "button-s": {
+      "button-text-button-secondary-s": {
         "$value": {
           "fontFamily": "{primitive.font.family.body}",
           "fontWeight": 500,
           "fontSize": "12px",
           "lineHeight": "1.4"
-        }
-      }
-    }
-  },
-  "dark": {
-    "$description": "Overrides applied under [data-theme=\"dark\"]. Derived from the on-dark examples on the Figma Colors page (Jet and Eerie Black surfaces, White buttons with Candy Apple text).",
-    "color": {
-      "$type": "color",
-      "text": {
-        "primary": {
-          "$value": "{primitive.color.cultured}"
         },
-        "secondary": {
-          "$value": "{primitive.color.silver-chalice}"
-        },
-        "muted": {
-          "$value": "{primitive.color.silver-chalice}"
-        },
-        "disabled": {
-          "$value": "#6b7173",
-          "$description": "Lifted from Jet so disabled text stays visible on Eerie Black"
-        },
-        "inverse": {
-          "$value": "{primitive.color.eerie-black}"
-        }
+        "$description": "Figma text style: Button's text/Button secondary S"
       },
-      "surface": {
-        "default": {
-          "$value": "{primitive.color.eerie-black}"
+      "components-choice-label": {
+        "$value": {
+          "fontFamily": "{primitive.font.family.body}",
+          "fontWeight": 400,
+          "fontSize": "15px",
+          "lineHeight": "18px"
         },
-        "raised": {
-          "$value": "{primitive.color.jet}"
-        },
-        "subtle": {
-          "$value": "#1f1f1f"
-        },
-        "muted": {
-          "$value": "{primitive.color.jet}"
-        },
-        "highlight": {
-          "$value": "#3a1f1d"
-        },
-        "inverse": {
-          "$value": "{primitive.color.cultured}"
-        },
-        "inverse-subtle": {
-          "$value": "{primitive.color.white}"
-        },
-        "overlay": {
-          "$value": "rgba(21, 21, 21, 0.7)"
-        }
+        "$description": "Not a Figma text style: measured from the checkbox, radio and switch labels."
       },
-      "border": {
-        "default": {
-          "$value": "{primitive.color.jet}"
+      "components-choice-error": {
+        "$value": {
+          "fontFamily": "{primitive.font.family.body}",
+          "fontWeight": 300,
+          "fontSize": "12px",
+          "lineHeight": "15px"
         },
-        "strong": {
-          "$value": "{primitive.color.cultured}"
-        },
-        "muted": {
-          "$value": "#5a5f61"
-        },
-        "disabled": {
-          "$value": "#4a4f51"
-        }
+        "$description": "Not a Figma text style: measured from the checkbox, radio and switch error messages."
       },
-      "action": {
-        "primary": {
-          "$value": "{primitive.color.white}"
+      "components-error-input-placeholder": {
+        "$value": {
+          "fontFamily": "{primitive.font.family.body}",
+          "fontWeight": 400,
+          "fontSize": "18px",
+          "lineHeight": "22px"
         },
-        "primary-text": {
-          "$value": "{primitive.color.candy-apple}"
+        "$description": "Not a Figma text style: measured from the \"Error input large\" placeholder."
+      },
+      "text-body-link-12": {
+        "$value": {
+          "fontFamily": "{primitive.font.family.body}",
+          "fontWeight": 500,
+          "fontSize": "12px",
+          "lineHeight": "1.4"
         },
-        "selected": {
-          "$value": "{primitive.color.cultured}"
+        "$description": "Figma text style: Text/Body link 12"
+      },
+      "text-body-link-14": {
+        "$value": {
+          "fontFamily": "{primitive.font.family.body}",
+          "fontWeight": 500,
+          "fontSize": "14px",
+          "lineHeight": "1.4"
         },
-        "ghost": {
-          "$value": "rgba(255, 255, 255, 0.06)"
+        "$description": "Figma text style: Text/Body link 14"
+      },
+      "button-text-button-secondary-s2": {
+        "$value": {
+          "fontFamily": "{primitive.font.family.body}",
+          "fontWeight": 400,
+          "fontSize": "12px",
+          "lineHeight": "1.4"
         },
-        "ghost-hover": {
-          "$value": "rgba(255, 255, 255, 0.12)"
-        }
+        "$description": "Figma text style: Button's text/Button secondary S2"
       }
     }
   }

@@ -1,20 +1,10 @@
-.syn-slider { display: flex; flex-direction: column; gap: var(--syn-space-4); width: 100%; }
-.syn-slider__header { display: flex; align-items: center; justify-content: space-between; gap: var(--syn-space-4); }
-.syn-slider__label { color: var(--syn-text-primary); font: var(--syn-type-body-s-regular); }
-.syn-slider__value {
-  min-width: 50px;
-  padding: var(--syn-space-4);
-  border: 1px solid var(--syn-border-muted);
-  border-radius: var(--syn-radius-full);
-  background: var(--syn-surface-default);
-  color: var(--syn-text-muted);
-  font: var(--syn-type-body-xs-regular);
-  text-align: center;
-}
+.syn-slider { display: flex; flex-direction: column; width: 100%; }
+.syn-slider__label { margin-bottom: var(--syn-space-2); color: var(--syn-text-primary); font: var(--syn-type-text-body-s-2); }
+.syn-slider__scale { display: flex; justify-content: space-between; gap: var(--syn-space-8); color: var(--syn-text-muted); font: var(--syn-type-components-choice-error); }
 
-/* 2px Silver Chalice track, Candy Apple fill up to the thumb. */
+/* Figma "Slider 100%": 2px Silver Chalice track, Candy Apple fill up to a Snow thumb with a Silver Chalice ring and double arrow. */
 .syn-slider__input {
-  --thumb: 30px;
+  --thumb: 32px;
   width: 100%;
   height: var(--thumb);
   margin: 0;
@@ -36,24 +26,32 @@
   margin-top: calc(var(--thumb) / -2 + 1px);
   border: 1px solid var(--syn-border-muted);
   border-radius: 50%;
-  background: var(--syn-color-snow) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='%23a7b0b3'%3E%3Cpath d='M0 4 4 0v8zM12 4 8 0v8z'/%3E%3C/svg%3E") center no-repeat;
+  background: var(--syn-color-light-snow) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23a7b0b3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 8h11M5 5.5 2.5 8 5 10.5M11 5.5l2.5 2.5-2.5 2.5'/%3E%3C/svg%3E") center no-repeat;
   -webkit-appearance: none;
   appearance: none;
-  transition: border-color var(--syn-duration-fast);
+  transition: border-color var(--syn-duration-fast), background-color var(--syn-duration-fast);
 }
 .syn-slider__input::-moz-range-thumb {
   width: var(--thumb);
   height: var(--thumb);
   border: 1px solid var(--syn-border-muted);
   border-radius: 50%;
-  background: var(--syn-color-snow) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='%23a7b0b3'%3E%3Cpath d='M0 4 4 0v8zM12 4 8 0v8z'/%3E%3C/svg%3E") center no-repeat;
+  background: var(--syn-color-light-snow) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23a7b0b3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 8h11M5 5.5 2.5 8 5 10.5M11 5.5l2.5 2.5-2.5 2.5'/%3E%3C/svg%3E") center no-repeat;
 }
-.syn-slider__input:hover::-webkit-slider-thumb { border-color: var(--syn-border-strong); }
+/* Figma "Slider button": Hover = Eerie Black ring, the arrow stays Silver Chalice. */
+.syn-slider__input:hover::-webkit-slider-thumb, .syn-slider.is-hover .syn-slider__input::-webkit-slider-thumb { border-color: var(--syn-border-strong); }
+.syn-slider__input:hover::-moz-range-thumb, .syn-slider.is-hover .syn-slider__input::-moz-range-thumb { border-color: var(--syn-border-strong); }
+/* "Tap Slide" (while moving): Cultured thumb, Eerie Black ring and the 16px pause glyph; the cursor grabs. */
+.syn-slider.is-moving .syn-slider__input { cursor: grabbing; }
+.syn-slider.is-moving .syn-slider__input::-webkit-slider-thumb { border-color: var(--syn-border-strong); background: var(--syn-color-grey-cultured) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='%23151515'%3E%3Cpath d='M6.59 5.86H5.88v4.28h.71V5.86ZM10.12 5.86h-.71v4.28h.71V5.86Z'/%3E%3Cpath d='M8 1.14a6.86 6.86 0 1 1 0 13.72A6.86 6.86 0 0 1 8 1.14ZM8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Z'/%3E%3C/svg%3E") center no-repeat; }
+.syn-slider.is-moving .syn-slider__input::-moz-range-thumb { border-color: var(--syn-border-strong); background: var(--syn-color-grey-cultured) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='%23151515'%3E%3Cpath d='M6.59 5.86H5.88v4.28h.71V5.86ZM10.12 5.86h-.71v4.28h.71V5.86Z'/%3E%3Cpath d='M8 1.14a6.86 6.86 0 1 1 0 13.72A6.86 6.86 0 0 1 8 1.14ZM8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Z'/%3E%3C/svg%3E") center no-repeat; }
 .syn-slider__input:focus-visible { outline: none; }
 .syn-slider__input:focus-visible::-webkit-slider-thumb { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
 .syn-slider__input:focus-visible::-moz-range-thumb { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
 
 .syn-slider.is-disabled .syn-slider__input { cursor: not-allowed; }
 .syn-slider.is-disabled .syn-slider__input::-webkit-slider-runnable-track { background: var(--syn-border-disabled); }
+.syn-slider.is-disabled .syn-slider__input::-webkit-slider-thumb { border-color: var(--syn-color-disabled-gray-x); background-color: var(--syn-color-light-snow); }
+.syn-slider.is-disabled .syn-slider__input::-moz-range-thumb { border-color: var(--syn-color-disabled-gray-x); background-color: var(--syn-color-light-snow); }
 .syn-slider.is-disabled .syn-slider__label,
-.syn-slider.is-disabled .syn-slider__value { color: var(--syn-text-disabled); }
+.syn-slider.is-disabled .syn-slider__scale { color: var(--syn-text-disabled); }

@@ -1,0 +1,23 @@
+/* Figma "Phone input": the Country/Region box sits on the Phone Number box; they share one seam, so the
+   top box keeps its upper 8px corners and the bottom box its lower ones. The focused box comes forward. */
+.syn-phone { display: flex; flex-direction: column; width: 100%; }
+.syn-phone__label { margin-bottom: var(--syn-space-8); color: var(--syn-color-secondary-jet); font: var(--syn-type-text-body-s-2); }
+.syn-phone--sm .syn-phone__label { margin-bottom: var(--syn-space-4); font: var(--syn-type-text-body-xs-2); }
+.syn-phone.is-disabled .syn-phone__label { color: var(--syn-color-disabled-gray-x); }
+.syn-phone__country .syn-field__box { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.syn-phone__number { margin-top: -1px; }
+.syn-phone__number .syn-field__box { border-top-left-radius: 0; border-top-right-radius: 0; }
+.syn-phone__country .syn-select__anchor:focus-within, .syn-phone__number .syn-field__box:focus-within { position: relative; z-index: 1; }
+/* Sizes and type follow the text field (the input rule), so both boxes read alike at every size. */
+/* The phone icon is Jet, and the dialling code shows only once the number has focus or a value. */
+.syn-phone__number .syn-field__icon { color: var(--syn-color-secondary-jet); }
+.syn-phone__number.syn-field--floating:not(.has-value) .syn-field__box:not(:focus-within) .syn-field__affix--prefix { display: none; }
+.syn-phone__number .syn-field__affix--prefix { color: var(--syn-color-black-eerie-black); }
+.syn-phone.is-disabled .syn-field__icon { color: var(--syn-color-disabled-gray-x); }
+
+/* Disabled: the country part matches the number part (Cultured, Gray X), not the Standard dropdown's white. */
+.syn-phone .syn-select.is-disabled .syn-field__box,
+.syn-phone .syn-select.is-disabled .syn-field__box:hover { background: var(--syn-color-grey-cultured); box-shadow: inset 0 0 0 1px var(--syn-color-disabled-gray-x); }
+.syn-phone .syn-select.is-disabled .syn-select__value,
+.syn-phone .syn-select.is-disabled .syn-field__label { color: var(--syn-color-disabled-gray-x); }
+.syn-phone .syn-select.is-disabled .syn-select__chevron { background: var(--syn-color-disabled-gray-x); color: var(--syn-color-grey-cultured); }

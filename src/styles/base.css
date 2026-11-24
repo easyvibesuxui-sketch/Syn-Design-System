@@ -9,7 +9,7 @@
 }
 
 .syn-root {
-  font: var(--syn-type-body-s-regular);
+  font: var(--syn-type-text-body-s-2);
   color: var(--syn-text-primary);
   background: var(--syn-surface-default);
   -webkit-font-smoothing: antialiased;
@@ -27,10 +27,10 @@
   border: 0;
 }
 
-/* Figma draws focus as a 1px Eerie Black ring 3px outside the control. */
+/* Focus is a 1px Eerie Black ring 2px outside the control. */
 .syn-focus-ring:focus-visible {
   outline: 1px solid var(--syn-border-strong);
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
