@@ -7,8 +7,8 @@ export type { IconName };
 export interface IconProps extends Omit<SVGProps<SVGSVGElement>, 'name'> {
   name: IconName;
   /**
-   * Rendered size of the longer side in px. Leave it out to draw the icon at its native Figma size
-   * (20 x 20 for most; file formats are 24 x 30). The aspect ratio is always kept.
+   * Rendered size in px. Every icon sits on the standard 20 x 20 board, so leave it out for 20 x 20
+   * (the illustrations empty-list and search-empty keep their own size; then it scales the longer side).
    */
   size?: number;
   /** Accessible name. Without one the icon is decorative and hidden from assistive tech. */

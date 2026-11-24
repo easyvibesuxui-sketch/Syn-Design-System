@@ -155,7 +155,7 @@ export function App() {
           </div>
         </Section>
 
-        <Section id="icons" title="Icons" lead={`All ${iconNames.length} components of the Figma Main icons set, at their native size (most are 20 x 20). Single-ink icons inherit currentColor; pins, status and file-format icons keep their Figma colours.`}>
+        <Section id="icons" title="Icons" lead={`All ${iconNames.length} components of the Figma Main icons set, each on the standard 20 x 20 board. Single-ink icons inherit currentColor; pins, status and file-format icons keep their Figma colours.`}>
           <div className="pg-icons">
             {iconNames.map((name) => (
               <div key={name} className="pg-icon">

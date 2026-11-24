@@ -309,7 +309,7 @@ the map itself (Leaflet, Google Maps, an image) goes in as children and fills th
 
 ## Icon
 
-All 164 icons from *Icons → Main icons* plus the input icons *Info button* and *phone* and the empty-state icon (`empty-list`, 66 x 54), at their native Figma size (most 20 x 20; file formats 24 x 30).
+All 164 icons from *Icons → Main icons* plus the input icons *Info button* and *phone*, every one on the standard 20 x 20 board. Figma draws a few on other boards (file formats 24 x 30, `tag2` and `info-button` 24 x 24, `slidebar` 81 x 17, `check-in-circle` 18 x 20, `damage` 21 x 21 …); the build scales those to fit 20 x 20 and centres them (`scripts/icons-to-20.mjs`), and refuses an icon that ends up on another board. The two illustrations keep their own size: `empty-list` (66 x 54, the EmptyState picture) and `search-empty` (120 x 121, the dropdown's Nothing Found).
 `<Icon name="search" />`; `size` scales the longer side. Single-ink icons draw in `currentColor`, multicolour
 ones keep their colours (`iconData[name].multicolor`). Pass `title` to make an icon meaningful to screen
 readers, otherwise it is hidden. `iconNames` lists them all; `iconAliases` maps the earlier names
