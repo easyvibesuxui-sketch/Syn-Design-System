@@ -1,0 +1,64 @@
+/* Actions menu under the "..." button: white panel, 12px corners, the float shadow. */
+.sam-menu { position: relative; flex: none; }
+.sam-menu__panel {
+  position: absolute;
+  top: calc(100% + var(--syn-space-4));
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: var(--syn-space-4);
+  width: max-content;
+  max-width: calc(100vw - var(--syn-space-32));
+  padding: var(--syn-space-12) var(--syn-space-8) var(--syn-space-16);
+  border-radius: var(--syn-radius-widget);
+  background: var(--syn-surface-default);
+  box-shadow: var(--syn-shadow-float);
+}
+.sam-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--syn-space-12);
+  width: 100%;
+  margin: 0;
+  padding: var(--syn-space-8);
+  border: 0;
+  border-radius: var(--syn-radius-element);
+  background: transparent;
+  color: var(--syn-text-primary);
+  font: var(--syn-type-text-body-xs-2);
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--syn-duration-fast);
+}
+/* Icon container: 20 x 20 with 1px padding, so the glyph is 18px. */
+.sam-menu__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--syn-space-20);
+  height: var(--syn-space-20);
+  padding: 1px;
+  color: var(--syn-text-muted);
+}
+.sam-menu__item:hover, .sam-menu__item:focus-visible { background: var(--syn-surface-subtle); outline: none; }
+.sam-menu__item:focus-visible { box-shadow: inset 0 0 0 1px var(--syn-border-strong); }
+.sam-menu__note {
+  display: flex;
+  align-items: center;
+  gap: var(--syn-space-8);
+  margin: var(--syn-space-16) 0 0;
+  padding: 0 var(--syn-space-8) 0 var(--syn-space-12);
+  color: var(--syn-text-muted);
+  font: var(--syn-type-text-body-xs-2);
+  white-space: nowrap;
+}
+.sam-menu__note .syn-icon { flex: none; }
+
+/* Equipment header (owner's screenshot): 14px labels and a Caption (10px) note; the panel is as wide as its
+   longest line, so every label and the note stay on one line (owner's comment). */
+.sam-menu--compact .sam-menu__item { padding-right: var(--syn-space-24); font: var(--syn-type-text-body-s-2); }
+.sam-menu--compact .sam-menu__note { font: var(--syn-type-text-caption-2); }

@@ -33,7 +33,10 @@
     "build": "npm run check:layers && npm run generate && tsc -p tsconfig.build.json && vite build",
     "build:docs": "npm run generate && vite build --mode docs",
     "typecheck": "tsc --noEmit",
-    "check:layers": "node scripts/check-layers.mjs"
+    "check:layers": "node scripts/check-layers.mjs",
+    "sam:dev": "npm run dev -w @syn/sam",
+    "sam:build": "npm run build -w @syn/sam",
+    "sam:typecheck": "npm run typecheck -w @syn/sam"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -48,5 +51,8 @@
     "react-dom": "18.3.1",
     "typescript": "5.6.3",
     "vite": "5.4.11"
-  }
+  },
+  "workspaces": [
+    "apps/*"
+  ]
 }

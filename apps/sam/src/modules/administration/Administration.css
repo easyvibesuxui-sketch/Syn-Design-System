@@ -1,0 +1,52 @@
+/* Figma "Main Container": the 320px secondary navigation and the content, 2px apart, 12px outer corners. */
+.sam-admin {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  gap: var(--syn-space-2);
+}
+
+/* Figma "Secondary Navigation" (Second Navigation): white, 24px / 8px padding, the last group at the bottom. */
+.sam-admin-nav {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 320px;
+  padding: var(--syn-space-24) var(--syn-space-8);
+  border-radius: var(--syn-radius-widget) 0 0 var(--syn-radius-widget);
+  background: var(--syn-surface-default);
+}
+.sam-admin-nav ul { display: flex; flex-direction: column; gap: var(--syn-space-2); margin: 0; padding: 0; list-style: none; }
+/* Figma "Second navigation Tab": 48px, Title 4, 24px icon 6px from the label. */
+.sam-admin-nav__item {
+  display: flex;
+  align-items: center;
+  gap: var(--syn-space-6);
+  min-height: var(--syn-size-control-md);
+  padding: var(--syn-space-12) var(--syn-space-8);
+  border-left: 2px solid transparent;
+  border-radius: var(--syn-radius-xs);
+  color: var(--syn-text-primary);
+  font: var(--syn-type-titles-title-4);
+  text-decoration: none;
+}
+.sam-admin-nav__item .syn-icon { color: var(--syn-text-muted); }
+.sam-admin-nav__item:hover { background: var(--syn-surface-muted); }
+/* Selected: Candy Apple left border on Candy Apple at 5%. */
+.sam-admin-nav__item[aria-current='page'] {
+  border-left-color: var(--syn-color-primary-candy-apple);
+  background: color-mix(in srgb, var(--syn-color-primary-candy-apple) 5%, transparent);
+}
+.sam-admin-nav__item:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: -1px; }
+
+.sam-admin__content {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+  border-radius: 0 var(--syn-radius-widget) var(--syn-radius-widget) 0;
+  background: var(--syn-surface-default);
+}
+.sam-admin__placeholder { margin: auto; color: var(--syn-text-muted); font: var(--syn-type-text-body-s-2); }

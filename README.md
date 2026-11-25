@@ -15,6 +15,18 @@ The Figma library stays the visual source. This repo turns it into something cod
 | Assets | `icons/svg`, `assets/file-formats`, `assets/default-images` | Figma SVG exports: 164 icons plus 2 input icons and the Empty List icon, 7 file-format badges, 5 default images |
 | Playground | `playground/` | Living style guide: every foundation, component and state |
 
+## Monorepo
+
+This repository holds Syn (the root package) and the apps built on it, as npm workspaces under `apps/`:
+
+| Workspace | What |
+| --- | --- |
+| `.` (`@syn/design-system`) | The design system |
+| `apps/sam` (`@syn/sam`) | SAM: Administration › Notification Center. See [apps/sam/README.md](apps/sam/README.md) |
+
+Apps import Syn's source directly (a Vite and TypeScript alias), so there is no build or version step between them.
+`npm install` at the root installs every workspace; `npm run sam:dev` / `npm run sam:build` run the SAM app.
+
 ## Getting started
 
 ```bash

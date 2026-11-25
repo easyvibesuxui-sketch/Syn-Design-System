@@ -1,0 +1,427 @@
+/* Settings › Notification Center. Measurements from the Figma frames; colours and type are Syn tokens. */
+
+.sam-nc { display: flex; flex: 1; min-height: 0; flex-direction: column; }
+/* Figma "Label Container": 44px, the tabs 16px in. */
+.sam-nc__tabs { flex: none; height: 44px; padding: var(--syn-space-4) var(--syn-space-16) 0; }
+/* Figma "Content Frame": Cultured around the 12px white table box. */
+.sam-nc__frame {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+  padding: var(--syn-space-12);
+  border-radius: 0 0 var(--syn-radius-widget) 0;
+  background: var(--syn-color-grey-cultured);
+}
+.sam-nc-list {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+  border-radius: var(--syn-radius-element);
+  background: var(--syn-surface-default);
+}
+
+/* Figma "Table Header": search 360px, two 220px dropdowns 16px apart, the add button at the end. */
+.sam-nc-toolbar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--syn-space-16);
+  padding: 5px var(--syn-space-8);
+}
+.sam-nc-toolbar__filters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--syn-space-16); min-width: 0; }
+.sam-nc-search { width: 360px; max-width: 100%; }
+.sam-nc-filter { width: 220px; }
+
+.sam-nc-add,
+.sam-nc-add-inline.syn-icon-button {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--syn-size-control-sm);
+  height: var(--syn-size-control-sm);
+  padding: 0;
+  border: 1px solid var(--syn-color-grey-cultured);
+  border-radius: var(--syn-radius-element);
+  background: var(--syn-surface-default);
+  color: var(--syn-color-primary-candy-apple);
+  cursor: pointer;
+}
+.sam-nc-add:hover,
+.sam-nc-add-inline.syn-icon-button:hover { background: var(--syn-color-grey-cultured); }
+.sam-nc-add:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
+
+/* The table: Figma rows are 48px, white and Cultured by turns, 2px apart; the header is 40px, 12px Jet. */
+.sam-nc-table.syn-table {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  margin: 0 var(--syn-space-12) var(--syn-space-12);
+  border: 0;
+  border-radius: 0;
+}
+.sam-nc-table table { border-collapse: separate; border-spacing: 0 2px; }
+.sam-nc-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  height: 40px;
+  padding: 0 var(--syn-space-16) 0 var(--syn-space-32);
+  background: var(--syn-color-light-smoke);
+  color: var(--syn-color-secondary-jet);
+  font: var(--syn-type-text-body-xs);
+  text-align: left;
+}
+.sam-nc-table td {
+  height: 48px;
+  padding: 0 var(--syn-space-16) 0 var(--syn-space-32);
+  border: 0;
+  color: var(--syn-text-primary);
+  font: var(--syn-type-text-body-s-2);
+  white-space: nowrap;
+}
+.sam-nc-table th.syn-table__actions, .sam-nc-table td.syn-table__actions { width: 64px; padding: 0 var(--syn-space-16); }
+.sam-nc-table tbody tr:hover { outline: 0; }
+.sam-nc-table tbody tr:hover td { background: var(--syn-color-light-smoke); }
+.sam-nc-table.syn-table--striped tbody tr:nth-child(even):hover td { background: var(--syn-color-grey-cultured); }
+.sam-nc-table.syn-table--striped tbody tr td:first-child,
+.sam-nc-table.syn-table--striped tbody tr td:last-child { border-radius: 0; }
+
+.sam-nc-name { font: var(--syn-type-text-body-s-2); }
+.sam-nc-muted { color: var(--syn-color-secondary-silver-chalince); }
+.sam-nc-datetime { display: inline-flex; align-items: center; gap: 2px; }
+.sam-nc-datetime__dot { width: 4px; height: 4px; border-radius: var(--syn-radius-full); background: var(--syn-color-grey-cultured); }
+.sam-nc-datetime__time { color: var(--syn-color-secondary-silver-chalince); }
+
+.sam-nc-type { display: inline-flex; align-items: center; gap: 6px; }
+.sam-nc-type img { flex: none; }
+/* Figma: the Geofence Exit label takes the icon's Dark Sienna. */
+.sam-nc-type--geofence-exit { color: var(--syn-color-secondary-dark-sienna); }
+.sam-nc-type.is-muted { color: var(--syn-color-disabled-gray-x); }
+.sam-nc-type.is-muted img { filter: grayscale(1); opacity: 0.4; }
+
+/* Figma "Text indicator names". */
+.sam-nc-more { display: inline-flex; align-items: center; gap: 10px; max-width: 100%; }
+.sam-nc-more__first {
+  overflow: hidden;
+  padding: var(--syn-space-4) var(--syn-space-8);
+  border: 1px solid var(--syn-color-grey-cultured);
+  border-radius: var(--syn-radius-element);
+  background: var(--syn-surface-default);
+  text-overflow: ellipsis;
+}
+.sam-nc-more__count {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border: 1px solid var(--syn-text-primary);
+  border-radius: var(--syn-radius-full);
+  background: var(--syn-color-light-smoke);
+  font: var(--syn-type-text-caption-1);
+}
+/* A disabled alert: everything Gray X. */
+.sam-nc-table tr:has(.sam-nc-status:not(.is-active)) td { color: var(--syn-color-disabled-gray-x); }
+.sam-nc-table tr:has(.sam-nc-status:not(.is-active)) .sam-nc-more__count { border-color: var(--syn-color-disabled-gray-x); }
+
+.sam-nc-status { display: inline-flex; align-items: center; gap: 6px; font: var(--syn-type-text-body-xs); }
+.sam-nc-status__dot {
+  width: 16px;
+  height: 16px;
+  border: 3px solid var(--syn-color-grey-cultured);
+  border-radius: var(--syn-radius-full);
+  background: var(--syn-color-disabled-gray-x);
+}
+.sam-nc-status.is-active .sam-nc-status__dot { background: var(--syn-color-success-mantis); }
+
+.sam-nc-equipment { display: flex; flex-direction: column; gap: 2px; line-height: 1.2; }
+.sam-nc-equipment__name { font: var(--syn-type-titles-title-6); }
+.sam-nc-equipment__meta { color: var(--syn-color-secondary-silver-chalince); font: var(--syn-type-text-caption-1); }
+
+/* Empty: the header row over Smoke with "List is empty" in the middle (Figma 13555:46442). */
+.sam-nc-empty { display: flex; flex: 1; min-height: 0; flex-direction: column; margin: 0 var(--syn-space-12) var(--syn-space-12); background: var(--syn-color-light-smoke); }
+.sam-nc-empty .sam-nc-table { flex: none; margin: 0; }
+.sam-nc-empty__state.syn-empty { flex: 1; justify-content: center; background: transparent; }
+.sam-nc-empty__add.syn-button--secondary { min-width: 256px; border-color: transparent; background: var(--syn-surface-default); }
+.sam-nc-empty__add .syn-icon { color: var(--syn-text-primary); }
+
+/* Choose alert type: an 800px popup with three 240px cards (Figma 14085:94431). */
+.sam-nc-choose .syn-dialog__panel { width: min(800px, calc(100vw - 32px)); max-width: none; }
+.sam-nc-choose .syn-dialog__header { justify-content: center; }
+.sam-nc-choose .syn-dialog__body { padding: var(--syn-space-16) var(--syn-space-32) var(--syn-space-32); }
+.sam-nc-choose__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--syn-space-8); margin: 0; padding: 0; list-style: none; }
+.sam-nc-choose__card {
+  display: flex;
+  width: 100%;
+  min-height: 240px;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--syn-space-12);
+  padding: 20px var(--syn-space-12) var(--syn-space-16);
+  border: 1px solid var(--syn-color-grey-cultured);
+  border-radius: var(--syn-radius-widget);
+  background: var(--syn-color-light-snow);
+  color: var(--syn-text-primary);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--syn-duration-fast), background-color var(--syn-duration-fast);
+}
+.sam-nc-choose__card:hover { border-color: var(--syn-border-strong); background: var(--syn-surface-default); }
+.sam-nc-choose__card:focus-visible { outline: 1px solid var(--syn-border-strong); outline-offset: 2px; }
+.sam-nc-choose__title { display: flex; min-height: 40px; align-items: center; font: var(--syn-type-titles-title-4); }
+.sam-nc-choose__text { color: var(--syn-color-secondary-silver-chalince); font: var(--syn-type-text-body-xs); }
+@media (max-width: 720px) { .sam-nc-choose__list { grid-template-columns: 1fr; } .sam-nc-choose__card { min-height: 0; } }
+
+/* Create drawer (1280px, Figma "Body"): two 628px columns, the siren drawn large at the bottom right. */
+.sam-nc-drawer .syn-drawer__body { position: relative; }
+.sam-nc-drawer__title { margin: 0; color: var(--syn-color-secondary-silver-chalince); font: var(--syn-type-titles-title-4); }
+.sam-nc-drawer__art {
+  position: absolute;
+  right: var(--syn-space-16);
+  bottom: var(--syn-space-24);
+  z-index: 0;
+  width: 320px;
+  height: 320px;
+  pointer-events: none;
+}
+.sam-nc-drawer__type { position: relative; display: flex; flex-direction: column; gap: var(--syn-space-8); padding: var(--syn-space-16) var(--syn-space-32) 0; }
+.sam-nc-drawer__columns {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--syn-space-24);
+  padding: var(--syn-space-16) var(--syn-space-16) var(--syn-space-32) var(--syn-space-32);
+}
+.sam-nc-drawer__column { display: flex; min-width: 0; flex-direction: column; gap: var(--syn-space-24); }
+@media (max-width: 1024px) { .sam-nc-drawer__columns { grid-template-columns: 1fr; } }
+
+.sam-nc-card { padding: var(--syn-space-12); border-radius: var(--syn-radius-widget); background: var(--syn-surface-default); }
+.sam-nc-field { display: flex; flex-direction: column; gap: var(--syn-space-8); }
+.sam-nc-label { margin: 0; color: var(--syn-text-primary); font: var(--syn-type-titles-title-4); }
+.sam-nc-required { color: var(--syn-color-primary-candy-apple); }
+.sam-nc-error { margin: var(--syn-space-4) 0 0; color: var(--syn-color-error-vermilion); font: var(--syn-type-text-body-xs); }
+
+/* Equipments: a Cultured-edged card with the plus, chips on Smoke below (Figma 14078:92686). */
+.sam-nc-equipments { display: flex; flex-direction: column; }
+.sam-nc-equipments__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: var(--syn-space-8) var(--syn-space-12);
+  border: 1px solid var(--syn-color-grey-cultured);
+  border-radius: var(--syn-radius-widget) var(--syn-radius-widget) 0 0;
+  background: var(--syn-surface-default);
+}
+.sam-nc-equipments__head h3 { flex: 1; }
+.sam-nc-equipments__body {
+  padding: var(--syn-space-12);
+  border: 2px solid var(--syn-color-grey-cultured);
+  border-top: 0;
+  border-radius: 0 0 var(--syn-radius-widget) var(--syn-radius-widget);
+  background: var(--syn-surface-default);
+}
+.sam-nc-equipments__list {
+  display: flex;
+  min-height: 187px;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: var(--syn-space-6);
+  padding: var(--syn-space-4);
+  border-radius: 0 0 var(--syn-radius-widget) var(--syn-radius-widget);
+  background: var(--syn-color-light-smoke);
+}
+.sam-nc-equipments.is-invalid .sam-nc-equipments__body { border-color: var(--syn-color-error-vermilion); }
+
+/* A chosen warehouse, project or area. */
+.sam-place { display: flex; flex-direction: column; gap: var(--syn-space-8); padding: var(--syn-space-8); border-radius: var(--syn-radius-element); background: var(--syn-color-light-smoke); }
+.sam-place__name { margin: 0; font: var(--syn-type-titles-title-6); }
+.sam-place__facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--syn-space-8) var(--syn-space-16); margin: 0; }
+.sam-place__facts dt { color: var(--syn-color-secondary-silver-chalince); font: var(--syn-type-text-caption-1); }
+.sam-place__facts dd { margin: 2px 0 0; font: var(--syn-type-text-caption-1); color: var(--syn-text-primary); }
+.sam-place__facts div:first-child { grid-column: 1; }
+
+/* Geofence map: "Draw geofence" above, the map 348px high. */
+.sam-nc-geofence { display: flex; flex-direction: column; gap: var(--syn-space-8); margin-top: 0; }
+.sam-nc-geofence__label { display: flex; align-items: center; justify-content: flex-end; gap: var(--syn-space-4); margin: 0; font: var(--syn-type-text-caption-1); }
+.sam-geo { position: relative; height: 348px; }
+.sam-geo.is-expanded { position: fixed; inset: var(--syn-space-16); z-index: 10; height: auto; }
+.sam-geo__map.syn-map { height: 100%; }
+.sam-geo__leaflet { width: 100%; height: 100%; }
+.sam-geo__leaflet.is-drawing { cursor: crosshair; }
+.sam-geo.is-invalid .syn-map { outline: 1px solid var(--syn-color-error-vermilion); }
+.sam-geo__tools { position: absolute; top: var(--syn-space-8); left: var(--syn-space-8); z-index: 500; display: flex; flex-direction: column; gap: var(--syn-space-4); }
+.sam-geo__tools [aria-pressed='true'] { outline: 1px solid var(--syn-color-secondary-dodger-blue); }
+.sam-geo__hint {
+  position: absolute;
+  top: var(--syn-space-8);
+  left: 50%;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  gap: var(--syn-space-4);
+  margin: 0;
+  padding: var(--syn-space-4) var(--syn-space-8);
+  border-radius: var(--syn-radius-element);
+  background: var(--syn-surface-default);
+  font: var(--syn-type-text-caption-1);
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+/* Working hours (Figma 13594:29320). */
+.sam-hours { display: flex; flex-direction: column; gap: var(--syn-space-16); margin: 0; padding: var(--syn-space-12) var(--syn-space-12) 20px; border: 0; }
+.sam-hours__head { display: flex; align-items: flex-end; gap: var(--syn-space-16); }
+.sam-hours__legend { display: flex; flex: 1; flex-direction: column; gap: 6px; padding: 0; float: left; }
+.sam-hours__hint { color: var(--syn-color-secondary-silver-chalince); font: var(--syn-type-text-body-xs); }
+.sam-pill-button {
+  height: 24px;
+  padding: 0 var(--syn-space-16);
+  border: 1px solid var(--syn-color-secondary-silver-chalince);
+  border-radius: 18px;
+  background: var(--syn-surface-default);
+  color: var(--syn-text-primary);
+  font: var(--syn-type-text-body-xs);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.sam-pill-button:hover { border-color: var(--syn-text-primary); }
+.sam-hours__days { display: flex; flex-direction: column; gap: var(--syn-space-8); }
+.sam-hours__day {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--syn-space-12);
+  padding: 6px var(--syn-space-12);
+  border: 1px solid var(--syn-color-grey-cultured);
+  border-radius: var(--syn-radius-widget);
+}
+.sam-hours__day.is-on { border-color: var(--syn-color-secondary-dodger-blue); }
+.sam-hours__check .syn-choice__label, .sam-hours__check label { font: var(--syn-type-titles-title-5); }
+.sam-hours__range { display: flex; gap: var(--syn-space-12); }
+.sam-hours__day.is-on .sam-hours__range { gap: var(--syn-space-24); }
+
+.sam-time {
+  display: flex;
+  width: 183px;
+  height: var(--syn-size-control-sm);
+  align-items: center;
+  gap: var(--syn-space-8);
+  padding: 0 var(--syn-space-8) 0 var(--syn-space-16);
+  border: 1px solid var(--syn-color-grey-cultured);
+  border-radius: var(--syn-radius-element);
+  background: var(--syn-surface-default);
+  color: var(--syn-text-primary);
+}
+.sam-hours__day.is-on .sam-time { width: 120px; padding-left: var(--syn-space-8); border-color: var(--syn-text-primary); }
+.sam-time input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: var(--syn-type-text-body-s-2);
+  outline: 0;
+}
+.sam-time input::placeholder { color: var(--syn-color-secondary-silver-chalince); opacity: 1; }
+.sam-time input::-webkit-calendar-picker-indicator { display: none !important; }
+.sam-time__open { display: inline-flex; flex: none; padding: 2px; border: 0; border-radius: var(--syn-radius-xs); background: transparent; color: inherit; cursor: pointer; }
+.sam-time__open:disabled { cursor: default; }
+.sam-time.is-disabled { color: var(--syn-color-secondary-silver-chalince); }
+.sam-time.is-invalid { border-color: var(--syn-color-error-vermilion); }
+.sam-time:focus-within { border-color: var(--syn-color-secondary-dodger-blue); }
+/* Figma checks the day in Dodger Blue. */
+.sam-hours__check .syn-choice__input:checked + .syn-choice__box--check,
+.sam-hours__check .syn-choice__row:hover .syn-choice__input:checked + .syn-choice__box--check { border-color: var(--syn-color-secondary-dodger-blue); background: var(--syn-color-secondary-dodger-blue); }
+@media (max-width: 600px) { .sam-time, .sam-hours__day.is-on .sam-time { width: 104px; } .sam-hours__day { flex-wrap: wrap; } }
+
+/* Power condition (Figma 13588:25339). */
+.sam-nc-power { display: flex; flex-direction: column; gap: var(--syn-space-12); }
+.sam-nc-power__info { display: flex; align-items: center; gap: var(--syn-space-8); padding: var(--syn-space-8); border-radius: var(--syn-radius-element); background: var(--syn-color-light-smoke); color: var(--syn-color-secondary-silver-chalince); }
+.sam-nc-power__info p { display: flex; flex-direction: column; gap: 2px; margin: 0; color: var(--syn-text-primary); font: var(--syn-type-text-caption-1); }
+.sam-nc-power__info strong { font: var(--syn-type-titles-title-6); }
+.sam-nc-power .sam-nc-field { padding: var(--syn-space-8); background: var(--syn-color-light-smoke); }
+
+/* Equipment picker (Figma 14054:46598). */
+.sam-picker .syn-drawer__body { display: flex; flex-direction: column; padding: 0 var(--syn-space-16) var(--syn-space-16); background: var(--syn-color-grey-cultured); }
+.sam-picker__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--syn-space-4);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--syn-color-secondary-silver-chalince);
+  font: var(--syn-type-titles-title-3);
+  cursor: pointer;
+}
+.sam-picker__back:hover { color: var(--syn-text-primary); }
+.sam-picker__box { display: flex; flex: 1; min-height: 0; flex-direction: column; border-radius: var(--syn-radius-element); background: var(--syn-surface-default); }
+.sam-picker__title { margin: 0; padding: var(--syn-space-12) var(--syn-space-12) var(--syn-space-4); font: var(--syn-type-titles-title-5); }
+.sam-picker__search { width: 280px; }
+.sam-picker__filter { width: 180px; }
+.sam-picker__scroll { flex: 1; min-height: 0; overflow: auto; padding: 0 var(--syn-space-4) var(--syn-space-8); }
+.sam-picker__table { width: 100%; min-width: 1100px; border-collapse: separate; border-spacing: 0 6px; }
+.sam-picker__table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  height: 24px;
+  padding: 0 var(--syn-space-6);
+  background: var(--syn-color-grey-cultured);
+  color: var(--syn-text-primary);
+  font: var(--syn-type-text-caption-1);
+  text-align: left;
+  white-space: nowrap;
+}
+.sam-picker__groups th { top: 0; height: 22px; background: var(--syn-color-grey-cultured); font: var(--syn-type-titles-title-6); }
+.sam-picker__table thead tr:nth-child(2) th { top: 22px; }
+.sam-picker__table td {
+  height: 52px;
+  padding: 0 var(--syn-space-6);
+  background: var(--syn-surface-default);
+  box-shadow: 0 1px 0 var(--syn-color-grey-cultured), 0 -1px 0 var(--syn-color-grey-cultured);
+  font: var(--syn-type-text-caption-1);
+  white-space: nowrap;
+}
+.sam-picker__table tr.is-unavailable td { color: var(--syn-color-disabled-gray-x); }
+.sam-picker__table tr:hover td { background: var(--syn-color-light-smoke); }
+.sam-picker__item { display: flex; flex-direction: column; line-height: 1.25; }
+.sam-picker__item strong { font: var(--syn-type-titles-title-6); }
+.sam-picker__tag, .sam-picker__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px var(--syn-space-8);
+  border: 1px solid var(--syn-color-grey-cultured);
+  border-radius: var(--syn-radius-full);
+}
+.sam-picker__status { border-color: var(--syn-text-primary); }
+.sam-picker__plus { margin-left: var(--syn-space-6); }
+.sam-picker__dotted { display: inline-flex; align-items: center; gap: 6px; }
+.sam-picker__swatch { width: 10px; height: 10px; border-radius: var(--syn-radius-full); background: var(--syn-color-disabled-gray-x); }
+.sam-picker__swatch.is-info { background: var(--syn-color-secondary-dodger-blue); }
+.sam-picker__swatch.is-success { background: var(--syn-color-success-mantis); }
+.sam-picker__swatch.is-violet { background: var(--sam-dot-violet); }
+.sam-picker__swatch.is-orange { background: var(--sam-dot-orange); }
+.sam-picker__legend {
+  display: flex;
+  gap: var(--syn-space-16);
+  margin: 0 auto;
+  padding: var(--syn-space-6) var(--syn-space-12);
+  border-radius: var(--syn-radius-element);
+  background: var(--syn-color-grey-cultured);
+  font: var(--syn-type-text-caption-1);
+}
+.sam-picker__legend > span { display: inline-flex; align-items: center; gap: 6px; }
+.sam-picker__dot { width: 12px; height: 12px; border: 1px dashed var(--syn-color-primary-candy-apple); border-radius: var(--syn-radius-full); }
+.sam-picker__dot.is-available { border: 0; background: var(--syn-color-success-mantis); }
+.sam-picker__empty.syn-empty { flex: 1; }
