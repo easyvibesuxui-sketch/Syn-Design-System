@@ -17,7 +17,10 @@ export function matchText(value: string | null | undefined, f?: TextFilter) {
   return v.includes(q);
 }
 
-export const destinationText = (r: EquipmentRecord) => (r.destination ? `${r.destination.name} ${r.destination.detail ?? ''}`.trim() : '');
+/** Name, detail and kind ("Project", "Warehouse", "Rental"), so a filter for "rental" finds every rental. */
+export const destinationText = (r: EquipmentRecord) => (r.destination
+  ? `${r.destination.name} ${r.destination.detail ?? ''} ${r.destination.kind}`.trim()
+  : '');
 const textOf: Record<TextColumn, (r: EquipmentRecord) => string | null> = {
   inventoryNumber: (r) => r.inventoryNumber,
   title: (r) => r.title,

@@ -65,7 +65,7 @@
 .seq-table thead tr:nth-child(2) th {
   top: 28px;
   height: 44px;
-  padding: 0 var(--syn-space-8) 0 var(--syn-space-12);
+  padding: 0 var(--syn-space-12) 0 var(--syn-space-12);
   border-bottom: 1px solid var(--syn-color-grey-cultured);
   background: var(--syn-color-light-smoke);
   color: var(--syn-color-secondary-jet);
@@ -99,8 +99,8 @@
 .seq-th__btn.is-active .seq-sort path { opacity: 0.4; }
 .seq-th__btn.is-active .seq-sort path.is-on { opacity: 1; }
 /* Drag the header's right edge to resize; the line shows on hover and focus. */
-.seq-th__resize { position: absolute; top: 0; right: -3px; z-index: 4; width: 7px; height: 100%; cursor: col-resize; touch-action: none; }
-.seq-th__resize::after { content: ''; position: absolute; top: 25%; left: 3px; width: 1px; height: 50%; background: var(--syn-color-grey-cultured); }
+.seq-th__resize { position: absolute; top: 0; right: 0; z-index: 4; width: 9px; height: 100%; cursor: col-resize; touch-action: none; }
+.seq-th__resize::after { content: ''; position: absolute; top: 25%; right: 0; width: 1px; height: 50%; background: var(--syn-color-grey-cultured); }
 .seq-th__resize:hover::after, .seq-th__resize:focus-visible::after { top: 0; height: 100%; width: 2px; background: var(--syn-color-secondary-dodger-blue); }
 .seq-th__resize:focus-visible { outline: 0; }
 
