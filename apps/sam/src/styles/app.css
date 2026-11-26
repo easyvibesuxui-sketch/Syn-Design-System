@@ -10,8 +10,3 @@
 html, body { margin: 0; background: var(--sam-page-bg); }
 * { box-sizing: border-box; }
 .sam-placeholder { margin: auto; color: var(--syn-text-muted); font: var(--syn-type-text-body-s-2); }
-:root {
-  /* Status dot colours from the Figma equipment list that have no Syn colour (as in the Equipment Profile app). */
-  --sam-dot-violet: #8a38f5;
-  --sam-dot-orange: #ff6a00;
-}

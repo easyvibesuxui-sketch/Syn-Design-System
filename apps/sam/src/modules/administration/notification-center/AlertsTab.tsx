@@ -25,7 +25,7 @@ export function AlertsTab({ store }: { store: AlertStore }) {
       || a.name.toLowerCase().includes(q)
       || alertTypes[a.type].label.toLowerCase().includes(q)
       || a.recipients.some((r) => r.toLowerCase().includes(q))
-      || a.equipment.some((id) => equipmentById(id)?.name.toLowerCase().includes(q))));
+      || a.equipment.some((id) => equipmentById(id)?.title.toLowerCase().includes(q))));
   }, [store.alerts, query, type, status]);
 
   const columns: TableColumn<Alert>[] = [
@@ -33,7 +33,7 @@ export function AlertsTab({ store }: { store: AlertStore }) {
     { key: 'type', header: 'Type', width: '20%', render: (a) => <AlertTypeLabel type={a.type} muted={a.status === 'disabled'} /> },
     {
       key: 'equipment', header: 'Equipment', width: '20%',
-      render: (a) => <FirstAndMore label="equipment" items={a.equipment.map((id) => equipmentById(id)?.name ?? id)} />,
+      render: (a) => <FirstAndMore label="equipment" items={a.equipment.map((id) => equipmentById(id)?.title ?? id)} />,
     },
     { key: 'recipients', header: 'Recipients', width: '22%', render: (a) => <FirstAndMore label="recipients" items={a.recipients} /> },
     { key: 'status', header: 'Status', render: (a) => <AlertStatusLabel active={a.status === 'active'} /> },

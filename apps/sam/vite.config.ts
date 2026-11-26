@@ -11,7 +11,10 @@ export default defineConfig({
   base: './',
   plugins: [react()],
   resolve: {
-    alias: { '@syn/design-system': resolve(here, '../../src/index.ts') },
+    alias: {
+      '@syn/design-system': resolve(here, '../../src/index.ts'),
+      '@syn/shared-equipment': resolve(here, '../../packages/shared-equipment/src/index.ts'),
+    },
     dedupe: ['react', 'react-dom'],
   },
   server: { fs: { allow: [resolve(here, '../..')] } },

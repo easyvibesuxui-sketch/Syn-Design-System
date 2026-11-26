@@ -17,11 +17,12 @@ The Figma library stays the visual source. This repo turns it into something cod
 
 ## Monorepo
 
-This repository holds Syn (the root package) and the apps built on it, as npm workspaces under `apps/`:
+This repository holds Syn (the root package), shared feature packages and the apps built on them, as npm workspaces:
 
 | Workspace | What |
 | --- | --- |
 | `.` (`@syn/design-system`) | The design system |
+| `packages/shared-equipment` (`@syn/shared-equipment`) | SHARED equipment listings for SAM and RAM: the Add Equipment selection table. See [its README](packages/shared-equipment/README.md) |
 | `apps/sam` (`@syn/sam`) | SAM: Administration › Notification Center. See [apps/sam/README.md](apps/sam/README.md) |
 
 Apps import Syn's source directly (a Vite and TypeScript alias), so there is no build or version step between them.

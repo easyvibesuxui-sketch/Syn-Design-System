@@ -2,6 +2,7 @@
 import geofenceIcon from './assets/alert-geofence-exit.png';
 import workingHoursIcon from './assets/alert-outside-working-hours.png';
 import powerIcon from './assets/alert-power-disconnected.png';
+import { sampleEquipment, type EquipmentRecord } from '@syn/shared-equipment';
 
 export type AlertType = 'geofence-exit' | 'outside-working-hours' | 'power-disconnected';
 /** Figma "Type" switcher of the Geofence Exit alert. */
@@ -42,58 +43,14 @@ export const emptyWorkingHours = (): WorkingHours => weekdays.map(() => ({ on: f
 export const standardWorkWeek = (): WorkingHours =>
   weekdays.map((_, i) => (i < 5 ? { on: true, from: '08:00', to: '17:00' } : { on: false, from: '', to: '' }));
 
-export interface Equipment {
-  id: string;
-  name: string;
-  listing: string;
-  inventory: string;
-  category: string;
-  tag: string;
-  tagCount: number;
-  status: string;
-  structure: string;
-  crew: string;
-  branch: string;
-  project: string;
-  projectSite: string;
-  beacon: string;
-  imei: string;
-  lastSignal: string;
-  available: boolean;
-}
+/** The equipment listing is SHARED (SAM and RAM): records come from @syn/shared-equipment, sample data for now. */
+export type Equipment = EquipmentRecord;
+export const equipment: Equipment[] = sampleEquipment;
+/** Reference time for the sample data's signal recency (the V15 prototype's "now"). */
+export const sampleNow = new Date('2026-11-24T10:30').getTime();
 
-const models = [
-  'Caterpilar 26B', 'Caterpilar 26C', 'JCB 3CX', 'Komatsu PC210', 'Volvo EC950F', 'Hitachi ZX350', 'Doosan DX225',
-  'CASE CX210', 'Bobcat E165', 'Liebherr R 926', 'Manitou MT 1440', 'SANY SY215', 'New Holland E85C', 'Terex TC55', 'Kubota KX057',
-];
-const vendors = [
-  'syniotec-obd', 'syniotec-obd', 'jcb-uk', 'komatsu-global', 'volvo-construction', 'hitachi-global', 'doosan-infra',
-  'case-construction', 'bobcat-companies', 'liebherr-group', 'manitou-group', 'sany-group', 'new-holland', 'terex-corporation', 'kubota-corp',
-];
-const categories = ['Heavy Crawler', 'Backhoe Loader', 'Excavator', 'Telehandler', 'Mini Excavator'];
-const branches = ['Bremen', 'Hamburg', 'Berlin'];
-
-export const equipment: Equipment[] = models.map((name, i) => ({
-  id: `eq-${i + 1}`,
-  name,
-  listing: 'Listing Title',
-  inventory: `INV-${String(i + 1).padStart(3, '0')}`,
-  category: categories[i % categories.length],
-  tag: 'Dump Truck',
-  tagCount: 3,
-  status: 'Operational',
-  structure: 'Lower Saxony',
-  crew: 'Dream Team',
-  branch: branches[i % branches.length],
-  project: 'Bremen',
-  projectSite: 'Halensee Roadworks',
-  beacon: vendors[i],
-  imei: String(868373071229621 + i),
-  lastSignal: '1 Mar 2025 8:47',
-  available: i % 5 !== 3,
-}));
-
-export const beaconVendors = [...new Set(vendors)].map((v) => ({ value: v, label: v }));
+const vendors = ['syniotec-obd', 'jcb-uk', 'komatsu-global', 'volvo-construction', 'hitachi-global', 'liebherr-group'];
+export const beaconVendors = vendors.map((v) => ({ value: v, label: v }));
 
 export const recipients = [
   'MaxMustermann@gmail.com', 'AnnaSchmidt@yahoo.com', 'PeterMüller@hotmail.com', 'SophieMeier@outlook.com',
@@ -174,7 +131,7 @@ export interface AlertEvent {
 const sites = ['Bremen', 'Hamburg', 'Berlin', 'Munich', 'Cologne', 'Stuttgart', 'Düsseldorf', 'Frankfurt', 'Leipzig', 'Dresden', 'Nuremberg', 'Hanover', 'Essen', 'Bonn', 'Aachen'];
 const details = ['Manager', 'Assistant', 'Developer', 'Designer', 'Product Owner', 'Marketing Specialist', 'Sales Executive', 'Data Analyst', 'Customer Support', 'HR Coordinator', 'Quality Assurance', 'UI/UX Researcher', 'Content Strategist', 'SEO Specialist', 'Social Media Manager'];
 
-export const alertHistory: AlertEvent[] = equipment.map((e, i) => ({
+export const alertHistory: AlertEvent[] = [...equipment, ...equipment.slice(0, 3)].map((e, i) => ({
   id: `ev-${i + 1}`,
   at: '2028-01-01T14:14',
   equipmentId: e.id,

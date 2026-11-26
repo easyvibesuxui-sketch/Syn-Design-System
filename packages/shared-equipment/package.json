@@ -1,0 +1,12 @@
+{
+  "name": "@syn/shared-equipment",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SHARED equipment listings for SAM and RAM (Add Equipment selection table), built on Syn.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": { "typecheck": "tsc --noEmit" },
+  "dependencies": { "qrcode-generator": "1.4.4" },
+  "peerDependencies": { "react": ">=18", "react-dom": ">=18" }
+}

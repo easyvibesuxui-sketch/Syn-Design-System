@@ -143,7 +143,7 @@ export function CreateAlertDrawer({ type, alert, onClose, onSubmit }: {
             <div className="sam-nc-equipments__body">
               <div className="sam-nc-equipments__list">
                 {items.map((id) => {
-                  const label = equipmentById(id)?.name ?? id;
+                  const label = equipmentById(id)?.title ?? id;
                   return (
                     <Tag key={id} variant="chip" onRemove={() => setItems(items.filter((x) => x !== id))} removeLabel={`Remove ${label}`}>{label}</Tag>
                   );

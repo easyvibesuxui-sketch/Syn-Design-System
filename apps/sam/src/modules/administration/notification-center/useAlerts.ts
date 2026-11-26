@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { alertHistory, initialAlerts, type Alert, type AlertEvent } from './data';
 
-const KEY = 'sam-alerts-v1';
+const KEY = 'sam-alerts-v2';
 
 /** `?empty` in the URL (e.g. /?empty#/settings/notification-center) shows the empty lists. */
 const emptyDemo = () => new URLSearchParams(window.location.search).has('empty');

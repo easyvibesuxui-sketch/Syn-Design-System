@@ -14,7 +14,10 @@
     "noEmit": true,
     "types": ["vite/client", "node"],
     "baseUrl": ".",
-    "paths": { "@syn/design-system": ["../../src/index.ts"] }
+    "paths": {
+      "@syn/design-system": ["../../src/index.ts"],
+      "@syn/shared-equipment": ["../../packages/shared-equipment/src/index.ts"]
+    }
   },
   "include": ["src", "vite.config.ts"]
 }

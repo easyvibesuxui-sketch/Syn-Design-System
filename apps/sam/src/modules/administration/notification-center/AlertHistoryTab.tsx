@@ -11,7 +11,7 @@ export function AlertHistoryTab({ events }: { events: AlertEvent[] }) {
     if (!q) return events;
     return events.filter((ev) => {
       const e = equipmentById(ev.equipmentId);
-      return [e?.name, e?.inventory, e?.beacon, e?.imei, alertTypes[ev.type].label, ev.rule, ev.details]
+      return [e?.title, e?.inventoryNumber, e?.tracker, e?.imei, alertTypes[ev.type].label, ev.rule, ev.details]
         .some((v) => v?.toLowerCase().includes(q));
     });
   }, [events, query]);
@@ -25,8 +25,8 @@ export function AlertHistoryTab({ events }: { events: AlertEvent[] }) {
         if (!e) return ev.equipmentId;
         return (
           <span className="sam-nc-equipment">
-            <span className="sam-nc-equipment__name">{e.name}</span>
-            <span className="sam-nc-equipment__meta">{[e.inventory, e.beacon, e.imei].join(' · ')}</span>
+            <span className="sam-nc-equipment__name">{e.title}</span>
+            <span className="sam-nc-equipment__meta">{[e.inventoryNumber, e.tracker ?? 'No tracker', e.imei].filter(Boolean).join(' · ')}</span>
           </span>
         );
       },

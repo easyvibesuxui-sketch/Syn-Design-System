@@ -33,14 +33,14 @@ From the SAM (Design) Figma file:
 | Geofence Exit (Geofence, Warehouse, Project/Contract, Area) | [13564:25033](https://www.figma.com/design/Y9mIWBhREjY2aJotdjw3YQ/SAM--Design-?node-id=13564-25033), [14843:40465](https://www.figma.com/design/Y9mIWBhREjY2aJotdjw3YQ/SAM--Design-?node-id=14843-40465), [16821:60659](https://www.figma.com/design/Y9mIWBhREjY2aJotdjw3YQ/SAM--Design-?node-id=16821-60659), [16821:60866](https://www.figma.com/design/Y9mIWBhREjY2aJotdjw3YQ/SAM--Design-?node-id=16821-60866), filled: [14078:92781](https://www.figma.com/design/Y9mIWBhREjY2aJotdjw3YQ/SAM--Design-?node-id=14078-92781), [16821:61094](https://www.figma.com/design/Y9mIWBhREjY2aJotdjw3YQ/SAM--Design-?node-id=16821-61094), [16821:61637](https://www.figma.com/design/Y9mIWBhREjY2aJotdjw3YQ/SAM--Design-?node-id=16821-61637), [16826:79084](https://www.figma.com/design/Y9mIWBhREjY2aJotdjw3YQ/SAM--Design-?node-id=16826-79084) |
 | Outside Working Hours | [13588:25230](https://www.figma.com/design/Y9mIWBhREjY2aJotdjw3YQ/SAM--Design-?node-id=13588-25230), filled: [14078:92867](https://www.figma.com/design/Y9mIWBhREjY2aJotdjw3YQ/SAM--Design-?node-id=14078-92867) |
 | Power Disconnected | [13588:25339](https://www.figma.com/design/Y9mIWBhREjY2aJotdjw3YQ/SAM--Design-?node-id=13588-25339), filled: [14078:92968](https://www.figma.com/design/Y9mIWBhREjY2aJotdjw3YQ/SAM--Design-?node-id=14078-92968) |
-| Choose equipment | [14054:46598](https://www.figma.com/design/Y9mIWBhREjY2aJotdjw3YQ/SAM--Design-?node-id=14054-46598) |
+| Add Equipment | V15 prototype, Equipment Views Explorer › Target Design › Add Equipment (replaces Figma 14054:46598) |
 
 What it does:
 
 - **Alerts**: search (name, type, equipment, email), Type and Status filters, the red ⊕ (and "Add Alert" on the empty
   list) opens *Choose alert type*. Each row's ⋯ menu: Edit, Disable / Activate, Delete. A disabled alert is drawn Gray X.
-- **Create / Edit drawer** (1280px): Name, Email (several), Equipments (⊕ opens *Choose*: search, Branch, Category,
-  Beacon, Select All; unavailable equipment cannot be chosen), and per type:
+- **Create / Edit drawer** (1280px): Name, Email (several), Equipments (⊕ opens *Add Equipment*: the SHARED table
+  from `@syn/shared-equipment`, V15 behaviour with Syn visuals; see its README), and per type:
   - Geofence Exit: the Type switch. *Geofence Exit* draws the fence on the map (Hand, Polygon: a click per corner,
     click the first corner or double-click to close; Eraser: last corner; Bin: clear). Warehouse, Project/Contract and
     Area pick a place, show its details and its fence on the map.

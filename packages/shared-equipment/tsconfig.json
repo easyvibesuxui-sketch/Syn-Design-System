@@ -1,0 +1,5 @@
+{
+  "extends": "../../apps/sam/tsconfig.json",
+  "compilerOptions": { "baseUrl": ".", "paths": { "@syn/design-system": ["../../src/index.ts"] }, "types": ["vite/client"] },
+  "include": ["src"]
+}
