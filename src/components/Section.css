@@ -11,7 +11,7 @@
   background: var(--syn-surface-default);
 }
 .syn-section:not(.is-open) .syn-section__header { border-radius: var(--syn-radius-widget); }
-.syn-section__title { flex: 1; min-width: 0; margin: 0; color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
+.syn-section__title { position: relative; top: var(--syn-title-offset); flex: 1; min-width: 0; margin: 0; color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
 .syn-section__actions { display: flex; align-items: center; gap: var(--syn-space-8); }
 .syn-section__toggle {
   display: inline-flex;
@@ -61,8 +61,14 @@
   box-shadow: var(--syn-shadow-default);
 }
 .syn-card__header { display: flex; align-items: center; justify-content: space-between; gap: var(--syn-space-16); min-height: var(--syn-size-control-xs); }
-.syn-card__title { margin: 0; color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
+.syn-card__title { position: relative; top: var(--syn-title-offset); margin: 0; color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
 .syn-card__actions { display: flex; align-items: center; gap: var(--syn-space-8); }
+/* Rule: a card's "open" chevron (class syn-card__open on its IconButton) shows only while the card is hovered
+   or holds focus. Where there is no hover (touch), it always shows. */
+@media (hover: hover) {
+  .syn-card .syn-card__open { opacity: 0; transition: opacity var(--syn-duration-fast); }
+  .syn-card:hover .syn-card__open, .syn-card:focus-within .syn-card__open { opacity: 1; }
+}
 
 /* Property: 12px label (icon gap 6) over the value, 8px apart. */
 .syn-property { display: flex; flex-direction: column; align-items: flex-start; gap: var(--syn-space-8); min-width: 0; }

@@ -26,7 +26,7 @@ never uses a higher one: an atom never imports a molecule.
 ### Atoms
 - **Actions:** `Button`, `IconButton` (with `CloseGlyph`)
 - **Choice:** `Checkbox`, `Radio`, `Switch`, `Segmented`, `Slider`
-- **Marks and status:** `Icon`, `Tag`, `StatusChip`, `StatusBadge`, `Avatar`, `Thumbnail`, `ProgressBar`, `Skeleton`, `Tooltip`
+- **Marks and status:** `Icon`, `Tag`, `StatusChip`, `StatusBadge`, `Avatar`, `Thumbnail`, `ProgressBar`, `Skeleton`, `Tooltip`, `ColorDot`
 - **Text pieces:** `FieldMessages`, `ChoiceMessage`, `ErrorIcon`, `Value` (a table value), `Property` (a label and value pair)
 - **Map buttons:** `MapControl`, `MapExpandButton`, `MapStreetViewButton`
 
@@ -36,7 +36,7 @@ never uses a higher one: an atom never imports a molecule.
 - **Navigation:** `Tabs`, `NewTab`
 - **Feedback and content:** `Notification`, `FileItem`, `EmptyState`, `Card`
 - **Pieces of organisms:** `ChecklistItem`, `CommentReply`, `CommentEditor`, `DrawerRow`
-- **Map:** `MapZoomControls`, `MapLayerSwitch`, `MapControls`
+- **Map:** `MapZoomControls`, `MapLayerSwitch`, `MapControls`, `MapEmptyState`
 
 ### Organisms
 `Accordion`, `Checklist`, `Comment`, `Dialog`, `Drawer`, `Section`, `Table`, `MapView`

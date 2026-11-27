@@ -19,6 +19,11 @@ Figma: *Buttons → Buttons large* (`State × Size × Stile`).
 
 `IconButton` (Figma *Close button*): round ghost button, `size` `xs` 24 (default) · `sm` 36 · `md` 48 · `lg` 56,
 requires `label`. `variant="outline"` is the white square with a Cultured border used for row "more" buttons.
+Rule: icon-only buttons never use the native `title`. `IconButton`, `MapControl`, `MapStreetViewButton` and
+`MapLayerSwitch` draw the Syn tooltip inside the button (`useButtonTip`): the `label` by default, shown on hover
+(pointer devices, after 150ms) and on keyboard focus, hidden by Escape. `tooltip` replaces the content (e.g. the
+label with a `<kbd>` shortcut, then wired with `aria-describedby`) or `false` removes it; `tooltipPlacement`
+bottom (default; map controls left), `tooltipTone` dark/light. Do not wrap these buttons in `Tooltip`.
 
 States (Figma *Buttons large*): hover fades filled styles to 74% (the primary label turns Silver Chalice; outline turns Cultured); pressed = Figma *Focus*, also used for keyboard focus: the fill pulls in 4px (2px top and bottom at 36 and 24) and a 1px ring in the button's colour stays on the edge, the gap showing `--syn-button-gap` (white). `state="hover" | "pressed"` shows a state for docs.
 
@@ -125,13 +130,23 @@ ABC Favorit Expanded Medium 12/15. `name`, `selected`, `error`, `onCreate`, `onS
 
 Two types: *clickable* (no `name`: "Add new" opens the name field, `defaultEditing` starts there) and *tab switcher* (created tabs with `name`, `onSelect` and `selected`, ended by a clickable NewTab).
 
+## Scroll
+
+Figma: *Scroll* (General Scroll, Scroll components). Global, in `styles/scrollbar.css`: every scrollable area, the page
+included, gets a 4px Cultured track with a Jet thumb (at least 48px), both with 8px corners on the outer side;
+hovering the bar widens it to 10px (Figma "Hovered"). The bar keeps a 10px gutter, drawn 4px wide with transparent
+borders, so content does not shift on hover. Firefox gets `scrollbar-width: thin` in the same colours. Tokens:
+`--syn-scrollbar-track`, `--syn-scrollbar-thumb`, `--syn-scrollbar-size`, `--syn-scrollbar-rest`. An area that must
+not show a bar (a tab row that scrolls sideways) sets `scrollbar-width: none`.
+
 ## Tooltip
 
 Figma: *Tooltip black*, *Tooltip grey label*. Opens on hover and focus, closes on Escape, wired with
 `aria-describedby`. `placement` bottom (the default) / top / left / right, `tone` `dark` (Jet) or `light` (Cultured with a
-border). As in Figma: 8px padding, Regular 14 and a 16x8 pointer; corners use the 8px element radius (Figma draws 2px).
-Rule: tooltips open below their trigger (`bottom`); use another side only where below has no room, as the map
-controls do (`left`).
+border). As in Figma: 8px padding, Regular 14 and a 16x8 pointer; corners use the 8px element radius (Figma draws 2px). For
+icon-only buttons use their built-in `tooltip` prop instead of wrapping them.
+Rule: tooltips open below their trigger (`bottom`), for `Tooltip` and the built-in tooltip of `IconButton` alike; use
+another side only where below has no room, as the map controls do (`left`).
 
 ## Notification
 
@@ -182,7 +197,8 @@ margin. `DrawerRow` is a full-width row with a Cultured hairline: `label` with a
 `Section` is the large widget ("Details", "Custom fields", "Checklist"): a 36px white header over a Smoke body,
 Cultured borders, 12px corners; `collapsible` adds the chevron (`defaultOpen`, or `open`/`onOpenChange`),
 `actions` adds header buttons. `Card` is the white inner widget ("Main Loss") with 12px corners and a soft
-shadow. `Property` puts a 12px label (optional 12px `icon`) over its value; `variant="tile"` draws it in a Smoke
+shadow. Rule: a card's "open" chevron (an `IconButton` with `className="syn-card__open"`) shows only while
+the card is hovered or has focus inside; on touch screens it always shows. `Property` puts a 12px label (optional 12px `icon`) over its value; `variant="tile"` draws it in a Smoke
 box with 8px corners.
 
 ## Tag
@@ -220,6 +236,8 @@ Black outline (Figma data sheet "cell"). It scrolls sideways under 560px.
 
 Pill switcher between views ("Comments" / "Activity"): 24px pills at least 128px wide, the current one Eerie Black.
 `role="tablist"`; Left/Right move. `options`, `value`, `onChange`, `label`.
+Rule: every switcher looks the same: white pills on a Cultured track (2px padding, round), the current pill Eerie
+Black. Only a page-level tab row whose pills sit on the grey page (the profile tabs) drops the track.
 
 The Eerie Black pill slides and resizes to the chosen option (`syn-duration-base`), the labels cross-fade; no motion under reduced motion.
 
@@ -287,6 +305,12 @@ right). `min`, `max`, `step`, `format`.
 
 States (Figma *Slider button*): hover = Eerie Black ring; while moving (dragging) = Cultured thumb, Eerie Black ring and the pause glyph, cursor grabbing; disabled = Gray X ring. `state="hover" | "moving"` shows a state for docs.
 
+## ColorDot
+
+Figma *Color Dot Default*: the colour marker for status, crew, project and operator. `variant="ring"` (default) is a
+16px white circle with a 1px Silver Chalice border around a 12px dot in `color` (any CSS colour or token);
+`variant="plain"` is the dot alone (10px by default, the tag cards). `label` names it for screen readers.
+
 ## Map
 
 Figma: *Equipment Map*, *Map Button*, *Zoom in* and the layer switch (Design system library, Map page). Library-agnostic:
@@ -302,12 +326,31 @@ the map itself (Leaflet, Google Maps, an image) goes in as children and fills th
   Satellite with a white border, Map with an Eerie Black one; hover lays Silver Chalice at 40% over it.
   `satelliteSrc` / `mapSrc` replace the Figma thumbnails. `size="lg"` is the 56px switch of the map widget (SAM Overview):
   Eerie Black border and the layer name ("Satellite" / "MAP") in Caption 1 white on a grey gradient.
+- `MapEmptyState`: the "No tracker" view. On Cultured, the 56px gps-off glyph over `title` ("No Tracker attached to this
+  equipment", ABC Favorit Expanded Medium 16) and `description` ("No data can be provided", Montserrat Medium 16), all
+  Silver Chalice and centred; it fills its container.
 - `MapView variant="widget"`: the map card frame, 2px Cultured with 8px corners; controls are placed by the page.
 - Layer details: give `MapLayerSwitch` `overlays` (`defaultMapOverlays` = Terrain, Traffic, Transit, or your own
   `{ id, label, src }`), `activeOverlays` and `onOverlayToggle`. Hovering or focusing the switch opens a white card
   beside it (`panelSide` `left` by default, `right`): 32px thumbnails over Regular 10 labels; a detail that is on gets an
   Eerie Black ring and label. Clicking the switch itself still swaps Map and Satellite. Not in Figma: built from the
   reference screenshot.
+
+## Title offset
+
+ABC Favorit Expanded sits high in its line box, so every title-font text (Titles 1–6, Display 2) is drawn 1px lower
+(`--syn-title-offset`, `position: relative`), which leaves layout untouched. Components apply it to their title text;
+in an app use the `.syn-title-text` class, on the text itself rather than on a row that also holds an icon or dot.
+
+## Small text
+
+Text/Caption 1 (Montserrat Medium 10px) renders thin with antialiased smoothing, so it takes the default smoothing and
+a 0.2px stroke in its own colour (`--syn-text-crisp-stroke`, `.syn-text-crisp`). Use it on any Caption 1 text.
+
+## Play icon
+
+The `play` triangle is always drawn 1px to the right (`--syn-play-offset`) so it looks centred in its button or circle.
+The `Icon` component applies it (every icon carries `data-icon`); a play glyph drawn another way takes the same offset.
 
 ## Icon
 

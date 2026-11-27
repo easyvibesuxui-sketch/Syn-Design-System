@@ -2,7 +2,7 @@
 .syn-comment { display: grid; grid-template-columns: 24px minmax(0, 1fr); column-gap: var(--syn-space-16); }
 .syn-comment__head { display: flex; grid-column: 1 / -1; align-items: center; gap: var(--syn-space-12); min-width: 0; }
 .syn-comment__head .syn-avatar { margin-right: var(--syn-space-4); }
-.syn-comment__author { color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
+.syn-comment__author { position: relative; top: var(--syn-title-offset); color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
 .syn-comment__date { color: var(--syn-text-primary); font: var(--syn-type-text-body-xs-2); }
 .syn-comment__time { margin-left: calc(var(--syn-space-4) * -1); color: var(--syn-text-muted); font: var(--syn-type-text-body-xs-2); }
 .syn-comment__actions { display: flex; gap: var(--syn-space-8); margin-left: auto; }

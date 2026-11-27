@@ -1,5 +1,6 @@
 import './styles/tokens.css';
 import './styles/base.css';
+import './styles/scrollbar.css';
 
 export { tokens, type SynTokens } from './tokens';
 export { iconNames, iconAliases, iconData, getIcon, type IconName, type IconGlyph } from './icons/icon-data';
@@ -15,7 +16,7 @@ export { Radio, RadioGroup, type RadioProps, type RadioGroupProps } from './comp
 export { Switch, type SwitchProps } from './components/Switch';
 export { Tabs, type TabsProps, type TabItem, type TabIcon } from './components/Tabs';
 export { NewTab, type NewTabProps } from './components/NewTab';
-export { Tooltip, type TooltipProps } from './components/Tooltip';
+export { Tooltip, useButtonTip, type ButtonTipProps, type TooltipPlacement, type TooltipProps } from './components/Tooltip';
 export { Notification, type NotificationProps, type NotificationTone } from './components/Notification';
 export { StatusChip, StatusBadge, type StatusChipProps, type StatusBadgeProps, type StatusTone } from './components/Status';
 export { Accordion, type AccordionProps, type AccordionItem } from './components/Accordion';
@@ -37,6 +38,7 @@ export { Skeleton, type SkeletonProps } from './components/Skeleton';
 export { PasswordField, type PasswordFieldProps } from './components/PasswordField';
 export { PhoneField, defaultPhoneCountries, type PhoneFieldProps, type PhoneCountry } from './components/PhoneField';
 export {
-  MapView, MapControls, MapControl, MapZoomControls, MapExpandButton, MapLayerSwitch, MapStreetViewButton, defaultMapOverlays,
-  type MapViewProps, type MapControlProps, type MapZoomControlsProps, type MapExpandButtonProps, type MapLayerSwitchProps, type MapLayer, type MapOverlayOption,
+  MapView, MapControls, MapControl, MapZoomControls, MapExpandButton, MapLayerSwitch, MapStreetViewButton, MapEmptyState, defaultMapOverlays,
+  type MapViewProps, type MapEmptyStateProps, type MapControlProps, type MapZoomControlsProps, type MapExpandButtonProps, type MapLayerSwitchProps, type MapLayer, type MapOverlayOption,
 } from './components/Map';
+export { ColorDot, type ColorDotProps } from './components/ColorDot';

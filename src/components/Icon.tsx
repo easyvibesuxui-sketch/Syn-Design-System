@@ -26,6 +26,7 @@ export function Icon({ name, size, title, className, ...rest }: IconProps) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={cx('syn-icon', className)}
+      data-icon={name}
       role={title ? 'img' : undefined}
       aria-label={title}
       aria-hidden={title ? undefined : true}

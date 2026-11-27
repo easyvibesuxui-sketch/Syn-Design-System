@@ -76,7 +76,7 @@ export function FileItem({ name, meta, icon = 'file-formats-pdf', variant = 'pla
       {preview && (
         <div className="syn-file__preview">
           <img src={preview} alt={previewAlt} />
-          {onRemove && <IconButton icon="trash-bin" label={removeLabel} size="xs" onClick={onRemove} className="syn-file__remove" />}
+          {onRemove && <IconButton icon="trash-bin" label={removeLabel} size="xs" tooltipPlacement="left" onClick={onRemove} className="syn-file__remove" />}
         </div>
       )}
       <div className="syn-file__row">

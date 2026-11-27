@@ -1,7 +1,7 @@
 /* Figma "Text Box": 8px corners, 1px Cultured border inside, Eerie Black on hover, 2px when focused,
    Silver Chalice once filled; disabled is Cultured with a Gray X border. */
 .syn-textarea { display: flex; flex-direction: column; gap: var(--syn-space-4); width: 100%; }
-.syn-textarea__label { color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
+.syn-textarea__label { position: relative; top: var(--syn-title-offset); color: var(--syn-text-primary); font: var(--syn-type-titles-title-5); }
 .syn-textarea__input {
   box-sizing: border-box;
   width: 100%;

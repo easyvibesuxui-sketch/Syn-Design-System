@@ -40,6 +40,7 @@
     "Section": "organism",
     "Table": "organism",
     "Map": "organism",
+    "ColorDot": "atom",
     "Grid": "template"
   },
   "components": {
@@ -90,6 +91,8 @@
     "MapZoomControls": "molecule",
     "MapLayerSwitch": "molecule",
     "MapControls": "molecule",
+    "MapEmptyState": "molecule",
+    "ColorDot": "atom",
     "Accordion": "organism",
     "Checklist": "organism",
     "Comment": "organism",

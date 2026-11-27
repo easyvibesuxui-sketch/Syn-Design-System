@@ -19,11 +19,33 @@
 .syn-tooltip__bubble--light { background: var(--syn-surface-muted); color: var(--syn-text-primary); border: 1px solid var(--syn-border-strong); --arrow: var(--syn-border-strong); }
 
 .syn-tooltip__bubble::after { content: ''; position: absolute; border: 8px solid transparent; }
-.syn-tooltip__bubble--top { bottom: calc(100% + var(--gap)); left: 50%; transform: translateX(-50%); }
-.syn-tooltip__bubble--top::after { top: 100%; left: 50%; margin-left: -8px; border-bottom-width: 0; border-top-color: var(--arrow); }
-.syn-tooltip__bubble--bottom { top: calc(100% + var(--gap)); left: 50%; transform: translateX(-50%); }
-.syn-tooltip__bubble--bottom::after { bottom: 100%; left: 50%; margin-left: -8px; border-top-width: 0; border-bottom-color: var(--arrow); }
+.syn-tooltip__bubble--top { bottom: calc(100% + var(--gap)); left: 50%; transform: translateX(calc(-50% + var(--tip-shift, 0px))); }
+.syn-tooltip__bubble--top::after { top: 100%; left: calc(50% - var(--tip-shift, 0px)); margin-left: -8px; border-bottom-width: 0; border-top-color: var(--arrow); }
+.syn-tooltip__bubble--bottom { top: calc(100% + var(--gap)); left: 50%; transform: translateX(calc(-50% + var(--tip-shift, 0px))); }
+.syn-tooltip__bubble--bottom::after { bottom: 100%; left: calc(50% - var(--tip-shift, 0px)); margin-left: -8px; border-top-width: 0; border-bottom-color: var(--arrow); }
 .syn-tooltip__bubble--left { right: calc(100% + var(--gap)); top: 50%; transform: translateY(-50%); }
 .syn-tooltip__bubble--left::after { left: 100%; top: 50%; margin-top: -8px; border-right-width: 0; border-left-color: var(--arrow); }
 .syn-tooltip__bubble--right { left: calc(100% + var(--gap)); top: 50%; transform: translateY(-50%); }
 .syn-tooltip__bubble--right::after { right: 100%; top: 50%; margin-top: -8px; border-left-width: 0; border-right-color: var(--arrow); }
+
+/*
+ * Built-in tooltip of icon-only buttons (useButtonTip): the bubble sits inside the button. Hidden bubbles are
+ * display: none so they never widen the page; they fade in from @starting-style.
+ */
+.syn-has-tip { position: relative; }
+.syn-tip {
+  display: none;
+  white-space: nowrap;
+  text-align: left;
+  text-transform: none;
+  letter-spacing: normal;
+  cursor: default;
+  transition: opacity var(--syn-duration-fast), visibility var(--syn-duration-fast), display var(--syn-duration-fast) allow-discrete;
+}
+.syn-has-tip:focus-visible:not(.is-tip-muted) > .syn-tip { display: block; opacity: 1; visibility: visible; }
+@media (hover: hover) {
+  .syn-has-tip:hover:not(.is-tip-muted) > .syn-tip { display: block; opacity: 1; visibility: visible; transition-delay: 150ms; }
+}
+@starting-style {
+  .syn-has-tip:focus-visible > .syn-tip, .syn-has-tip:hover > .syn-tip { opacity: 0; }
+}

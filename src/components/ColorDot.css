@@ -1,0 +1,5 @@
+.syn-color-dot { position: relative; display: inline-block; flex: none; box-sizing: border-box; border-radius: var(--syn-radius-full); }
+/* Ring: white with a 1px Silver Chalice border; the colour fills all but 2px (12px of 16). */
+.syn-color-dot--ring { border: 1px solid var(--syn-border-muted); background: var(--syn-color-white-white); }
+.syn-color-dot--ring::after { content: ''; position: absolute; inset: 1px; border-radius: inherit; background: var(--dot); }
+.syn-color-dot--plain { background: var(--dot); }
