@@ -26,31 +26,39 @@ Apps import the source through an alias (see `apps/sam/vite.config.ts` and `tsco
 | Equipment | Image | – | – |
 | Equipment | Inventory Number | A–Z / Z–A | Text |
 | Equipment | Title | – | Text |
-| Equipment | Category | A–Z / Z–A | Category tree, multi-select, search |
-| Relations | Branch | A–Z / Z–A | Organisational structure, multi-select, search |
+| Equipment | Category | A–Z / Z–A | Category tree, multi-select |
+| Relations | Branch | A–Z / Z–A | Organisational structure, multi-select |
 | Check-in Information | Current Project / Warehouse / Rental | A–Z / Z–A | Text |
-| Telematic Information | Tracker | – | Tracker types, multi-select, search, "No tracker added" |
+| Telematic Information | Tracker | – | Tracker types, multi-select, "No tracker added" |
 | Telematic Information | Tracker IMEI | – | Text |
 | Telematic Information | Last Signal | Oldest / Newest | – |
 | Telematic Information | Current Location | – | Text |
 
+- **Layout (Figma SAM › Add Equipment):** the "Fleet" title, all ten columns in one screen of the drawer (no sideways
+  scroll at 1232px), 10px type, long values end in "…". The drawer footer is Discard and Submit.
+- **Filter panels:** Syn's dropdown list and panel (`OptionList`, `DropdownPanel`), with no search of their own (the
+  quick dropdowns above the table have it), a "Clear" text button and an Amber "Save". Changes apply on Save; Escape or
+  a click outside closes the panel and keeps the filter as it was.
 - **Text filters:** Contains, Equals, Starts with, Ends with; not case-sensitive.
-- **Tree filters:** a parent selects its whole subtree, and a parent with only some children chosen shows as mixed.
-- **Sorting:** a header's sort button cycles ascending → descending → off. Empty values always sort last.
-- **Above the table:** the keyword search (every field), quick Branch and Category filters (the same state as their
-  column filters), and Clear filters.
-- **Selection:**
+- **Tree filters:** a group ticks its whole subtree and shows mixed when only part is chosen. A fully ticked group also
+  finds equipment assigned to the group itself (e.g. a region).
+- **Column menu (⋮):** sort ascending, descending or not sorted (Last Signal: oldest or newest first). Empty values
+  always sort last.
+- **Above the table:** the keyword search (every field) and the quick Branch and Category dropdowns (Syn `Select`,
+  searchable, the same state as their column filters).
+- **Selection:** a black 1px border round the row, as everywhere in SAM and RAM.
   - A row's checkbox, or a click anywhere on the row outside its controls, selects it.
   - The header checkbox selects or clears every shown row, and shows mixed when only some are selected.
   - Selection survives filtering.
 - **Columns:** drag a header's right edge to resize; Arrow Left/Right does the same on the focused handle, and a
-  double-click restores the width. The table scrolls sideways with Select, Image and Inventory Number kept in view.
-  Headers stay at the top.
+  double-click restores the width. When the table is wider than its box it scrolls sideways with Select, Image and
+  Inventory Number kept in view. Headers stay at the top.
 - **Cells:**
-  - Current Project / Warehouse / Rental shows its kind's icon, the name and the detail.
+  - Current Project / Warehouse / Rental shows its kind's icon, the name and, muted in brackets, the detail.
+  - Branch shows the structure's colour dot (Figma's sample colour until the Fleet Database provides one).
   - Tracker IMEI shows a QR code (generated) next to the number; the QR opens enlarged.
-  - Last Signal shows a recency dot.
-  - Location is a button that opens the address with a Google Maps link.
+  - Last Signal shows a recency dot and the date as "1 Mar 2025 8:47".
+  - Location is the "See location" button; it opens the address with a Google Maps link.
   - Empty values show "—", "No tracker added" or "No signal".
 
 ## Decisions taken without a design (to confirm)

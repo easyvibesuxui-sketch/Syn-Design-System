@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import qrcode from 'qrcode-generator';
-import { Button, Dialog, Icon, type IconName } from '@syn/design-system';
+import { Dialog, DropdownPanel, Icon, type IconName } from '@syn/design-system';
 import { FilterPopover } from './Popover';
 import { signalRecency } from './logic';
 import type { EquipmentRecord, DestinationKind } from './types';
@@ -19,10 +19,10 @@ export function DestinationCell({ value }: { value: EquipmentRecord['destination
   const k = destinationIcon[value.kind];
   return (
     <span className="seq-dest">
-      <span className="seq-dest__icon" title={k.label}><Icon name={k.icon} size={16} /><span className="syn-visually-hidden">{k.label}:</span></span>
+      <span className="seq-dest__icon" title={k.label}><Icon name={k.icon} size={14} /><span className="syn-visually-hidden">{k.label}:</span></span>
       <span className="seq-dest__text">
         <span className="seq-dest__name">{value.name}</span>
-        {value.detail && <span className="seq-dest__detail">{value.detail}</span>}
+        {value.detail && <span className="seq-dest__detail"> ({value.detail})</span>}
       </span>
     </span>
   );
@@ -59,7 +59,6 @@ export function ImeiCell({ imei, tracker }: { imei: string | null; tracker: stri
       <span className="seq-mono">{imei}</span>
       <Dialog
         open={open} onClose={() => setOpen(false)} title="Tracker IMEI · QR" icon={null} className="seq-qr-dialog"
-        actions={<Button variant="secondary" onClick={() => setOpen(false)}>Close</Button>}
       >
         {tracker && <p className="seq-qr-dialog__tracker">{tracker}</p>}
         <QrCode value={imei} size={220} />
@@ -71,20 +70,27 @@ export function ImeiCell({ imei, tracker }: { imei: string | null; tracker: stri
 
 const recencyLabel = { recent: 'Recent signal', stale: 'No signal for over 12 hours', old: 'No signal for over 24 hours', none: 'No signal' };
 
-/** Last Signal: the recency dot and the date-time (2026-11-24 08:47). */
+/** Fleet Database date-time: "1 Mar 2025 8:47". */
+export function formatDateTime(iso: string) {
+  const d = new Date(iso);
+  const month = d.toLocaleString('en-GB', { month: 'short' });
+  return `${d.getDate()} ${month} ${d.getFullYear()} ${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`;
+}
+
+/** Last Signal: the recency dot and the date-time (1 Mar 2025 8:47). */
 export function SignalCell({ iso, now }: { iso: string | null; now: number }) {
   const r = signalRecency(iso, now);
   if (!iso) return <span className="seq-empty">No signal</span>;
   return (
     <span className="seq-signal" title={recencyLabel[r]}>
       <span aria-hidden className={`seq-signal__dot is-${r}`} />
-      <time dateTime={iso}>{iso.replace('T', ' ')}</time>
+      <time dateTime={iso}>{formatDateTime(iso)}</time>
       <span className="syn-visually-hidden">({recencyLabel[r]})</span>
     </span>
   );
 }
 
-/** Current Location: the Fleet Database Location button; the address opens in a small panel. */
+/** Current Location: the Fleet Database "See location" button; the address opens in a small panel. */
 export function LocationCell({ record }: { record: EquipmentRecord }) {
   const btn = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
@@ -93,18 +99,20 @@ export function LocationCell({ record }: { record: EquipmentRecord }) {
     <>
       <button ref={btn} type="button" className="seq-location" aria-expanded={open} onClick={() => setOpen(!open)}>
         <Icon name="pin" size={14} />
-        Location
+        See location
       </button>
       {open && btn.current && (
-        <FilterPopover anchor={btn.current} title={`Current location · ${record.inventoryNumber}`} onClose={() => setOpen(false)} width={300} footer={false}>
-          <p className="seq-location__address">{record.location}</p>
-          {record.lastSignal && <p className="seq-pop__hint">From the last signal, {record.lastSignal.replace('T', ' ')}</p>}
-          <a
-            className="seq-location__map" target="_blank" rel="noreferrer"
-            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(record.location)}`}
-          >
-            Open in Google Maps
-          </a>
+        <FilterPopover anchor={btn.current} label={`Current location · ${record.inventoryNumber}`} onClose={() => setOpen(false)} width={300}>
+          <DropdownPanel className="seq-location__panel">
+            <p className="seq-location__address">{record.location}</p>
+            {record.lastSignal && <p className="seq-location__hint">From the last signal, {formatDateTime(record.lastSignal)}</p>}
+            <a
+              className="seq-location__map" target="_blank" rel="noreferrer"
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(record.location)}`}
+            >
+              Open in Google Maps
+            </a>
+          </DropdownPanel>
         </FilterPopover>
       )}
     </>

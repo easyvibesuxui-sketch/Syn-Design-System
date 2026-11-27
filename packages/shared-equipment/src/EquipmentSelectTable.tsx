@@ -1,8 +1,8 @@
 import { useMemo, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
-import { Button, Checkbox, EmptyState, Icon, TextField } from '@syn/design-system';
+import { Button, Checkbox, EmptyState, Icon, OptionList, Select, TextField } from '@syn/design-system';
 import equipmentPlaceholder from '../../../assets/default-images/equipment.svg';
 import { DestinationCell, EMPTY, ImeiCell, LocationCell, SignalCell } from './cells';
-import { OptionsFilterBody, TextFilterBody, TreeFilterBody } from './filters';
+import { OptionsFilterPanel, TextFilterPanel, TreeFilterPanel, treeLeaves, treeOptions, withWholeNodes } from './filters';
 import { FilterPopover } from './Popover';
 import { applyFilters, applySort, labelOf } from './logic';
 import {
@@ -22,21 +22,24 @@ interface Column {
   filter?: FilterKind;
 }
 
-/** The ten fields of the Add Equipment brief (V15), in order, with their sorting and filtering. */
+/**
+ * The ten fields of the Add Equipment brief (V15), in order, with their sorting and filtering. Widths as in Figma
+ * (SAM › Add Equipment): all ten fit the 1232px table of the drawer, long values end in an ellipsis.
+ */
 const COLUMNS: Column[] = [
-  { id: 'image', label: 'Image', group: 'Equipment', width: 72 },
-  { id: 'inventoryNumber', label: 'Inventory Number', group: 'Equipment', width: 168, sort: 'inventoryNumber', filter: { text: 'inventoryNumber' } },
-  { id: 'title', label: 'Title', group: 'Equipment', width: 200, filter: { text: 'title' } },
-  { id: 'category', label: 'Category', group: 'Equipment', width: 176, sort: 'categoryId', filter: { tree: 'category' } },
-  { id: 'branch', label: 'Branch', group: 'Relations', width: 176, sort: 'branchId', filter: { tree: 'branch' } },
-  { id: 'destination', label: 'Current Project / Warehouse / Rental', group: 'Check-in Information', width: 264, sort: 'destination', filter: { text: 'destination' } },
-  { id: 'tracker', label: 'Tracker', group: 'Telematic Information', width: 160, filter: { options: 'tracker' } },
-  { id: 'imei', label: 'Tracker IMEI', group: 'Telematic Information', width: 212, filter: { text: 'imei' } },
-  { id: 'lastSignal', label: 'Last Signal', group: 'Telematic Information', width: 184, sort: 'lastSignal' },
-  { id: 'location', label: 'Current Location', group: 'Telematic Information', width: 168, filter: { text: 'location' } },
+  { id: 'image', label: 'Image', group: 'Equipment', width: 64 },
+  { id: 'inventoryNumber', label: 'Inventory Number', group: 'Equipment', width: 112, sort: 'inventoryNumber', filter: { text: 'inventoryNumber' } },
+  { id: 'title', label: 'Title', group: 'Equipment', width: 110, filter: { text: 'title' } },
+  { id: 'category', label: 'Category', group: 'Equipment', width: 110, sort: 'categoryId', filter: { tree: 'category' } },
+  { id: 'branch', label: 'Branch', group: 'Relations', width: 130, sort: 'branchId', filter: { tree: 'branch' } },
+  { id: 'destination', label: 'Current Project / Warehouse / Rental', group: 'Check-in Information', width: 176, sort: 'destination', filter: { text: 'destination' } },
+  { id: 'tracker', label: 'Tracker', group: 'Telematic Information', width: 92, filter: { options: 'tracker' } },
+  { id: 'imei', label: 'Tracker IMEI', group: 'Telematic Information', width: 153, filter: { text: 'imei' } },
+  { id: 'lastSignal', label: 'Last Signal', group: 'Telematic Information', width: 116, sort: 'lastSignal' },
+  { id: 'location', label: 'Current Location', group: 'Telematic Information', width: 121, filter: { text: 'location' } },
 ];
 const SELECT_W = 48;
-const MIN_W = 64;
+const MIN_W = 56;
 
 export interface EquipmentSelectTableProps {
   records: EquipmentRecord[];
@@ -48,23 +51,23 @@ export interface EquipmentSelectTableProps {
   onSelectedChange: (ids: string[]) => void;
   /** Reference time for the signal recency dot; defaults to now. */
   now?: number;
-  /** Shown before the table's title row, e.g. a count. */
+  /** The table's title (Figma: "Fleet"). */
   title?: ReactNode;
 }
 
 /**
  * SHARED Add Equipment selection table (V15 behaviour, Syn visuals), usable in SAM and RAM: one column per field,
- * column sorting and filtering, resizable columns, horizontal scrolling with the selection, image and inventory
- * number kept in view, the main keyword search and the quick Branch and Category filters (the same state as their
- * column filters), and multiple selection.
+ * column filters (Syn dropdown panels with Clear / Save) and the column menu (sort), resizable columns, the main
+ * keyword search and the quick Branch and Category dropdowns (the same state as their column filters), and
+ * multiple selection, marked with a black border as everywhere in SAM and RAM.
  */
 export function EquipmentSelectTable({
-  records, categoryTree, branchTree, trackers, selected, onSelectedChange, now = Date.now(), title = 'Equipment',
+  records, categoryTree, branchTree, trackers, selected, onSelectedChange, now = Date.now(), title = 'Fleet',
 }: EquipmentSelectTableProps) {
   const [filters, setFilters] = useState<EquipmentFilters>(emptyFilters);
   const [sort, setSort] = useState<Sort | null>(null);
   const [widths, setWidths] = useState<Record<string, number>>(() => Object.fromEntries(COLUMNS.map((c) => [c.id, c.width])));
-  const [open, setOpen] = useState<{ id: string; anchor: HTMLElement } | null>(null);
+  const [open, setOpen] = useState<{ id: string; anchor: HTMLElement; menu?: boolean } | null>(null);
 
   const rows = useMemo(
     () => applySort(applyFilters(records, filters, categoryTree, branchTree), sort, categoryTree, branchTree),
@@ -88,20 +91,11 @@ export function EquipmentSelectTable({
     if ('tree' in k) return (k.tree === 'category' ? filters.categories : filters.branches).length > 0;
     return filters.trackers.length > 0;
   };
-  const clearFilter = (c: Column) => {
-    const k = c.filter;
-    if (!k) return;
-    if ('text' in k) { const t = { ...filters.text }; delete t[k.text]; set({ text: t }); } else if ('tree' in k) set(k.tree === 'category' ? { categories: [] } : { branches: [] });
-    else set({ trackers: [] });
-  };
-  const anyFilter = Boolean(filters.search.trim()) || COLUMNS.some(filterActive);
 
-  const cycleSort = (key: SortKey) => setSort((s) => (s?.key !== key ? { key, dir: 'asc' } : s.dir === 'asc' ? { key, dir: 'desc' } : null));
-  const sortLabel = (c: Column) => {
-    const on = sort?.key === c.sort;
-    if (c.sort === 'lastSignal') return on ? (sort!.dir === 'asc' ? 'Oldest first' : 'Newest first') : 'Not sorted';
-    return on ? (sort!.dir === 'asc' ? 'Ascending' : 'Descending') : 'Not sorted';
-  };
+  const sortNames = (c: Column) => (c.sort === 'lastSignal'
+    ? { asc: 'Oldest first', desc: 'Newest first' }
+    : { asc: 'Sort ascending', desc: 'Sort descending' });
+  const sortLabel = (c: Column) => (sort?.key === c.sort ? sortNames(c)[sort!.dir] : 'Not sorted');
 
   // Column resizing: drag the right edge of a header.
   const drag = useRef<{ id: string; x: number; w: number } | null>(null);
@@ -134,29 +128,39 @@ export function EquipmentSelectTable({
     return acc;
   }, []);
 
-  const filterBody = (c: Column) => {
+  const filterPanel = (c: Column) => {
     const k = c.filter!;
+    const done = () => { setOpen(null); open?.anchor.focus(); };
     if ('text' in k) {
-      return <TextFilterBody field={c.label} value={filters.text[k.text]} onChange={(f) => set({ text: { ...filters.text, [k.text]: f } })} />;
+      return (
+        <TextFilterPanel
+          field={c.label} value={filters.text[k.text]}
+          onSave={(f) => { set({ text: { ...filters.text, [k.text]: f } }); done(); }}
+        />
+      );
     }
     if ('tree' in k) {
       return k.tree === 'category'
-        ? <TreeFilterBody tree={categoryTree} selected={filters.categories} onChange={(v) => set({ categories: v })} searchLabel="Search categories" heading="Category tree" allLabel="All categories" />
-        : <TreeFilterBody tree={branchTree} selected={filters.branches} onChange={(v) => set({ branches: v })} searchLabel="Search branches" heading="Organisational structure" />;
+        ? <TreeFilterPanel label="Category" tree={categoryTree} selected={filters.categories} onSave={(v) => { set({ categories: v }); done(); }} />
+        : <TreeFilterPanel label="Branch" tree={branchTree} selected={filters.branches} onSave={(v) => { set({ branches: v }); done(); }} />;
     }
     return (
-      <OptionsFilterBody
-        options={[{ value: NO_TRACKER, label: 'No tracker added', muted: true }, ...trackers.map((t) => ({ value: t, label: t }))]}
-        selected={filters.trackers} onChange={(v) => set({ trackers: v })} searchLabel="Search trackers" heading="Choose trackers"
+      <OptionsFilterPanel
+        label="Tracker" options={[{ value: NO_TRACKER, label: 'No tracker added' }, ...trackers.map((t) => ({ value: t, label: t }))]}
+        selected={filters.trackers} onSave={(v) => { set({ trackers: v }); done(); }}
       />
     );
   };
 
-  const quickLabel = (ids: string[], tree: TreeNode[], all: string) => {
-    if (!ids.length) return all;
-    // Name the highest chosen nodes only: a chosen parent stands for its chosen children.
-    const top = ids.filter((id) => !ids.some((p) => p !== id && isAncestor(tree, p, id)));
-    return top.length === 1 ? labelOf(tree, top[0]) : `${top.length} selected`;
+  const sortMenu = (c: Column) => {
+    const names = sortNames(c);
+    return (
+      <OptionList
+        label={`${c.label}: sort`} options={[{ value: 'asc', label: names.asc }, { value: 'desc', label: names.desc }, { value: 'none', label: 'Not sorted' }]}
+        value={sort?.key === c.sort ? sort!.dir : 'none'}
+        onSelect={(v) => { setSort(v === 'none' ? null : { key: c.sort!, dir: v as 'asc' | 'desc' }); setOpen(null); open?.anchor.focus(); }}
+      />
+    );
   };
 
   const cell = (c: Column, r: EquipmentRecord): ReactNode => {
@@ -165,7 +169,7 @@ export function EquipmentSelectTable({
       case 'inventoryNumber': return <span className="seq-strong">{r.inventoryNumber}</span>;
       case 'title': return <span className="seq-strong">{r.title}</span>;
       case 'category': return labelOf(categoryTree, r.categoryId);
-      case 'branch': return <span className="seq-branch"><span aria-hidden className="seq-branch__dot" />{labelOf(branchTree, r.branchId)}</span>;
+      case 'branch': return <span className="seq-branch"><span aria-hidden className="seq-branch__dot" /><span className="seq-ellipsis">{labelOf(branchTree, r.branchId)}</span></span>;
       case 'destination': return <DestinationCell value={r.destination} />;
       case 'tracker': return r.tracker ? <span className="seq-strong">{r.tracker}</span> : <span className="seq-empty">No tracker added</span>;
       case 'imei': return <ImeiCell imei={r.imei} tracker={r.tracker} />;
@@ -177,38 +181,36 @@ export function EquipmentSelectTable({
 
   const totalWidth = SELECT_W + COLUMNS.reduce((s, c) => s + widths[c.id], 0);
   const openCol = open && COLUMNS.find((c) => c.id === open.id);
+  const categoryLeaves = treeLeaves(categoryTree);
+  const branchLeaves = treeLeaves(branchTree);
 
   return (
     <section className="seq" aria-label="Add equipment">
       <header className="seq__head">
-        <h2 className="seq__title">{title} <span className="seq__count">{records.length} records</span></h2>
-        <span className="seq__selected" aria-live="polite">{selected.length} selected</span>
+        <h2 className="seq__title">{title}</h2>
       </header>
 
       <div className="seq__toolbar">
         <TextField
-          label="Search equipment" hideLabel size="sm" iconStart="search" placeholder="Search equipment" className="seq__search"
+          label="Search equipment" hideLabel size="sm" iconStart="search" placeholder="Search" className="seq__search"
           value={filters.search} onChange={(e) => set({ search: e.target.value })} onClear={() => set({ search: '' })}
         />
-        <button type="button" className={`seq-quick${filters.branches.length ? ' is-active' : ''}`} aria-haspopup="dialog"
-          onClick={(e) => setOpen({ id: 'quick-branch', anchor: e.currentTarget })}>
-          <span className="seq-quick__label">Branch</span>
-          <span className="seq-quick__value">{quickLabel(filters.branches, branchTree, 'All branches')}</span>
-          <Icon name="down" size={16} />
-        </button>
-        <button type="button" className={`seq-quick${filters.categories.length ? ' is-active' : ''}`} aria-haspopup="dialog"
-          onClick={(e) => setOpen({ id: 'quick-category', anchor: e.currentTarget })}>
-          <span className="seq-quick__label">Category</span>
-          <span className="seq-quick__value">{quickLabel(filters.categories, categoryTree, 'All categories')}</span>
-          <Icon name="down" size={16} />
-        </button>
-        <Button variant="secondary" size="sm" disabled={!anyFilter} onClick={() => { setFilters(emptyFilters()); setSort(null); }}>Clear filters</Button>
+        <Select
+          label="Branch" size="sm" searchable multiple showTags={false} className="seq__quick"
+          options={treeOptions(branchTree)} values={filters.branches.filter((id) => branchLeaves.includes(id))}
+          onValuesChange={(v) => set({ branches: withWholeNodes(branchTree, v) })} listActions={{ secondaryLabel: 'Clear', actionLabel: 'Save' }}
+        />
+        <Select
+          label="Category" size="sm" searchable multiple showTags={false} className="seq__quick"
+          options={treeOptions(categoryTree)} values={filters.categories.filter((id) => categoryLeaves.includes(id))}
+          onValuesChange={(v) => set({ categories: withWholeNodes(categoryTree, v) })} listActions={{ secondaryLabel: 'Clear', actionLabel: 'Save' }}
+        />
       </div>
-      <p className="seq__meta" aria-live="polite"><strong>{rows.length} of {records.length}</strong> equipment shown</p>
+      <p className="syn-visually-hidden" aria-live="polite">{rows.length} of {records.length} equipment shown</p>
 
       <div className="seq__scroll" role="region" aria-label="Equipment table" tabIndex={0}>
         {rows.length ? (
-          <table className="seq-table" style={{ width: totalWidth }}>
+          <table className="seq-table" style={{ width: '100%', minWidth: totalWidth }}>
             <caption className="syn-visually-hidden">Equipment to add. Sort and filter from the column headers.</caption>
             <colgroup>
               <col style={{ width: SELECT_W }} />
@@ -234,21 +236,22 @@ export function EquipmentSelectTable({
                   >
                     <span className="seq-th">
                       <span className="seq-th__label" title={c.label}>{c.label}</span>
-                      {c.sort && (
-                        <button
-                          type="button" className={`seq-th__btn${sort?.key === c.sort ? ' is-active' : ''}`}
-                          aria-label={`Sort ${c.label}: ${sortLabel(c)}`} title={sortLabel(c)} onClick={() => cycleSort(c.sort!)}
-                        >
-                          <SortGlyph dir={sort?.key === c.sort ? sort.dir : null} />
-                        </button>
-                      )}
                       {c.filter && (
                         <button
                           type="button" className={`seq-th__btn${filterActive(c) ? ' is-active' : ''}`} aria-haspopup="dialog"
-                          aria-expanded={open?.id === c.id} aria-label={`Filter ${c.label}${filterActive(c) ? ' (on)' : ''}`}
-                          onClick={(e) => setOpen(open?.id === c.id ? null : { id: c.id, anchor: e.currentTarget })}
+                          aria-expanded={open?.id === c.id && !open.menu} aria-label={`Filter ${c.label}${filterActive(c) ? ' (on)' : ''}`}
+                          onClick={(e) => setOpen(open?.id === c.id && !open.menu ? null : { id: c.id, anchor: e.currentTarget })}
                         >
                           <Icon name={filterActive(c) ? 'filter' : 'filter-muted'} size={16} />
+                        </button>
+                      )}
+                      {c.sort && (
+                        <button
+                          type="button" className={`seq-th__btn${sort?.key === c.sort ? ' is-active' : ''}`} aria-haspopup="dialog"
+                          aria-expanded={open?.id === c.id && Boolean(open.menu)} aria-label={`${c.label} column menu: ${sortLabel(c)}`}
+                          onClick={(e) => setOpen(open?.id === c.id && open.menu ? null : { id: c.id, anchor: e.currentTarget, menu: true })}
+                        >
+                          <Icon name="dotvertical" size={16} />
                         </button>
                       )}
                     </span>
@@ -284,35 +287,23 @@ export function EquipmentSelectTable({
         ) : (
           <EmptyState
             variant="general" icon="search-empty" className="seq__empty"
-            action={<Button variant="secondary" size="sm" onClick={() => setFilters(emptyFilters())}>Clear filters</Button>}
+            action={<Button variant="secondary" size="sm" onClick={() => { setFilters(emptyFilters()); setSort(null); }}>Clear filters</Button>}
           >
             No equipment matches the search and filters
           </EmptyState>
         )}
       </div>
 
-      {open && (open.id === 'quick-branch' || open.id === 'quick-category') && (
+      {openCol && (
         <FilterPopover
-          anchor={open.anchor} title={open.id === 'quick-branch' ? 'Branch' : 'Category'} onClose={() => setOpen(null)}
-          onClear={() => set(open.id === 'quick-branch' ? { branches: [] } : { categories: [] })}
+          key={`${openCol.id}${open!.menu ? '-menu' : ''}`} anchor={open!.anchor} width={open!.menu ? 240 : 370}
+          label={open!.menu ? `${openCol.label} column menu` : `${openCol.label} filter`} onClose={() => setOpen(null)}
         >
-          {filterBody(COLUMNS.find((c) => c.id === (open.id === 'quick-branch' ? 'branch' : 'category'))!)}
-        </FilterPopover>
-      )}
-      {openCol && openCol.filter && (
-        <FilterPopover anchor={open!.anchor} title={`${openCol.label} · Filter`} onClose={() => setOpen(null)} onClear={() => clearFilter(openCol)}>
-          {filterBody(openCol)}
+          {open!.menu ? sortMenu(openCol) : filterPanel(openCol)}
         </FilterPopover>
       )}
     </section>
   );
-}
-
-function isAncestor(tree: TreeNode[], ancestor: string, id: string): boolean {
-  const find = (nodes: TreeNode[]): TreeNode | undefined => nodes.reduce<TreeNode | undefined>((f, n) => f ?? (n.id === ancestor ? n : find(n.children ?? [])), undefined);
-  const a = find(tree);
-  const has = (n?: TreeNode): boolean => Boolean(n?.children?.some((c) => c.id === id || has(c)));
-  return has(a);
 }
 
 function SelectAll({ checked, mixed, onChange }: { checked: boolean; mixed: boolean; onChange: () => void }) {
@@ -322,15 +313,5 @@ function SelectAll({ checked, mixed, onChange }: { checked: boolean; mixed: bool
       label={<span className="syn-visually-hidden">Select all shown equipment</span>} checked={checked} onChange={onChange}
       className={mixed ? 'is-mixed' : undefined}
     />
-  );
-}
-
-/** Up and down arrows; the active direction in Eerie Black, the other muted. */
-function SortGlyph({ dir }: { dir: 'asc' | 'desc' | null }) {
-  return (
-    <svg width="12" height="16" viewBox="0 0 12 16" aria-hidden className="seq-sort">
-      <path d="M6 1 10 6H2z" className={dir === 'asc' ? 'is-on' : undefined} />
-      <path d="M6 15 2 10h8z" className={dir === 'desc' ? 'is-on' : undefined} />
-    </svg>
   );
 }

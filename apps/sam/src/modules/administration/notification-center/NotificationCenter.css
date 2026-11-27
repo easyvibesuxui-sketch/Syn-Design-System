@@ -364,4 +364,3 @@
   cursor: pointer;
 }
 .sam-picker__back .syn-icon { color: var(--syn-color-secondary-silver-chalince); }
-.sam-picker__count { margin: 0 var(--syn-space-16) 0 auto; color: var(--syn-color-secondary-jet); font: var(--syn-type-text-body-xs); }

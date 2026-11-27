@@ -26,8 +26,7 @@ export function EquipmentPicker({ open, selected, onClose, onSubmit }: {
       footer={(
         <>
           <Button variant="text" onClick={onClose}>Discard</Button>
-          <p className="sam-picker__count" aria-live="polite">{picked.length} selected</p>
-          <Button disabled={!picked.length} onClick={() => onSubmit(picked)}>Submit selected equipment</Button>
+          <Button disabled={!picked.length} onClick={() => onSubmit(picked)}>Submit</Button>
         </>
       )}
     >
