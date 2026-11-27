@@ -128,8 +128,10 @@ Two types: *clickable* (no `name`: "Add new" opens the name field, `defaultEditi
 ## Tooltip
 
 Figma: *Tooltip black*, *Tooltip grey label*. Opens on hover and focus, closes on Escape, wired with
-`aria-describedby`. `placement` top/bottom/left/right, `tone` `dark` (Jet) or `light` (Cultured with a
+`aria-describedby`. `placement` bottom (the default) / top / left / right, `tone` `dark` (Jet) or `light` (Cultured with a
 border). As in Figma: 8px padding, Regular 14 and a 16x8 pointer; corners use the 8px element radius (Figma draws 2px).
+Rule: tooltips open below their trigger (`bottom`); use another side only where below has no room, as the map
+controls do (`left`).
 
 ## Notification
 

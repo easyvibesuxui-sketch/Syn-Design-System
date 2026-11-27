@@ -6,13 +6,14 @@ export interface TooltipProps {
   content: ReactNode;
   /** The trigger. Must be a focusable element that accepts aria-describedby. */
   children: ReactElement;
+  /** Bottom by default: Syn tooltips open below their trigger. */
   placement?: 'top' | 'bottom' | 'left' | 'right';
   /** dark = Jet fill, light = Cultured fill with an Eerie Black border. */
   tone?: 'dark' | 'light';
   className?: string;
 }
 
-export function Tooltip({ content, children, placement = 'top', tone = 'dark', className }: TooltipProps) {
+export function Tooltip({ content, children, placement = 'bottom', tone = 'dark', className }: TooltipProps) {
   const id = `syn-tooltip-${useId()}`;
   const [open, setOpen] = useState(false);
   const trigger = isValidElement(children)
